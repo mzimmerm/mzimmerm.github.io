@@ -9,11 +9,11 @@
 #+TAGS: org_mode blog emacs
 #+CATEGORIES: org_mode blog emacs
 
-True, I love Emacs, and Emacs's [[http://orgmode.org/][org-mode]]. It would be hard to list everything great about org-mode - it is an incredible tool - for me it replaces a word processor, spreadsheet, organizer and note taker for my design and coding. I often write code in Emacs, but living in debugger, and coding in Groovy recently, makes Emacs not practical at some point. So Netbeans and IntelliJ are my IDEs there, but I digress.
+True, I love Emacs, and Emacs's [[http://orgmode.org/][org-mode]]. It would be hard to list everything great about org-mode - it is an incredible tool - it replaces a word processor, spreadsheet, organizer and note taker for my design and coding. I often write code in Emacs, but living in debugger, coding for example in Groovy recently, makes Emacs not practical at some point (for debugging, but living in a debugger .. ). Netbeans and IntelliJ are my IDEs there, but I digress.
 
-I used to maintain a (scarcely updated) blog at https://mzimmerm.blogspot.ca/. Blogspot is unwieldy for some things; I wanted to find a better way; ideally use Org mode to keep notes and comments on things I am interested in, and potentially share it in a blog format. 
+I used to maintain a (scarcely updated) blog at https://mzimmerm.blogspot.ca/. Blogspot felt unwieldy for some things; I wanted to find a better way; ideally be able to use Org mode to keep notes and comments on things I am interested in, and potentially share it in a blog format. 
 
-Having said that, history proves my "blogging" was so scarce, it should not be called that that :) - maybe having a simple blog publishing workflow where I can share code snippets, (hopefully) equations, and graphics relatively easily, it will motivate me.
+Having said that, history proves my "blogging" was so scarce, it should not be called that :) - maybe having a simple blog publishing workflow where I can share code snippets, equations (hopefully), and graphics relatively easily, it will motivate me.
 
 So for a while, I was thinking about available blogging and home page options with a few criteria
 - Be able to write pages and blog in org mode
@@ -21,7 +21,7 @@ So for a while, I was thinking about available blogging and home page options wi
 
 Finally, a few weekends ago I figured the reasonably best approach was [[https://github.io][github.io]]. 
 
-Of course if there was a site supporting a kind of literate, "live" environment such as [[https://lively-web.org/welcome.html][Lively Web]], I would much prefer that :) . I thought Google Sites would be the direction of secure web (with Mark Miller's [[https://en.wikipedia.org/wiki/Object-capability_model][object-capabilities]] through [[https://en.wikipedia.org/wiki/Caja_project][Caja]]) but I found Google Sites too restrictive - maybe I did not give it due time, and should revisit. 
+Of course if there was a site supporting a kind of literate, "live" environment such as [[https://lively-web.org/welcome.html][Lively Web]], I would much prefer that! :) Short of lively environments (maybe not), I thought Google Sites would great for secure web thanks to Mark Miller's [[https://en.wikipedia.org/wiki/Object-capability_model][object-capabilities]] through [[https://en.wikipedia.org/wiki/Caja_project][Caja]], but I found Google Sites too restrictive - maybe I did not give it due time, and should revisit. 
 
 So anyway, once I decided to switch over from Blogspot to [[https://github.io][github.io]] (which uses [[https://jekyllrb.com][Jekyll]]), I started to look for options to use Org to web page creation and blogging. 
 
