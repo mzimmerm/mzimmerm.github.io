@@ -1,0 +1,41 @@
+# Jekyll configuration
+
+name: Milan Zimmermann's Blog
+description: Daily (or much less frequent) notes about things.
+
+# url is currently only used only for the RSS feed in feed.xml
+url: https://mzimmerm.github.io
+
+# baseurl will often be '', but for a project page on gh-pages, it needs to
+# be the project name.
+# *** IMPORTANT: If your local "jekyll serve" throws errors change this to '' or
+#     run it using: jekyll serve --baseurl=''
+baseurl: mzimmerm.github.io
+
+# This can be '' to hide the Github nav button
+github: 'github.com/mzimmerm/mzimmerm.github.io'
+
+# Google Analytics Account: Set this to your UA-# value, or '' to disable analytics completely
+gaaccount: ''
+
+# The 'comments' setting enables comments. You'll need to select either
+# disqus or isso below to choose a comment system. Individual posts can
+# override 'comments' to disable on a post-by-post basis.
+comments: true
+
+# Set this to your public isso URL to enable comments via isso. Set to '' to disable isso.
+isso: ''
+
+# Set this to your disqus shortname to enable comments via disqus. Set to '' to disable disqus.
+disqus: ''
+
+# Permaling
+permalink: /:year/:month/:title
+paginate: 3
+
+highlighter: rouge
+markdown: kramdown
+gems: ['jekyll-paginate']
+
+# Exclude files from "jekyll build"
+exclude: ['README.md', 'LICENSE', 'TODO.org']

@@ -1,0 +1,15 @@
+#+STARTUP: showall
+#+STARTUP: hidestars
+#+OPTIONS: H:2 num:nil tags:nil toc:nil timestamps:t
+#+LAYOUT: post
+#+AUTHOR: mzimmerm
+#+DATE: 2017-04-08 Sat 17:23
+#+TITLE: a-test-blog 
+#+DESCRIPTION: Testing org2jekyll-create-draft
+#+TAGS: tag1 org2jekyll
+#+CATEGORIES: categories_required
+
+* Ok so this was automatically created. 
+
+- The file name is *a-test-blog.org* so this is concatenated from title, with no date. That is nice
+- I will publish using org2jekyll-publish-post

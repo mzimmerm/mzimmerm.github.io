@@ -1,0 +1,53 @@
+#+STARTUP: showall
+#+STARTUP: hidestars
+#+OPTIONS: H:2 num:nil tags:nil toc:nil timestamps:t
+#+LAYOUT: post
+#+AUTHOR: mzimmerm
+#+DATE: 2017-04-08 Sat 11:57
+#+TITLE: Using Emacs Org Mode for Blogging on github.io with Jekyll - 1. Motivation
+#+DESCRIPTION: Org is Everything - Everything in Org.
+#+TAGS: org_mode blog emacs
+#+CATEGORIES: org_mode blog emacs
+
+True, I love Emacs, and Emacs's [[http://orgmode.org/][org-mode]]. It would be hard to list everything great about org-mode - it is an incredible tool - for me it replaces a word processor, spreadsheet, organizer and note taker for my design and coding. I often write code in Emacs, but living in debugger, and coding in Groovy recently, makes Emacs not practical at some point. So Netbeans and IntelliJ are my IDEs there, but I digress.
+
+I used to maintain a (scarcely updated) blog at https://mzimmerm.blogspot.ca/. Blogspot is unwieldy for some things; I wanted to find a better way; ideally use Org mode to keep notes and comments on things I am interested in, and potentially share it in a blog format. 
+
+Having said that, history proves my "blogging" was so scarce, it should not be called that that :) - maybe having a simple blog publishing workflow where I can share code snippets, (hopefully) equations, and graphics relatively easily, it will motivate me.
+
+So for a while, I was thinking about available blogging and home page options with a few criteria
+- Be able to write pages and blog in org mode
+- The platform should be more flexible than Blogspot
+
+Finally, a few weekends ago I figured the reasonably best approach was [[https://github.io][github.io]]. 
+
+Of course if there was a site supporting a kind of literate, "live" environment such as [[https://lively-web.org/welcome.html][Lively Web]], I would much prefer that :) . I thought Google Sites would be the direction of secure web (with Mark Miller's [[https://en.wikipedia.org/wiki/Object-capability_model][object-capabilities]] through [[https://en.wikipedia.org/wiki/Caja_project][Caja]]) but I found Google Sites too restrictive - maybe I did not give it due time, and should revisit. 
+
+So anyway, once I decided to switch over from Blogspot to [[https://github.io][github.io]] (which uses [[https://jekyllrb.com][Jekyll]]), I started to look for options to use Org to web page creation and blogging. 
+
+*** Selecting a package to blog in Org mode in Jekyll
+
+Jekyll is by default, using Markdown to write blog posts. There seem to be three ways to blog in org-mode with Jekyll:
+1. Ian Barton's [[https://github.com/geekinthesticks/ianbarton][example site]] which is also given most room on org's [[http://orgmode.org/worg/org-tutorials/org-jekyll.html][Using org to Blog with Jekyll]]. One has to still use some amount of Jekyll's Yaml "front matter" in blogs
+2. [[https://github.com/eggcaker/jekyll-org][jekyll-org]] adds ability to use Org mode settings in the "front matter". But to me there seems to be a disadvantage - this package uses Ruby to convert Org to html (rather than org-publish, as the other two packages). While I do not doubt Ruby's Org to html converter is good, I am not sure it completely supports Org syntax.
+3. Antoine Dumont's [[https://github.com/ardumont/org2jekyll][org2jekyll]]. In my books, this is the *best* package integrating Jekyll and Org mode posting. I decided to use this package. 
+ 
+The reasons I like [[https://github.com/ardumont/org2jekyll][org2jekyll]] the most:
+- Only emacs dependencies used, no external Ruby needed.
+- It is fairly easy to configure, although some configuration is still required.
+- There is a nice straightforward workflow of pages and blog creating and publishing, all using Org.
+
+In a future post, I will write more on the workflow of blogging using [[https://github.com/ardumont/org2jekyll][org2jekyll]].
+
+*** Selecting a Jekyll theme for my site and blog.
+
+Next, was looking for a Jekyll theme. There is a huge number of [[http://jekyllthemes.org/][Jekyll Themes]], the two that I liked the most is the theme used by [[https://github.com/ardumont/org2jekyll][org2jekyll]] - as I decided to use Org2Jekyll anyway that was a great match. This theme is created using the "new Jekyll way", as a Ruby Gem; but I could not get it working. So I decided to use next best, a clean theme named as such - "[[https://github.com/scotte/jekyll-clean][jekyll clean]]". 
+
+*** Conclusion
+
+This is my first post on  [[https://github.io][github.io]], using  [[https://jekyllrb.com][Jekyll]] with theme [[https://github.com/scotte/jekyll-clean][jekyll clean]], having written the blog in the amazing Emacs's [[http://orgmode.org/][org-mode]], using  [[https://github.com/ardumont/org2jekyll][org2jekyll]]. 
+
+I hope the simplicity of Org mode and publishing on github.io will inspire me to write here more often. 
+
+The next step is to document how I installed all this, and the workflow of writing a blog in this Org mode + Jekyll environment.
+
