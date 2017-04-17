@@ -4,14 +4,14 @@
 #+LAYOUT: post
 #+AUTHOR: mzimmerm
 #+DATE: 2017-04-08 Sat 11:57
-#+TITLE: Using Emacs Org Mode for Blogging on github.io with Jekyll - 1. Motivation
+#+TITLE: Blog in Org2jekyll - 1. Motivation
 #+DESCRIPTION: Org is Everything - Everything in Org.
 #+TAGS: org_mode blog emacs
 #+CATEGORIES: org_mode blog emacs
 
-True, I love Emacs, and Emacs's [[http://orgmode.org/][org-mode]]. It would be hard to list everything great about org-mode - it is an incredible tool - it replaces a word processor, spreadsheet, organizer and note taker for my design and coding. I often write code in Emacs, but living in debugger, coding for example in Groovy recently, makes Emacs not practical at some point (for debugging, but living in a debugger .. ). Netbeans and IntelliJ are my IDEs there, but I digress.
+I love Emacs, and Emacs's [[http://orgmode.org/][org-mode]]. It would be hard to list everything great about org-mode - it is an incredible tool - it replaces a word processor, spreadsheet, organizer and note taker for my design and coding. I often write code in Emacs, but living in debugger, coding for example in Groovy recently, makes Emacs not practical at some point (for debugging, but living in a debugger .. ). Netbeans and IntelliJ are my IDEs there, but I digress.
 
-I used to maintain a (scarcely updated) blog at https://mzimmerm.blogspot.ca/. Blogspot felt unwieldy for some things; I wanted to find a better way; ideally be able to use Org mode to keep notes and comments on things I am interested in, and potentially share it in a blog format. 
+In the past, I used to do a (scarcely updated) blog at https://mzimmerm.blogspot.ca/. Blogspot felt unwieldy for some things; I wanted to find a better way; ideally be able to use Org mode to keep notes and comments on things I am interested in, and potentially share it in a blog format. 
 
 Having said that, history proves my "blogging" was so scarce, it should not be called that :) - maybe having a simple blog publishing workflow where I can share code snippets, equations (hopefully), and graphics relatively easily, it will motivate me.
 

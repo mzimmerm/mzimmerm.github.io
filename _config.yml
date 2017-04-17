@@ -1,7 +1,7 @@
 # Jekyll configuration
 
 name: Milan Zimmermann's Blog
-description: Daily (or much less frequent) notes about things.
+description: Notes about things.
 
 # url is currently only used only for the RSS feed in feed.xml
 url: https://mzimmerm.github.io

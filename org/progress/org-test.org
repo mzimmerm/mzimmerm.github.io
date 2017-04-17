@@ -1,0 +1,106 @@
+#+PROPERTY: dir /home/mzimmermann/tmp/one
+
+* Lord of the Rings - 3 types of list
+
+Start writing here!
+
+  My favorite scenes are (in this order)
+  1. The attack of the Rohirrim
+  2. Eowyn's fight with the witch king
+     + this was already my favorite scene in the book
+     + I really like Miranda Otto.
+  3. Peter Jackson being shot by Legolas
+     - on DVD only
+     He makes a really funny face when it happens.
+  But in the end, no individual scenes matter but the film as a whole.
+  Important actors in this film are:
+  - Elijah Wood   :: He plays Frodo
+  - Sean Astin    :: He plays Sam, Frodo's friend.  I still remember 
+                     him very well from his role as Mikey Walsh in The Goonies.
+  - Abrakah Dabra :: Is cool.
+
+* TODO Properties: Property = Map Entry = Key/Value                     :aa:zz:
+  :PROPERTIES:
+  :one:      1
+  :END:
+
+A property is a key-value pair associated with an entry. Properties can be set so they are associated with a single entry, with every entry in a tree, or with every entry in an Org mode file.
+
+Properties are like tags, but with a value. 
+
+Where can property be defined:
+
+- Either anywhere in file (but do it always on top) as 
+  #+BEGIN_SRC org
+  '#+PROPERTY: property-name-string property-value-string
+  #+END_SRC
+ - Or in a drawer as  
+  #+BEGIN_SRC org
+  ':PROPERTIES:
+  ':property-name-string: property-value-string
+  ':END:
+  #+END_SRC
+
+Note the syntactic difference on how the key is defined 
+
+- in the PROPERTY section, *key is not surrounded with :* 
+- in the BEGIN_SRC *key is urrounded with :* 
+
+But the *name of the key is in both cases =property-name-string=
+
+For someone using org-babel a lot, I have really only encountered use of properties in defining the overwhelmingly complex property called header-args.
+
+I was, for the longest time, I was confused in how the 
+
+*TODO*
+
+** Testing the dir property
+
+There is a standard property with key named =dir=. This is a path to directory where Babel source blocks are executed.
+
+This experiment shows how this property can be defined
+ This result uses global (top) definition of dir = /home/mzimmermann/tmp/one
+
+ #+BEGIN_SRC emacs-lisp
+ (directory-files ".")
+ #+END_SRC
+
+ #+RESULTS:
+ | . | .. | file-in-one |
+
+ This result uses the BEGIN_SRC  definition of dir = /home/mzimmermann/tmp/two
+
+ #+BEGIN_SRC emacs-lisp :dir /home/mzimmermann/tmp/two
+ (directory-files ".")
+ #+END_SRC
+
+ #+RESULTS:
+ | . | .. | file-in-two |
+
+*** Overriden property dir
+    :PROPERTIES:
+    :dir:      /home/mzimmermann/tmp/three
+    :END:
+
+ This result uses the PROPERTIES  definition of dir = /home/mzimmermann/tmp/three
+
+  #+BEGIN_SRC emacs-lisp
+  (directory-files ".")
+  #+END_SRC
+
+  #+RESULTS:
+  | . | .. | file-in-three |
+* Tags = Label = Category                                               :bb:test_tag:
+Are labels for context (context = category)
+
+
+* TODO Properies and columns some long name
+
+:PROPERTIES:
+:COLUMNS:       %30ITEM %9Approved(Approved?){X} %Owner %11Status %10Time_Estimate{:} %CLOCKSUM %CLOCKSUM_T
+:Owner_ALL:     Tammy Mark Karl Lisa Don
+:Status_ALL:    "In progress" "Not started yet" "Finished" ""
+:Approved_ALL:  "[ ]" "[X]"
+:END:
+
+so this is column view?

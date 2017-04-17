@@ -1,0 +1,188 @@
+#+TODO: TODO IN-PROGRESS WAITING DONE CANCELED
+#+STARTUP: indent
+
+- [X] Fix = to ~ in posts and todo
+- [X] review org/html side by side
+  - [X] compare result HTML with org - check how org converts:
+
+  - [X] == , ~~ ** sections
+
+  - [X] links
+
+  - [X] dot jots (is space surrond needed?? no
+
+  - [X] BEGIN_SRC
+- [ ] draft to today's blog
+
+- [ ] Add to a-test-blog.org
+  - [ ] Images
+
+- [ ] start blog about Dart types
+- [ ] figure out how to link a post from Google plus.
+
+- [ ] describe process of posting a blog entry in org2jekyll - this is already in 2 paragraphs: Workflow of creating a blog post in Org2Jekyll on https://mzimmerm.github.io  and 
+  - [ ] action steps
+    - [ ] Org2Jekyll
+
+      - [ ] org2jekyll-create-post (???)
+
+      - [ ] org2jekyll-publish-post
+
+    - [ ] Jekyll
+  - [ ] post workflow in terms of post names, and directories where they flow from creation to publishing online.
+
+- [ ] later
+
+  - [ ] figure out how to create and export pages in org mode
+
+  - [ ] figure out how to add image to post
+
+- 
+
+
+* Jomk Media Blog
+
+
+* KEEP - future blogs.
+ 
+ 
+** Blog in Org2jekyll - 3. About the Jekyll theme used in this blog
+
+This post is part 3 of [[2017-04-08-using-emacs-org-mode-for-blogging-on-github.io-with jekyll-1-motivation.html][a short series about writing in org mode]], specifically using org2jekyll.
+
+The Jekyll theme on this page is slighly modified from the original excellent *jekyll clean* theme. If you like the theme, you can use it from this blog, or from the original site  https://github.com/scotte/jekyll-clean
+
+ *Jekyll clean* is a simple (not Gem based), clean Jekyll theme using [[http://getbootstrap.com][bootstrap]]. It is easy to modify and modular.
+
+ The theme (optionally) uses Disqus for comments and (optionally) includes Google Analytics. Both are off by default, and can be changed in ```_config.yml``` 
+
+  To use this theme for a blog, the [[https://jekyllrb.com/docs/home/][Jekyll docs]] help, but here are a few notes about about which files can be kept, modified, or removed.
+
+   - You can generally keep the following directories and ~.html~ files. *They are mostly Liquid language sections (Liquid templates), linked from the front page or used to build pages and posts (from files in the _layouts directory)*.
+     - Files to keep or modify:
+       - ~index.html~ is the blog "front page". *keep this* as it is the Liquid template that builds the front page by querying what blogs are out there.
+       - ~about.html~
+       - ~archive.html~
+       - ~links.html~
+     - Directories and contents to keep or modify:
+       - ~_layouts~ contains files such as ~post.html~ and ~page.html~. These files define structure of your blog pages or web sites. If you create a org file named ~org/a-test-blog.org~ and give it ~#+LAYOUT: post~, then the result file is created from  ~post.html~ , substituting ~{{ content }}~ with  ~org/a-test-blog.html~ (this is first created by ~org2jekyll-publish-posts~ from the org file with same name). In the process, Jekyll transforms and injects files from the ~_includes~ directory, if so directed by the layout file ~post.html~.
+       - ~_includes~ is the directory where all files mentioned in include tag markup such as ~{% include included-file.html %}~ should be located
+       - ~images~ *todo*
+       - ~js~ *todo*
+       - ~LICENSE~ 
+
+   - For making your own blog, you may want to generally *remove content* of the following directories on the top level, but keep the directories
+     - ~org~
+       - directory where you write your posts and pages in org format (manually, or supported by ~org2jekyll-create-draft~)
+     - ~_posts~
+       - directory with:
+         - ~.html~ files exported from ~.org~ files by command ~org2jekyll-publish-pages~
+         - Also, if you want to write your posts in markdown, you write them here as ~.md~
+     - ~_site~
+       - directory with ~.html~ files created by *~jekyll build~*. Files here are built by ~jekyll build~ from the following files
+         - ~.html~ files and md files on the top level (e.g. index.html Liquid template file on top level is converted to _site/index.html which containd only html markup)
+         - ~.org~ files from the ~org~ directory
+
+** Blog in Org2jekyll - 4. Workflow of writing a blog post or web page in Org2Jekyll on https://mzimmerm.github.io 
+
+This post is part 4 of [[2017-04-08-using-emacs-org-mode-for-blogging-on-github.io-with jekyll-1-motivation.html][a short series about writing in org mode]], specifically using org2jekyll.
+
+After configuring:
+- A local direcory for Github pages (for example, in directory ~BLOG=~/mzimmerm.github.io~)
+- A Jekyll Theme
+- The Org2jekyll directories
+
+it is easy to start blogging using org mode. A typical workflow of creating a new blog post (using blog title *Test Blog* which creates the blog named *a-test-blog.org*):
+
+1. ~org2jekyll-create-draft~ *This Emacs Org2jekyll command starts creating a blog post*. Assuming the Org2jekyll directories were configured, emacs knows where to place the blog post you are creating - so this can run from any buffer in emacs. There is a series of prompts, for values, required answers are: 
+   - title: Enter the name of your post. This will end up the title, displayed on top of post. e.g. *Test Title*. (I do not use dots and weird characters, as the title is converted to file name, spaces replaced with dashes. It will likely work with anythin, but not sure)
+   - category: enter space separated list of categories. I use the same for category and tag.
+   - tag: See above.
+   The end result of this step is a new file ~$BLOG/org/a-test-blog.org~ and a buffer with it's content, like this
+   #+BEGIN_SRC org
+   `#+STARTUP: showall
+   `#+STARTUP: hidestars
+   todo
+   #+END_SRC
+2. *Write a new post in the buffer created by the above step, and save*
+3. ~org2jekyll-publish~ This Emacs Org2jekyll command *converts the post to html* This is calling the "publish" org mode command; not to be confused with publishing the post in Jekyll (~jekyll build~). This command does two things:
+   - *Exports the org contents to html* .
+   - *Places the exported html to a directory used by Jekyll build (the ~_posts~ directory)*. Result of this is file ~$BLOG/_posts/2017-03-18-a-test-blog.html~. This step also prefixed the blog file name with date, and replaced ~.org~ with ~.html~
+4. ~jekyll build~ (*optional, only to test locally*) This Jekyll's command performs the standard Jekyll steps of building the final "Jekyll published" blog. /Simplified description: Jekyll performs a series of transforms, e.g. surrounds the _posts/2017-03-18-a-test-blog.html with header and footer and places the result to _site/2017/03/2017-03-18-a-test-blog.html/. This last file is served as the post. This step is optional, it is only needed if you want to test your newly added post locally. Once pushed on github.io, the server there will do a ~jekyll build~ on your post in _post. (In fact, in the default Jekyll configuration, a running ~jekyll serve~ picks up changes, so this is not needed even locally)
+5. ~jekyll serve --baseurl~''= (*optional, only to test locally*) Start the Jekyll server
+6. test your blog locally by browsing to http://127.0.0.1:4000/jekyll/. If you need to make a change, edit the 
+7. ~git commit; git push~ Pushes result to Github. The server there builds and serves your post.
+** Blog in Org2jekyll - 5. Debug failures in ~org2jekyll-publish-post~
+
+This post is part 5 of [[2017-04-08-using-emacs-org-mode-for-blogging-on-github.io-with jekyll-1-motivation.html][a short series about writing in org mode]], specifically using org2jekyll.
+
+Errors during "org publishing" are quiet in org2jekyll. After running ~org2jekyll-publish-post~, one should check if the post from the ~org~ directory ended up in the ~_posts~ directory with ~.html~ extension. If it did not, look for errors in emacs ~*Messages*~ buffer.
+
+You will likely see errors pointing to a Org syntax in your ~.org~ file which Org failed to convert (publish) to html. 
+
+*** An example of error:
+
+#+BEGIN_EXAMPLE
+deferred error : (user-error "Unable to resolve link: \"Jekyll\"")
+#+END_EXAMPLE 
+
+I'd search the  ~org~ directory posts for the string. This is where some confusion begins. When the   ~org2jekyll-publish-post~ failes on ~a-test-post.org~
+_, it leaves another file in the ~org~ directory named ~2017-04-18-a-test-post.org~. Ignore this "dated" version in your search, just look into  ~org2jekyll-publish-post~ for the offending string.
+
+For errors in links like the above, I'd change the blog buffer mode to text-mode for a while to see the links internals.
+
+*** Another example of error
+
+#+BEGIN_EXAMPLE
+deferred error : (file-error "Opening directory" "No such file or directory" "/home/mzimmermann/dev/my-projects-source/public-on-github/mzimmerm.github.io/org/img")
+#+END_EXAMPLE
+
+
+
+** Blog in Org2jekyll - 6. About Jekyll directory structure; What does ~jekyll build~ do?
+
+This post is part 6 of [[2017-04-08-using-emacs-org-mode-for-blogging-on-github.io-with jekyll-1-motivation.html][a short series about writing in org mode]], specifically using org2jekyll.
+
+It describes how Jekyll builds pages or posts from ~.org~ files. I will use this example post:
+
+#+BEGIN_SRC org
+todo
+#+END_SRC
+
+*** How does the ~jekyll build~ command builds it's result html page/post in the ~_site~ directory?
+
+~jekyll build~ uses those steps:
+
+ - Iterate each .md or .html file in _posts, and in root of the site (in mzimmerm.github.io)
+   - In the .md and .html file (page or post) lookup the Front Matter ~layout~ tag (in our example, ~layout~ is ~post~)
+   - Look at the Yaml front matter ~layout~ tag to start building the page. Use the directory ~_layout~ to build final html in _site from the ~.md~. If you create a org file named ~org/a-test-blog.org~ and give it ~#+LAYOUT: post~, Jekyll uses the file ~_layouts/post.html~ as the "envelope" of the generated page. 
+   - The ~_layouts/post.html~ file contains some {% include %} sections and some html combined with more Liquid sections {{ out }} and {% tag %}, this is a brief form
+     #+BEGIN_SRC liquid
+     {% include header.html %}
+
+     <div class="container container-left">
+       {% include sidebar.html %}
+     </div>
+
+     {% include disqus-comments.html %}
+     {% include footer.html %}
+     #+END_SRC
+   - Note: ~_includes~ is the directory where all files mentioned in  ~{% include included-file.html %}~ should be located.
+   - The Liquid tag processing starts processing the ~_layouts/post.html~, first including templates, next processing the Liqud template logic of {{ }} and {% %}
+   - The result of Liquid processing is an ~.html~ file.
+   - The resulting html file is placed to the ~_site~ directory - This is where ~jekyll serve~ finds the files served by the HTTP server.
+ 
+** Blog in Org2jekyll - 7. Test Jekyll blog locally; What does ~jekyll serve~ do?
+
+This post is part 7 of [[2017-04-08-using-emacs-org-mode-for-blogging-on-github.io-with jekyll-1-motivation.html][a short series about writing in org mode]], specifically using org2jekyll.
+
+ Normally, ~jekyll serve~ starts the HTTP server, serving all files from directory ~_site~. It does not regenerate the ~.md~ and ~.html~ files from the ~_posts~ directory, and the root level.  There are a few things to notice
+
+ - A Yaml variable from ~_config.yml~ can be forced to a different value at startup, for example: 
+   - ~jekyll serve --baseurl=''~ (set baseurl to empty)
+- Jekyll can be asked to incremetally generate on changes
+   - ~jekyll serve --incremental~ (incremental regeneration on ~_config.yml~ change)
+-  Options can be combined
+   - ~jekyll serve --incremental --baseurl=''~
+
+** TODO Add post on displaying and html converting images

@@ -1,0 +1,53 @@
+########################################## From stack overlow
+
+eq: -E*(I0+I1*x)*'diff(w,x,2)=(f1/6)*x^3+(f0/2)*x^2+l*(f0/2+2*f1*l^2/3)*x;
+sol2: ode2(eq,w,x);
+solbc2: bc2(sol2,x=0,w=0,x=l,w=0);
+solNum: subst([E=1,I0=1,I1=1,f0=1,f1=1,l=1],solbc2);
+plot2d(rhs(solNum),[x,0,1]);
+
+
+##########################################
+
+e1: 'diff(x1(t),t,2) + 'diff(x2(t),t,2) = 0;     
+e2: x(t) = m/k * 'diff(x1(t), t, 2);
+e3:x2(t) - x1(t) = x(t);
+
+atvalue(x1(t),t=0,0);
+atvalue(x2(t),t=0,x(0));
+atvalue('diff(x1(t),t),t=0,0);
+atvalue('diff(x2(t),t),t=0,0);
+atvalue(x(t),t=0,len);
+
+sol: desolve([e1,e2,e3],[x1(t), x2(t),x(t)]);
+
+plot2d(cos(t),[t,0,10*%pi]);
+
+############################################
+
+e1: 'diff(x1(t),t,2) + 'diff(x2(t),t,2) = -2*g;     
+e2: x(t) = m/k * ('diff(x1(t), t, 2) + g);
+e3:x2(t) - x1(t) = x(t);                    
+
+atvalue(x1(t),t=0,0);
+atvalue(x2(t),t=0,x(0));
+atvalue('diff(x1(t),t),t=0,0);
+atvalue('diff(x2(t),t),t=0,0);
+atvalue(x(t),t=0,len);
+
+sol: desolve([e1,e2,e3],[x1(t),x2(t),x(t)]);
+solNum: subst([k=1,m=1,len=10,g=9.9], sol);
+timeOfX0: solve(rhs(solNum[3]) = 0, t);
+
+plot2d(rhs(solNum[3]), [t,0,rhs(timeOfX0[1])]); /* solNum[3] is the third member - x(t) */
+
+/*
+   the values of m and k defines the time before masses collapse.
+   the values of len and g (and to a degree also m and k) define where the masses collaps:
+      in other words, whether the lower mass will
+         stay put (len ~ g),
+         go up (len > g) or
+         go down (len < g)
+         go up then down
+         etc
+*/
