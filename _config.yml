@@ -10,7 +10,8 @@ url: https://mzimmerm.github.io
 # be the project name.
 # *** IMPORTANT: If your local "jekyll serve" throws errors change this to '' or
 #     run it using: jekyll serve --baseurl=''
-baseurl: mzimmerm.github.io
+# Note: This does not seem needed locally and does not do the right thing on Github
+# baseurl: mzimmerm.github.io
 
 # This can be '' to hide the Github nav button
 github: 'github.com/mzimmerm/mzimmerm.github.io'
