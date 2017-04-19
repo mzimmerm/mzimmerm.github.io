@@ -48,7 +48,7 @@
  
 ** Blog in Org2jekyll - 3. About the Jekyll theme used in this blog
 
-This post is part 3 of [[2017-04-08-using-emacs-org-mode-for-blogging-on-github.io-with jekyll-1-motivation.html][a short series about writing in org mode]], specifically using org2jekyll.
+This post is part 3 of [[post-jekyll:blog-in-org-2-jekyll---1.-motivation.org][a short series about writing in org mode]] using org2jekyll.
 
 The Jekyll theme on this page is slighly modified from the original excellent *jekyll clean* theme. If you like the theme, you can use it from this blog, or from the original site  https://github.com/scotte/jekyll-clean
 
@@ -85,7 +85,7 @@ The Jekyll theme on this page is slighly modified from the original excellent *j
 
 ** Blog in Org2jekyll - 4. Workflow of writing a blog post or web page in Org2Jekyll on https://mzimmerm.github.io 
 
-This post is part 4 of [[2017-04-08-using-emacs-org-mode-for-blogging-on-github.io-with jekyll-1-motivation.html][a short series about writing in org mode]], specifically using org2jekyll.
+This post is part 4 of [[post-jekyll:blog-in-org-2-jekyll---1.-motivation.org][a short series about writing in org mode]], using org2jekyll.
 
 After configuring:
 - A local direcory for Github pages (for example, in directory ~BLOG=~/mzimmerm.github.io~)
@@ -114,7 +114,7 @@ it is easy to start blogging using org mode. A typical workflow of creating a ne
 7. ~git commit; git push~ Pushes result to Github. The server there builds and serves your post.
 ** Blog in Org2jekyll - 5. Debug failures in ~org2jekyll-publish-post~
 
-This post is part 5 of [[2017-04-08-using-emacs-org-mode-for-blogging-on-github.io-with jekyll-1-motivation.html][a short series about writing in org mode]], specifically using org2jekyll.
+This post is part 5 of [[post-jekyll:blog-in-org-2-jekyll---1.-motivation.org][a short series about writing in org mode]], using org2jekyll.
 
 Errors during "org publishing" are quiet in org2jekyll. After running ~org2jekyll-publish-post~, one should check if the post from the ~org~ directory ended up in the ~_posts~ directory with ~.html~ extension. If it did not, look for errors in emacs ~*Messages*~ buffer.
 
@@ -141,7 +141,7 @@ deferred error : (file-error "Opening directory" "No such file or directory" "/h
 
 ** Blog in Org2jekyll - 6. About Jekyll directory structure; What does ~jekyll build~ do?
 
-This post is part 6 of [[2017-04-08-using-emacs-org-mode-for-blogging-on-github.io-with jekyll-1-motivation.html][a short series about writing in org mode]], specifically using org2jekyll.
+This post is part 6 of [[post-jekyll:blog-in-org-2-jekyll---1.-motivation.org][a short series about writing in org mode]], using org2jekyll.
 
 It describes how Jekyll builds pages or posts from ~.org~ files. I will use this example post:
 
@@ -174,7 +174,7 @@ todo
  
 ** Blog in Org2jekyll - 7. Test Jekyll blog locally; What does ~jekyll serve~ do?
 
-This post is part 7 of [[2017-04-08-using-emacs-org-mode-for-blogging-on-github.io-with jekyll-1-motivation.html][a short series about writing in org mode]], specifically using org2jekyll.
+This post is part 7 of [[post-jekyll:blog-in-org-2-jekyll---1.-motivation.org][a short series about writing in org mode]], specifically using org2jekyll.
 
  Normally, ~jekyll serve~ starts the HTTP server, serving all files from directory ~_site~. It does not regenerate the ~.md~ and ~.html~ files from the ~_posts~ directory, and the root level.  There are a few things to notice
 

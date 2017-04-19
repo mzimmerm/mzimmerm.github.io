@@ -330,3 +330,15 @@ But two issues:
    #+BEGIN_SRC elisp
     (when (and (equal (org-element-property :type link) "file")
    #+END_SRC
+
+* Test my specific org link types - *img:* and *post-jekyll:*
+
+** Test img: link
+
+[[img:a-test-blog.org_20170416_034103_28551Ciq.png]]
+
+** Test post-jekyll: link
+
+The precondition is the post must be already org2-published
+
+[[post-jekyll:blog-in-org-2-jekyll---1.-motivation.org][a short series about writing in org mode]]
