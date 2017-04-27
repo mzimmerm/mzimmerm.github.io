@@ -46,42 +46,6 @@
 * KEEP - future blogs.
  
  
-** Blog in Org2jekyll - 3. About the Jekyll theme used in this blog
-
-This post is part 3 of [[post-jekyll:blog-in-org-2-jekyll---1.-motivation.org][a short series about writing in org mode]] using org2jekyll.
-
-The Jekyll theme on this page is slighly modified from the original excellent *jekyll clean* theme. If you like the theme, you can use it from this blog, or from the original site  https://github.com/scotte/jekyll-clean
-
- *Jekyll clean* is a simple (not Gem based), clean Jekyll theme using [[http://getbootstrap.com][bootstrap]]. It is easy to modify and modular.
-
- The theme (optionally) uses Disqus for comments and (optionally) includes Google Analytics. Both are off by default, and can be changed in ```_config.yml``` 
-
-  To use this theme for a blog, the [[https://jekyllrb.com/docs/home/][Jekyll docs]] help, but here are a few notes about about which files can be kept, modified, or removed.
-
-   - You can generally keep the following directories and ~.html~ files. *They are mostly Liquid language sections (Liquid templates), linked from the front page or used to build pages and posts (from files in the _layouts directory)*.
-     - Files to keep or modify:
-       - ~index.html~ is the blog "front page". *keep this* as it is the Liquid template that builds the front page by querying what blogs are out there.
-       - ~about.html~
-       - ~archive.html~
-       - ~links.html~
-     - Directories and contents to keep or modify:
-       - ~_layouts~ contains files such as ~post.html~ and ~page.html~. These files define structure of your blog pages or web sites. If you create a org file named ~org/a-test-blog.org~ and give it ~#+LAYOUT: post~, then the result file is created from  ~post.html~ , substituting ~{{ content }}~ with  ~org/a-test-blog.html~ (this is first created by ~org2jekyll-publish-posts~ from the org file with same name). In the process, Jekyll transforms and injects files from the ~_includes~ directory, if so directed by the layout file ~post.html~.
-       - ~_includes~ is the directory where all files mentioned in include tag markup such as ~{% include included-file.html %}~ should be located
-       - ~images~ *todo*
-       - ~js~ *todo*
-       - ~LICENSE~ 
-
-   - For making your own blog, you may want to generally *remove content* of the following directories on the top level, but keep the directories
-     - ~org~
-       - directory where you write your posts and pages in org format (manually, or supported by ~org2jekyll-create-draft~)
-     - ~_posts~
-       - directory with:
-         - ~.html~ files exported from ~.org~ files by command ~org2jekyll-publish-pages~
-         - Also, if you want to write your posts in markdown, you write them here as ~.md~
-     - ~_site~
-       - directory with ~.html~ files created by *~jekyll build~*. Files here are built by ~jekyll build~ from the following files
-         - ~.html~ files and md files on the top level (e.g. index.html Liquid template file on top level is converted to _site/index.html which containd only html markup)
-         - ~.org~ files from the ~org~ directory
 
 ** Blog in Org2jekyll - 4. Workflow of writing a blog post or web page in Org2Jekyll on https://mzimmerm.github.io 
 
