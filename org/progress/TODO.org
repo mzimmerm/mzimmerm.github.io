@@ -48,8 +48,11 @@
   - Category tech, next
   - Select Jekyll
   - My website shortname is https - mzimmerm - github - io
-  - To _config.yml, set disqus: 'https-mzimmerm-github-io'
-  - At the beginning of blog "front matter" add 
+  - To _config.yml, set disqus: ' the above string no spaces'
+  - At the beginning of blog "front matter" add a line with
+    #+BEGIN_SRC org
+    #+COMMENTS: true
+    #+END_SRC
 
 * Jomk Media Blog
 

@@ -24,11 +24,9 @@ So for a while, I was thinking about available blogging and home page options wi
 - Be able to write pages and blog in org mode
 - The platform should be more flexible than Blogspot
 
-Finally, a few weekends ago I figured the reasonably best approach was [[https://github.io][github.io]]. 
+A few weekends ago I figured the reasonably best approach was [[https://github.io][github.io]]. 
 
-Of course if there was a site supporting a kind of literate, "live" environment such as [[https://lively-web.org/welcome.html][Lively Web]], I would much prefer that! :) Short of lively environments (maybe not), I thought Google Sites would great for secure web thanks to Mark Miller's [[https://en.wikipedia.org/wiki/Object-capability_model][object-capabilities]] through [[https://en.wikipedia.org/wiki/Caja_project][Caja]], but I found Google Sites too restrictive - maybe I did not give it due time, and should revisit. 
-
-So anyway, once I decided to switch over from Blogspot to [[https://github.io][github.io]] (which uses [[https://jekyllrb.com][Jekyll]]), I started to look for options to use Org to web page creation and blogging. 
+Once I decided to switch over from Blogspot to [[https://github.io][github.io]] (which uses [[https://jekyllrb.com][Jekyll]]), I started to look for options to use Org to web page creation and blogging. 
 
 ** Selecting a package to blog in Org mode in Jekyll
 
@@ -38,7 +36,8 @@ Jekyll is by default, using Markdown to write blog posts. There seem to be three
 3. Antoine Dumont's [[https://github.com/ardumont/org2jekyll][org2jekyll]]. In my books, this is the *best* package integrating Jekyll and Org mode posting. I decided to use this package. 
  
 The reasons I like [[https://github.com/ardumont/org2jekyll][org2jekyll]] the most:
-- Only emacs dependencies used, no external Ruby needed.
+
+- Only emacs dependencies are used.
 - It is fairly easy to configure, although some configuration is still required.
 - There is a nice straightforward workflow of pages and blog creating and publishing, all using Org.
 
@@ -48,9 +47,16 @@ In a future post, I will write more on the workflow of blogging using [[https://
 
 Next, was looking for a Jekyll theme. There is a huge number of [[http://jekyllthemes.org/][Jekyll Themes]], the two that I liked the most is the theme used by [[https://github.com/ardumont/org2jekyll][org2jekyll]] - as I decided to use Org2Jekyll anyway that was a great match. This theme is created using the "new Jekyll way", as a Ruby Gem; but I could not get it working. So I decided to use next best, a clean theme named as such - "[[https://github.com/scotte/jekyll-clean][jekyll clean]]". 
 
-*** Conclusion
 
-This is my first post on  [[https://github.io][github.io]], using  [[https://jekyllrb.com][Jekyll]] with theme [[https://github.com/scotte/jekyll-clean][jekyll clean]], having written the blog in the amazing Emacs's [[http://orgmode.org/][org-mode]], using  [[https://github.com/ardumont/org2jekyll][org2jekyll]]. 
+** Literate programming and live(ly) environments 
+
+Of course if there was a site supporting a kind of /literate/, /live/ environment such as [[https://lively-web.org/welcome.html][Lively Web]], /I would much prefer that/! :) 
+
+Apart from lively, security is important. I thought Google Sites would be great for secure web thanks to Mark Miller's [[https://en.wikipedia.org/wiki/Object-capability_model][object-capabilities]] through [[https://en.wikipedia.org/wiki/Caja_project][Caja]], but I lost track how that is used on Google Sites. I found Google Sites a bit restrictive - maybe I did not give it due time, and should revisit. 
+
+** Conclusion
+
+This is a first post in this blog on [[https://github.io][github.io]], using [[https://jekyllrb.com][Jekyll]] with the theme [[https://github.com/scotte/jekyll-clean][jekyll clean]], the post written in the amazing Emacs's [[http://orgmode.org/][org-mode]], using  [[https://github.com/ardumont/org2jekyll][org2jekyll]]. 
 
 I hope the simplicity of Org mode and publishing on github.io will inspire me to write here more often. 
 

@@ -10,7 +10,7 @@
 #+CATEGORIES: org_mode org2jekyll
 #+COMMENTS: true
 
-** Blog in Org2jekyll - 2. Configure all software
+* Blog in Org2jekyll - 2. Configure all software
 
 This post is part 2 of [[post-jekyll:blog-in-org-2-jekyll---1.-motivation.org][a short series about writing in org mode]], specifically using org2jekyll .
 
