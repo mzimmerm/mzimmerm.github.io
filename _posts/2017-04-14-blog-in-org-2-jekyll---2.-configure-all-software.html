@@ -4,16 +4,16 @@ tags:
 - org_mode org2jekyll
 author: mzimmerm
 layout: post
-title: Blog in Org2jekyll - 2. Configure all software
+title: Blog in Org2jekyll - 2. Configuring all software
 excerpt: Part 2 of Org Blog series
 categories: 
 - org_mode org2jekyll
 comments: true
 ---
 
-<div id="outline-container-org99c4d27" class="outline-2">
-<h2 id="org99c4d27">Blog in Org2jekyll - 2. Configure all software</h2>
-<div class="outline-text-2" id="text-org99c4d27">
+<div id="outline-container-orgf579a79" class="outline-2">
+<h2 id="orgf579a79">Blog in Org2jekyll - 2. Configuring all software</h2>
+<div class="outline-text-2" id="text-orgf579a79">
 <p>
 This post is part 2 of <a href="{% post_url 2017-04-08-blog-in-org-2-jekyll---1.-motivation %}">a short series about writing in org mode</a>, specifically using org2jekyll .
 </p>
@@ -34,23 +34,27 @@ The environment I decided to use is hosted by <a href="https://github.io">github
 
 <ol class="org-ol">
 <li><b>Setup Github Pages on <a href="https://github.io">github.io</a></b>: I created my github page, and cloned it to my local directory, <code>BLOG=\~/mzimmerm.github.io</code> . This step is best described in <a href="https://pages.github.com/">https://pages.github.com/</a>. The end result of this step was a local directory, synchronized with my repo at <a href="https://github.com/mzimmerm/mzimmerm.github.io">https://github.com/mzimmerm/mzimmerm.github.io</a>. It only contained index.html.</li>
-<li><b>Setup  <a href="https://jekyllrb.com">Jekyll</a> with theme <a href="https://github.com/scotte/jekyll-clean">jekyll clean</a></b>: Next I decided to use a particular Jekyll theme I like from github, the jekyll clean theme. To this goal, I</li>
-<li>Overwrote the contents ot  my local <code>$BLOG</code> by simply going to  <a href="https://github.com/scotte/jekyll-clean">https://github.com/scotte/jekyll-clean</a>, selecting "clone or download", then "download", and unziping the downloaded zip into <code>$BLOG</code>.</li>
+<li><b>Setup  <a href="https://jekyllrb.com">Jekyll</a> with theme <a href="https://github.com/scotte/jekyll-clean">jekyll clean</a></b>: Next I decided to use a particular Jekyll theme I like from github, the jekyll clean theme. To this goal, I
+<ul class="org-ul">
+<li>Overwrote the contents of  my local <code>$BLOG</code> by simply going to  <a href="https://github.com/scotte/jekyll-clean">https://github.com/scotte/jekyll-clean</a>, selecting "clone or download", then "download", and unzipping the downloaded zip into <code>$BLOG</code>.</li>
 <li>Also, I created a new directory <code>org</code> in <code>$BLOG</code>. In this directory, I am writing my posts in org mode. This is needed for Org2jekyll - see next step</li>
-<li><b>Setup <a href="https://github.com/ardumont/org2jekyll">org2jekyll</a> in Emacs</b>: As I decided Org2jekyll is the best environment for Org mode and Jekyll, I did</li>
-<li><code>M-x package-list-packages</code> from emacs,   which intalled Org2jekyll in my Emacs from Emacs package manager (alternatively, you can download and install the files from <a href="https://github.com/ardumont/org2jekyll">https://github.com/ardumont/org2jekyll</a>). Package manager is much much better and easier.</li>
-<li><b>Configure org2jekyll</b>: Emacs need to be customized to "know" about the "source" directory where you write posts in Org, and the "target" directories where org publishes them</li>
+</ul></li>
+<li><b>Setup <a href="https://github.com/ardumont/org2jekyll">org2jekyll</a> in Emacs</b>: As I decided Org2jekyll is the best environment for Org mode and Jekyll, I did
+<ul class="org-ul">
+<li>Run <code>M-x package-list-packages</code> from emacs, which installed Org2jekyll in my Emacs from Emacs package manager (alternatively, you can download and install the files from <a href="https://github.com/ardumont/org2jekyll">https://github.com/ardumont/org2jekyll</a>). Package manager is much much better and easier.</li>
+</ul></li>
+<li><b>Configure org2jekyll</b>: Emacs need to be customized to "know" about the "source" directory where you write posts in Org, and the "target" directories where org publishes them 
+<ul class="org-ul">
 <li>In <code>init.el</code>, add a section similar to this:  <a href="https://github.com/ardumont/org2jekyll#setup">https://github.com/ardumont/org2jekyll#setup</a>.</li>
-<li>The important step of the setup is to "<b>get the directories right</b>". We only need to change three custom-set variables. Here are notes on how to do it:</li>
-
+<li>The important step of the setup is to "<b>get the directories right</b>". We only need to change three custom-set variables. Here are notes on how to do it:
+<ul class="org-ul">
 <li><code>org2jekyll-source-directory</code> points to the "source" directory where posts are created in org format - this should be the full path to the <code>org</code> directory.</li>
-
 <li><code>(org2jekyll-jekyll-directory</code> points to the "target" location where org publishes. This should be the top level of the blog, <code>$BLOG</code>.</li>
-
 <li><code>org2jekyll-blog-author</code> is the author name.</li>
+</ul></li>
+</ul></li>
 </ol>
 </div>
-
 
 <ul class="org-ul"><li><a id="org731ca8b"></a>Note<br /><div class="outline-text-4" id="text-org731ca8b">
 <p>

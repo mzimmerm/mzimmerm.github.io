@@ -4,13 +4,13 @@
 #+LAYOUT: post
 #+AUTHOR: mzimmerm
 #+DATE: 2017-04-14 Fri 19:45
-#+TITLE: Blog in Org2jekyll - 2. Configure all software
+#+TITLE: Blog in Org2jekyll - 2. Configuring all software
 #+DESCRIPTION: Part 2 of Org Blog series
 #+TAGS: org_mode org2jekyll
 #+CATEGORIES: org_mode org2jekyll
 #+COMMENTS: true
 
-* Blog in Org2jekyll - 2. Configure all software
+* Blog in Org2jekyll - 2. Configuring all software
 
 This post is part 2 of [[post-jekyll:blog-in-org-2-jekyll---1.-motivation.org][a short series about writing in org mode]], specifically using org2jekyll .
 
@@ -24,20 +24,16 @@ The environment I decided to use is hosted by [[https://github.io][github.io]] (
 
 1) *Setup Github Pages on [[https://github.io][github.io]]*: I created my github page, and cloned it to my local directory, ~BLOG=\~/mzimmerm.github.io~ . This step is best described in https://pages.github.com/. The end result of this step was a local directory, synchronized with my repo at https://github.com/mzimmerm/mzimmerm.github.io. It only contained index.html. 
 2) *Setup  [[https://jekyllrb.com][Jekyll]] with theme [[https://github.com/scotte/jekyll-clean][jekyll clean]]*: Next I decided to use a particular Jekyll theme I like from github, the jekyll clean theme. To this goal, I
-- Overwrote the contents ot  my local ~$BLOG~ by simply going to  https://github.com/scotte/jekyll-clean, selecting "clone or download", then "download", and unziping the downloaded zip into ~$BLOG~.
-- Also, I created a new directory ~org~ in ~$BLOG~. In this directory, I am writing my posts in org mode. This is needed for Org2jekyll - see next step
+   - Overwrote the contents of  my local ~$BLOG~ by simply going to  https://github.com/scotte/jekyll-clean, selecting "clone or download", then "download", and unzipping the downloaded zip into ~$BLOG~.
+   - Also, I created a new directory ~org~ in ~$BLOG~. In this directory, I am writing my posts in org mode. This is needed for Org2jekyll - see next step
 3) *Setup [[https://github.com/ardumont/org2jekyll][org2jekyll]] in Emacs*: As I decided Org2jekyll is the best environment for Org mode and Jekyll, I did
-- ~M-x package-list-packages~ from emacs,   which intalled Org2jekyll in my Emacs from Emacs package manager (alternatively, you can download and install the files from https://github.com/ardumont/org2jekyll). Package manager is much much better and easier.
+   - Run ~M-x package-list-packages~ from emacs, which installed Org2jekyll in my Emacs from Emacs package manager (alternatively, you can download and install the files from https://github.com/ardumont/org2jekyll). Package manager is much much better and easier.
 4) *Configure org2jekyll*: Emacs need to be customized to "know" about the "source" directory where you write posts in Org, and the "target" directories where org publishes them 
-- In ~init.el~, add a section similar to this:  https://github.com/ardumont/org2jekyll#setup. 
-- The important step of the setup is to "*get the directories right*". We only need to change three custom-set variables. Here are notes on how to do it:
-
-- ~org2jekyll-source-directory~ points to the "source" directory where posts are created in org format - this should be the full path to the ~org~ directory.
-
-- ~(org2jekyll-jekyll-directory~ points to the "target" location where org publishes. This should be the top level of the blog, ~$BLOG~.
-
-- ~org2jekyll-blog-author~ is the author name.
-
+   - In ~init.el~, add a section similar to this:  https://github.com/ardumont/org2jekyll#setup. 
+   - The important step of the setup is to "*get the directories right*". We only need to change three custom-set variables. Here are notes on how to do it:
+     - ~org2jekyll-source-directory~ points to the "source" directory where posts are created in org format - this should be the full path to the ~org~ directory.
+     - ~(org2jekyll-jekyll-directory~ points to the "target" location where org publishes. This should be the top level of the blog, ~$BLOG~.
+     - ~org2jekyll-blog-author~ is the author name.
 
 *** Note
 
