@@ -8,6 +8,7 @@
 #+DESCRIPTION: Part 2 of Org Blog series
 #+TAGS: org_mode org2jekyll
 #+CATEGORIES: org_mode org2jekyll
+#+COMMENTS: true
 
 ** Blog in Org2jekyll - 2. Configure all software
 

@@ -8,6 +8,7 @@
 #+DESCRIPTION: Org is Everything - Everything in Org.
 #+TAGS: org_mode blog emacs
 #+CATEGORIES: org_mode blog emacs
+#+COMMENTS: true
 
 * Blog in Org2jekyll - 1. Motivation
 

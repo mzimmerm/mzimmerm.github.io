@@ -9,6 +9,7 @@
 #+TAGS: tag1 org2jekyll
 #+CATEGORIES: categories_required
 #+PROPERTY: header-args :dir /home/mzimmermann/tmp/one
+#+COMMENTS: true
 
 
 This file is testing  misc org conversions to Html.

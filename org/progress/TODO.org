@@ -49,7 +49,7 @@
   - Select Jekyll
   - My website shortname is https - mzimmerm - github - io
   - To _config.yml, set disqus: 'https-mzimmerm-github-io'
-
+  - At the beginning of blog "front matter" add 
 
 * Jomk Media Blog
 
