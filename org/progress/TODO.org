@@ -14,6 +14,8 @@
   - [X] BEGIN_SRC
 - [ ] draft to today's blog
 
+- [ ] click on Github, tries to connect to https://github.com/github.com/mzimmerm/mzimmerm.github.io 
+
 - [ ] Add to a-test-blog.org
   - [ ] Images
 
@@ -37,7 +39,16 @@
 
   - [ ] figure out how to add image to post
 
-- 
+- [ ] Configure Disqus:
+
+  - Adding Disqus account for this site 
+  - See https://help.disqus.com/customer/portal/articles/466208 
+  - Go to https://disqus.com/admin/create/ (Create a new site)
+  - On website name, set it to this site URL https: // mzimmerm.github.io
+  - Category tech, next
+  - Select Jekyll
+  - My website shortname is https - mzimmerm - github - io
+  - To _config.yml, set disqus: 'https-mzimmerm-github-io'
 
 
 * Jomk Media Blog
@@ -149,4 +160,4 @@ This post is part 7 of [[post-jekyll:blog-in-org-2-jekyll---1.-motivation.org][a
 -  Options can be combined
    - ~jekyll serve --incremental --baseurl=''~
 
-** TODO Add post on displaying and html converting images
+** TODO Add post on displaying and html converting images - see init.el "img" and 
