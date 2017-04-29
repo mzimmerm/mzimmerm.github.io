@@ -163,4 +163,11 @@ This post is part 7 of [[post-jekyll:blog-in-org-2-jekyll---1.-motivation.org][a
 -  Options can be combined
    - ~jekyll serve --incremental --baseurl=''~
 
-** TODO Add post on displaying and html converting images - see init.el "img" and 
+** TODO Add post on displaying and html converting images - see init.el "img" and
+
+** TODO Add post How I added Org mode Latex publishing to enable nice Math presentation to this blog:
+- First, outside Jekyll, worked out an example which exports (C-c C-e h h) an org file with Latex using MathJax. 
+- Looked in the <head> section of the resulting HTML.
+- Took almost all content of the <head> and placed it to Jekyll, into a file =_includes/mathjax-stuff.html=
+- Added the include to mathjax-stuff.html to =_includes/header.html=
+- You can see the result in https://mzimmerm.github.io/ -> click on Github , look into the =_includes= folder

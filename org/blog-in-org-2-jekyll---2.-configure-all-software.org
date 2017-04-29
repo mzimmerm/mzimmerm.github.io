@@ -35,11 +35,11 @@ The environment I decided to use is hosted by [[https://github.io][github.io]] (
      - ~(org2jekyll-jekyll-directory~ points to the "target" location where org publishes. This should be the top level of the blog, ~$BLOG~.
      - ~org2jekyll-blog-author~ is the author name.
 
-*** Note
+** Note
 
 The Jekyll theme I use, is created by the "legacy method" - it is a plain directory tree with files. More recent themes are created as a Ruby Gem. My overall theme preference would be the theme used by Org2Jekyll in https://github.com/ardumont/org2jekyll which uses the Gem method but I was unable to build it. Ruby configuration is convoluted, even with RVM.
 
-*** Conclusion
+** Conclusion
 
 Configuring the environment used for this site and blog https://mzimmerm.github.io took Step 1 - 4 described above.
 
