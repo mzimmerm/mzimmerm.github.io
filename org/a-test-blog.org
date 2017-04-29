@@ -364,4 +364,9 @@ $$
 x = \sqrt{b} + c^4
 $$
 
+$
+x = \sqrt{b} + c^4
+$
+
+
 3. If in doubt, use a group inside slash-( slash-) like in this: ~\ ( some latex \ ). That  works even inline, e.g. \( x = \sqrt{b} + c^4 \) - nice.
