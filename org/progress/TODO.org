@@ -166,8 +166,40 @@ This post is part 7 of [[post-jekyll:blog-in-org-2-jekyll---1.-motivation.org][a
 ** TODO Add post on displaying and html converting images - see init.el "img" and
 
 ** TODO Add post How I added Org mode Latex publishing to enable nice Math presentation to this blog:
+
+First attempt which did work locally, but did NOT work when running on Github pages.
+
 - First, outside Jekyll, worked out an example which exports (C-c C-e h h) an org file with Latex using MathJax. 
 - Looked in the <head> section of the resulting HTML.
 - Took almost all content of the <head> and placed it to Jekyll, into a file =_includes/mathjax-stuff.html=
 - Added the include to mathjax-stuff.html to =_includes/header.html=
 - You can see the result in https://mzimmerm.github.io/ -> click on Github , look into the =_includes= folder
+
+Second succesful attempt
+
+- Added a ~include mathjax-stuff-new~ section to =_includes/header.html= 
+  #+BEGIN_SRC html
+  <head>
+    <!-- preexisting stuff  -->
+    {% include mathjax-stuff-new.html %}
+  </head>
+  #+END_SRC
+- Added a new file =_includes/mathjax-stuff-new.html=
+  #+BEGIN_SRC html
+    <script type="text/x-mathjax-config"> MathJax.Hub.Config({ TeX: { equationNumbers: { autoNumber: "all" } } }); </script>
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+      tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+      }
+      });
+    </script>
+    <!-- 
+         <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
+         -->
+    <script type="text/javascript" async
+            src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
+    </script>
+  #+END_SRC
+- Thehe result can be seen in https://mzimmerm.github.io/ -> click on Github , look into the =_includes= folder
