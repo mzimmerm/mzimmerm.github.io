@@ -10,8 +10,6 @@
 #+CATEGORIES: categories_required
 #+PROPERTY: header-args :dir /home/mzimmermann/tmp/one
 #+COMMENTS: true
-#+OPTIONS: tex:t
-#+HTML_MATHJAX: path:"http://cdn.mathjax.org/mathjax/latest/MathJax.js"
 
 
 This file is testing  misc org conversions to Html.
@@ -347,6 +345,10 @@ The precondition is the post must be already org2-published
 [[post-jekyll:blog-in-org-2-jekyll---1.-motivation.org][a short series about writing in org mode]]
 
 * Math Formulas using Latex
+
+#+OPTIONS: tex:t
+#+HTML_MATHJAX: path:"http://cdn.mathjax.org/mathjax/latest/MathJax.js"
+#+HTML_MATHJAX: align: left indent: 5em tagside: left font: Neo-Euler
 
 
 There are 3 ways to put Latex in org text
