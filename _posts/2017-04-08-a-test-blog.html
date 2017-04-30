@@ -685,9 +685,80 @@ $$
 <b>An important prerequisit to get this working in org export, is to customize <code>org-export-with-sub-superscripts</code> to 'do not interpret'. This can also be set per file using option # + OPTIONS: ^:nil</b>
 </p>
 
+<p>
+Sum: `sum_(i=1)^n i^3=((n(n+1))/2)^2`
+</p>
 
 <p>
-`sum_(i=1)^n i^3=((n(n+1))/2)^2`
+Prescripts: `{::}_(\ 92)^238U`
+</p>
+
+<p>
+Separate the &lt; sign with spaces so `x &lt; y` displays nicely 
+</p>
+
+<p>
+After some trying, these are the ways to number equations - no way to do it on the right, and no way to add spacing
+</p>
+
+<p>
+So just use the first, e.g. (1).
+</p>
+
+<p>
+This renders nice:
+</p>
+
+<p>
+(1) `a^2 + b^2 = c^2`
+</p>
+
+<p>
+(2) `ax^2 + bx + c = 0`
+</p>
+
+<p>
+(3) `x = (-b+-sqrt(b^2-4ac))/(2a)`
+</p>
+
+<p>
+Below, space before dot prevents interpretation as list item li
+</p>
+
+<p>
+This does not render nice:
+</p>
+
+<p>
+1 .   `m = (y_2 - y_1)/(x_2 - x_1) = (Deltay)/(Deltax)`
+</p>
+
+<p>
+2 .   `f'(x) = lim_(Deltax-&amp;gt;0)(f(x+Delta x)-f(x))/(Delta x)`
+</p>
+
+<p>
+3 .   `d/dx [x^n] = nx^(n - 1)`
+</p>
+
+<p>
+This renders nice:
+</p>
+
+<p>
+`7 . int_a^b f(x) dx = [F(x)]_a^b = F(b) - F(a)`
+</p>
+
+<p>
+`8 . int_a^b f(x) dx = f(c)(b - a)`
+</p>
+
+<p>
+`9 . "average value"=1/(b-a) int_a^b f(x) dx`
+</p>
+
+<p>
+`10 . d/dx[int_a^x f(t) dt] = f(x)`
 </p>
 </div>
 </div>
