@@ -38,7 +38,7 @@ Results in this:
 </p>
 
 <p>
-#+END<sub>SRC</sub>
+#+END_SRC
 </p>
 <div class="org-src-container">
 
@@ -89,12 +89,12 @@ The file name is <b>a-test-blog.org</b> so this is concatenated from title, with
 <li>So the above, by default, shows that verbatim and code has same font after conversion to html.
 </li>
 
-<li>Next is src _ bash exports code: #+BEGIN<sub>SRC</sub> bash
+<li>Next is src _ bash exports code: #+BEGIN_SRC bash
 </li>
 </ul>
 <p>
 ls -l
-#+END<sub>SRC</sub> as inline code - could just use <code>ls -l</code> but the src _ bash allows other options.
+#+END_SRC as inline code - could just use <code>ls -l</code> but the src _ bash allows other options.
 </p>
 
 <ul class="org-ul">
@@ -524,7 +524,7 @@ a link to ../../img two levels above org/img
 </div>
 
 <p>
-This ^ generates: &lt;img src="../../img/a-test-blog.org<sub>20170416</sub><sub>034103</sub><sub>28551Ciq</sub>.png" alt="a-test-blog.org<sub>20170416</sub><sub>034103</sub><sub>28551Ciq</sub>.png" /&gt;
+This ^ generates: &lt;img src="../../img/a-test-blog.org_20170416_034103_28551Ciq.png" alt="a-test-blog.org_20170416_034103_28551Ciq.png" /&gt;
 </p>
 
 <p>
@@ -537,7 +537,7 @@ Using the new org-custom-link-img-follow works
 </p>
 
 <p>
-This ^ generates: &lt;img src="/img/a-test-blog.org<sub>20170416</sub><sub>034103</sub><sub>28551Ciq</sub>.png" alt="nil"/&gt;
+This ^ generates: &lt;img src="/img/a-test-blog.org_20170416_034103_28551Ciq.png" alt="nil"/&gt;
 </p>
 
 <p>
@@ -613,8 +613,38 @@ The precondition is the post must be already org2-published
 </div>
 
 <div id="outline-container-sec-13" class="outline-2">
-<h2 id="sec-13">Math Formulas using Latex</h2>
+<h2 id="sec-13">MathJax configurations</h2>
 <div class="outline-text-2" id="text-13">
+<p>
+MathJax can be passed options to configure it to display varioius formats
+</p>
+
+<blockquote>
+<p>
+Here's snippet from our documentation <a href="http://docs.mathjax.org/en/latest/configuration.html">http://docs.mathjax.org/en/latest/configuration.html</a> 
+</p>
+
+<p>
+TeX-MML-AM_HTMLorMML.js
+Allows math to be specified in TeX, LaTeX, MathML, or AsciiMath notation, with the AMSmath and AMSsymbols packages included, producing output using MathML if the browser supports it sufficiently, and HTML-with-CSS otherwise.
+</p>
+</blockquote>
+</div>
+</div>
+
+
+
+<div id="outline-container-sec-14" class="outline-2">
+<h2 id="sec-14">Math Formulas using Latex</h2>
+<div class="outline-text-2" id="text-14">
+<p>
+First, delete this stuff: Must be configured directly in Jekyll, in mathjax-stuff-new.html
+OPTIONS: tex:t
+HTML_MATHJAX: path:"<a href="http://cdn.mathjax.org/mathjax/latest/MathJax.js">http://cdn.mathjax.org/mathjax/latest/MathJax.js</a>"
+HTML_MATHJAX: align: left indent: 5em tagside: left font: Neo-Euler
+</p>
+
+
 <p>
 There are 3 ways to put Latex in org text
 </p>
@@ -640,16 +670,24 @@ x = \sqrt{b} + c^4
 $$
 </p>
 
-<p>
-$
-x = \sqrt{b} + c<sup>4</sup>
-$
-</p>
-
 
 <ol class="org-ol">
 <li>If in doubt, use a group inside slash-( slash-) like in this: ~\ ( some latex \ ). That  works even inline, e.g. \( x = \sqrt{b} + c^4 \) - nice.
 </li>
 </ol>
+</div>
+</div>
+
+<div id="outline-container-sec-15" class="outline-2">
+<h2 id="sec-15">Math Formulas using ASCIIMath</h2>
+<div class="outline-text-2" id="text-15">
+<p>
+<b>An important prerequisit to get this working in org export, is to customize <code>org-export-with-sub-superscripts</code> to 'do not interpret'. This can also be set per file using option # + OPTIONS: ^:nil</b>
+</p>
+
+
+<p>
+`sum_(i=1)^n i^3=((n(n+1))/2)^2`
+</p>
 </div>
 </div>

@@ -344,11 +344,25 @@ The precondition is the post must be already org2-published
 
 [[post-jekyll:blog-in-org-2-jekyll---1.-motivation.org][a short series about writing in org mode]]
 
+* MathJax configurations
+
+MathJax can be passed options to configure it to display varioius formats
+
+#+BEGIN_QUOTE
+Here's snippet from our documentation http://docs.mathjax.org/en/latest/configuration.html 
+
+TeX-MML-AM_HTMLorMML.js
+Allows math to be specified in TeX, LaTeX, MathML, or AsciiMath notation, with the AMSmath and AMSsymbols packages included, producing output using MathML if the browser supports it sufficiently, and HTML-with-CSS otherwise.
+#+END_QUOTE
+
+
+
 * Math Formulas using Latex
 
-#+OPTIONS: tex:t
-#+HTML_MATHJAX: path:"http://cdn.mathjax.org/mathjax/latest/MathJax.js"
-#+HTML_MATHJAX: align: left indent: 5em tagside: left font: Neo-Euler
+First, delete this stuff: Must be configured directly in Jekyll, in mathjax-stuff-new.html
+OPTIONS: tex:t
+HTML_MATHJAX: path:"http://cdn.mathjax.org/mathjax/latest/MathJax.js"
+HTML_MATHJAX: align: left indent: 5em tagside: left font: Neo-Euler
 
 
 There are 3 ways to put Latex in org text
@@ -364,9 +378,15 @@ $$
 x = \sqrt{b} + c^4
 $$
 
-$
-x = \sqrt{b} + c^4
-$
-
 
 3. If in doubt, use a group inside slash-( slash-) like in this: ~\ ( some latex \ ). That  works even inline, e.g. \( x = \sqrt{b} + c^4 \) - nice.
+
+* Math Formulas using ASCIIMath
+
+*An important prerequisit to get this working in org export, is to customize ~org-export-with-sub-superscripts~ to 'do not interpret'. This can also be set per file using option # + OPTIONS: ^:nil*
+ 
+
+`sum_(i=1)^n i^3=((n(n+1))/2)^2`
+
+
+
