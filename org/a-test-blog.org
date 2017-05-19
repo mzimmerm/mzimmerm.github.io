@@ -369,27 +369,35 @@ There are 3 ways to put Latex in org text
 
 1. Start with \begin .. \end{equation}, surround by empty lines
 
-\begin{equation}  x=\sqrt{b}
-\end{equation}
+  \begin{equation}  x=\sqrt{b}
+  \end{equation}
 
-2. Start with double dollar $ $ on lines above and below
+2. Start with double dollar $ $ on lines above and below:  display mode: \ [...\ ] or $ $...$ $
 
-$$
-x = \sqrt{b} + c^4
-$$
+  $$
+  x = \sqrt{b} + c^4
+  $$
 
+3. Inline mode: \(...\) or $...$ but this may clash on export with dollars etc. *do not use $*
 
-3. If in doubt, use a group inside slash-( slash-) like in this: ~\ ( some latex \ ). That  works even inline, e.g. \( x = \sqrt{b} + c^4 \) - nice.
+  $x = \sqrt{b} + c^4$
 
+4. If in doubt for inline, use the above: group inside slash-( slash-) like in this: ~\ ( some latex \ ). That  works even inline, e.g. \( x = \sqrt{b} + c^4 \) - nice.
+
+5. Try org-preview-latex-fragment (bound to C-c C-x C-l). s C-c C-x C-l here (or C-u C-c C-x C-l to preview everything in the subtree, or C-u C-u C-c C-x C-l to preview everything in the buffer)
+
+6. 
 * Math Formulas using ASCIIMath
 
 *An important prerequisit to get this working in org export, is to customize ~org-export-with-sub-superscripts~ to 'do not interpret'. This can also be set per file using option # + OPTIONS: ^:nil*
  
 Sum: `sum_(i=1)^n i^3=((n(n+1))/2)^2`
 
-Prescripts: `{::}_(\ 92)^238U`
+Prescripts: `{::}_(\92)^238U` or `{::}_92^238U` ? Both work, so use simple one
 
 Separate the < sign with spaces so `x < y` displays nicely 
+
+Integrals: `int_0^oo e^(-x^2) dx = sqrt(pi) / 2`
 
 After some trying, these are the ways to number equations - no way to do it on the right, and no way to add spacing
 
@@ -407,9 +415,9 @@ Below, space before dot prevents interpretation as list item li
 
 This does not render nice:
 
-1 .   `m = (y_2 - y_1)/(x_2 - x_1) = (Deltay)/(Deltax)`
+1 .   `m = (y_2 - y_1)/(x_2 - x_1) = (Delta y)/(Delta x)`
 
-2 .   `f'(x) = lim_(Deltax->0)(f(x+Delta x)-f(x))/(Delta x)`
+2 .   `f'(x) = lim_(Delta x->0)(f(x+Delta x)-f(x))/(Delta x)`
 
 3 .   `d/dx [x^n] = nx^(n - 1)`
 
@@ -417,7 +425,7 @@ This renders nice:
 
 `7 . int_a^b f(x) dx = [F(x)]_a^b = F(b) - F(a)`
 
-`8 . int_a^b f(x) dx = f(c)(b - a)`
+`8 . int_a^b f(x) dx = f(c) (b - a)`
 
 `9 . "average value"=1/(b-a) int_a^b f(x) dx`
 

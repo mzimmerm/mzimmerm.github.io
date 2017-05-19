@@ -12,7 +12,7 @@
 
 *  Blog in Org2jekyll - 3. About the Jekyll theme used in this blog
 
-This post is part 3 of [[post-jekyll:blog-in-org-2-jekyll---1.-motivation.org][a short series about writing in org mode]] using org2jekyll.
+This post is part 3 of  [[post-jekyll:blog-in-org-2-jekyll---1.-motivation.org][a short series about writing in org mode]] using org2jekyll.
 
 The Jekyll theme on this page is slightly modified from the original *jekyll clean* theme. If you like the theme, you can use it from this blog, or from the original site https://github.com/scotte/jekyll-clean
 

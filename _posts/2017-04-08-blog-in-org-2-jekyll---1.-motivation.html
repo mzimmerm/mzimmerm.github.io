@@ -11,9 +11,9 @@ categories:
 comments: true
 ---
 
-<div id="outline-container-orgf568abe" class="outline-2">
-<h2 id="orgf568abe">Blog in Org2jekyll - 1. Motivation</h2>
-<div class="outline-text-2" id="text-orgf568abe">
+<div id="outline-container-sec-1" class="outline-2">
+<h2 id="sec-1">Blog in Org2jekyll - 1. Motivation</h2>
+<div class="outline-text-2" id="text-1">
 <p>
 This post is part 1 of a short series about writing in org mode.
 </p>
@@ -34,8 +34,10 @@ Having said that, history proves my "blogging" was so scarce, it should not be c
 So for a while, I was thinking about available blogging and home page options with a few criteria
 </p>
 <ul class="org-ul">
-<li>Be able to write pages and blog in org mode</li>
-<li>The platform should be more flexible than Blogspot</li>
+<li>Be able to write pages and blog in org mode
+</li>
+<li>The platform should be more flexible than Blogspot
+</li>
 </ul>
 
 <p>
@@ -47,16 +49,19 @@ Once I decided to switch over from Blogspot to <a href="https://github.io">githu
 </p>
 </div>
 
-<div id="outline-container-org3557b3e" class="outline-3">
-<h3 id="org3557b3e">Selecting a package to blog in Org mode in Jekyll</h3>
-<div class="outline-text-3" id="text-org3557b3e">
+<div id="outline-container-sec-1-1" class="outline-3">
+<h3 id="sec-1-1">Selecting a package to blog in Org mode in Jekyll</h3>
+<div class="outline-text-3" id="text-1-1">
 <p>
 Jekyll is by default, using Markdown to write blog posts. There seem to be three ways to blog in org-mode with Jekyll:
 </p>
 <ol class="org-ol">
-<li>Ian Barton's <a href="https://github.com/geekinthesticks/ianbarton">example site</a> which is also given most room on org's <a href="http://orgmode.org/worg/org-tutorials/org-jekyll.html">Using org to Blog with Jekyll</a>. One has to still use some amount of Jekyll's Yaml "front matter" in blogs</li>
-<li><a href="https://github.com/eggcaker/jekyll-org">jekyll-org</a> adds ability to use Org mode settings in the "front matter". But to me there seems to be a disadvantage - this package uses Ruby to convert Org to html (rather than org-publish, as the other two packages). While I do not doubt Ruby's Org to html converter is good, I am not sure it completely supports Org syntax.</li>
-<li>Antoine Dumont's <a href="https://github.com/ardumont/org2jekyll">org2jekyll</a>. In my books, this is the <b>best</b> package integrating Jekyll and Org mode posting. I decided to use this package.</li>
+<li>Ian Barton's <a href="https://github.com/geekinthesticks/ianbarton">example site</a> which is also given most room on org's <a href="http://orgmode.org/worg/org-tutorials/org-jekyll.html">Using org to Blog with Jekyll</a>. One has to still use some amount of Jekyll's Yaml "front matter" in blogs
+</li>
+<li><a href="https://github.com/eggcaker/jekyll-org">jekyll-org</a> adds ability to use Org mode settings in the "front matter". But to me there seems to be a disadvantage - this package uses Ruby to convert Org to html (rather than org-publish, as the other two packages). While I do not doubt Ruby's Org to html converter is good, I am not sure it completely supports Org syntax.
+</li>
+<li>Antoine Dumont's <a href="https://github.com/ardumont/org2jekyll">org2jekyll</a>. In my books, this is the <b>best</b> package integrating Jekyll and Org mode posting. I decided to use this package. 
+</li>
 </ol>
 
 <p>
@@ -64,9 +69,12 @@ The reasons I like <a href="https://github.com/ardumont/org2jekyll">org2jekyll</
 </p>
 
 <ul class="org-ul">
-<li>Only emacs dependencies are used.</li>
-<li>It is fairly easy to configure, although some configuration is still required.</li>
-<li>There is a nice straightforward workflow of pages and blog creating and publishing, all using Org.</li>
+<li>Only emacs dependencies are used.
+</li>
+<li>It is fairly easy to configure, although some configuration is still required.
+</li>
+<li>There is a nice straightforward workflow of pages and blog creating and publishing, all using Org.
+</li>
 </ul>
 
 <p>
@@ -74,17 +82,18 @@ In a future post, I will write more on the workflow of blogging using <a href="h
 </p>
 </div>
 
-<ul class="org-ul"><li><a id="org247f9cd"></a>Selecting a Jekyll theme for my site and blog.<br /><div class="outline-text-4" id="text-org247f9cd">
+<ul class="org-ul"><li><a id="sec-1-1-1" name="sec-1-1-1"></a>Selecting a Jekyll theme for my site and blog.<br  /><div class="outline-text-4" id="text-1-1-1">
 <p>
 Next, was looking for a Jekyll theme. There is a huge number of <a href="http://jekyllthemes.org/">Jekyll Themes</a>, the two that I liked the most is the theme used by <a href="https://github.com/ardumont/org2jekyll">org2jekyll</a> - as I decided to use Org2Jekyll anyway that was a great match. This theme is created using the "new Jekyll way", as a Ruby Gem; but I could not get it working. So I decided to use next best, a clean theme named as such - "<a href="https://github.com/scotte/jekyll-clean">jekyll clean</a>". 
 </p>
-</div></li></ul>
+</div>
+</li></ul>
 </div>
 
 
-<div id="outline-container-orgdd8f934" class="outline-3">
-<h3 id="orgdd8f934">Literate programming and live(ly) environments</h3>
-<div class="outline-text-3" id="text-orgdd8f934">
+<div id="outline-container-sec-1-2" class="outline-3">
+<h3 id="sec-1-2">Literate programming and live(ly) environments</h3>
+<div class="outline-text-3" id="text-1-2">
 <p>
 Of course if there was a site supporting a kind of <i>literate</i>, <i>live</i> environment such as <a href="https://lively-web.org/welcome.html">Lively Web</a>, <i>I would much prefer that</i>! :) 
 </p>
@@ -95,9 +104,9 @@ Apart from lively, security is important. I thought Google Sites would be great 
 </div>
 </div>
 
-<div id="outline-container-orgaacf639" class="outline-3">
-<h3 id="orgaacf639">Conclusion</h3>
-<div class="outline-text-3" id="text-orgaacf639">
+<div id="outline-container-sec-1-3" class="outline-3">
+<h3 id="sec-1-3">Conclusion</h3>
+<div class="outline-text-3" id="text-1-3">
 <p>
 This is a first post in this blog on <a href="https://github.io">github.io</a>, using <a href="https://jekyllrb.com">Jekyll</a> with the theme <a href="https://github.com/scotte/jekyll-clean">jekyll clean</a>, the post written in the amazing Emacs's <a href="http://orgmode.org/">org-mode</a>, using  <a href="https://github.com/ardumont/org2jekyll">org2jekyll</a>. 
 </p>

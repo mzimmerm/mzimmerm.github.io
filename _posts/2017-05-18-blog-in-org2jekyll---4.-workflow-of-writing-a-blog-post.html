@@ -1,0 +1,120 @@
+---
+date: 2017-05-18
+tags: 
+- org_mode
+- blog
+- org2jekyll
+author: mzimmerm
+layout: post
+title: Blog in Org2jekyll - 4. Workflow of writing a blog post
+excerpt: Part 4 of Org Blog series
+categories: 
+- org_mode
+- blog
+- org2jekyll
+comments: true
+---
+
+<div id="outline-container-sec-1" class="outline-2">
+<h2 id="sec-1">Blog in Org2jekyll - 4. Workflow of writing a blog post</h2>
+<div class="outline-text-2" id="text-1">
+<p>
+This post is part 4 of  <a href="{% post_url 2017-04-08-blog-in-org-2-jekyll---1.-motivation %}">a short series about writing in org mode</a>, using org2jekyll.
+</p>
+
+<p>
+After configuring the stack for blog in Jekyll and emacs org mode, as described in <a href="{% post_url 2017-04-14-blog-in-org-2-jekyll---2.-configure-all-software %}">the software configuration step of this series</a>, in brief:
+</p>
+
+<ul class="org-ul">
+<li>Configuring a local directory for Github pages (for example, in directory <code>BLOG=~/mzimmerm.github.io</code>)
+</li>
+<li>Configuring a Jekyll Theme
+</li>
+<li>Configuring the Org2jekyll directories in emacs
+</li>
+</ul>
+
+<p>
+it is easy to start blogging in org mode from emacs, with a nice presentation in Jekyll. 
+</p>
+
+<p>
+Steps 1 to 7 below, represent a typical workflow of creating a new blog post.  
+</p>
+
+<ol class="org-ol">
+<li><code>M-x: org2jekyll-create-draft</code> - <b>Creates an empty post in org format, with today's date.</b> Assuming the Org2jekyll directories were configured, emacs knows where to place the post we are creating - so this can run from any buffer in emacs. The command asks a series of questions, for values, required answers are: 
+<ul class="org-ul">
+<li><i>title:</i> We enter the name of our post. This will end up the title, displayed on top of post. e.g. <i>Test Blog</i>, and also the file name of the post (mangled a bit - I do not use dots and weird characters, as the title is converted to file name, spaces replaced with dashes.)
+</li>
+<li><i>category:</i> We enter space separated list of categories. we can use the same for category and tag. I am not sure what is the difference.
+</li>
+<li><i>tag:</i> We enter same values as category for now.
+</li>
+</ul>
+<p>
+The end result of this step is a new file <code>$BLOG/org/a-test-blog.org</code> and a buffer with it's content, like this
+</p>
+<div class="org-src-container">
+
+<pre class="src src-org">`#+STARTUP: showall
+`#+STARTUP: hidestars
+todo
+</pre>
+</div>
+</li>
+<li><b>Write the post content.</b>
+</li>
+<li><code>M-x: org2jekyll-publish</code> - <b>Publishes the post from step 1 to html</b> by calling the "publish" org mode command; not to be confused with publishing the post in Jekyll (<code>jekyll build</code>). This command does not "publish" in the sense of publishing the blog.) It does a few things:
+<ul class="org-ul">
+<li><i>Exports the org contents to html</i>.
+</li>
+<li><i>Places the exported html to the <code>_posts</code> directory</i> from which Jekyll will build and serve the post (see steps 4, 5)*. Result of this step is a file <code>$BLOG/_posts/2017-03-18-a-test-blog.html</code>. 
+</li>
+<li><i>Prefixes the blog file name with date</i>
+</li>
+<li>/Replaces the  <code>.org</code> extension with <code>.html</code>
+</li>
+</ul>
+</li>
+<li><code>cd $BLOG; jekyll build</code> -  (Optional) <b>Performs the Jekyll steps to build the "Jekyll published" blog</b> (optional, only if we want to test locally before pushing to github). 
+<ul class="org-ul">
+<li><i>A simplified description:</i> Jekyll performs a series of transforms, e.g. surrounds the _posts/2017-03-18-a-test-blog.html with header and footer and places the result to _site/2017/03/2017-03-18-a-test-blog.html/. This last file is served as the post. Once pushed on github.io, the server there will do a <code>jekyll build</code> on our post in the <code>_post</code> folder. (In fact, in the default Jekyll configuration, a running <code>jekyll serve</code> picks up changes, so this is not needed even locally)
+</li>
+</ul>
+</li>
+<li><code>cd $BLOG; jekyll serve --baseurl</code>''= (Optional) <b>Starts the Jekyll server to test locally</b>
+</li>
+<li>Test our blog locally by browsing to <a href="http://127.0.0.1:4000/jekyll/">http://127.0.0.1:4000/jekyll/</a>. To change a post, edit the org file and re-publish.
+</li>
+<li><code>cd $BLOG; git commit; git push</code> - <b>Pushes the post to Github</b>. The server there builds and serves our post, similarly what is locally described in steps 4 and 5, and makes it available publically.
+</li>
+</ol>
+
+<p>
+Note: In step 3, we can use <code>M-x: org2jekyll-publish-posts</code> instead of <code>M-x: org2jekyll-publish</code>. This publishes all changed posts. Org2jekyll will figure out all posts in the <code>org</code> directory which changed, and publish or re-publish them all. Then, Jekyll's build/serve will pick them up and update them
+</p>
+</div>
+
+
+<div id="outline-container-sec-1-1" class="outline-3">
+<h3 id="sec-1-1">Conclusion</h3>
+<div class="outline-text-3" id="text-1-1">
+<p>
+Skipping the optional steps, this is the 4-step workflow of publishing a post all the way to our blog at github.io: 
+</p>
+
+<ol class="org-ol">
+<li><code>M-x: org2jekyll-create-draft</code> - creates the empty post, with today's date 
+</li>
+<li>Write the post content.
+</li>
+<li><code>M-x: org2jekyll-publish</code> - publishes the post from step 1 to html.
+</li>
+<li><code>git commit; git push</code> - pushes the post to Github. The server there builds and serves our post, and makes it available for readers..
+</li>
+</ol>
+</div>
+</div>
+</div>

@@ -20,11 +20,21 @@ Here I describe how I configured the environment used for this site and blog htt
 - Allows to write pages and blog posts in org mode
 - The platform should allow more control than Blogspot or Google Sites (judged at my limited familiarity level with the two)
 
-The environment I decided to use is hosted by [[https://github.io][github.io]] (which uses [[https://jekyllrb.com/][Jekyll]] as website builder), with Jekyll theme [[https://github.com/scotte/jekyll-clean][jekyll clean]], and allows writing in [[http://orgmode.org/][org-mode]], using  [[https://github.com/ardumont/org2jekyll][org2jekyll]]. A standard complain about the lack of liveliness of web publishing applies.
+The environment I decided to use is hosted by [[https://github.io][github.io]] (which uses [[https://jekyllrb.com/][Jekyll]] as website builder), with Jekyll theme [[https://github.com/scotte/jekyll-clean][jekyll clean]], and allows writing in [[http://orgmode.org/][org-mode]], using  [[https://github.com/ardumont/org2jekyll][org2jekyll]]. 
+
+There is a lack of liveliness in my selected "web publishing environment". I should use to use other more lively systems for blogging, such as https://github.com/LivelyKernel. But there is the intersection of practicality and what I think is the future. 
+
+So for now, this is this blog stack:
+
+- [[https://github.io][github.io]] (which enforces [[https://jekyllrb.com/][Jekyll]] as the website builder)
+- [[https://jekyllrb.com/][Jekyll]] as the website builder) with theme  theme [[https://github.com/scotte/jekyll-clean][jekyll clean]]
+- Using [[https://github.com/ardumont/org2jekyll][org2jekyll]] to write posts in [[http://orgmode.org/][org-mode]]. This also allows writing Math using [[http://asciimath.org/][ASCIIMath]] and LaTex.
+
+Below is a quick summary of setup steps that achieved installation of this block software stack.
 
 1) *Setup Github Pages on [[https://github.io][github.io]]*: I created my github page, and cloned it to my local directory, ~BLOG=\~/mzimmerm.github.io~ . This step is best described in https://pages.github.com/. The end result of this step was a local directory, synchronized with my repo at https://github.com/mzimmerm/mzimmerm.github.io. It only contained index.html. 
-2) *Setup  [[https://jekyllrb.com][Jekyll]] with theme [[https://github.com/scotte/jekyll-clean][jekyll clean]]*: Next I decided to use a particular Jekyll theme I like from github, the jekyll clean theme. To this goal, I
-   - Overwrote the contents of  my local ~$BLOG~ by simply going to  https://github.com/scotte/jekyll-clean, selecting "clone or download", then "download", and unzipping the downloaded zip into ~$BLOG~.
+2) *Setup  [[https://jekyllrb.com][Jekyll]] with theme [[https://github.com/scotte/jekyll-clean][jekyll clean]]*: Next I decided to use a particular Jekyll theme I like from github, the jekyll clean theme. To this goal,
+   - I overwrote the contents of my local ~$BLOG~ by going to  https://github.com/scotte/jekyll-clean, selecting "clone or download", then "download", and unzipping the downloaded zip into ~$BLOG~.
    - Also, I created a new directory ~org~ in ~$BLOG~. In this directory, I am writing my posts in org mode. This is needed for Org2jekyll - see next step
 3) *Setup [[https://github.com/ardumont/org2jekyll][org2jekyll]] in Emacs*: As I decided Org2jekyll is the best environment for Org mode and Jekyll, I did
    - Run ~M-x package-list-packages~ from emacs, which installed Org2jekyll in my Emacs from Emacs package manager (alternatively, you can download and install the files from https://github.com/ardumont/org2jekyll). Package manager is much much better and easier.

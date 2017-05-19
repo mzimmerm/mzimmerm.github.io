@@ -1,6 +1,9 @@
 #+TODO: TODO IN-PROGRESS WAITING DONE CANCELED
 #+STARTUP: indent
 
+- [ ] *Fix this*
+  org-babel-exp processing... [2 times]
+  Cannot fontify src block (htmlize.el >= 1.34 required) [14 times]
 - [X] Fix = to ~ in posts and todo
 - [X] review org/html side by side
   - [X] compare result HTML with org - check how org converts:
@@ -59,37 +62,7 @@
 
 * KEEP - future blogs.
  
- 
 
-** Blog in Org2jekyll - 4. Workflow of writing a blog post or web page in Org2Jekyll on https://mzimmerm.github.io 
-
-This post is part 4 of [[post-jekyll:blog-in-org-2-jekyll---1.-motivation.org][a short series about writing in org mode]], using org2jekyll.
-
-After configuring:
-- A local direcory for Github pages (for example, in directory ~BLOG=~/mzimmerm.github.io~)
-- A Jekyll Theme
-- The Org2jekyll directories
-
-it is easy to start blogging using org mode. A typical workflow of creating a new blog post (using blog title *Test Blog* which creates the blog named *a-test-blog.org*):
-
-1. ~org2jekyll-create-draft~ *This Emacs Org2jekyll command starts creating a blog post*. Assuming the Org2jekyll directories were configured, emacs knows where to place the blog post you are creating - so this can run from any buffer in emacs. There is a series of prompts, for values, required answers are: 
-   - title: Enter the name of your post. This will end up the title, displayed on top of post. e.g. *Test Title*. (I do not use dots and weird characters, as the title is converted to file name, spaces replaced with dashes. It will likely work with anythin, but not sure)
-   - category: enter space separated list of categories. I use the same for category and tag.
-   - tag: See above.
-   The end result of this step is a new file ~$BLOG/org/a-test-blog.org~ and a buffer with it's content, like this
-   #+BEGIN_SRC org
-   `#+STARTUP: showall
-   `#+STARTUP: hidestars
-   todo
-   #+END_SRC
-2. *Write a new post in the buffer created by the above step, and save*
-3. ~org2jekyll-publish~ This Emacs Org2jekyll command *converts the post to html* This is calling the "publish" org mode command; not to be confused with publishing the post in Jekyll (~jekyll build~). This command does two things:
-   - *Exports the org contents to html* .
-   - *Places the exported html to a directory used by Jekyll build (the ~_posts~ directory)*. Result of this is file ~$BLOG/_posts/2017-03-18-a-test-blog.html~. This step also prefixed the blog file name with date, and replaced ~.org~ with ~.html~
-4. ~jekyll build~ (*optional, only to test locally*) This Jekyll's command performs the standard Jekyll steps of building the final "Jekyll published" blog. /Simplified description: Jekyll performs a series of transforms, e.g. surrounds the _posts/2017-03-18-a-test-blog.html with header and footer and places the result to _site/2017/03/2017-03-18-a-test-blog.html/. This last file is served as the post. This step is optional, it is only needed if you want to test your newly added post locally. Once pushed on github.io, the server there will do a ~jekyll build~ on your post in _post. (In fact, in the default Jekyll configuration, a running ~jekyll serve~ picks up changes, so this is not needed even locally)
-5. ~jekyll serve --baseurl~''= (*optional, only to test locally*) Start the Jekyll server
-6. test your blog locally by browsing to http://127.0.0.1:4000/jekyll/. If you need to make a change, edit the 
-7. ~git commit; git push~ Pushes result to Github. The server there builds and serves your post.
 ** Blog in Org2jekyll - 5. Debug failures in ~org2jekyll-publish-post~
 
 This post is part 5 of [[post-jekyll:blog-in-org-2-jekyll---1.-motivation.org][a short series about writing in org mode]], using org2jekyll.
