@@ -15,7 +15,6 @@
   - [X] dot jots (is space surrond needed?? no
 
   - [X] BEGIN_SRC
-- [ ] draft to today's blog
 
 - [ ] click on Github, tries to connect to https://github.com/github.com/mzimmerm/mzimmerm.github.io 
 
@@ -24,35 +23,23 @@
 
 - [ ] start blog about Dart types
 - [ ] figure out how to link a post from Google plus.
+- [X] later
 
-- [ ] describe process of posting a blog entry in org2jekyll - this is already in 2 paragraphs: Workflow of creating a blog post in Org2Jekyll on https://mzimmerm.github.io  and 
-  - [ ] action steps
-    - [ ] Org2Jekyll
+  - [X] figure out how to create and export pages in org mode
 
-      - [ ] org2jekyll-create-post (???)
+  - [X] figure out how to add image to post - MY OWN IMG LINK
 
-      - [ ] org2jekyll-publish-post
+- [X] Configure Disqus:
 
-    - [ ] Jekyll
-  - [ ] post workflow in terms of post names, and directories where they flow from creation to publishing online.
-
-- [ ] later
-
-  - [ ] figure out how to create and export pages in org mode
-
-  - [ ] figure out how to add image to post
-
-- [ ] Configure Disqus:
-
-  - Adding Disqus account for this site 
-  - See https://help.disqus.com/customer/portal/articles/466208 
-  - Go to https://disqus.com/admin/create/ (Create a new site)
-  - On website name, set it to this site URL https: // mzimmerm.github.io
-  - Category tech, next
-  - Select Jekyll
-  - My website shortname is https - mzimmerm - github - io
-  - To _config.yml, set disqus: ' the above string no spaces'
-  - At the beginning of blog "front matter" add a line with
+  - [X] Adding Disqus account for my blog
+  - [X] See https://help.disqus.com/customer/portal/articles/466208 
+    - [X] Go to https://disqus.com/admin/create/ (Create a new site)
+    - [X] On website name, set it to this site URL https: // mzimmerm.github.io
+    - [X] Category tech, next
+    - [X] Select Jekyll
+  - [X] My website shortname is https - mzimmerm - github - io
+  - [X] To _config.yml, set disqus: ' the above string no spaces'
+  - [X] At the beginning of blog "front matter" add a line with
     #+BEGIN_SRC org
     #+COMMENTS: true
     #+END_SRC

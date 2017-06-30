@@ -1,6 +1,6 @@
 #+STARTUP: showall
 #+STARTUP: hidestars
-#+OPTIONS: H:2 num:nil tags:nil toc:nil timestamps:t
+#+OPTIONS: H:5 num:t tags:nil toc:nil timestamps:t
 #+LAYOUT: post
 #+AUTHOR: mzimmerm
 #+DATE: 2017-04-14 Fri 19:45
