@@ -1,3 +1,7 @@
+.emacs.d/
+.emacs.d-psession/
+.emacs.d-desktop/
+.gnupg/
 _cache
 _site
 tmp

@@ -24,7 +24,7 @@
 
   # + SETUPFILE: setup-html-export.txt "Any PROPERTY and other settings can be put here, and used in all blogs. This probably works if extension is org but then it's published"
 
-*This post is a test of misc org features, and their Html export.Reviewed till ch 6 included. *
+*This post is a test of misc org features, and their Html export. Reviewed till ch 6 included. *
 
 * Things I had to add or modify, to get org and org html export working
 
@@ -53,7 +53,7 @@ Details are inline, here is a summary.
 
 Note they need to be touched, and added to  *_includes/header.html* (see above)
 
-*Currently (2017-07-14) I use my own CSS: ~my-org-mode.css~ which borrowe from some of the above.*
+*Currently (2017-07-14) I use my own CSS: ~my-org-mode.css~ which borrows from some of the above.*
 
 ** Notes 
  
@@ -124,7 +124,7 @@ The file name is *a-test-blog.org* so this is concatenated from title, with no d
     - /text:/   ~src_sh[:exports both]{echo "hello"}~
     - /result:/ src_sh[:exports both]{echo "hello"}
 
-  - Example 3: - exports results. This is *most likely use* of inline code blocks
+  - Example 3: - exports results. This is *likely the most common use of inline code blocks*
     - /text:/   ~src_sh[:exports results]{echo "hello"}~
     - /result:/ src_sh[:exports results]{echo "hello"} plugged in text, inline.
 
