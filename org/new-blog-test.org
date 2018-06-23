@@ -1,0 +1,14 @@
+#+STARTUP: showall
+#+STARTUP: hidestars
+#+OPTIONS: H:2 num:nil tags:nil toc:nil timestamps:t
+#+LAYOUT: post
+#+AUTHOR: mzimmerm
+#+DATE: 2018-06-23 Sat 02:00
+#+TITLE: New blog test
+#+DESCRIPTION: Just a test after hiatus
+#+TAGS: test blog 2018
+#+CATEGORIES: test blog 2018
+
+* New blog test title
+
+Delete this after publish, test only

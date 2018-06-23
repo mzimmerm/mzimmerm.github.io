@@ -25,9 +25,10 @@ it is easy to start blogging in org mode from emacs, with a nice presentation in
 Steps 1 to 7 below, represent a typical workflow of creating a new blog post.  
 
 1. ~M-x: org2jekyll-create-draft~ - *Creates an empty post in org format, with today's date.* Assuming the Org2jekyll directories were configured, emacs knows where to place the post we are creating - so this can run from any buffer in emacs. The command asks a series of questions, for values, required answers are: 
+   - /layout:/ (post | default) - select =post=.
    - /title:/ We enter the name of our post. This will end up the title, displayed on top of post. e.g. /Test Blog/, and also the file name of the post (mangled a bit - I do not use dots and weird characters, as the title is converted to file name, spaces replaced with dashes.)
-   - /category:/ We enter space separated list of categories. we can use the same for category and tag. I am not sure what is the difference.
-   - /tag:/ We enter same values as category for now.
+   - /Tags:/ We enter same values as category for now.
+   - /Category:/ We enter space separated list of categories. we can use the same for category and tag. I am not sure what is the difference.
    The end result of this step is a new file ~$BLOG/org/a-test-blog.org~ and a buffer with it's content, like this
    #+BEGIN_SRC org
    ,#+STARTUP: showall
@@ -49,10 +50,15 @@ Steps 1 to 7 below, represent a typical workflow of creating a new blog post.
    - /Prefixes the blog file name with date/
    - /Replaces the  ~.org~ extension with the ~.html~ extension/
 4. ~cd $BLOG; jekyll build~ -  (Optional) *Performs the Jekyll steps to build the "Jekyll published" blog* (optional, only if we want to test locally before pushing to github). 
-  - /A simplified description:/ Jekyll performs a series of transforms, e.g. surrounds the contents of file =_posts/2017-03-18-a-test-blog.html= with header and footer and places the result to directory path =_site/2017/03/2017-03-18-a-test-blog.html=. This last file is served as the post. Once pushed on github.io, the server there will do a ~jekyll build~ on our post in the ~_post~ folder. (In fact, in the default Jekyll configuration, a running ~jekyll serve~ picks up changes, so ~jekyll build~ is not needed even locally)
+   - /A simplified description:/ Jekyll performs a series of transforms, e.g. surrounds the contents of file =_posts/2017-03-18-a-test-blog.html= with header and footer and places the result to directory path =_site/2017/03/2017-03-18-a-test-blog.html=. This last file is served as the post. Once pushed on github.io, the server there will do a ~jekyll build~ on our post in the ~_post~ folder. (In fact, in the default Jekyll configuration, a running ~jekyll serve~ picks up changes, so ~jekyll build~ is not needed even locally)
 5. ~cd $BLOG; jekyll serve --baseurl='';~ (Optional) *Starts the Jekyll server - we use this to test the blog locally before pushing on github.*
-6. *Test our blog locally* by browsing to http://127.0.0.1:4000/jekyll/. To change a post, edit the org file and re-publish.
+6. *Test our blog locally* by browsing to http://127.0.0.1:4000/. To change a post, edit the org file and re-publish.
 7. ~cd $BLOG; git commit; git push~ - *Pushes the post to Github*. The server there builds and serves our post, similarly what is locally described in steps 4 and 5, and makes it available publically.
+8. Note: To run and test a post changes locally, if Jekyll's default watch settings to pick up and rebuild changed files, we only need to:
+   - Run ~jekyll serve --baseurl=''~
+   - Edit the post's org file
+   - ~M-x: org2jekyll-publish~. This will publish the org as html to Jekyll's _posts, where Jekyll will pick it up and "Jekyll build and publish to _site".
+   - Reload the post in the browser.
 
 Note: In step 3, we can use ~M-x: org2jekyll-publish-posts~ instead of ~M-x: org2jekyll-publish~. The former plural version publishes all changed posts. Org2jekyll will figure out all posts in the ~org~ directory which changed, and publish or re-publish them all. Then, Jekyll's build/serve will pick them up and update them.
 

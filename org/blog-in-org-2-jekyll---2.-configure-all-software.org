@@ -12,9 +12,11 @@
 
 * Blog in Org2jekyll - 2. Configuring all software
 
-This post is part 2 of [[post-jekyll:blog-in-org-2-jekyll---1.-motivation.org][a short series about writing in org mode]], specifically using org2jekyll .
+This post is part 2 of [[post-jekyll:blog-in-org-2-jekyll---1.-motivation.org][a short series about writing in org mode]], specifically using org2jekyll to write a blog in org mode and jekyll.
 
-Here I describe how I configured the environment used for this site and blog https://mzimmerm.github.io. The motivation for using https://github.io was to setup environment which is:
+Here I describe how I configured the environment used for this site and blog https://mzimmerm.github.io. 
+
+The motivation for using https://github.io was to setup environment which is:
 
 - Hosted (I do not need to manage the web server etc)
 - Allows to write pages and blog posts in org mode

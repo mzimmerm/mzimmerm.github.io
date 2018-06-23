@@ -11,8 +11,8 @@ categories:
 comments: true
 ---
 
-<div id="outline-container-sec-1" class="outline-2">
-<h2 id="sec-1"><span class="section-number-2">1</span> Blog in Org2jekyll - 3. About the Jekyll theme used in this blog</h2>
+<div id="outline-container-org4bd5b64" class="outline-2">
+<h2 id="org4bd5b64"><span class="section-number-2">1</span> Blog in Org2jekyll - 3. About the Jekyll theme used in this blog</h2>
 <div class="outline-text-2" id="text-1">
 <p>
 This post is part 3 of  <a href="{% post_url 2017-04-08-blog-in-org-2-jekyll---1.-motivation %}">a short series about writing in org mode</a> using org2jekyll.
@@ -35,75 +35,50 @@ To use this theme for a blog, look at the <a href="https://jekyllrb.com/docs/hom
 <ul class="org-ul">
 <li>Files to keep or modify:
 <ul class="org-ul">
-<li><code>index.html</code> is the blog "front page". <b>keep this file</b> as it is the Liquid template that builds the front page by querying what blogs are out there.
-</li>
-<li><code>about.html</code>
-</li>
-<li><code>archive.html</code>
-</li>
-<li><code>links.html</code>
-</li>
-</ul>
-</li>
+<li><code>index.html</code> is the blog "front page". <b>keep this file</b> as it is the Liquid template that builds the front page by querying what blogs are out there.</li>
+<li><code>about.html</code></li>
+<li><code>archive.html</code></li>
+<li><code>links.html</code></li>
+</ul></li>
 <li>Directories and contents to keep or modify:
 <ul class="org-ul">
 <li><code>_layouts</code> 
 <ul class="org-ul">
-<li>contains files such as <code>post.html</code> and <code>page.html</code>. These files define the top level structure of your blog pages or web sites. If you create a org file named <code>org/a-test-blog.org</code> and give it <code>#+LAYOUT: post</code>, then the result post is created from  <code>post.html</code> , substituting <code>{ { content } }</code> tag in the  <code>post.html</code> with  <code>_posts/a-test-blog.html</code> ( <code>_posts/a-test-blog.html</code> is first created by <code>org2jekyll-publish-posts</code> from the org file with same name). In the process, Jekyll transforms and injects files from the <code>_includes</code> directory, if so directed by the layout file <code>post.html</code>.
-</li>
-</ul>
-</li>
+<li>contains files such as <code>post.html</code> and <code>page.html</code>. These files define the top level structure of your blog pages or web sites. If you create a org file named <code>org/a-test-blog.org</code> and give it <code>#+LAYOUT: post</code>, then the result post is created from  <code>post.html</code> , substituting <code>{ { content } }</code> tag in the  <code>post.html</code> with  <code>_posts/a-test-blog.html</code> ( <code>_posts/a-test-blog.html</code> is first created by <code>org2jekyll-publish-posts</code> from the org file with same name). In the process, Jekyll transforms and injects files from the <code>_includes</code> directory, if so directed by the layout file <code>post.html</code>.</li>
+</ul></li>
 <li><code>_includes</code> 
 <ul class="org-ul">
-<li>is the directory where all files mentioned in include tag markup  should be located - files used in includes such as <code>{ % include included-file.html % }</code> (with the space before / after the percentage removed; jekyll refuses publish a valid include markup)
-</li>
-</ul>
-</li>
-<li><code>images</code> <b>todo</b>
-</li>
-<li><code>js</code> <b>todo</b>
-</li>
-<li><code>LICENSE</code> 
-</li>
-</ul>
-</li>
-</ul>
-</li>
+<li>is the directory where all files mentioned in include tag markup  should be located - files used in includes such as <code>{ % include included-file.html % }</code> (with the space before / after the percentage removed; jekyll refuses publish a valid include markup)</li>
+</ul></li>
+<li><code>images</code> <b>todo</b></li>
+<li><code>js</code> <b>todo</b></li>
+<li><code>LICENSE</code></li>
+</ul></li>
+</ul></li>
 
 <li>For making your own blog, you may want to generally <b>remove content</b> of the following directories on the top level, but keep the directory nodes:
 <ul class="org-ul">
 <li><code>org</code>
 <ul class="org-ul">
-<li>directory where you write your posts and pages in org format (manually, or supported by <code>org2jekyll-create-draft</code>)
-</li>
-</ul>
-</li>
+<li>directory where you write your posts and pages in org format (manually, or supported by <code>org2jekyll-create-draft</code>)</li>
+</ul></li>
 <li><code>_posts</code>
 <ul class="org-ul">
 <li>is a directory with:
 <ul class="org-ul">
-<li><code>.html</code> files exported from <code>.org</code> files by command <code>org2jekyll-publish-pages</code>
-</li>
-<li>Also, if you want to write your posts in markdown, you write them here as <code>.md</code>
-</li>
-</ul>
-</li>
-</ul>
-</li>
+<li><code>.html</code> files exported from <code>.org</code> files by command <code>org2jekyll-publish-pages</code></li>
+<li>Also, if you want to write your posts in markdown, you write them here as <code>.md</code></li>
+</ul></li>
+</ul></li>
 <li><code>_site</code>
 <ul class="org-ul">
 <li>is a directory with <code>.html</code> files created by <b><code>jekyll build</code></b>. Files here are built by <code>jekyll build</code> from the following files
 <ul class="org-ul">
-<li><code>.html</code> files and md files on the top level (e.g. index.html Liquid template file on top level is converted to _site/index.html which contains only html markup)
-</li>
-<li><code>.org</code> files from the <code>org</code> directory
-</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-</li>
+<li><code>.html</code> files and md files on the top level (e.g. index.html Liquid template file on top level is converted to _site/index.html which contains only html markup)</li>
+<li><code>.org</code> files from the <code>org</code> directory</li>
+</ul></li>
+</ul></li>
+</ul></li>
 </ul>
 
 <p>
