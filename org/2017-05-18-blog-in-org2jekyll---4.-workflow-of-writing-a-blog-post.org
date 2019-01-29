@@ -1,3 +1,21 @@
+#+BEGIN_EXPORT HTML
+---
+date: 2017-05-18
+tags: 
+- org_mode
+- blog
+- org2jekyll
+author: mzimmerm
+layout: post
+title: Blog in Org2jekyll - 4. Workflow of writing a blog post
+excerpt: Part 4 of Org Blog series
+categories: 
+- org_mode
+- blog
+- org2jekyll
+comments: true
+---
+#+END_EXPORT
 #+STARTUP: showall
 #+STARTUP: hidestars
 #+OPTIONS: H:5 num:t tags:nil toc:nil timestamps:t

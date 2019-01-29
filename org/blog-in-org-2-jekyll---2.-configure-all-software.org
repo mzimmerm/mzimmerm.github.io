@@ -28,24 +28,24 @@ There is a lack of liveliness in my selected "web publishing environment". I sho
 
 So for now, this is this blog stack:
 
-- [[https://github.io][github.io]] (which enforces [[https://jekyllrb.com/][Jekyll]] as the website builder)
-- [[https://jekyllrb.com/][Jekyll]] as the website builder) with theme  theme [[https://github.com/scotte/jekyll-clean][jekyll clean]]
-- Using [[https://github.com/ardumont/org2jekyll][org2jekyll]] to write posts in [[http://orgmode.org/][org-mode]]. This also allows writing Math using [[http://asciimath.org/][ASCIIMath]] and LaTex.
+- [[https://github.io][github.io]] for blog hosting (which enforces [[https://jekyllrb.com/][Jekyll]] as the website builder)
+- [[https://jekyllrb.com/][Jekyll]] for blog and website building (using the theme [[https://github.com/scotte/jekyll-clean][jekyll clean]])
+- [[https://github.com/ardumont/org2jekyll][org2jekyll]] for writing the blog posts in [[http://orgmode.org/][org-mode]]. This also allows writing Math using [[http://asciimath.org/][ASCIIMath]] and LaTex.
 
 Below is a quick summary of setup steps that achieved installation of this block software stack.
 
-1) *Setup Github Pages on [[https://github.io][github.io]]*: I created my github page, and cloned it to my local directory, ~BLOG=\~/mzimmerm.github.io~ . This step is best described in https://pages.github.com/. The end result of this step was a local directory, synchronized with my repo at https://github.com/mzimmerm/mzimmerm.github.io. It only contained index.html. 
-2) *Setup  [[https://jekyllrb.com][Jekyll]] with theme [[https://github.com/scotte/jekyll-clean][jekyll clean]]*: Next I decided to use a particular Jekyll theme I like from github, the jekyll clean theme. To this goal,
-   - I overwrote the contents of my local ~$BLOG~ by going to  https://github.com/scotte/jekyll-clean, selecting "clone or download", then "download", and unzipping the downloaded zip into ~$BLOG~.
+1) *Setup Github Pages on [[https://github.io][github.io]]*: I created my github page at github.io, and cloned it to my local directory, ~BLOG=\~/mzimmerm.github.io~ . This step is best described in https://pages.github.com/. The end result of this step was a local directory, synchronized with my repo at https://github.com/mzimmerm/mzimmerm.github.io. It only contained index.html. 
+2) *Setup [[https://jekyllrb.com][Jekyll]] with theme [[https://github.com/scotte/jekyll-clean][jekyll clean]]*: Next I decided to use a particular Jekyll theme I liked from github, the jekyll clean theme. To this goal,
+   - I overwrote the contents of my local ~$BLOG~ by going to  https://github.com/scotte/jekyll-clean, selecting "clone or download", then "download", and unzipped the downloaded zip into ~$BLOG~.
    - Also, I created a new directory ~org~ in ~$BLOG~. In this directory, I am writing my posts in org mode. This is needed for Org2jekyll - see next step
 3) *Setup [[https://github.com/ardumont/org2jekyll][org2jekyll]] in Emacs*: As I decided Org2jekyll is the best environment for Org mode and Jekyll, I did
-   - Run ~M-x package-list-packages~ from emacs, which installed Org2jekyll in my Emacs from Emacs package manager (alternatively, you can download and install the files from https://github.com/ardumont/org2jekyll). Package manager is much much better and easier.
-4) *Configure org2jekyll*: Emacs need to be customized to "know" about the "source" directory where you write posts in Org, and the "target" directories where org publishes them 
+   - Run ~M-x package-list-packages~ from emacs, which installed Org2jekyll in my Emacs from Emacs package manager (alternatively, you can download and install the files from https://github.com/ardumont/org2jekyll). Using the emacs package manager is easier.
+4) *Configure org2jekyll in init.el*: Emacs need to be customized to "know" about the "source" directory where you write posts in Org, and the "target" directories where org publishes them 
    - In ~init.el~, add a section similar to this:  https://github.com/ardumont/org2jekyll#setup. 
    - The important step of the setup is to "*get the directories right*". We only need to change three custom-set variables. Here are notes on how to do it:
-     - ~org2jekyll-source-directory~ points to the "source" directory where posts are created in org format - this should be the full path to the ~org~ directory.
-     - ~(org2jekyll-jekyll-directory~ points to the "target" location where org publishes. This should be the top level of the blog, ~$BLOG~.
-     - ~org2jekyll-blog-author~ is the author name.
+     - The ~org2jekyll-source-directory~ points to the "source" directory where posts are created in org format - this should be the full path to the ~org~ directory.
+     - The ~org2jekyll-jekyll-directory~ points to the "target" location where org publishes. This should be the top level of the blog, ~$BLOG~.
+     - The ~org2jekyll-blog-author~ is the author name.
 
 ** Note
 
