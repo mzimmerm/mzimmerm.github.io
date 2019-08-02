@@ -1,6 +1,7 @@
 .emacs.d/
 .emacs.d-psession/
 .emacs.d-desktop/
+.projectile
 .gnupg/
 _cache
 _site
