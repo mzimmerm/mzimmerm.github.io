@@ -16,7 +16,7 @@ This post is part 4 of  [[post-jekyll:blog-in-org-2-jekyll---1.-motivation.org][
 
 TL;DR: If you do not want to read this, go to [[Conclusion]]
 
-After configuring the stack for blogging in Jekyll and emacs org mode, as described in [[post-jekyll:blog-in-org-2-jekyll---2.-configure-all-software.org][the software configuration step of this series]]. As a brief repeat from this link, we need the following to configure the blog stack:
+This part 4 describes next steps after configuring the stack for blogging in Jekyll and emacs org mode, as described in [[post-jekyll:blog-in-org-2-jekyll---2.-configure-all-software.org][the software configuration step of this series]]. As a brief repeat from the previous part 3, we need the following to configure the blog stack:
 
 - Setup Github pages and it's local repo (for example, in directory ~BLOG=~/mzimmerm.github.io~).
 - Setup Jekyll and a theme.
@@ -25,9 +25,9 @@ After configuring the stack for blogging in Jekyll and emacs org mode, as descri
 
 Once the setup is finished, the steps below represent *a typical workflow of creating a new blog post* in the above stack.  
 
-1) ~M-x: org2jekyll-create-draft~ - *Creates an empty post in org format, with today's date.* Assuming the Org2jekyll directories were configured, emacs knows where to place the post we are creating - so this can run from any buffer in emacs. The command asks a series of questions, for values, required answers are: 
+1) ~M-x: org2jekyll-create-draft~ - *Creates an empty post in org format,  with today's date.* Assuming the Org2jekyll directories were configured, emacs knows where to place the post we are creating - so this can run from any buffer in emacs. The command asks a series of questions, for values, required answers are: 
    - /layout:/ (post | default) - select =post=.
-   - /title:/ We enter the name of our post. This will end up the title, displayed on top of post. e.g. /Test Blog/, and also the file name of the post (mangled a bit - I do not use dots and weird characters, as the title is converted to file name, spaces replaced with dashes.)
+   - /title:/ We enter the name of our post. This will end up the title, displayed on top of post. e.g. /Test Blog/, and also the file name of the post (mangled a bit - *I do not use dots and weird characters, as the title is converted to file name, spaces replaced with dashes*.)
    - /Tags:/ We enter same values as category for now.
    - /Category:/ We enter space separated list of categories. we can use the same for category and tag. I am not sure what is the difference.
    The end result of this step is a new file =$BLOG/org/a-test-blog.org= and a buffer with it's content, like this
@@ -66,11 +66,11 @@ Notes:
   - Edit the post's org file (described in step 2)
   - ~M-x: org2jekyll-publish~. This will publish the org as html to Jekyll's _posts, where Jekyll will pick it up and "Jekyll build and publish to _site".
   - Reload the post in the browser (described in step 6)
-- *Re-Publishing a changed post*: If we make a change to an older blog, the steps are the same, except step 1. The blog's date will not change.
+- *Re-Publishing a changed post*: If we make a change to an older blog, the steps are the same, except that step 1 is skipped. The blog's date will not change.
 - *Publishing all changed posts instead of publishing the "currently edited" post*: In step 3, we can use ~M-x: org2jekyll-publish-posts~ instead of ~M-x: org2jekyll-publish~. The former plural version publishes all changed posts. Org2jekyll will figure out all posts in the ~org~ directory which changed, and publish or re-publish them all. Then, Jekyll's build/serve will pick them up and update them.
 
 
-** Conclusion - TL;DR
+** Conclusion
 
  Assuming our Jekyll is configured the serve settings to "watch" (to pick up and rebuild changed files), this 6-step workflow of creating and publishing a post all the way to github.io:
 

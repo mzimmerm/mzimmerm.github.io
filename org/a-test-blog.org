@@ -536,5 +536,6 @@ This renders nice:
 
 `10 . d/dx[int_a^x f(t) dt] = f(x)`
 
+* Section added 2019-08-03
 
-
+Just a test of tools.
