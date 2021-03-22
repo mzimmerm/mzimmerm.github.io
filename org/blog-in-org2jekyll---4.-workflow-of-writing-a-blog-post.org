@@ -3,7 +3,7 @@
 #+OPTIONS: H:5 num:t tags:nil toc:nil timestamps:t
 #+LAYOUT: post
 #+AUTHOR: mzimmerm
-#+DATE: 2017-05-18 Thu 22:14
+#+DATE: 2021-03-22 Mon 1:54
 #+TITLE: Blog in Org2jekyll - 4. Workflow of writing a blog post
 #+DESCRIPTION: Part 4 of Org Blog series
 #+TAGS: org_mode,blog,org2jekyll
@@ -50,12 +50,12 @@ Once the setup is finished, the steps below represent *a typical workflow of cre
    - Places the exported html to the =_posts= directory from which Jekyll will build and serve the post. 
    - Prefixes the blog file name with date, and replaces the  =.org= extension with the =.html= extension.
    - /Result of this step is a file =$BLOG/_posts/2017-03-18-a-test-blog.html=./
-4) ~cd $BLOG; jekyll build~ - (Optional) *Performs the Jekyll steps to build the "Jekyll published" blog*. This step is optional, but we will likely want to do it, to test locally before pushing to github. 
+4) ~$ cd $BLOG; jekyll build~ - (Optional) *Performs the Jekyll steps to build the "Jekyll published" blog*. This step is optional, but we will likely want to do it, to test locally before pushing to github. 
    - /A simplified description of the this command/: Jekyll performs a series of transforms, e.g. surrounds the contents of the file =_posts/2017-03-18-a-test-blog.html= with header and footer, and places the result in the =_site= directory.  
    - /Result of this step is a file =$BLOG/_site/2017/03/a-test-blog.html=./
-5) ~cd $BLOG; jekyll serve --baseurl='';~ (Optional) *Starts the Jekyll server - we use this to test the blog locally before pushing on github.*
+5) ~$ cd $BLOG; jekyll serve --baseurl='';~ (Optional) *Starts the Jekyll server - we use this to test the blog locally before pushing on github.*
 6) *Test our blog locally* by browsing to http://127.0.0.1:4000/. To change a post, edit the org file and re-publish by running steps 4 and 5.
-7) ~cd $BLOG; git commit; git push~ - *Pushes and published the post to Github*. 
+7) ~$ cd $BLOG; git commit; git push~ - *Pushes and published the post to Github*. 
   - The server on github builds and serves the pushed post, similarly what is described in steps 4 and 5, and makes the post available publicly.
 
 
@@ -66,18 +66,27 @@ Notes:
   - Edit the post's org file (described in step 2)
   - ~M-x: org2jekyll-publish~. This will publish the org as html to Jekyll's _posts, where Jekyll will pick it up and "Jekyll build and publish to _site".
   - Reload the post in the browser (described in step 6)
-- *Re-Publishing a changed post*: If we make a change to an older blog, the steps are the same, except that step 1 is skipped. The blog's date will not change.
-- *Publishing all changed posts instead of publishing the "currently edited" post*: In step 3, we can use ~M-x: org2jekyll-publish-posts~ instead of ~M-x: org2jekyll-publish~. The former plural version publishes all changed posts. Org2jekyll will figure out all posts in the ~org~ directory which changed, and publish or re-publish them all. Then, Jekyll's build/serve will pick them up and update them.
+- *Re-Publishing a changed post*: If we make a change to an older blog, the steps are the same, except that step 1 is skipped. The blog's date will not change, unless we change the *#+DATE:* directiver from the org file being published (in this blog's example, =a-test-blog.org=).
+- *Publishing all changed posts instead of publishing the "currently edited" post*: In step 3, we can use ~M-x: org2jekyll-publish-posts~ instead of ~M-x: org2jekyll-publish~. The plural version publishes all changed posts. Org2jekyll will figure out all posts in the ~org~ directory which changed, and publish or re-publish them all. Then, Jekyll's build/serve will pick them up and update them.
 
 
 ** Conclusion
 
  Assuming our Jekyll is configured the serve settings to "watch" (to pick up and rebuild changed files), this 6-step workflow of creating and publishing a post all the way to github.io:
 
-1) ~$ jekyll serve --baseurl=''~ (a shell command, step 5 in text)
-2) ~M-x: org2jekyll-create-draft~ (an emacs command, step 1 in text) - creates the empty post, with today's date, e.g. =$BLOG/org/a-test-blog.org=.
-3) *Edit the post content* in org mode.
-4) ~M-x: org2jekyll-publish~ (an emacs command, step 3 in text)- org-exports the blog from the =org= directory to html and places it to the =_posts= directory. Also, the Jekyll auto-watch will build the final blog file and place it to =_site= directory. 
-5) *Test the post* on  http://127.0.0.1:4000/. Go back to step 3 to re-edit.
-6) ~$ git commit; git push~ - pushes the post to Github. The server there builds and serves our post, and makes it available for readers.
+1) ~$ jekyll serve --baseurl=''~ (a shell command, step 5 in text) 
+   - Starts jekyll server locally, so we can view the blog changes locally in the browser, before pushing to github.
+2) ~M-x: org2jekyll-create-draft~ (an emacs command, step 1 in text)
+   - Creates an empty blog post, with today's date, e.g. =$BLOG/org/a-test-blog.org=.
+   - Asks a series a questions about the blog title, and so on
+3) *Edit the post content* in org mode : Add the blog text.
+4) ~M-x: org2jekyll-publish~ (an emacs command, step 3 in text)
+   - *Locally publishes the post which is being edited*. Details of this local publishing step: 
+     - Org-exports the blog from the =org= directory to html and places the html to the =_posts= directory
+     - The Jekyll auto-watch will the build the final blog file and place it to =_site= directory. 
+5) *Test the post* on  http://127.0.0.1:4000/.
+   - Browse to the above link to view the post locally.
+   - Go back to step 3 to re-edit if needed.
+6) ~$ git commit; git push~
+   - Pushes the blog post to Github. The server there builds and serves our post, and makes it available for readers.
 

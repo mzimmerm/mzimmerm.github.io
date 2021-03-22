@@ -47,10 +47,13 @@ Below is a quick summary of setup steps that achieved installation of this block
      - The ~org2jekyll-jekyll-directory~ points to the "target" location where org publishes. This should be the top level of the blog, ~$BLOG~.
      - The ~org2jekyll-blog-author~ is the author name.
 
-** Note
+** Notes
 
-The Jekyll theme I use, is created by the "legacy method" - it is a plain directory tree with files. More recent themes are created as a Ruby Gem. My overall theme preference would be the theme used by Org2Jekyll in https://github.com/ardumont/org2jekyll which uses the Gem method but I was unable to build it. Ruby configuration is convoluted, even with RVM.
+- The Jekyll theme I use, is created by the "legacy method" - it is a plain directory tree with files. More recent themes are created as a Ruby Gem. My overall theme preference would be the theme used by Org2Jekyll in https://github.com/ardumont/org2jekyll which uses the Gem method but I was unable to build it. Ruby configuration is convoluted, even with RVM.
+- On OpenSUSE recent versions (2018 and later) Ruby is installed. To install Jekyll related packages, run
+  - ~$ zypper in ruby2.7-rubygem-jekyll ruby2.7-rubygem-jekyll-watch ruby2.7-rubygem-jekyll-sass-converter~
 
+  
 ** Conclusion
 
 Configuring the environment used for this site and blog https://mzimmerm.github.io took Step 1 - 4 described above.

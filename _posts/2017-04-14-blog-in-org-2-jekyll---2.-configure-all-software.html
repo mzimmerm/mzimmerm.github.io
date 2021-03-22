@@ -1,13 +1,13 @@
 ---
-date: 2017-04-14
-tags: 
-- org_mode org2jekyll
+date: 2017-04-14 19:45
 author: mzimmerm
 layout: post
 title: Blog in Org2jekyll - 2. Configuring all software
 excerpt: Part 2 of Org Blog series
+tags: 
 categories: 
-- org_mode org2jekyll
+- org_mode
+- org2jekyll
 comments: true
 ---
 
@@ -65,7 +65,7 @@ Below is a quick summary of setup steps that achieved installation of this block
 <ul class="org-ul">
 <li>Run <code>M-x package-list-packages</code> from emacs, which installed Org2jekyll in my Emacs from Emacs package manager (alternatively, you can download and install the files from <a href="https://github.com/ardumont/org2jekyll">https://github.com/ardumont/org2jekyll</a>). Using the emacs package manager is easier.</li>
 </ul></li>
-<li><b>Configure org2jekyll</b>: Emacs need to be customized to "know" about the "source" directory where you write posts in Org, and the "target" directories where org publishes them 
+<li><b>Configure org2jekyll in init.el</b>: Emacs need to be customized to "know" about the "source" directory where you write posts in Org, and the "target" directories where org publishes them 
 <ul class="org-ul">
 <li>In <code>init.el</code>, add a section similar to this:  <a href="https://github.com/ardumont/org2jekyll#setup">https://github.com/ardumont/org2jekyll#setup</a>.</li>
 <li>The important step of the setup is to "<b>get the directories right</b>". We only need to change three custom-set variables. Here are notes on how to do it:
@@ -78,14 +78,19 @@ Below is a quick summary of setup steps that achieved installation of this block
 </ol>
 </div>
 
-<div id="outline-container-org731ca8b" class="outline-3">
-<h3 id="org731ca8b"><span class="section-number-3">1.1</span> Note</h3>
+<div id="outline-container-org85f7d57" class="outline-3">
+<h3 id="org85f7d57"><span class="section-number-3">1.1</span> Notes</h3>
 <div class="outline-text-3" id="text-1-1">
-<p>
-The Jekyll theme I use, is created by the "legacy method" - it is a plain directory tree with files. More recent themes are created as a Ruby Gem. My overall theme preference would be the theme used by Org2Jekyll in <a href="https://github.com/ardumont/org2jekyll">https://github.com/ardumont/org2jekyll</a> which uses the Gem method but I was unable to build it. Ruby configuration is convoluted, even with RVM.
-</p>
+<ul class="org-ul">
+<li>The Jekyll theme I use, is created by the "legacy method" - it is a plain directory tree with files. More recent themes are created as a Ruby Gem. My overall theme preference would be the theme used by Org2Jekyll in <a href="https://github.com/ardumont/org2jekyll">https://github.com/ardumont/org2jekyll</a> which uses the Gem method but I was unable to build it. Ruby configuration is convoluted, even with RVM.</li>
+<li>On OpenSUSE recent versions (2018 and later) Ruby is installed. To install Jekyll related packages, run
+<ul class="org-ul">
+<li><code>$ zypper in ruby2.7-rubygem-jekyll ruby2.7-rubygem-jekyll-watch ruby2.7-rubygem-jekyll-sass-converter</code></li>
+</ul></li>
+</ul>
 </div>
 </div>
+
 
 <div id="outline-container-org5ca21f5" class="outline-3">
 <h3 id="org5ca21f5"><span class="section-number-3">1.2</span> Conclusion</h3>
