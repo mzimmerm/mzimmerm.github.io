@@ -118,49 +118,48 @@ The file name is *a-test-blog.org* so this is concatenated from title, with no d
 * Inline code blocks - src _ language{ .. } and call _ func(arg1=1, arg2=2). Note: no space before {
 
   - Example 1 - exports code:
-    - /text:/   ~src_sh[:exports code]{echo "hello"}~
-    - /result:/ src_sh[:exports code]{echo "hello"}
+    - /text:/   ~src_sh[:exports code]{echo "hello"} plugged in text, inline.~
+    - /result:/ src_sh[:exports code]{echo "hello"} plugged in text, inline.
 
   - Example 2 - exports both
-    - Compare with ~echo hello~
-    - /text:/   ~src_sh[:exports both]{echo "hello"}~
-    - /result:/ src_sh[:exports both]{echo "hello"}
+    - /text:/   ~src_sh[:exports both]{echo "hello"} plugged in text, inline.~
+    - /result:/ src_sh[:exports both]{echo "hello"} plugged in text, inline.
 
   - Example 3: - exports results. This is *likely the most common use of inline code blocks*
-    - /text:/   ~src_sh[:exports results]{echo "hello"}~
+    - /text:/   ~src_sh[:exports results]{echo "hello"} plugged in text, inline.~
     - /result:/ src_sh[:exports results]{echo "hello"} plugged in text, inline.
 
   - Example 4 - exports results. As above, showing exports results is default in src_
-    -  /text:/ ~src_sh{echo "hello"}~
+    -  /text:/ ~src_sh{echo "hello"} plugged in text, inline~
     - /result:/ src_sh{echo "hello"} plugged in text, inline.
 
   - Example 5: This shows the inside literally as code, so does not call the code
     - /text:/   ~src_sh[:exports code]{ls -l}~ allsurrounded by ~ in text: 
-    - /result:/ ~src_sh[:exports code]{ls -l}~
+    - /result:/ ~src_sh[:exports code]{ls -l} - ls -l refuses to work, result with newline is not allowed in inline calls~
 
-  - Example 6: Defining function add_in_shell in BEGIN_ SRC 
+  - Example 6: Defining function add-in-shell in BEGIN_ SRC 
 
     - /text:/
       #+BEGIN_SRC 
-        ,#+name: add_in_shell
+        ,#+name: add-in-shell
         ,#+BEGIN_SRC sh :var arg1=1 :var arg2=2
         echo arg1 plus arg2 = $(($arg1 + $arg2))
         ,#+END_SRC
       #+END_SRC
     - /result:/ - this displays code, correctly fontified:
-      #+name: add_in_shell
+      #+name: add-in-shell
       #+BEGIN_SRC sh :var arg1=1 :var arg2=2
       echo arg1 plus arg2 = $(($arg1 + $arg2))
       #+END_SRC
 
   - Example 7:
 
-    - /text:/   The following files are in home dir ~src_sh{ ls -1 }~
-    - /result:/ The following files are in home dir src_sh{ ls -1 }
+    - /text:/   The following files are in home dir ~src_sh{ls -1}~
+    - /result:/ The following files are in home dir ~src_sh{ls -1} - ls -l refuses to work, result with newline is not allowed in inline calls. Message: *list results cannot be used*~
 
-  - Example 8: Calling add_in_shell:
-    - /text:/   ~call_add_in_shell(arg1=3, arg2=4)~
-    - /result:/ call_add_in_shell(arg1=3, arg2=4)
+  - Example 8: Calling add-in-shell:
+    - /text:/   ~call_add-in-shell(arg1=3, arg2=4)~
+    - /result:/ call_add-in-shell(arg1=3, arg2=4)
 
 * Three types of lists
 
