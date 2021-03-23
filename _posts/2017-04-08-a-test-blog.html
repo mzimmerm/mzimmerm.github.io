@@ -8,6 +8,75 @@ tags:
 categories: 
 - categories_required
 ---
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#org766831e">1. Things I had to add or modify, to get org and org html export working</a>
+<ul>
+<li><a href="#orge3f5bd0">1.1. In export to html, to achieve:</a></li>
+<li><a href="#org262c18a">1.2. To achieve my own formatting, added following files in ORG/{CSS, JS} files</a></li>
+<li><a href="#orgc9fd875">1.3. Notes</a></li>
+</ul>
+</li>
+<li><a href="#orgf47d200">2. <span class="todo TODO">TODO</span> Todos</a></li>
+<li><a href="#orgd41133a">3. Basic Babel export to Html</a></li>
+<li><a href="#orge588dd8">4. Running <code>org2jekyll-create-draft</code></a></li>
+<li><a href="#org21bac61">5. Verbatim vs Code markup: = vs ~</a></li>
+<li><a href="#org6f8d9a5">6. Inline code blocks - src _ language{ .. } and call _ func(arg1=1, arg2=2). Note: no space before {</a></li>
+<li><a href="#org8fbb0fe">7. Three types of lists</a></li>
+<li><a href="#orge5eb412">8. Code highlighting</a></li>
+<li><a href="#org7c848be">9. <span class="todo TODO">TODO</span> Properties</a>
+<ul>
+<li><a href="#orgffbb96d">9.1. Testing the <code>header-arguments :dir</code> property</a>
+<ul>
+<li><a href="#org646f389">9.1.1. Create some dirs</a></li>
+<li><a href="#org240fb2b">9.1.2. First result uses global (top) definition of dir = /home/mzimmermann/tmp/one</a></li>
+<li><a href="#org1c4ba8b">9.1.3. Second result uses the BEGIN_ SRC  definition of dir = /home/mzimmermann/tmp/two</a></li>
+<li><a href="#org7918f28">9.1.4. Third result uses overriden property dir</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#org8829886">10. Tags</a></li>
+<li><a href="#org3f3a2b4">11. <span class="todo TODO">TODO</span> Properies and columns</a>
+<ul>
+<li><a href="#orgcfb7624">11.1. Subtree</a></li>
+</ul>
+</li>
+<li><a href="#org658f89a">12. Startup indent test (using customize)</a>
+<ul>
+<li><a href="#orgedc0702">12.1. p1</a>
+<ul>
+<li><a href="#org50db20c">12.1.1. p2</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#orga233edd">13. Problem 1: org-html-publish-to-html and org-publish-attachment messes up export from image link to html by adding file:// to html</a>
+<ul>
+<li><a href="#org096a549">13.1. The better solution - creating new org mode tags which are, during org export to html translated to html understood by Jekyll. Those tags are <b>img:</b> and <b>post-jekyll:</b></a>
+<ul>
+<li><a href="#orgec2758e">13.1.1. Test the correct solution: my specific org link types - <b>img:</b> and <b>post-jekyll:</b></a></li>
+<li><a href="#org3a38487">13.1.2. Test my <code>img:</code> link</a></li>
+<li><a href="#org287ebb4">13.1.3. Test my <code>post-jekyll:</code> link</a></li>
+</ul>
+</li>
+<li><a href="#orgb41d358">13.2. The workaround solution - creating a link for images</a>
+<ul>
+<li><a href="#org629268f">13.2.1. Testing the workaround solution</a></li>
+</ul>
+</li>
+<li><a href="#orgec56807">13.3. Problem in detail (solutions described above):</a></li>
+</ul>
+</li>
+<li><a href="#orgc37d14e">14. MathJax configurations</a></li>
+<li><a href="#org6c3a5ac">15. Math Formulas using Latex</a></li>
+<li><a href="#org89ae06c">16. Math Formulas using ASCIIMath</a></li>
+<li><a href="#org41f3278">17. Section added 2019-08-03</a></li>
+</ul>
+</div>
+</div>
 <p>
 *This post is a test of misc org features, and their Html export. Reviewed till ch 6 included. *
 </p>
@@ -20,8 +89,8 @@ Details are inline, here is a summary.
 </p>
 </div>
 
-<div id="outline-container-org2bb5967" class="outline-3">
-<h3 id="org2bb5967"><span class="section-number-3">1.1</span> In export to html, to achieve</h3>
+<div id="outline-container-orge3f5bd0" class="outline-3">
+<h3 id="orge3f5bd0"><span class="section-number-3">1.1</span> In export to html, to achieve:</h3>
 <div class="outline-text-3" id="text-1-1">
 <dl class="org-dl">
 <dt>Nice fontification in Babel code blocks</dt><dd>Installed from Melpa, package <code>htmlize</code></dd>
@@ -658,7 +727,7 @@ This should display a image:
 </p>
 
 
-<div id="org77b7804" class="figure">
+<div id="org3a20f2c" class="figure">
 <p><img src="../../img/a-test-blog.org_20170416_034103_28551Ciq.png" alt="a-test-blog.org_20170416_034103_28551Ciq.png" />
 </p>
 </div>

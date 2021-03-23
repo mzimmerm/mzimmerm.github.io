@@ -1,6 +1,6 @@
 #+STARTUP: showall
 #+STARTUP: hidestars
-#+OPTIONS: H:5 num:t tags:nil toc:nil timestamps:t
+#+OPTIONS: H:5 num:t tags:nil toc:t timestamps:t
 #+LAYOUT: post
 #+AUTHOR: mzimmerm
 #+DATE: 2017-04-08 Sat 17:23
@@ -30,7 +30,7 @@
 
 Details are inline, here is a summary.
 
-** In export to html, to achieve 
+** In export to html, to achieve:
 
 - Nice fontification in Babel code blocks :: Installed from Melpa, package =htmlize=
 - Images and links showing correctly :: Created new org mode tags for images and links :
