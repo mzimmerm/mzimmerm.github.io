@@ -3,6 +3,12 @@
 
 
 
+- [ ] org2jekyll-create-draft uses the first, but should use the second:
+  #+BEGIN_SRC org
+      ,#+OPTIONS: H:2 num:nil tags:t toc:nil timestamps:t
+      ,#+OPTIONS: H:5 num:t tags:nil toc:t timestamps:t
+  #+END_SRC
+- [ ] 
 - [ ] *Fix this*
   org-babel-exp processing... [2 times]
   Cannot fontify src block (htmlize.el >= 1.34 required) [14 times]

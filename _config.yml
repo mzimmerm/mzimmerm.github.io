@@ -40,4 +40,4 @@ markdown: kramdown
 # 2018-06-23: renamed gems: to plugins: and removed - plugins: ['jekyll-paginate']
 
 # Exclude files from "jekyll build"
-exclude: ['README.md', 'LICENSE', 'TODO.org']
+exclude: ['README.md', 'LICENSE', 'TODO.org', '.emacs.d/', '.git/', '.jekyll-cache/', '.projectile']

@@ -1,0 +1,2437 @@
+---
+date: 2021-03-22 17:04
+author: mzimmerm
+layout: post
+title: Newspeak Presentation for Toronto Smalltalk Users Group
+excerpt: Newspeak presentation for Toronto  Smalltalk Users Group
+tags: 
+categories: 
+- category-newspeak
+- category-smalltalk
+- category-blog
+---
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#org0e1b384">1. <b>PDF version of this document</b></a></li>
+<li><a href="#org0d7a4a1">2. Newspeak: A nutshell image</a></li>
+<li><a href="#org134674b">3. <b>The Newspeak language</b>. Presentation at the Toronto Smalltalk Users Group (TUG)</a></li>
+<li><a href="#org302f3d3">4. Credits: Gilad Bracha, all Newspeak authors and contributors</a></li>
+<li><a href="#org683624e">5. Newspeak: Where to start learning it</a></li>
+<li><a href="#org780199a">6. Newspeak: How to install</a></li>
+<li><a href="#org23552a5">7. Using code from this presentation</a></li>
+<li><a href="#org406fe94">8. Newspeak: Behind the name - George Orwell's 1984</a></li>
+<li><a href="#orga12d76f">9. The Case for Newspeak</a></li>
+<li><a href="#orga06a36b">10. Who is Newspeak for?</a></li>
+<li><a href="#org6d73e5b">11. Migration from Smalltalk to Newspeak</a></li>
+<li><a href="#orgbf700de">12. Newspeak - As Advertised - Highlights from the Specs</a>
+<ul>
+<li>
+<ul>
+<li><a href="#org8a5151f">12.0.1. Newspeak is: Network Serviced (Supported by <i>partially implemented synchronization</i>)</a></li>
+<li><a href="#orga7c8c99">12.0.2. Newspeak is: Class based</a></li>
+<li><a href="#orgde6ea02">12.0.3. Newspeak is: Message Based (and purely OO as a result)</a></li>
+<li><a href="#org94a3b49">12.0.4. Newspeak is: Secure (Supported by encapsulation, no static state)</a></li>
+<li><a href="#org3617dfa">12.0.5. Newspeak is: Reflective (Mirror based reflection)</a></li>
+<li><a href="#org4453f42">12.0.6. Newspeak is: Modular (Independent, immutable, parametric namespaces)</a></li>
+<li><a href="#orgcbf7c22">12.0.7. Newspeak is: Concurrent (Actor based concurrency)</a></li>
+<li><a href="#orgd3bc38d">12.0.8. Newspeak is: Optionally typed <i>Unimplemented</i></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#org47f84f0">13. Newspeak - A few core principles</a></li>
+<li><a href="#orged6cf96">14. Newspeak - Below the Surface - Details, discussion, examples</a>
+<ul>
+<li>
+<ul>
+<li><a href="#org264bf25">14.0.1. Newspeak 101: How to define a class - basics</a></li>
+<li><a href="#org1ebc5fb">14.0.2. Newspeak 101: The Newspeak Workspace</a></li>
+<li><a href="#orgc97111a">14.0.3. Newspeak 101: How to define a nested class (outer and inner class)</a></li>
+<li><a href="#orge6404f2">14.0.4. Newspeak 101: Hello Brave new world (in Transcript) - An example of Newspeak application</a></li>
+<li><a href="#org76809ea">14.0.5. Newspeak 101: How to define a more complex class - class Thing and it's subclass Car, both living in CarLibrary module.</a></li>
+<li><a href="#org07ccae9">14.0.6. Newspeak 101: Newspeak Syntax in a nutshell</a>
+<ul>
+<li>
+<ul>
+<li><a href="#orge8d445c">14.0.6.0.1. Syntactic Elements in the CarLibrary example above:</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#org714fda1">14.0.7. Newspeak 101: Opinion - Is the "=" character overused?</a></li>
+<li><a href="#org8033040">14.0.8. Newspeak 101: Representation independence</a></li>
+<li><a href="#orgf78efec">14.0.9. Newspeak 101: Mutable vs. Immutable Slots</a></li>
+<li><a href="#org8466c32">14.0.10. Newspeak 101: Newspeak differences from Smalltalk</a>
+<ul>
+<li>
+<ul>
+<li><a href="#org72e52b0">14.0.10.0.1. From Modules as Objects in Newspeak  (dot-jotted, emphasis added):</a></li>
+<li><a href="#org2a50d05">14.0.10.0.2. From Message Based Programming (emphasis added)</a></li>
+<li><a href="#orgf844c10">14.0.10.0.3. Newspeak Syntax notes (as different from Smalltalk)</a></li>
+<li><a href="#orgcafd49c">14.0.10.0.4. Migration from Smalltalk to Newspeak</a></li>
+<li><a href="#org65836ac">14.0.10.0.5. Gotchas</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#orgf04576c">15. Newspeak - As Advertised - Expanding on the Specs Highlights section</a>
+<ul>
+<li>
+<ul>
+<li><a href="#org0e46593">15.0.1. <span class="todo TODO">TODO</span> Newspeak is: Network Serviced (Supported by <i>partially implemented synchronization</i>)</a></li>
+<li><a href="#org384521e">15.0.2. How Newspeak solves Problems with constructors, and removes any static state</a></li>
+<li><a href="#org9acc0e1">15.0.3. Newspeak is: Class Based (with constructor issues removed)</a>
+<ul>
+<li>
+<ul>
+<li><a href="#orgf7c5a7a">15.0.3.0.1. Constructors and Instance Creations: Issues in Existing Languages (Java, Smalltalk)</a></li>
+<li><a href="#org029c3ae">15.0.3.0.2. Constructor Example in pseudo-Java (similar to Groovy, C#, PHP) - First hint at problems</a></li>
+<li><a href="#org94de137">15.0.3.0.3. Constructors - more hints at problems</a></li>
+<li><a href="#orgc867be3">15.0.3.0.4. Typical (Java) Solutions to constructor problems</a></li>
+<li><a href="#orga92fae0">15.0.3.0.5. Smalltalk: Has a better approach to constructors - does not have constructors in the above sense, but factory objects for instances.</a></li>
+<li><a href="#org884dbea">15.0.3.0.6. Smalltalk: But there is another problem:  no absolute guarantee that <i>myCar</i> instance is initialized</a></li>
+<li><a href="#org892f5d1">15.0.3.0.7. Smalltalk: There is also no guarantee object is not initialized twice</a></li>
+<li><a href="#org725d034">15.0.3.0.8. How Newspeak solves constructor deficiencies described above - an example</a></li>
+<li><a href="#org1e87b86">15.0.3.0.9. Newspeak methods that take class-factory as a parameter</a></li>
+<li><a href="#org1804ce7">15.0.3.0.10. Nested classes and Inner classes: Significance of nested classes and examples</a></li>
+<li><a href="#org86f4df9">15.0.3.0.11. Newspeak's Inheritance is implemented using Mixins</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#org51d2dd0">15.0.4. Newspeak is: Message Based (and purely OO as a result)</a></li>
+<li><a href="#orgad62e9d">15.0.5. Newspeak is: Secure (Supported by encapsulation, no static state)</a>
+<ul>
+<li>
+<ul>
+<li><a href="#orge07c977">15.0.5.0.1. Static State (Variables) has unwelcomed consequences</a></li>
+<li><a href="#orgafd7260">15.0.5.0.2. The Ministry of Truth on Static State (Variables)</a></li>
+<li><a href="#org768665c">15.0.5.0.3. Functional programming eradicates all state (static or local) not just static state as Newspeak does.</a></li>
+<li><a href="#orgf323f0b">15.0.5.0.4. Note on Static Methods (not variables): Java (and other languages) static Methods also have issues in common to constructor issues, that makes both static methods and constructors not Object Oriented</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#org2e8c1d3">15.0.6. Newspeak is: Reflective (Mirror based reflection)</a></li>
+<li><a href="#org8039d94">15.0.7. Newspeak is: Modular (Independent, immutable, parametric namespaces) - Notes and Example Application (CarRace)</a>
+<ul>
+<li>
+<ul>
+<li><a href="#org4007789">15.0.7.0.1. Modularity example: A simple Newspeak module (<i>CarRace</i>) which is using other modules (<i>DatetimeLibrary</i>)</a></li>
+<li><a href="#org5c0ad39">15.0.7.0.2. Modularity Example Continued: Converting the <i>CarRace</i> module into a Newspeak Application</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#orga71cd34">15.0.8. Newspeak is: Concurrent (Actor based concurrency)</a></li>
+<li><a href="#orgc2bf527">15.0.9. Newspeak is: Optionally typed <i>Unimplemented</i></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#org564026f">16. MemoryHole - Source Code Management in Newspeak</a></li>
+<li><a href="#org7e3f341">17. Footnotes, References and Credits </a>
+<ul>
+<li>
+<ul>
+<li><a href="#orga5fd612">17.0.1. Newspeak Authors</a></li>
+<li><a href="#orgfa98cab">17.0.2. References</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#org723acee">18. Licence</a></li>
+<li><a href="#org97a50e6">19. How to make the Pdf</a></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org0e1b384" class="outline-2">
+<h2 id="org0e1b384"><span class="section-number-2">1</span> <b>PDF version of this document</b></h2>
+<div class="outline-text-2" id="text-1">
+<p>
+There is a PDF version of this document:
+</p>
+
+<ul class="org-ul">
+<li><a href="../../org/newspeak-TUG-presentation-november-2014-pdf-published-2019.pdf">../../org/newspeak-TUG-presentation-november-2014-pdf-published-2019.pdf</a>.</li>
+</ul>
+</div>
+</div>
+
+
+<div id="outline-container-org0d7a4a1" class="outline-2">
+<h2 id="org0d7a4a1"><span class="section-number-2">2</span> Newspeak: A nutshell image</h2>
+<div class="outline-text-2" id="text-2">
+<p>
+<img src="/img/newspeak-syntax.png" alt="nil"/>
+</p>
+</div>
+</div>
+
+<div id="outline-container-org134674b" class="outline-2">
+<h2 id="org134674b"><span class="section-number-2">3</span> <b>The Newspeak language</b>. Presentation at the Toronto Smalltalk Users Group (TUG)</h2>
+<div class="outline-text-2" id="text-3">
+<p>
+Presenter: Milan Zimmermann
+</p>
+
+<p>
+How did it happen? Chatting at the end of our September 2014 TUG session, I mentioned I have been playing with Newspeak. Bob Nemec said something like "would you like to present it on our next meeting?", and I said "yes". Surely I am not the best qualified to present Newspeak, but I enjoyed immensely over the years reading Gilad Bracha's <a href="http://gbracha.blogspot.ca">Room 101</a> blog and more recently playing with Newspeak.
+</p>
+
+<p>
+A Note: This is a long document. I prepared it as a background for my talk, a few days before the presentation realizing it is way longer than what I can do it a 90 minute talk. The presentation was a rather small subset of this document.
+</p>
+
+<p>
+Thanks TUG for giving me the opportunity to discuss Newspeak.
+</p>
+
+<p>
+<b>A note from 2021</b>: This is a presentation for Newspeak I gave back in 2014 for the Toronto Smalltalk Users Group. Everything below is the original presentation. The format here is a bit awkward, as originally this was an org-mode based presentation. There is also a PDF version of this document
+</p>
+</div>
+</div>
+
+<div id="outline-container-org302f3d3" class="outline-2">
+<h2 id="org302f3d3"><span class="section-number-2">4</span> Credits: Gilad Bracha, all Newspeak authors and contributors</h2>
+<div class="outline-text-2" id="text-4">
+<p>
+Newspeak Authors
+</p>
+
+<ul class="org-ul">
+<li>Gilad Bracha</li>
+
+<li>Vassili Bykov</li>
+
+<li>Yaron Kashai</li>
+
+<li>Eliot Miranda</li>
+
+<li>Ryan Macnak</li>
+
+<li>contributors</li>
+</ul>
+
+<p>
+All misunderstandings, errors and unintended misrepresentations are mine.
+</p>
+
+<p>
+See <a href="#org5977ec1">17</a> for full references and credits.
+</p>
+
+<p>
+Material of this presentation is based on ideas and sometimes copied from material in the footnotes section.
+</p>
+</div>
+</div>
+
+
+<div id="outline-container-org683624e" class="outline-2">
+<h2 id="org683624e"><span class="section-number-2">5</span> Newspeak: Where to start learning it</h2>
+<div class="outline-text-2" id="text-5">
+<p>
+If I was to point out two links to start, they would be:
+</p>
+
+<ol class="org-ol">
+<li>Gilad Bracha's blog site, <a href="http://gbracha.blogspot.ca">Room 101</a>, is always a great education.</li>
+<li>Newspeak starting page is <a href="http://www.newspeaklanguage.org/">http://www.newspeaklanguage.org/</a></li>
+</ol>
+</div>
+</div>
+
+
+<div id="outline-container-org780199a" class="outline-2">
+<h2 id="org780199a"><span class="section-number-2">6</span> Newspeak: How to install</h2>
+<div class="outline-text-2" id="text-6">
+<p>
+We will not go into much detail here, but provide two links
+</p>
+
+<ol class="org-ol">
+<li>Direct easy install of the latest stable version (2013-09-14): <a href="http://www.newspeaklanguage.org/downloads">http://www.newspeaklanguage.org/downloads</a>. This is the much easier way. Steps to install :
+
+<ul class="org-ul">
+<li>Download zip for your OS</li>
+
+<li>Unzip file to directory $NEWSPEAKDIR,</li>
+
+<li>run in shell or as appropriate: $NEWSPEAKDIR/nsvmlinux/nsvm  $NEWSPEAKDIR/ns-101.image</li>
+
+<li>(replace nsvmlinux with directory name for your OS)</li>
+</ul></li>
+
+<li>Create your own latest boot image: Follow instructions at <a href="https://bitbucket.org/newspeaklanguage/nsboot_bleeding_edge">https://bitbucket.org/newspeaklanguage/nsboot_bleeding_edge</a></li>
+</ol>
+</div>
+</div>
+
+
+<div id="outline-container-org23552a5" class="outline-2">
+<h2 id="org23552a5"><span class="section-number-2">7</span> Using code from this presentation</h2>
+<div class="outline-text-2" id="text-7">
+<p>
+As Newspeak changes, if you want to run code from this document unchanged, please use the Newspeak version linked in the previous section (version from 2013-09-14).
+</p>
+
+<p>
+<b>If you are interested in code, not so much descriptions, explanations etc, just scan this document for sections that look like code, and copy / paste it to the Newspeak IDE</b>
+</p>
+
+<p>
+You can paste code such as class definitions directly from this text into the Newspeak Browser using following steps:
+</p>
+
+<ul class="org-ul">
+<li>Tools -&gt; Newspeak Browser
+<img src="/img/newspeak-browser.png" alt="nil"/></li>
+<li>Categories -&gt; click AATUG (this category must be created first)
+<img src="/img/newspeak-browser-categories.png" alt="nil"/></li>
+<li>Click the + beside the AATUG will bring the new class definer section
+<img src="/img/newspeak-browser-category-code.png" alt="nil"/></li>
+<li>In the above, select, delete, and paste in a class definition from this document, for example
+<img src="/img/newspeak-browser-category-code-detail.png" alt="nil"/></li>
+</ul>
+</div>
+</div>
+
+
+<div id="outline-container-org406fe94" class="outline-2">
+<h2 id="org406fe94"><span class="section-number-2">8</span> Newspeak: Behind the name - George Orwell's 1984</h2>
+<div class="outline-text-2" id="text-8">
+<p>
+Background to Newspeak name, settings, and references from George Orwell's 1984. The name Newspeak, the name of Gilad Bracha's blog site, <a href="http://gbracha.blogspot.ca">Room 101</a>, and references to The Ministry of Truth.
+</p>
+
+<p>
+So direct quotes from Newspeak specs or articles in this presentation are sometimes introduced by "The Ministry of Truth claims".
+</p>
+
+<p>
+Links to sources are always provided at the beginning of chapters or inline.
+</p>
+</div>
+</div>
+
+
+<div id="outline-container-orga12d76f" class="outline-2">
+<h2 id="orga12d76f"><span class="section-number-2">9</span> The Case for Newspeak</h2>
+<div class="outline-text-2" id="text-9">
+<p>
+I do not know when the idea of Newspeak first came, but, from my understanding of reading Gilad Bracha's blogs and articles is that his overall goal when creating Newspeak was to create a language that is in the tradition of Self and Smalltalk while being <sup><a id="fnr.1" class="footref" href="#fn.1">1</a></sup>:
+</p>
+
+<ul class="org-ul">
+<li>Purely object oriented and message based</li>
+
+<li>Dynamic and reflective</li>
+
+<li>Modular and secure</li>
+
+<li>"Shrinkable"</li>
+
+<li>Utilizing sound results of CS research in the last 30+ years (actors, mirrors, etc - this is not stated but feels that way)</li>
+</ul>
+
+<p>
+Gilad Bracha has built up a <b>case for features included in Newspeak</b> (with arguments and discussion) in his blog <b>Room 101</b> between 2007 and 2010 (blog still continues). 
+</p>
+
+<ul class="org-ul">
+<li>The blog is at <a href="http://gbracha.blogspot.ca">Room 101</a> and is an excellent reading for everyone interested in software languages and computing in general.</li>
+</ul>
+</div>
+</div>
+
+
+<div id="outline-container-orga06a36b" class="outline-2">
+<h2 id="orga06a36b"><span class="section-number-2">10</span> Who is Newspeak for?</h2>
+<div class="outline-text-2" id="text-10">
+<ul class="org-ul">
+<li>In <sup><a id="fnr.2" class="footref" href="#fn.2">2</a></sup>, the Ministry of Truth says: 
+
+<ul class="org-ul">
+<li>"One of the things that has surprised me working with Newspeak is how easy it is to convert Smalltalk code to Newspeak."</li>
+
+<li>"Still, if you are (or were, in some happier time) a Smalltalker and want to move into the future rather than dwelling on the glorious past, I assert that Newspeak is for you. If you are using an open source Smalltalk, it is likely you could do better using Newspeak."</li>
+
+<li>"Newspeak explicitly addresses Smalltalk's weaknesses: modularity, security, interoperability. Of course, some people aren't bothered by these weaknesses. "</li>
+
+<li>"Newspeak should interest those who appreciate the power of Smalltalk but want to move forward."</li>
+
+<li>"Of course, you have to be an early adopter by nature. Things will evolve and change under your feet. The syntax will become less Smalltalk-ish over time &#x2026; (in the end) Your code will be much more maintainable and better structured."</li>
+
+<li>As to "The syntax will become less Smalltalk-ish over time" - the changes that are discussed include: braces instead of brackets, accessibility control, replacing ^ with return: - note the column -  etc</li>
+</ul></li>
+</ul>
+
+<p>
+So it seems Smalltalk users were/are the intended primary target group for Newspeak. 
+</p>
+
+<p>
+To the presenter, Newspeak is a very interesting project that stimulates curiosity and gives a chance to study a language designed by the best.
+</p>
+</div>
+</div>
+
+
+<div id="outline-container-org6d73e5b" class="outline-2">
+<h2 id="org6d73e5b"><span class="section-number-2">11</span> Migration from Smalltalk to Newspeak</h2>
+<div class="outline-text-2" id="text-11">
+<ul class="org-ul">
+<li>There is a document <a href="http://bracha.org/Smalltalk2NS2.pdf">http://bracha.org/Smalltalk2NS2.pdf</a> describing how to convert Smalltalk code to Squeak.</li>
+
+<li>I do not have enough Newspeak to prove this on any sufficiently sized program, but, according to The Ministry of Truth in  <sup><a id="fnr.2.100" class="footref" href="#fn.2">2</a></sup>, code converted from Smalltalk to Newspeak:
+
+<ul class="org-ul">
+<li>The converted code is better than the original.</li>
+
+<li>It becomes clear:
+
+<ul class="org-ul">
+<li>what the code's external dependencies are</li>
+
+<li>what the module boundaries should be</li>
+
+<li>who is responsible for initialization</li>
+</ul></li>
+
+<li>There is no longer any static state.</li>
+
+<li>Easier to tie libraries together (or tear them apart),</li>
+
+<li>Easier libraries independent testing</li>
+
+<li>Smalltalkers can migrate to Newspeak relatively easily.</li>
+</ul></li>
+</ul>
+
+<p>
+I will do my best to show some of these points at least briefly on an example in the modularity section.
+</p>
+</div>
+</div>
+
+
+<div id="outline-container-orgbf700de" class="outline-2">
+<h2 id="orgbf700de"><span class="section-number-2">12</span> Newspeak - As Advertised - Highlights from the Specs</h2>
+<div class="outline-text-2" id="text-12">
+<p>
+This section and subsections is a "jot-dotted" summary of Newspeak highlights in the Newspeak specs <sup><a id="fnr.3" class="footref" href="#fn.3">3</a></sup>
+</p>
+
+<p>
+High level ideas and goals for Newspeak. Newspeak is:
+</p>
+</div>
+
+<div id="outline-container-org8a5151f" class="outline-4">
+<h4 id="org8a5151f"><span class="section-number-4">12.0.1</span> Newspeak is: Network Serviced (Supported by <i>partially implemented synchronization</i>)</h4>
+<div class="outline-text-4" id="text-12-0-1">
+<ul class="org-ul">
+<li>Newspeak applications can be updated over the internet while running.</li>
+
+<li>The language supports orthogonal synchronization, making it straightforward to:
+
+<ul class="org-ul">
+<li>synchronize persistent data with a remote server</li>
+
+<li>Support backup</li>
+
+<li>Share and collaborate.</li>
+</ul></li>
+
+<li><i>The synchronization features are in their early design stages, and only partially implemented.</i></li>
+</ul>
+</div>
+</div>
+
+
+<div id="outline-container-orga7c8c99" class="outline-4">
+<h4 id="orga7c8c99"><span class="section-number-4">12.0.2</span> Newspeak is: Class based</h4>
+</div>
+
+
+<div id="outline-container-orgde6ea02" class="outline-4">
+<h4 id="orgde6ea02"><span class="section-number-4">12.0.3</span> Newspeak is: Message Based (and purely OO as a result)</h4>
+<div class="outline-text-4" id="text-12-0-3">
+<ul class="org-ul">
+<li>All computation - even an object's own access to its internal structure - is performed by sending messages to objects.</li>
+
+<li>The only run time operation is a message send (no assignments).</li>
+
+<li>Hence, everything in Newspeak is an object, from elementary data such as numbers and booleans up to function, classes and modules.</li>
+</ul>
+
+<p>
+Sidenote: It is an interesting exercise to think through how a purely message based system supports the principles generally associated with Object Oriented Languages and environment:
+</p>
+
+<ul class="org-ul">
+<li>Encapsulation</li>
+
+<li>Abstraction</li>
+
+<li>Polymorphism</li>
+
+<li>Inheritance</li>
+</ul>
+</div>
+</div>
+
+
+<div id="outline-container-org94a3b49" class="outline-4">
+<h4 id="org94a3b49"><span class="section-number-4">12.0.4</span> Newspeak is: Secure (Supported by encapsulation, no static state)</h4>
+<div class="outline-text-4" id="text-12-0-4">
+<ul class="org-ul">
+<li>Newspeak objects encapsulate their representation, and Newspeak programs have no static state.</li>
+
+<li>These properties provide a sound basis for an object-capability security model <sup><a id="fnr.4" class="footref" href="#fn.4">4</a></sup>.</li>
+
+<li><i>An essential component of this vision is dynamically enforced access control, which is not yet implemented.</i></li>
+</ul>
+</div>
+</div>
+
+
+<div id="outline-container-org3617dfa" class="outline-4">
+<h4 id="org3617dfa"><span class="section-number-4">12.0.5</span> Newspeak is: Reflective (Mirror based reflection)</h4>
+<div class="outline-text-4" id="text-12-0-5">
+<ul class="org-ul">
+<li>Newspeak programs are causally connected to their executable representation via a reflective API.</li>
+
+<li>Reflection in Newspeak is mirror based, with mirrors acting as capabilities - see Mirrors: Design principles for meta-level facilities of object-oriented programming languages, <a href="http://bracha.org/mirrors.pdf">http://bracha.org/mirrors.pdf</a></li>
+
+<li>Given access to the appropriate mirrors (and only given such access), a running program and can both introspect and modify itself.</li>
+</ul>
+</div>
+</div>
+
+
+<div id="outline-container-org4453f42" class="outline-4">
+<h4 id="org4453f42"><span class="section-number-4">12.0.6</span> Newspeak is: Modular (Independent, immutable, parametric namespaces)</h4>
+<div class="outline-text-4" id="text-12-0-6">
+<ul class="org-ul">
+<li>Newspeak module definitions are independent, immutable, self-contained parametric namespaces.</li>
+
+<li>They can be instantiated into modules which may be stateful and mutually recursive.</li>
+
+<li>These modules are inherently re-entrant, because there is no static state in Newspeak.</li>
+
+<li>All inter-module dependencies are explicit.</li>
+
+<li>Modules and their definitions are first class objects that can be manipulated at run time.</li>
+</ul>
+</div>
+</div>
+
+
+<div id="outline-container-orgcbf7c22" class="outline-4">
+<h4 id="orgcbf7c22"><span class="section-number-4">12.0.7</span> Newspeak is: Concurrent (Actor based concurrency)</h4>
+<div class="outline-text-4" id="text-12-0-7">
+<ul class="org-ul">
+<li>Concurrency in Newspeak is based on actors.</li>
+
+<li>Actors:
+
+<ul class="org-ul">
+<li>Are objects with their own thread of control.</li>
+
+<li>Share no state with other actors; they communicate exclusively via asynchronous message passing.</li>
+
+<li>Are non-blocking, race-and-deadlock free, and scalable.</li>
+</ul></li>
+
+<li>Only a partial prototype has been implemented.</li>
+
+<li>Also note that the FFI (8.5) can undermine actor isolation as C can take state passed from one actor, store it globally, and return it to another actor. Non-blockingness also requires care, as a callback passed in by one actor can be invoked when C is called by another. Must ensure that said callback acts as a future, or fails (the former, to allow event processing).</li>
+
+<li>In an ideal world, one would only communicate with foreign languages running in a distinct actor. This would be more secure, and require less special handling; this was part of the original vision of Smalltalk. Newspeak is pragmatic in this regard; it remains idealistic, but only to an extent.</li>
+</ul>
+</div>
+</div>
+
+
+<div id="outline-container-orgd3bc38d" class="outline-4">
+<h4 id="orgd3bc38d"><span class="section-number-4">12.0.8</span> Newspeak is: Optionally typed <i>Unimplemented</i></h4>
+<div class="outline-text-4" id="text-12-0-8">
+<ul class="org-ul">
+<li>Newspeak supports pluggable types - see  <sup><a id="fnr.5" class="footref" href="#fn.5">5</a></sup> .</li>
+
+<li>This allows the language to be extended with arbitrary type systems. These type systems are necessarily optional, and never affect run-time semantics. They utilize Newspeak's metadata facility (4.3), which allows annotations to be attached to any node in a program's abstract syntax tree.</li>
+</ul>
+</div>
+</div>
+</div>
+
+
+<div id="outline-container-org47f84f0" class="outline-2">
+<h2 id="org47f84f0"><span class="section-number-2">13</span> Newspeak - A few core principles</h2>
+<div class="outline-text-2" id="text-13">
+<p>
+These two items are critical to allow some of the features described in the previous section:
+</p>
+
+<ol class="org-ol">
+<li><b>The only runtime operation is virtual method invocation</b> (message send in Smalltalk terminology)
+
+<ul class="org-ul">
+<li>So there are no variable assignments</li>
+
+<li>So even each object's access to it's internal structure uses method invocation</li>
+</ul></li>
+
+<li>All names are late bound (also follows from 1)</li>
+
+<li><b>There is no global namespace</b></li>
+
+<li>There is no static state (follows from 3)</li>
+</ol>
+
+
+<p>
+For a better description and more details, see  <sup><a id="fnr.6" class="footref" href="#fn.6">6</a></sup>
+</p>
+</div>
+</div>
+
+
+<div id="outline-container-orged6cf96" class="outline-2">
+<h2 id="orged6cf96"><span class="section-number-2">14</span> Newspeak - Below the Surface - Details, discussion, examples</h2>
+<div class="outline-text-2" id="text-14">
+<p>
+Sections and statements of this paragraph are directly used from (or at least inspired by) <sup><a id="fnr.6.100" class="footref" href="#fn.6">6</a></sup> and other items in references.
+</p>
+</div>
+
+<div id="outline-container-org264bf25" class="outline-4">
+<h4 id="org264bf25"><span class="section-number-4">14.0.1</span> Newspeak 101: How to define a class - basics</h4>
+<div class="outline-text-4" id="text-14-0-1">
+<ul class="org-ul">
+<li>In Newspeak, <b>there is a standard text representation of class declaration</b>. It can be pasted in to create a class, or can be saved from existing class. But let us first go to Newspeak.
+
+<ul class="org-ul">
+<li>Open Newspeak, click Tools -&gt; Newspeak Browser</li>
+
+<li>Go to an existing category, create a category AATUG (by clicking +)</li>
+
+<li>Select AATUG, click on the + to add class, paste the class definitions below. Repeat for each class.</li>
+
+<li><p>
+Newspeak simplest class declaration
+</p>
+
+<pre class="example">
+(* Simplest possible class declaration. Note two sets of parenthesis *)
+class Simple = () ()
+
+(* Equivalent is: *)
+class Simple1 = Object () ()
+
+(* Another Equivalent is: *)
+class Simple2 = Object () () : ()
+
+(* Another Equivalent is: *)
+class Simple3 = Object (||) () : ()
+
+(* What the above means: *)
+class Simple4 = Object (instance initializer) (instance method definitions and nested classes definitions) : (class method definitions)
+
+(* What the above means in detail - pseudocode: *)
+class Simple5 = Object (|slotDefinitions|) (instance method definitions and nested classes definitions) : (class method definitions)
+
+(* Again equivalent to (pseudocode, just indenting): *)
+class Simple6 = Object (
+  |slotDefinitions| 
+) (
+  (* instance methods and nested classes definitions *)
+) : (
+  (* class method definitions *)
+)
+
+</pre></li>
+
+<li>Unlike Smalltalk, Newspeak has a text representation of code - you can paste the above code to the Newspeak IDE.</li>
+
+<li>==&gt; Paste the above to the Newspeak Browser - explain and store classes.
+
+<ul class="org-ul">
+<li>put all as top level class, quick nesting note regarding top level classes</li>
+
+<li>Newspeak class declarations can be nested</li>
+
+<li>In the first bracket, slots are defined</li>
+
+<li>In the second bracket nested classes and instance methods are defined</li>
+
+<li>So Newspeak has three kinds of members: slots, methods, and (nested) classes.</li>
+
+<li>It is possible to override slots, classes and methods with each other.</li>
+</ul></li>
+
+<li>==&gt; Open a workspace, highlight a code section and click "Evaluate" the following expressions
+
+<ul class="org-ul">
+<li>Simple      'Evaluate'</li>
+
+<li>Simple new  'Evaluate'</li>
+</ul></li>
+
+<li>==&gt; inspect evaluation results</li>
+</ul></li>
+</ul>
+</div>
+</div>
+
+
+<div id="outline-container-org1ebc5fb" class="outline-4">
+<h4 id="org1ebc5fb"><span class="section-number-4">14.0.2</span> Newspeak 101: The Newspeak Workspace</h4>
+<div class="outline-text-4" id="text-14-0-2">
+<ul class="org-ul">
+<li><p>
+==&gt; In workspace:
+</p>
+
+<pre class="example">
+|x|
+x == 20.  
+</pre>
+
+<ul class="org-ul">
+<li>Make sure always select everything you need to evaluate</li>
+
+<li>Use Evaluate, not ^D</li>
+</ul></li>
+</ul>
+</div>
+</div>
+
+
+<div id="outline-container-orgc97111a" class="outline-4">
+<h4 id="orgc97111a"><span class="section-number-4">14.0.3</span> Newspeak 101: How to define a nested class (outer and inner class)</h4>
+<div class="outline-text-4" id="text-14-0-3">
+<ul class="org-ul">
+<li>In Newspeak, classes can be nested hierarchically.</li>
+
+<li>In fact, nested classes are a cornerstone of Newspeak modularity.</li>
+
+<li>Nested classes enable the mantra "everything is an object": In Newspeak, <b>all applications, and modules (libraries) are just classes - top level classes</b>.</li>
+
+<li>All class examples we have shown so far was a top level class, but in practice <b>almost everything you do in Newspeak lives in a deeper level class- only applications and libraries(modules) are top level classes</b>.</li>
+</ul>
+
+<pre class="example">
+(* Nested top level class (library) example *)
+
+class CarLibrarySmall = Object () (
+  (* In the library instance section, define nested classes. 
+     Car is a nested class in CarLibrary 
+  *)
+  class Car = Object()()
+)
+</pre>
+</div>
+</div>
+
+
+<div id="outline-container-orge6404f2" class="outline-4">
+<h4 id="orge6404f2"><span class="section-number-4">14.0.4</span> Newspeak 101: Hello Brave new world (in Transcript) - An example of Newspeak application</h4>
+<div class="outline-text-4" id="text-14-0-4">
+<p>
+This section describes how to create a Newspeak application "Hello brave new World", following <sup><a id="fnr.7" class="footref" href="#fn.7">7</a></sup> 
+</p>
+
+<ul class="org-ul">
+<li><p>
+==&gt; Start in the Newspeak browser AATUG category, and click the + icon: <img src="/img/newspeak-browser-category.png" alt="nil"/>
+Add this code:
+</p>
+
+<pre class="example">
+class HelloBraveNewWorld usingPlatform: platform = Object (
+  |Transcript = platform blackMarket Transcript.|
+  Transcript open show: 'Hello, Oh Brave new world'.
+)(
+)
+</pre>
+
+<p>
+Click on the checkmark - <img src="/img/newspeak-define-new-class.png" alt="nil"/>
+</p></li>
+</ul>
+<p>
+Several comments about the code:
+</p>
+
+<ul class="org-ul">
+<li>The code <code>(|Transcript = platform etc )</code> is the <b>initializer</b>. Initializers in Newspeak perform the guarantee that no object is observed uninitialized, as in both Java or Smalltalk. For more details of what this means, see <a href="#org884dbea">15.0.3.0.6</a></li>
+
+<li><i>platform</i> in the <i>platform = (etc)</i> is a parameter to the initilizer object. <i>platform</i> object encapsulates the underlying platform</li>
+
+<li><i>blackMarket</i> is a message to <i>platform</i> object. Black Market is a temporary escape to the IDE's global namespace - and provide access to things like <i>Squeak Transcript</i> to which there are no Newspeak alternatives.</li>
+
+<li>The code in <i>Transcript open show: 'Hello, Oh Brave new world'.</i> will show the string in the Transcript. Because this code is in the initializer of HelloBraveNewWorld, it will be <b>executed when <i>HelloBraveNewWorld</i> is created</b>.</li>
+
+<li>There is one slot, named <i>Transcript</i>, initialized from the <i>platform</i> object.</li>
+
+<li>Declaring Transcript in the initializer is <span class="underline">idiomatic</span>, as the dependence on Transcript is clearly localized to one point of declaration of the Transcript slot.</li>
+
+<li>Reader of the code can see all external dependencies of the <i>HelloBraveNewWorld</i> module in one place.</li>
+
+<li>This use of slots (of creating slots from external dependencies) is effectively <b>code import</b>, and allows to rename imported elements where it makes sense.</li>
+
+<li>How to run the Brave new World?
+
+<ul class="org-ul">
+<li>==&gt; Open workspace and type in <i>HelloBraveNewWorld usingPlatform: platform</i>, then evaluate.</li>
+
+<li>Transcript will open, showing the message 'Hello, Oh Brave new world'</li>
+
+<li>NOTE: if we did declare the application class as <i>class HelloBraveNewWorld = Object (Transcript open show: 'Hello, Oh Brave new world'.)()</i>, running it would get a doesNotUnderstand, as there is no way to access any system state (Transcript, output stream, etc) without the system state being passed a parameter when the module is initialized.</li>
+</ul></li>
+
+<li>TODO How is the <i>platform</i> object, when running in workspace, created?</li>
+</ul>
+</div>
+</div>
+
+
+<div id="outline-container-org76809ea" class="outline-4">
+<h4 id="org76809ea"><span class="section-number-4">14.0.5</span> Newspeak 101: How to define a more complex class - class Thing and it's subclass Car, both living in CarLibrary module.</h4>
+<div class="outline-text-4" id="text-14-0-5">
+<pre class="example">
+class CarLibrary = Object()(
+
+  class Thing = Object (
+  )( 
+    (* instance methods, starting with a category string *)
+    'category misc'
+    printMe       = (^ 'I am a thing.'.)
+    'category test'
+    testThis       = (^ 'Testing a thing'.)
+  ):(
+    'category on the class side'
+    aClassMethod  =  (^ 'I am a class method'.)
+  )
+
+)
+</pre>
+
+<pre class="example">
+class CarLibrary = Object()(
+
+  (* 
+     - This Car class introduces message pattern as part of the class definition.
+     - The message pattern /Car color: aColor/ is the *primary constructor for the class*.
+     - /aColor/ is a formal parameter, which is in scope in the class body
+     - The result of sending this message /color: aColor/ (to class Car) results in:
+        - executes the instance initializer code /color ::= aColor./
+        - creates a fresh car instance.
+     - The slot /color/ is accessed only through automatically generated getter (/color/) and setter (/color:/)
+     - Client example:
+       - Car color: 'blue'. 
+  *)
+
+  class Car color: aColor = Thing (
+    (* initializer - section between vertical bars. *) 
+    |
+    (* color is a slot. Slots are similar to instance variables, but they are never accessed directly,
+       only through automatically generated getters and setters. The getter name and usage is "color",
+       the setter name and usage is "color: newColor".
+       slots setters/getters exist (among others) to enforce "the only runtime operation is message send"
+    *)
+    color ::= aColor. (* ::= defines a mutable slot. If we used /color = aColor/, then color slot would be immutable *)
+    | 
+  )( 
+    (* instance methods *)
+    'category misc'
+    printMe       = (^ 'I am a Car, my color is ', color.)
+    printColor     = (^ 'My color is ', color.)
+  )
+
+)
+</pre>
+
+<ul class="org-ul">
+<li>Unlike Smalltalk, Newspeak has a text representation of code - you can paste the above code to the Newspeak IDE.</li>
+
+<li>Paste Car and Thing under TugPresentation</li>
+
+<li>Note that after pasting the above to the Newspeak IDE, some things are underlined, for example method names. This looks like a syntax error but it is not - underline shows message names that may not be known and top level class names.</li>
+
+<li>Also note that in the latest stable Newspeak, unlike various examples on the web, the category string above method ('category misc') is required for the textual representation to work.</li>
+</ul>
+</div>
+</div>
+
+
+<div id="outline-container-org07ccae9" class="outline-4">
+<h4 id="org07ccae9"><span class="section-number-4">14.0.6</span> Newspeak 101: Newspeak Syntax in a nutshell</h4>
+<div class="outline-text-4" id="text-14-0-6">
+<p>
+Below is an annotated and (over) colored example of a Newspeak class declaration. See <a href="http://lively-kernel.org/repository/webwerkstatt/users/mzimmerm/Projects/Newspeak/NewspeakSyntax.xhtml?forceInvalidateCache=1414792071362">http://lively-kernel.org/repository/webwerkstatt/users/mzimmerm/Projects/Newspeak/NewspeakSyntax.xhtml?forceInvalidateCache=1414792071362</a> for more details.
+</p>
+
+<p>
+<img src="/img/newspeak-syntax.png" alt="nil"/>
+</p>
+</div>
+
+<div id="outline-container-orge8d445c" class="outline-6">
+<h6 id="orge8d445c"><span class="section-number-6">14.0.6.0.1</span> Syntactic Elements in the CarLibrary example above:</h6>
+<div class="outline-text-6" id="text-14-0-6-0-1">
+</div>
+<ol class="org-ol">
+<li><a id="orgbee6697"></a>Class Declaration (line 2)<br />
+<div class="outline-text-8" id="text-14-0-6-0-1-0-1">
+<p>
+Let us ignore the outer class CarLibrary starting at line 1 and closing at line 23.
+</p>
+
+<p>
+On line 2, class RGBCar is declared. As part of the declaration, a constructor "rgbColor: aRgbColor" is declared. This would be used in client code as
+</p>
+
+<pre class="example">
+|car|
+car: RGBCar rgbColor: '#0000FF'. (* this code creates a new RGBCar  and uses the auto-generated setter car: to the value*)
+car printMe. (* would print 'I am a RGBCar, my rgbColor is #0000FF*)        
+</pre>
+
+<p>
+If the section <i>rgbColor: aRgbColor</i> was cut out from the default constructor on line 2, the class would define a default constructor "new". That would be used in client code as
+</p>
+
+<pre class="example">
+|car|
+car: RGBCar new. (* this code creates a new RGBCar with no color and uses the auto-generated setter car: to the value*)
+car printMe. (* would produce 'I am a RGBCar, my rgbColor is null*)
+</pre>
+
+<p>
+RGBCar Extending Thing:
+    Line 2 shows how RGBCar can extend class Thing (declared elsewhere as part of CarLibrary). The string Thing can be replaced with Object or nothing (which is equivalent to Object)
+</p>
+</div>
+</li>
+
+
+<li><a id="orgccbb1bc"></a>Initializer (lines 3-6):<br />
+<div class="outline-text-8" id="text-14-0-6-0-1-0-2">
+<p>
+On lines 3 to 6, initializer defines a slot <i>rgbColor</i> between vertical bars. Slots are similar to instance variables, but they are, 
+nowhere inside or outside of the class, accessed directly. Setters and getters are automatically generating for slots. Inside the 
+class body, lines 8-12, rgbColor value can be obtained by using it as part of expression such as on line 10 (rgbColor slot getter) , or set using rgbColor slot setter <i>rgbColor:</i> such as
+</p>
+
+<pre class="example">
+rgbColor: '#00FF00'.
+</pre>
+</div>
+</li>
+
+<li><a id="org6c1fba4"></a>Instance Body: Instance method and inner classes declarations (lines 8-12)<br />
+<div class="outline-text-8" id="text-14-0-6-0-1-0-3">
+<p>
+In our example, only methods are defined: color and printMe
+</p>
+</div>
+</li>
+
+
+<li><a id="org0aa3f9d"></a>Class method declarations (class method can be considered an alternative constructor) (lines  14-22)<br />
+<div class="outline-text-8" id="text-14-0-6-0-1-0-4">
+<p>
+One class method, <i>RgbCar color:</i> is defined. This could be used in client code as
+</p>
+
+<pre class="example">
+|car|
+car: RGBCar color: 'blue'. (* this code creates a new RGBCar  and uses the auto-generated setter car: to the value*)
+car printMe. (* would print 'I am a RGBCar, my rgbColor is blue converted to  RGB*)
+</pre>
+</div>
+</li>
+
+<li><a id="orga0d0023"></a>Constructor (line 2)<br />
+<div class="outline-text-8" id="text-14-0-6-0-1-0-5">
+<p>
+The class declaration evaluates to a class object. Instances may only be created by invoking a factory method on RgbCar. Every class has a single primary factory, in this case rgbColor:. If no factory name is given, it defaults to new. The <b>primary factory method's header</b> is declared immediately after the class name. The formal parameters of the primary factory are in scope in the instance initializer. In lines 3-6, the slot declarations include an initialization clause of the form ::= e where e can be an arbitrary expression. In our example, the rgbColor slot is initialized to the value of the formal parameter aRgbColor (rgbColor ::= aRgbColor).
+</p>
+</div>
+</li>
+</ol>
+</div>
+</div>
+
+
+
+<div id="outline-container-org714fda1" class="outline-4">
+<h4 id="org714fda1"><span class="section-number-4">14.0.7</span> Newspeak 101: Opinion - Is the "=" character overused?</h4>
+<div class="outline-text-4" id="text-14-0-7">
+<p>
+The = character can appear in the following syntactic context:
+</p>
+
+<ol class="org-ol">
+<li><p>
+In the class declaration: See for example, line 1: 
+</p>
+
+<pre class="example">
+class CarLibrary = Object(...)(...)
+</pre></li>
+
+<li><p>
+In the method declaration: See for example, line 10: 
+</p>
+
+<pre class="example">
+public color = (^...)
+</pre></li>
+
+<li><p>
+In the initializer, to define a mutable slot: See line 5: 
+</p>
+
+<pre class="example">
+rgbColor ::= aRgbColor.
+</pre></li>
+
+<li><p>
+In the initializer, to define a immutable slot: No usage in the above example, but it could be a line inserted after line 5:
+</p>
+
+<pre class="example">
+numWheels = 4.
+</pre></li>
+
+<li><p>
+As an equality symbol =:  No usage in the above example, but  it could be a line inserted after line 18:
+</p>
+
+<pre class="example">
+(aRgbColor = aColor) ifTrue: [Transcript open show: 'ERR'] ifFalse: [Transcript open show: 'OK']
+</pre></li>
+
+<li>As part of the object identity symbol, <code>= - no example here but could be used similar to the above substitute =</code> for =</li>
+</ol>
+</div>
+</div>
+
+
+<div id="outline-container-org8033040" class="outline-4">
+<h4 id="org8033040"><span class="section-number-4">14.0.8</span> Newspeak 101: Representation independence</h4>
+<div class="outline-text-4" id="text-14-0-8">
+<p>
+Newspeak objects are independent of their representation. We have changed the layout of Car  to RgbCar with two additions. 
+</p>
+
+<p>
+The RgbCar class has the same API as the Car class, because:
+</p>
+
+<p>
+a) While RgbCar stores color internally as rgbColor, we provided the ability to also create RgbCar from color, by making color: constructor - a class method
+</p>
+
+<p>
+b) We preserved the Car interface by providing instance method "color" which converts RgbCar's rgbColor to color.
+</p>
+
+<p>
+<b><i>RgbCar</i> should be now be renamed to <i>Car</i>, because <i>RgbCar</i> provides a representation independent API with respect to color / rgbColor</b>
+</p>
+</div>
+</div>
+
+
+<div id="outline-container-orgf78efec" class="outline-4">
+<h4 id="orgf78efec"><span class="section-number-4">14.0.9</span> Newspeak 101: Mutable vs. Immutable Slots</h4>
+<div class="outline-text-4" id="text-14-0-9">
+<p>
+rgbColor slot on line 5 is mutable, defined as rgbColor ::= aRgbColor. Immutable slot would be defined as rgbColor = aRgbColor.
+</p>
+</div>
+</div>
+
+
+<div id="outline-container-org8466c32" class="outline-4">
+<h4 id="org8466c32"><span class="section-number-4">14.0.10</span> Newspeak 101: Newspeak differences from Smalltalk</h4>
+<div class="outline-text-4" id="text-14-0-10">
+<ul class="org-ul">
+<li>Newspeak fields (slots) automatically define access methods
+
+<ul class="org-ul">
+<li>So the only way to set or get a slot value is by invoking a method.</li>
+
+<li>And if a class changes and replaces the slot with a method that does something more than access the slot, client code will not be affected - code is representation independent.</li>
+</ul></li>
+</ul>
+</div>
+
+<div id="outline-container-org72e52b0" class="outline-6">
+<h6 id="org72e52b0"><span class="section-number-6">14.0.10.0.1</span> From Modules as Objects in Newspeak  <sup><a id="fnr.6.100" class="footref" href="#fn.6">6</a></sup> (dot-jotted, emphasis added):</h6>
+<div class="outline-text-6" id="text-14-0-10-0-1">
+<ul class="org-ul">
+<li>Newspeak is a direct descendant of Smalltalk.</li>
+
+<li>Unlike Smalltalk Newspeak has an <b>intentional, syntactic representation</b> of classes; this is crucial in <b>supporting nested classes</b>, which are not present in Smalltalk.</li>
+
+<li>Smalltalk has a <b>global namespace</b> and abundant <b>static state</b>. Most fundamentally, Smalltalk <b>distinguishes between method invocation and variable access</b> it is <b>not a purely message based language</b>.</li>
+
+<li>These differences lead to a different semantics of method lookup (cont).</li>
+</ul>
+</div>
+</div>
+
+
+<div id="outline-container-org2a50d05" class="outline-6">
+<h6 id="org2a50d05"><span class="section-number-6">14.0.10.0.2</span> From Message Based Programming (emphasis added)</h6>
+<div class="outline-text-6" id="text-14-0-10-0-2">
+<p>
+(see  <a href="http://gbracha.blogspot.ca/2007/05/message-based-programming.html">http://gbracha.blogspot.ca/2007/05/message-based-programming.html</a>)
+</p>
+
+<ul class="org-ul">
+<li>Smalltalk terminology refers to method invocations as message sends. Message passing is often associated with asynchrony, but it doesn't have to be. Smalltalk message sends are synchronous. As such, they seem indistinguishable from virtual method invocations. However, the terminology matters.</li>
+
+<li><b>Insisting that objects communicate exclusively via message sends rules out aberrations such as static methods, non-virtual methods, constructors and public fields</b>. More than that: It means that one cannot access another object's internals - we have to send the object a message. So when we say that an object encapsulates its data, encapsulation can't be interpreted as just bundling - it means data abstraction. Two objects that respond the same way to all messages are indistinguishable, regardless of their implementation details.
+
+<ul class="org-ul">
+<li>We can nevertheless ask: is Smalltalk a message based programming language? I think not. I would take message-based programming to have an even stronger requirement: all computation is done via message passing. That includes the computation done within a single object as well. Whereas Smalltalk objects can access variables and assign them, message based programming would require that an object use messages internally as well. This is exactly what happens in Self, as I discussed in an earlier post about representation independent code.</li>
+</ul></li>
+</ul>
+</div>
+</div>
+
+
+<div id="outline-container-orgf844c10" class="outline-6">
+<h6 id="orgf844c10"><span class="section-number-6">14.0.10.0.3</span> Newspeak Syntax notes (as different from Smalltalk)</h6>
+<div class="outline-text-6" id="text-14-0-10-0-3">
+<ul class="org-ul">
+<li>There are no assignment operator in Newspeak</li>
+
+<li><i>::=</i> (initializer only), vs  <i>=</i> (2 roles, function and class declaration, equality) vs <i>::</i> vs <i>==</i> (identity) - these were already discused in a section above.</li>
+
+<li>More differences from Smalltalk:
+
+<ul class="org-ul">
+<li>Refer to slides 11-20 (accent: slide 15) from <sup><a id="fnr.8" class="footref" href="#fn.8">8</a></sup> and discuss</li>
+
+<li>No Global variables, no assignment, no static (global) state.</li>
+
+<li>The only runtime operation is message send. In the example on slide 15:
+
+<ul class="org-ul">
+<li><i>t::</i> looks like a variable but is a setter, automatically generated (no assignment, all slot access in Newspeak is replaced with a message send)</li>
+
+<li>Array must be implicitly passed to the application (no static)</li>
+</ul></li>
+
+<li>Class categories are a Smalltalk legacy that will likely be dropped in the future</li>
+
+<li>Packages are likely to be removed as well.</li>
+</ul></li>
+</ul>
+</div>
+</div>
+
+
+<div id="outline-container-orgcafd49c" class="outline-6">
+<h6 id="orgcafd49c"><span class="section-number-6">14.0.10.0.4</span> Migration from Smalltalk to Newspeak</h6>
+<div class="outline-text-6" id="text-14-0-10-0-4">
+<ul class="org-ul">
+<li>There is a document <a href="http://bracha.org/Smalltalk2NS2.pdf">http://bracha.org/Smalltalk2NS2.pdf</a> describing how to convert Smalltalk code to Squeak.</li>
+
+<li>I do not have enough Newspeak to prove this on any sufficiently sized program, but, according to The Ministry of Truth in <sup><a id="fnr.2.100" class="footref" href="#fn.2">2</a></sup>, code converted from Smalltalk to Newspeak:
+
+<ul class="org-ul">
+<li>The converted code is better than the original.</li>
+
+<li>It becomes clear:
+
+<ul class="org-ul">
+<li>what the code's external dependencies are</li>
+
+<li>what the module boundaries should be</li>
+
+<li>who is responsible for initialization</li>
+</ul></li>
+
+<li>There is no longer any static state.</li>
+
+<li>Easier to tie libraries together (or tear them apart),</li>
+
+<li>Easier libraries independent testing</li>
+
+<li>Smalltalkers can migrate to Newspeak relatively easily.</li>
+</ul></li>
+</ul>
+
+<p>
+I will do my best to show some of these points on an example in the modularity section.
+</p>
+</div>
+</div>
+
+
+<div id="outline-container-org65836ac" class="outline-6">
+<h6 id="org65836ac"><span class="section-number-6">14.0.10.0.5</span> Gotchas</h6>
+<div class="outline-text-6" id="text-14-0-10-0-5">
+<ol class="org-ol">
+<li>Some syntax is evolving. I think I saw on the web some examples using <i>a := b</i>, replace that with <i>a:: b</i> (setter send). Note the <i>::</i> must not be separated by space.</li>
+
+<li>See the notes on ::= vs = vs :: vs =() in this presentation in syntax notes above</li>
+</ol>
+</div>
+</div>
+</div>
+</div>
+
+
+<div id="outline-container-orgf04576c" class="outline-2">
+<h2 id="orgf04576c"><span class="section-number-2">15</span> Newspeak - As Advertised - Expanding on the Specs Highlights section</h2>
+<div class="outline-text-2" id="text-15">
+</div>
+<div id="outline-container-org0e46593" class="outline-4">
+<h4 id="org0e46593"><span class="section-number-4">15.0.1</span> <span class="todo TODO">TODO</span> Newspeak is: Network Serviced (Supported by <i>partially implemented synchronization</i>)</h4>
+<div class="outline-text-4" id="text-15-0-1">
+<p>
+Gilad Bracha describes his vision for objects as services (Serviced Objects = SOBs), replacing the static-y web services with objects. Great reading:
+</p>
+
+<p>
+<sup><a id="fnr.9" class="footref" href="#fn.9">9</a></sup> and <a href="http://bracha.org/objectsAsSoftwareServices.pdf">http://bracha.org/objectsAsSoftwareServices.pdf</a>
+</p>
+</div>
+</div>
+
+
+<div id="outline-container-org384521e" class="outline-4">
+<h4 id="org384521e"><span class="section-number-4">15.0.2</span> How Newspeak solves Problems with constructors, and removes any static state</h4>
+<div class="outline-text-4" id="text-15-0-2">
+<ul class="org-ul">
+<li>Having introduced Newspeak Basics, let us get back to:
+
+<ul class="org-ul">
+<li>Newspeak highlights in detail,</li>
+
+<li>Showing some issues with Java and Smalltalk, concentrating on:
+
+<ul class="org-ul">
+<li>Static global state (variables) issues</li>
+
+<li>Constructor issues</li>
+</ul></li>
+</ul></li>
+</ul>
+
+<p>
+We will show how Newspeak resolves the issues elegantly
+</p>
+</div>
+</div>
+
+
+<div id="outline-container-org9acc0e1" class="outline-4">
+<h4 id="org9acc0e1"><span class="section-number-4">15.0.3</span> Newspeak is: Class Based (with constructor issues removed)</h4>
+<div class="outline-text-4" id="text-15-0-3">
+<p>
+In this section we concentrate on describing constructor and instance creation deficiencies in Java and similar languages, but also Smalltalk, and show which improvements were applied to Newspeak. 
+</p>
+
+<p>
+But first a few notes on why Newspeak is class based not prototype based:
+</p>
+
+<ul class="org-ul">
+<li>Classes must be part of language; It was shown that JavaScript implementation of classes as libraries leads to fragmentation</li>
+
+<li>Briefly Describe Classes, Constructors, Objects, and their Definition.</li>
+</ul>
+</div>
+
+<div id="outline-container-orgf7c5a7a" class="outline-6">
+<h6 id="orgf7c5a7a"><span class="section-number-6">15.0.3.0.1</span> Constructors and Instance Creations: Issues in Existing Languages (Java, Smalltalk)</h6>
+<div class="outline-text-6" id="text-15-0-3-0-1">
+<p>
+There is an important improvement in Newspeak regarding constructors. 
+</p>
+
+<p>
+In his Room 101 blog, Gilad Bracha describes:
+</p>
+
+<ul class="org-ul">
+<li>Weaknesses of and deficiencies of constructors in languages such as Java.</li>
+
+<li>Weaknesses of object creation in Smalltalk</li>
+</ul>
+
+<p>
+Newspeak's constructors (and also Dart to a degree) resolve the discussed constructor issues. - Most comments here are again inspired by and used from Gilad Bracha's Room 101 blog
+</p>
+
+<ul class="org-ul">
+<li>Constructors Considered Harmful  <sup><a id="fnr.10" class="footref" href="#fn.10">10</a></sup></li>
+
+<li>Object Initialization and Construction Revisited <sup><a id="fnr.11" class="footref" href="#fn.11">11</a></sup></li>
+</ul>
+</div>
+</div>
+
+
+<div id="outline-container-org029c3ae" class="outline-6">
+<h6 id="org029c3ae"><span class="section-number-6">15.0.3.0.2</span> Constructor Example in pseudo-Java (similar to Groovy, C#, PHP) - First hint at problems</h6>
+<div class="outline-text-6" id="text-15-0-3-0-2">
+<p>
+Let us take a look at this pseudo-Java code:
+</p>
+
+<pre class="example">
+
+class Thing {
+  // implicit extends Object, 
+  // constructor can be implicit
+  Thing() {
+  }
+}
+
+// class declaration
+class Car extends Thing {
+  // constructor
+  Car(String color) {
+    super(); // implicit
+    this.color = color.
+  }
+  int countWheels() {
+    return 4;
+  }
+}
+
+// client code uses constructor this way:
+Car c = new Car('blue'); // This is not Object Oriented - no receiver
+
+// client code sends a message this way:
+int wheels = c.countWheels(); // This is Object Oriented: receiver.message()
+</pre>
+
+<p>
+Here we see a few issues:
+</p>
+<ul class="org-ul">
+<li>is <i>new</i> a method? what object is it called on?</li>
+<li>is <i>Car('blue')</i> a method invocation? what object is it called on?</li>
+</ul>
+
+<p>
+Answer:
+</p>
+<ul class="org-ul">
+<li><i>new</i> is not a message to any object</li>
+<li><i>Car('blue')</i> is not a message to any object either</li>
+<li>Because there is no receiver</li>
+<li>Rather the "constructor construct" <i>new Car('blue')</i> is wired in as a special case, in a way that does not match the message send OO pattern.</li>
+<li>So when we say Java is lacking because not everything is an object, it is true, but the problem goes deeper - non uniformity and non-object orientedness / receiver.message() syntax of some core constructs.</li>
+</ul>
+</div>
+</div>
+
+
+<div id="outline-container-org94de137" class="outline-6">
+<h6 id="org94de137"><span class="section-number-6">15.0.3.0.3</span> Constructors - more hints at problems</h6>
+<div class="outline-text-6" id="text-15-0-3-0-3">
+<p>
+In Java (and similar languages), there are constructor issues like:
+</p>
+
+<ul class="org-ul">
+<li>Constructor cannot be overridden like instance methods (no target object, so no dynamic dispatch).</li>
+
+<li>Constructor <i>new Car('blue')</i> cannot return an instance of another object or cached or proxy object.</li>
+
+<li>All constructors need to call another constructor, or a superclass constructor etc.</li>
+
+<li>Mixins are hard to implement in a language with constructors.</li>
+
+<li>Constructors are a major cause of need of dependency injection.</li>
+
+<li>Constructors are a major issue for testability: (<i>new Car('blue')</i> cannot return a mock of a car).</li>
+</ul>
+</div>
+</div>
+
+
+<div id="outline-container-orgc867be3" class="outline-6">
+<h6 id="orgc867be3"><span class="section-number-6">15.0.3.0.4</span> Typical (Java) Solutions to constructor problems</h6>
+<div class="outline-text-6" id="text-15-0-3-0-4">
+<ul class="org-ul">
+<li><p>
+Use a static method <i>makeCar('blue')</i> on the same class on another class (aka "factory method"):
+</p>
+
+<pre class="example">
+CarFactory.makeCar(String color) { can return instance of Car, it's subclass, a proxy or something else }
+</pre>
+
+
+<ul class="org-ul">
+<li>But static methods in Java has similar problems:
+
+<ul class="org-ul">
+<li>Static method has no runtime target object - are wired at compile time =&gt; no abstraction via interface, no dynamic binding or overriding</li>
+
+<li>see the static state section</li>
+
+<li>also see <a href="http://stackoverflow.com/questions/2223386/why-doesnt-java-allow-overriding-of-static-methods">http://stackoverflow.com/questions/2223386/why-doesnt-java-allow-overriding-of-static-methods</a></li>
+</ul></li>
+</ul></li>
+
+<li>Ok, so what to use if not static methods? We can define a factory class and make instances of it - this is OO
+
+<ul class="org-ul">
+<li><p>
+But to create the factory class instance we need a constructor:
+</p>
+
+<pre class="example">
+new CarFactory().makeCar('blue')
+</pre></li>
+
+<li>so we are in a problem loop!</li>
+</ul></li>
+
+<li>A better solution is to use Dependency Injection (DI framework)
+
+<ul class="org-ul">
+<li>That is reasonable, but requires an extra-lingual framework and adds a dependency</li>
+
+<li>DI frameworks are workarounds for the lack of support in the underlying language</li>
+</ul></li>
+</ul>
+</div>
+</div>
+
+
+
+<div id="outline-container-orga92fae0" class="outline-6">
+<h6 id="orga92fae0"><span class="section-number-6">15.0.3.0.5</span> Smalltalk: Has a better approach to constructors - does not have constructors in the above sense, but factory objects for instances.</h6>
+<div class="outline-text-6" id="text-15-0-3-0-5">
+<ul class="org-ul">
+<li>30+years old, Smalltalk</li>
+
+<li>There are <b>no constructors in Smalltalk</b>, instead, there are <b>factory objects for instances (instance creators)</b>.
+
+<ul class="org-ul">
+<li>This is a solution we were trying to show in the above Java-like examples using factories.</li>
+
+<li>In Smalltalk abstraction is preserved (we have an object as a target for new).</li>
+
+<li>But inheritance instance initialization is not guaranteed - has to be worked on, does not come for free, see the next heading.</li>
+</ul></li>
+
+<li><p>
+Saving the following Car class declaration creates the class object (=the factory object for instances).
+</p>
+
+<pre class="example">
+"Defining and saving Car"
+
+Object subclass: #Car
+  instanceVariableNames: 'color'
+  classVariableNames: ''
+  poolDictionaries: ''
+  category: 'AAATUG'
+
+"Unlike Java new Car('blue'), or even CarFactory in /CarFactory.makeCar('blue')/, "
+"   Smalltalk Car class is an object, not just a static global name"
+"   Below, &gt;&gt;new is invoked on a target which is an object, instance of Car class, not a compile-time wired call"
+myCar := Car new.
+</pre></li>
+
+<li>The fact that Car class is an object allows abstraction and method lookup etc.</li>
+</ul>
+</div>
+</div>
+
+
+<div id="outline-container-org884dbea" class="outline-6">
+<h6 id="org884dbea"><span class="section-number-6">15.0.3.0.6</span> Smalltalk: But there is another problem:  no absolute guarantee that <i>myCar</i> instance is initialized</h6>
+<div class="outline-text-6" id="text-15-0-3-0-6">
+<p>
+In the Smalltalk Car definition, we defined <i>instanceVariableNames: color</i> to illustrate this point.
+</p>
+
+<ul class="org-ul">
+<li>We want the Smalltalk car to be created initialized with it's color.</li>
+
+<li>We do not want clients to call <i>Car new</i>.</li>
+</ul>
+
+<pre class="example">
+myCar := Car new. 
+myCar printMe. "myCar's color not initialized"
+</pre>
+
+<ul class="org-ul">
+<li>To guarantee clients will not call <i>Car new</i>, we must override <i>Behavior&gt;&gt;new</i> or <i>Behavior&gt;&gt;initialize</i> and throw exception in the override</li>
+
+<li>Otherwise,  if <i>Car new</i> is used by clients, <i>myCar color</i> value is not initialized</li>
+
+<li>The core issue here is that:
+
+<ul class="org-ul">
+<li>the instance of <i>Car class</i> (the <b>factory for car instances</b>) is a subclass of <i>Object class</i> (the <b>factory for object instances</b>)</li>
+
+<li>along with method inheritance (<i>new</i> is inherited in the above case)</li>
+
+<li>lead to the <b>unintended</b> ability to partially initialize <i>myCar</i> with <i>color</i> null if called as <i>myCar := Car new</i>.</li>
+</ul></li>
+
+<li>If this was not the case, <i>Car class instance</i> would not have access to <i>Object class instance</i> new message!</li>
+
+<li><b>Solving the above issue, is the core to better constructors (instance creators) in Newspeak, removing both the Java-ism issues (no object target) and Smalltalk-ism issues (incomplete initialization must be manually prevented)</b>.</li>
+</ul>
+</div>
+</div>
+
+
+<div id="outline-container-org892f5d1" class="outline-6">
+<h6 id="org892f5d1"><span class="section-number-6">15.0.3.0.7</span> Smalltalk: There is also no guarantee object is not initialized twice</h6>
+<div class="outline-text-6" id="text-15-0-3-0-7">
+<p>
+Find an Example.
+</p>
+</div>
+</div>
+
+
+<div id="outline-container-org725d034" class="outline-6">
+<h6 id="org725d034"><span class="section-number-6">15.0.3.0.8</span> How Newspeak solves constructor deficiencies described above - an example</h6>
+<div class="outline-text-6" id="text-15-0-3-0-8">
+<ul class="org-ul">
+<li>Newspeak combines Scala constructors with Smalltalk factory for instances.</li>
+
+<li><p>
+But unlike Smalltalk, one cannot call a superclass's constructors on a subclass. This prevents clients from partially instantiating an object, say by writing:
+</p>
+
+<p>
+<i>Car new</i>. (* not visible and illegal as long as Car defines Car color: *)
+</p></li>
+</ul>
+
+<p>
+Let us create a simple class in Java, Smalltalk and Newspeak: <i>Thing and Car</i>: 
+</p>
+
+<ul class="org-ul">
+<li><p>
+In Smalltalk: <i>Thing's subclass Car</i>
+</p>
+
+<pre class="example">
+Thing: subclass Car
+    instanceVariableNames: 'color'
+    ..etc..
+
+'and class side method to create instances initialized with color'
+
+Car&gt;&gt;initWith: aColor
+  |car|
+  car := Car new. "or self new; not self initialize"
+  car setColor: aColor.
+
+  ^car.
+</pre>
+
+<ul class="org-ul">
+<li>Smalltalk Problem: Unless special care is taken (overriding &gt;&gt;new), client code can still call <i>myCar = Car new</i> and leave uninitialized state (instance variable color)</li>
+</ul></li>
+
+<li><p>
+In Java: <i>Car extends Thing</i>
+</p>
+
+<pre class="example">
+class Car extends Thing {
+  String color;
+  Car(String aColor) {
+    this.color = aColor;
+  }  
+}
+</pre>
+
+<ul class="org-ul">
+<li>Java Problem(s):
+
+<ul class="org-ul">
+<li>Java client call such as <i>myCar = new Car('blue')</i> will always be wired to the concrete type Car causing issues with testability, leading to need of Dependency Injection frameworkd.</li>
+
+<li><i>myCar = new Car('blue')</i> is a wired-in non object oriented syntax - <i>new</i> is not a message to a receiver object, cannot</li>
+</ul></li>
+</ul></li>
+
+<li><p>
+In Newspeak: <i>class Car = Thing ()()</i>
+</p>
+
+<pre class="example">
+(* 
+   - TODO - Repeat Car constructor from previous section here:
+*)
+</pre></li>
+
+<li>How is the Newspeak constructor different from the constructors in Java and instance creators in Smalltalk, and how does it solve the issues discussed? A summary from  <sup><a id="fnr.11.100" class="footref" href="#fn.11">11</a></sup>:
+
+<ul class="org-ul">
+<li>Because <b>the Newspeak instance is created by sending a message to an object</b>, and not by a special construct like a constructor invocation <i>Java: car = new Car('blue')</i>, we can:
+
+<ul class="org-ul">
+<li>Replace the receiver of that message with any object that responds to that message.</li>
+
+<li>The receiver can be another class, or it can be a factory object.</li>
+</ul></li>
+
+<li>But Newspeak also solves, without need to extra care in defining Car, the <b>Smalltalk initialization issues</b> (non-initialization, multiple utilization's)
+
+<ul class="org-ul">
+<li>Newspeak client code:
+
+<ul class="org-ul">
+<li><i>Thing new printMe.</i> #'I am a thing.'</li>
+
+<li>BUT: <i>Car new printMe</i> =&gt; Does not understand Car&gt;&gt;new! which is <b>good</b> - Newspeak hid the ability to call "new"</li>
+
+<li><p>
+SO: client use of <i>Car color: 'blue'.</i> is enforced instead of <i>Car new</i>:
+</p>
+
+<p>
+<i>(Car color: 'blue') printMe.</i> 'I am a Car, my color is blue'
+</p></li>
+</ul></li>
+</ul></li>
+</ul></li>
+</ul>
+</div>
+</div>
+
+
+<div id="outline-container-org1e87b86" class="outline-6">
+<h6 id="org1e87b86"><span class="section-number-6">15.0.3.0.9</span> Newspeak methods that take class-factory as a parameter</h6>
+<div class="outline-text-6" id="text-15-0-3-0-9">
+<p>
+Let us assume a factory method to make cars:
+</p>
+
+<pre class="example">
+makeCar: carFactory = (
+  ^carFactory color: 'blue'.
+)
+
+(* Can be called as *)
+makeCar:  Car
+
+(* But also as *)
+
+makeCar: RGBCar
+
+(* Where *)
+class CarLibrary = Object()(
+
+  class RGBCar rgbColor: aRgbColor = Thing (
+    (* initializer *) 
+    | 
+    rgbColor ::= aRgbColor.
+    | 
+  )( 
+    (* instance methods *)
+    'category convert rgbColor to string color'
+    public color = (^ rgbColor, 'converted to String name') (* call some converter From RgbColor To String *)
+
+    'category show'
+    printMe        = (^ 'I am a RGBCar, my rgbColor is ', rgbColor.)
+  ):(
+    (* class method which provides, for the RGBCar 
+       an EQUIVALENT OF the /Car color:/ constructor,
+       But this method returns RGBCar.
+    *)
+    'secondary constructor for RGBCar'
+    public color: aColor = (
+      |aRgbColor |
+      aRgbColor: (aColor, ' converted to RGB'). (* hack - should call a converter stringColorToRGB:*)
+
+      (* return instance or RGBCar *)
+      ^rgbColor: aRgbColor
+    )
+  )
+
+)
+</pre>
+
+<p>
+Clients may call the RGBCar using either one of the color: rgbColor constructors, as follows:
+</p>
+
+<pre class="example">
+(RGBCar rgbColor: '#FFCCCC') printMe -&gt; 'I am a RGBCar, my rgbColor is #FFCCCC'
+</pre>
+
+<p>
+or
+</p>
+
+<pre class="example">
+(RGBCar color: 'blue') printMe. -&gt; 'I am a RGBCar, my rgbColor is blue converted to RGB'.
+</pre>
+
+<p>
+The ability to take the Car class and create a different version of it, named RGBCar is also an example of <i>Representation Independence</i> in Newspeak - we can now delete Car, and rename RGBCar to Car, and no clients will notice , because:
+</p>
+
+<ol class="org-ol">
+<li><p>
+Clients can still create the Car the same way as before (no need to change the client code):
+</p>
+
+<pre class="example">
+(renamed from RGB)Car color: 'blue'.
+</pre>
+
+<p>
+Because a "legacy" color: constructor was provided as a class method.
+</p></li>
+
+<li><p>
+Clients can still send <i>color</i> to Car:
+</p>
+
+<pre class="example">
+(renamed from RGB)Car color: 'blue' color.
+</pre>
+
+<ul class="org-ul">
+<li>This is because we provided, in RGBCar, the "legacy" <i>color</i> method</li>
+</ul></li>
+</ol>
+
+<p>
+Altough note that we only pseudo-implemented the <i>color</i> method, the result in our case is not 100% the same, but making it the same is just a matter of mechanics of a converter between color and RGB col
+</p>
+</div>
+</div>
+
+
+<div id="outline-container-org1804ce7" class="outline-6">
+<h6 id="org1804ce7"><span class="section-number-6">15.0.3.0.10</span> Nested classes and Inner classes: Significance of nested classes and examples</h6>
+<div class="outline-text-6" id="text-15-0-3-0-10">
+<ul class="org-ul">
+<li>We have shown an example of a nested class with more comments in the section <a id="org14eca76"></a></li>
+
+<li>Nested classes are used (and needed) to implement plumbing often "solved" by static state.</li>
+</ul>
+
+<p>
+From <sup><a id="fnr.12" class="footref" href="#fn.12">12</a></sup>
+</p>
+
+<ul class="org-ul">
+<li>"The only widely used language that supports such nesting is Java. Java nested classes are used in very restricted, stylized ways. They are often used simply for packaging; the nested classes are static and the scope of the enclosing class is inaccessible to them so the issue does not arise. The situation in Python is similar: nested classes have no access to the scope of their enclosing class. Aggressive use of class nesting offers considerable possibilities. In addition to the classic techniques using nested and especially virtual classes [MMP89] demonstrated by the Beta community, <b>nested classes can enable powerful features such as mixins, class hierarchy inheritance and modules</b>."</li>
+
+<li>(But the actual mechanism how this happens is hard for me to understand, see the reference above if you are interested)</li>
+</ul>
+</div>
+</div>
+
+
+<div id="outline-container-org86f4df9" class="outline-6">
+<h6 id="org86f4df9"><span class="section-number-6">15.0.3.0.11</span> Newspeak's Inheritance is implemented using Mixins</h6>
+<div class="outline-text-6" id="text-15-0-3-0-11">
+<p>
+We will only make a few notes without much reasoning, referring to <sup><a id="fnr.12.100" class="footref" href="#fn.12">12</a></sup> once again:
+</p>
+
+<ol class="org-ol">
+<li>In Newspeak, all names, including class names, are late bound
+
+<ul class="org-ul">
+<li>So at runtime, there can be more than one instance of a class for a class name (classes are virtual - this is different from other OO languages such as Java or Smalltalk).</li>
+
+<li>Because of class declarations (and hence superclass declarations) are virtual, all classes act as mixins.</li>
+
+<li>Because a module is just a top level class, also module definitions are mixins</li>
+</ul></li>
+
+<li>All nested classes are virtual
+
+<ul class="org-ul">
+<li>So, also entire libraries/frameworks can be inherited, mixed-in, overridden</li>
+</ul></li>
+</ol>
+</div>
+</div>
+</div>
+
+
+<div id="outline-container-org51d2dd0" class="outline-4">
+<h4 id="org51d2dd0"><span class="section-number-4">15.0.4</span> Newspeak is: Message Based (and purely OO as a result)</h4>
+<div class="outline-text-4" id="text-15-0-4">
+<p>
+We call Newspeak "message based", because the only runtime operation in Newspeak is virtual method invocation.
+</p>
+
+<p>
+Discuss an interesting thought experiment why a purely message-based language is also purely OO
+</p>
+
+<p>
+A few summary notes on this subject:
+</p>
+
+<ul class="org-ul">
+<li>Newspeak is a Smalltalk successor: Everything is an Object</li>
+
+<li>Newspeak has no primitive types</li>
+
+<li>Newspeak eliminates special cases</li>
+
+<li>All names are late bound; every name is a dynamically dispatched method invocation, even inside objects</li>
+
+<li>Everything is an object follows from "Everything is a virtual method invocation"</li>
+</ul>
+</div>
+</div>
+
+
+<div id="outline-container-orgad62e9d" class="outline-4">
+<h4 id="orgad62e9d"><span class="section-number-4">15.0.5</span> Newspeak is: Secure (Supported by encapsulation, no static state)</h4>
+<div class="outline-text-4" id="text-15-0-5">
+<p>
+In this section we discuss unwelcomed consequences of static state, among them, how static state affects security.
+</p>
+
+<p>
+We define "static state" as <i>"presence of variables having global accessibility and lifetime"</i>.
+</p>
+
+<p>
+References for this section are from Room 101 static state entry  <sup><a id="fnr.13" class="footref" href="#fn.13">13</a></sup> and other links below.
+</p>
+</div>
+
+<div id="outline-container-orge07c977" class="outline-6">
+<h6 id="orge07c977"><span class="section-number-6">15.0.5.0.1</span> Static State (Variables) has unwelcomed consequences</h6>
+<div class="outline-text-6" id="text-15-0-5-0-1">
+<p>
+Static state (variables) have known issues, most of those mentioned here are directly from  <sup><a id="fnr.13.100" class="footref" href="#fn.13">13</a></sup>
+</p>
+
+<p>
+Static variables are: 
+</p>
+
+<ul class="org-ul">
+<li>Bad for security: If your code is attacked, the attacker has access to everything your code does, including static state. Attacker can do things like:
+
+<ul class="org-ul">
+<li>Smalltalk at: #Transcript put: TranscriptWhichForwardsToAttacker. 'Smalltalk is static and holds other static state'</li>
+
+<li>And if your code logs credit card numbers, or social security etc , the attacker can read them. (Assume attacker code can reach out of your network)</li>
+</ul></li>
+
+<li>(Mutable static variables) are bad for re-entrancy - see also <a href="http://en.wikipedia.org/wiki/Reentrancy_%28computing%29">http://en.wikipedia.org/wiki/Reentrancy_%28computing%29</a></li>
+
+<li>Bad for concurrency (ability to run on multiple threads/cpus) - see the above link as well</li>
+
+<li>Complicates memory management / garbage collection</li>
+
+<li>Bad for startup time - I think this applies to static methods as well, code using static methods must load the class etc.</li>
+
+<li>Bad for distributed systems, need to be at one place or constantly synced</li>
+
+<li>Bad for testability</li>
+</ul>
+</div>
+</div>
+
+
+<div id="outline-container-orgafd7260" class="outline-6">
+<h6 id="orgafd7260"><span class="section-number-6">15.0.5.0.2</span> The Ministry of Truth on Static State (Variables)</h6>
+<div class="outline-text-6" id="text-15-0-5-0-2">
+<p>
+Quotes from Room 101 on static state <sup><a id="fnr.13.100" class="footref" href="#fn.13">13</a></sup>:
+</p>
+
+<p>
+"It may seem like you need static state, somewhere to start things off, but you don't. You start off by creating an object, and you keep your state in that object and in objects it references. In Newspeak, those objects are modules.
+</p>
+
+<p>
+Newspeak isn't the only language to eliminate static state. E has also done so, out of concern for security. And so has Scala, though its close cohabitation with Java means Scala's purity is easily violated. The bottom line, though, should be clear. Static state will disappear from modern programming languages, and should be eliminated from modern programming practice."
+</p>
+</div>
+</div>
+
+
+
+<div id="outline-container-org768665c" class="outline-6">
+<h6 id="org768665c"><span class="section-number-6">15.0.5.0.3</span> Functional programming eradicates all state (static or local) not just static state as Newspeak does.</h6>
+<div class="outline-text-6" id="text-15-0-5-0-3">
+<p>
+Eradicating all state is good but outside the scope of this discussion (as they say to not enter wars)
+</p>
+
+<p>
+But the world needs persistence, so need to pass state through some kind of IO for persistence read/write. Proponents of "no state" rarely discuss this need. 
+</p>
+
+<p>
+It seems to me there always need to be a boundary where state needs to be conveyed <i>from</i> and <i>to</i> a calculation (IO).
+</p>
+</div>
+</div>
+
+
+<div id="outline-container-orgf323f0b" class="outline-6">
+<h6 id="orgf323f0b"><span class="section-number-6">15.0.5.0.4</span> Note on Static Methods (not variables): Java (and other languages) static Methods also have issues in common to constructor issues, that makes both static methods and constructors not Object Oriented</h6>
+<div class="outline-text-6" id="text-15-0-5-0-4">
+<ul class="org-ul">
+<li>Why?
+
+<ul class="org-ul">
+<li>In both cases, there is no runtime object that is a target of the operation</li>
+
+<li>No runtime object, so no interface that can be used to describe the operation (abstraction)</li>
+
+<li>No runtime object, so no dynamic binding</li>
+</ul></li>
+</ul>
+</div>
+</div>
+</div>
+
+
+<div id="outline-container-org2e8c1d3" class="outline-4">
+<h4 id="org2e8c1d3"><span class="section-number-4">15.0.6</span> Newspeak is: Reflective (Mirror based reflection)</h4>
+<div class="outline-text-4" id="text-15-0-6">
+<p>
+We will only refer to the Newspeak specs for details
+</p>
+</div>
+</div>
+
+
+<div id="outline-container-org8039d94" class="outline-4">
+<h4 id="org8039d94"><span class="section-number-4">15.0.7</span> Newspeak is: Modular (Independent, immutable, parametric namespaces) - Notes and Example Application (CarRace)</h4>
+<div class="outline-text-4" id="text-15-0-7">
+<p>
+Points here are mostly from <sup><a id="fnr.8.100" class="footref" href="#fn.8">8</a></sup> and <sup><a id="fnr.6.100" class="footref" href="#fn.6">6</a></sup>
+</p>
+
+<ul class="org-ul">
+<li>A <i>module declaration</i> is a <i>class declaration</i> which is not nested in another class expression
+
+<ul class="org-ul">
+<li>Notes:
+
+<ul class="org-ul">
+<li>The object a module declaration evaluates to is referred to as <i>module definition</i></li>
+
+<li>Module definitions are instantiated into stateful objects (called <i>modules</i>)</li>
+</ul></li>
+</ul></li>
+
+<li>Module = Top level class</li>
+
+<li>Module has no access to surrounding namespace</li>
+
+<li>All names locally declared or inherited (from Object?)</li>
+
+<li>Factory method params are object-capabilities which determine what belongs to the per-module sandbox</li>
+
+<li>Multiple module instances can be created, with different module parameters</li>
+
+<li>As everything in Newspeak Modules are objects, accessed via interface:
+
+<ul class="org-ul">
+<li>Different implementations of module can coexist</li>
+
+<li>Modules cannot step on each other's state</li>
+</ul></li>
+
+<li>Modules are re-entrant, because there is no static state. See also <a href="http://en.wikipedia.org/wiki/Reentrancy_%28computing%29">http://en.wikipedia.org/wiki/Reentrancy_%28computing%29</a></li>
+</ul>
+</div>
+
+
+<div id="outline-container-org4007789" class="outline-6">
+<h6 id="org4007789"><span class="section-number-6">15.0.7.0.1</span> Modularity example: A simple Newspeak module (<i>CarRace</i>) which is using other modules (<i>DatetimeLibrary</i>)</h6>
+<div class="outline-text-6" id="text-15-0-7-0-1">
+<p>
+To discuss modularity in Newspeak, there are two important concepts: <b>Nested classes</b> and <b>Imports</b>. We described class nesting before. We will show what is meant by imports in this example.
+</p>
+
+<p>
+Let us work out a simple example. Let us say we have a Newspeak module <i>CarRace</i>. The module needs a <i>DatetimeLibrary</i> to calculate a difference between "finish time" and "start time". 
+</p>
+
+<p>
+Let us choose a datetime library (that we wrote) which has a bug in it. Call this <i>DatetimeLibraryBuggy</i>.
+</p>
+
+<p>
+Upon discovering the bug, we would like to switch to a different datetime library. Call this <i>DatetimeLibraryCorrect</i>.
+</p>
+
+<p>
+How can this be illustrated in Newspeak?
+</p>
+
+<p>
+The buggy datetime library/module is a top level class:
+</p>
+
+<pre class="example">
+(* A datetime library (module) with a bug - elapsed time returns a negative number. 
+   Illustration only/
+*)
+class DatetimeLibraryBuggy = Object () (
+  class Datetime = Object (
+    (* No initializer code, no slots in this illustration example. *)
+  )('misc'
+    (* Single method elapsedTimeBetween: and:  - illustration only. 
+       Result hardcoded to always return a negative 10 minutes as String
+    *) 
+    elapsedTimeBetween: start and: finish = (^ '-10 minutes'.)
+  )
+)
+</pre>
+
+<p>
+The correct datetime library/module is a top level class as well:
+</p>
+
+<pre class="example">
+(* A datetime library (module) without a bug - elapsed time returns a positive number. 
+   Illustration only.
+*)
+class DatetimeLibraryCorrect = Object () (
+  class Datetime = Object (
+    (* No initializer code, no slots in this illustration example. *)
+  )('misc'
+    (* Single method elapsedTimeBetween: and:  - illustration only. 
+       Result hardcoded to always return a positive 10 minutes as String - considered always correct for illustration.
+    *) 
+    elapsedTimeBetween: start and: finish = (^ '10 minutes'.)
+  )
+)
+</pre>
+
+<p>
+The CarRace module (which is also a beginning of a Newspeak Application)
+</p>
+
+<pre class="example">
+(* CarRace: a Newspeak module: Illustration of modularity, not a real example.
+   parameters platform, carLibrary and dateLibrary are the only way to pass
+   any piece of information to the module (no global or static state).
+*)
+class CarRace usingPlatform: platform usingCarLibrary: carLibrary usingDatetimeLibrary: datetimeLibrary = Object (
+  |
+  (* List (Car, Datetime, etc) each defines a slot. 
+     List's value (platform collections List) is a List class in the platform. 
+     The slot definition of List and other slots function as an *import* statement, without a need for an /import/ keyword.
+     The platform is only in scope in the initializer - programmer must take action to get from it what is needed.
+     All modules' external dependencies can all be gleaned in this initializer section.
+  *)
+  private List = platform collections List. (* unused *)
+  private Car = carLibrary Car.
+  private Datetime = datetimeLibrary Datetime.
+  private Transcript = platform blackMarket Transcript.
+  |
+)('misc'
+  runRace = (
+    |blueCar redCar blueStart blueFinish redStart redFinish|
+    blueCar: (Car color: 'blue').
+    blueStart: '10:25'.
+    blueFinish: '10:35'.
+
+    redCar: (Car color: 'red').
+    redStart: '10:25'.
+    redFinish: '10:35'.
+
+    Transcript open show: 
+      'Tied race: Car with color ', redCar color, ' took ', (Datetime new elapsedTimeBetween: redStart and: redFinish),
+                ' Car with color ', blueCar color, ' took ', (Datetime new elapsedTimeBetween: blueStart and: blueFinish).
+  )
+)
+</pre>
+
+<p>
+To run the CarRace client code using the buggy datetime library, paste the following in workspace:
+</p>
+
+<ul class="org-ul">
+<li><p>
+==&gt; 
+</p>
+<pre class="example">
+|carRace|
+carRace:: (CarRace usingPlatform: platform 
+                   usingCarLibrary: CarLibrary new 
+                   usingDatetimeLibrary: DatetimeLibraryBuggy new
+          ).
+carRace runRace.
+</pre></li>
+</ul>
+
+<p>
+Migrating client code to use the correct datetime library is a matter of switching the imported module from DatetimeLibraryBuggy to DatetimeLibraryCorrect
+</p>
+
+<ul class="org-ul">
+<li><p>
+==&gt; 
+</p>
+<pre class="example">
+|carRace|
+carRace:: (CarRace usingPlatform: platform 
+                   usingCarLibrary: CarLibrary new 
+                   usingDatetimeLibrary: DatetimeLibraryCorrect new
+          ).
+carRace runRace.
+</pre></li>
+</ul>
+</div>
+</div>
+
+
+<div id="outline-container-org5c0ad39" class="outline-6">
+<h6 id="org5c0ad39"><span class="section-number-6">15.0.7.0.2</span> Modularity Example Continued: Converting the <i>CarRace</i> module into a Newspeak Application</h6>
+<div class="outline-text-6" id="text-15-0-7-0-2">
+<ul class="org-ul">
+<li><p>
+A Newspeak application is an object conforming to a standard API. The application API is defined by the presence of one instance method:
+</p>
+
+<p>
+<b>main:args:</b>
+</p></li>
+
+<li><p>
+A Newspeak application can be <b>deployed</b> either as NOF file or as an image. To deploy as a NOF file,  the application must also define a class method
+</p>
+
+<p>
+<b>packageUsing:</b>
+</p></li>
+
+<li>We will glean the parameters passed to <b>main:args:</b> and <b>packageUsing:</b> from the example.</li>
+
+<li><p>
+Let us create a <i>CarRaceApp</i> which <i>main:args:</i> method instantiates the <i>CarRace</i> object, using the imported modules.
+</p>
+
+<pre class="example">
+(* CarRaceApp is a Newspeak application, deployable as NOF file. 
+
+  - The /packageUsing: topNamespace/ constructor allows to deploy as a NOF file.
+
+  - The /topNamespace/ is effectively the Newspeak namespace and allows 
+    the application packager to wrap classes and objects into the NOF file
+
+  - The /main: platform args: systemArgs/ instance method turns the class into an application.
+    It's presence is picked up by the Newspeak IDE which then adds facilities to run and package the app.
+    These facilities are the [deploy] and [run] clickable links on the top right of the class declaration.
+
+*)
+
+class CarRaceApp packageUsing: topNamespace = Object (
+  |
+  CarRace = topNamespace CarRace.
+  DatetimeLibraryCorrect = topNamespace DatetimeLibraryCorrect.
+  CarLibrary = topNamespace CarLibrary.
+  |
+)('turn class into application'
+  main: platform args: systemArgs = (
+  |carRace|
+  carRace:: (CarRace usingPlatform: platform 
+                     usingCarLibrary: CarLibrary new 
+                     usingDatetimeLibrary: DatetimeLibraryCorrect new
+            ).
+  carRace runRace.
+  )
+)
+</pre></li>
+
+<li><p>
+Paste the above code for the CarRaceApp into a top level class. Notice that on "accept" (clicking the checkmark or do Ctrl-S), two icons appear on top of the class definition: [deploy] and [run]. State after accepting the above code:
+</p>
+
+<p>
+<img src="/img/newspeak-car-race-app-class.png" alt="nil"/>
+</p></li>
+
+<li>Click on [run] and a Transcript showing Tied race: "Car with color red took 10 minutes Car with color blue took 10 minutes" should show:
+<img src="/img/newspeak-car-race-app-log.png" alt="nil"/></li>
+
+<li><p>
+Click on [deploy] and select "As NOF". Notice that a CarRaceApp.nof file appeared in the directory where Newspeak runs:
+</p>
+
+<p>
+<img src="/img/newspeak-car-race-app-deploy-nof.png" alt="nil"/>
+</p></li>
+
+<li><p>
+How to Run the Application Saved in the NOF file?
+</p>
+
+<ul class="org-ul">
+<li>Currently, there appears no way to run the NOF from outside the Newspeak IDE. I assume that is intended to be changed?</li>
+
+<li>To run the CarRaceApp.nof from inside the IDE, click on the Settings wheel <img src="/img/newspeak-settings-icon.png" alt="nil"/>, and select "Run App". A dialog will appear which allows to select the NOF file.</li>
+</ul>
+
+<p>
+<img src="/img/newspeak-car-race-app-run.png" alt="nil"/>
+</p>
+
+<ul class="org-ul">
+<li>Notes:
+
+<ul class="org-ul">
+<li>On NOF: Currently there seems to be no practical difference between running from the Settings wheel and clicking on the [run] link. I assume that will change and we will be able to run the NOF file from the operating system outside the Newspeak IDE(?).</li>
+
+<li><p>
+On other formats of creating an application. Clicking the [deploy] link allows to choose from:
+</p>
+
+<ul class="org-ul">
+<li>as NOF</li>
+
+<li>as Packaged Image</li>
+
+<li>as Dart</li>
+
+<li>as JavaScript</li>
+</ul>
+
+<p>
+The last two point to an <b>exciting</b> prospect of running your application directly from the browser, but at this point there is not enough documentation. I tried to generate the JavaScript application and run from a web browser, but nothing was shown. Need to spend more time on this.
+</p></li>
+</ul></li>
+</ul></li>
+</ul>
+</div>
+</div>
+</div>
+
+
+<div id="outline-container-orga71cd34" class="outline-4">
+<h4 id="orga71cd34"><span class="section-number-4">15.0.8</span> Newspeak is: Concurrent (Actor based concurrency)</h4>
+<div class="outline-text-4" id="text-15-0-8">
+<p>
+We will only refer to the Newspeak specs for details.
+</p>
+
+<p>
+Only partial implementation of Actor system exists at this time
+</p>
+</div>
+</div>
+
+
+<div id="outline-container-orgc2bf527" class="outline-4">
+<h4 id="orgc2bf527"><span class="section-number-4">15.0.9</span> Newspeak is: Optionally typed <i>Unimplemented</i></h4>
+<div class="outline-text-4" id="text-15-0-9">
+<p>
+There are examples of typed code in Newspeak, but as I understand is not implemented.
+</p>
+</div>
+</div>
+</div>
+
+
+
+<div id="outline-container-org564026f" class="outline-2">
+<h2 id="org564026f"><span class="section-number-2">16</span> MemoryHole - Source Code Management in Newspeak</h2>
+<div class="outline-text-2" id="text-16">
+<p>
+All code in Newspeak, is (can) under the covers be managed in MemoryHole (backed by Git or Mercurial)
+</p>
+
+<ul class="org-ul">
+<li>Because Newspeak has a code export in text format, users can also ignore the MemoryHole, and save/load classes from files, using any source code control</li>
+
+<li>To use MemoryHole link, need a Mercurial repo or Local Git repo - created local git at: <b>$HOME/software/newspeak/newspeak-2013-09-14/tug-git-repo/</b>,but the process does not work and ends up in an exception. See also <img src="/img/newspeak-memory-hole.png" alt="nil"/></li>
+</ul>
+</div>
+</div>
+
+
+
+<div id="outline-container-org7e3f341" class="outline-2">
+<h2 id="org7e3f341"><span class="section-number-2">17</span> Footnotes, References and Credits <a id="org5977ec1"></a></h2>
+<div class="outline-text-2" id="text-17">
+</div>
+<div id="outline-container-orga5fd612" class="outline-4">
+<h4 id="orga5fd612"><span class="section-number-4">17.0.1</span> Newspeak Authors</h4>
+<div class="outline-text-4" id="text-17-0-1">
+<ul class="org-ul">
+<li>Gilad Bracha</li>
+
+<li>Vassili Bykov</li>
+
+<li>Yaron Kashai</li>
+
+<li>Eliot Miranda</li>
+
+<li>Ryan Macnak</li>
+
+<li>contributors</li>
+</ul>
+</div>
+</div>
+
+
+<div id="outline-container-orgfa98cab" class="outline-4">
+<h4 id="orgfa98cab"><span class="section-number-4">17.0.2</span> References</h4>
+<div class="outline-text-4" id="text-17-0-2">
+<p>
+This presentation uses and sometimes quotes directly from the references below. All misunderstandings are mine.
+</p>
+
+<ul class="org-ul">
+<li><sup><a id="fnr.7.100" class="footref" href="#fn.7">7</a></sup>          - Newspeak on Squeak - a guide to the perplexed  - <a href="http://bracha.org/newspeak-101.pdf">http://bracha.org/newspeak-101.pdf</a></li>
+
+<li><sup><a id="fnr.1.100" class="footref" href="#fn.1">1</a></sup>         - The Newspeak Programming Language (main page) - <a href="http://www.newspeaklanguage.org/">http://www.newspeaklanguage.org/</a></li>
+
+<li><sup><a id="fnr.6.100" class="footref" href="#fn.6">6</a></sup>        - Modules as Objects in Newspeak - <a href="http://bracha.org/newspeak-modules.pdf">http://bracha.org/newspeak-modules.pdf</a></li>
+
+<li><sup><a id="fnr.3.100" class="footref" href="#fn.3">3</a></sup>         - Newspeak Programming Language Draft Specification Version 0.091. <a href="http://bracha.org/newspeak-spec.pdf">http://bracha.org/newspeak-spec.pdf</a>.</li>
+
+<li><sup><a id="fnr.12.100" class="footref" href="#fn.12">12</a></sup>             - On the Interaction of Method Lookup and Scope with Inheritance and Nesting - <a href="http://bracha.org/dyla.pdf">http://bracha.org/dyla.pdf</a></li>
+
+<li><sup><a id="fnr.5.100" class="footref" href="#fn.5">5</a></sup>         - Pluggable type systems - <a href="http://bracha.org/pluggable-types.pdf">http://bracha.org/pluggable-types.pdf</a></li>
+
+<li><sup><a id="fnr.14" class="footref" href="#fn.14">14</a></sup>           - Explorations in Next Generation Web Languages - presentation slides - <a href="https://yow.eventer.com/yow-2013-1080/explorations-in-next-generation-web-languages-by-gilad-bracha-1431">https://yow.eventer.com/yow-2013-1080/explorations-in-next-generation-web-languages-by-gilad-bracha-1431</a></li>
+</ul>
+
+
+<ul class="org-ul">
+<li>Gilad Bracha. Objects as Software Services. A Whitepaper - <a href="http://bracha.org/objectsAsSoftwareServices.pdf">http://bracha.org/objectsAsSoftwareServices.pdf</a></li>
+
+<li>Gilad Bracha. Selected Papers  -</li>
+
+<li><sup><a id="fnr.13.100" class="footref" href="#fn.13">13</a></sup>             - Cutting out Static - <a href="http://gbracha.blogspot.ca/2008/02/cutting-out-static.html">http://gbracha.blogspot.ca/2008/02/cutting-out-static.html</a></li>
+
+<li><sup><a id="fnr.15" class="footref" href="#fn.15">15</a></sup> - Room 101 - Representation Independent Code <a href="http://gbracha.blogspot.ca/2007/01/representation-independent-code.html">http://gbracha.blogspot.ca/2007/01/representation-independent-code.html</a></li>
+
+<li><sup><a id="fnr.4.100" class="footref" href="#fn.4">4</a></sup>       - Mark Samuel Miller. Robust Composition: Towards a Unified Approach to Access Control and Concurrency Control. PhD thesis, Johns Hopkins University, Baltimore, Maryland, USA, May 2006. Referenced from <sup><a id="fnr.3.100" class="footref" href="#fn.3">3</a></sup></li>
+
+<li><sup><a id="fnr.16" class="footref" href="#fn.16">16</a></sup>              - Gilad Bracha and David Ungar. Mirrors: Design principles for meta-level facilities of object-oriented programming languages. Referenced from <sup><a id="fnr.3.100" class="footref" href="#fn.3">3</a></sup></li>
+
+<li><sup><a id="fnr.9.100" class="footref" href="#fn.9">9</a></sup>           - Room 101 blog: SOBs - Serviced Objects (Objects as Software Services) -  <a href="http://gbracha.blogspot.ca/2007/03/sobs.html">http://gbracha.blogspot.ca/2007/03/sobs.html</a></li>
+
+<li><sup><a id="fnr.17" class="footref" href="#fn.17">17</a></sup>            - Room 101: Message base programming - <a href="http://gbracha.blogspot.ca/2007/05/message-based-programming.html">http://gbracha.blogspot.ca/2007/05/message-based-programming.html</a></li>
+
+<li><sup><a id="fnr.18" class="footref" href="#fn.18">18</a></sup>                             - Room 101 blog (top level) - <a href="http://gbracha.blogspot.ca">http://gbracha.blogspot.ca</a></li>
+
+<li><sup><a id="fnr.10.100" class="footref" href="#fn.10">10</a></sup> - Room 101 blog - <a href="http://gbracha.blogspot.ca/2007/06/constructors-considered-harmful.html">http://gbracha.blogspot.ca/2007/06/constructors-considered-harmful.html</a></li>
+
+<li><sup><a id="fnr.11.100" class="footref" href="#fn.11">11</a></sup> - Room 101 blog - <a href="http://gbracha.blogspot.ca/2007/08/object-initialization-and-construction.html">http://gbracha.blogspot.ca/2007/08/object-initialization-and-construction.html</a></li>
+
+<li><sup><a id="fnr.2.100" class="footref" href="#fn.2">2</a></sup>   - Room 101 blog -   <a href="http://gbracha.blogspot.ca/2010/07/converting-smalltalk-to-newspeak.html">http://gbracha.blogspot.ca/2010/07/converting-smalltalk-to-newspeak.html</a></li>
+
+<li><sup><a id="fnr.8.100" class="footref" href="#fn.8">8</a></sup> - Newspeak and Dart Presentation - <a href="http://www.slideshare.net/esug/8-gilad-brachaesug08">http://www.slideshare.net/esug/8-gilad-brachaesug08</a></li>
+
+<li>Newspeak Wiki -  <a href="https://bitbucket.org/newspeaklanguage/newspeak/wiki/Home">https://bitbucket.org/newspeaklanguage/newspeak/wiki/Home</a></li>
+
+<li>The Newspeak Forum and Mailing list - <a href="https://groups.google.com/forum/#!forum/newspeaklanguage">https://groups.google.com/forum/#!forum/newspeaklanguage</a></li>
+
+<li>Objects as Modules in Newspeak: Phil Wadler's Blog. - <a href="http://wadler.blogspot.ca/2009/08/objects-as-modules-in-newspeak.html">http://wadler.blogspot.ca/2009/08/objects-as-modules-in-newspeak.html</a></li>
+</ul>
+</div>
+</div>
+</div>
+
+
+<div id="outline-container-org723acee" class="outline-2">
+<h2 id="org723acee"><span class="section-number-2">18</span> Licence</h2>
+<div class="outline-text-2" id="text-18">
+<p>
+This file is licensed under Creative Commons Attribution ShareAlike 3.0: <a href="http://creativecommons.org/licenses/by-sa/3.0/">http://creativecommons.org/licenses/by-sa/3.0/</a>
+</p>
+</div>
+</div>
+
+
+<div id="outline-container-org97a50e6" class="outline-2">
+<h2 id="org97a50e6"><span class="section-number-2">19</span> How to make the Pdf</h2>
+<div class="outline-text-2" id="text-19">
+<p>
+C-c C-e l p , then run 
+</p>
+
+<p>
+pandoc -f latex  newspeak-TUG-presentation-full-version.tex -o newspeak-TUG-presentation-full-version.pdf 
+</p>
+</div>
+</div>
+<div id="footnotes">
+<h2 class="footnotes">Footnotes: </h2>
+<div id="text-footnotes">
+
+<div class="footdef"><sup><a id="fn.1" class="footnum" href="#fnr.1">1</a></sup> <div class="footpara"><p class="footpara"><a href="http://www.newspeaklanguage.org/">The Newspeak Programming Language</a></p></div></div>
+
+<div class="footdef"><sup><a id="fn.2" class="footnum" href="#fnr.2">2</a></sup> <div class="footpara"><p class="footpara"><a href="http://gbracha.blogspot.ca/2010/07/converting-smalltalk-to-newspeak.html">Converting Smalltalk to Newspeak</a></p></div></div>
+
+<div class="footdef"><sup><a id="fn.3" class="footnum" href="#fnr.3">3</a></sup> <div class="footpara"><p class="footpara"><a href="http://bracha.org/newspeak-spec.pdf">Newspeak Programming Language Draft Specification Version 0.091</a></p></div></div>
+
+<div class="footdef"><sup><a id="fn.4" class="footnum" href="#fnr.4">4</a></sup> <div class="footpara"><p class="footpara"><a href="https://www.cypherpunks.to/erights/talks/thesis/submitted/markm-thesis.pdf">Towards a Unified Approach to Access Control and Concurrency Control</a></p></div></div>
+
+<div class="footdef"><sup><a id="fn.5" class="footnum" href="#fnr.5">5</a></sup> <div class="footpara"><p class="footpara"><a href="http://bracha.org/pluggable-types.pdf">Pluggable type systems</a></p></div></div>
+
+<div class="footdef"><sup><a id="fn.6" class="footnum" href="#fnr.6">6</a></sup> <div class="footpara"><p class="footpara"><a href="http://bracha.org/newspeak-modules.pdf">Modules as Objects in Newspeak</a></p></div></div>
+
+<div class="footdef"><sup><a id="fn.7" class="footnum" href="#fnr.7">7</a></sup> <div class="footpara"><p class="footpara"><a href="https://docs.google.com/viewer?url=http://bracha.org/newspeak-101.pdf">Newspeak on Squeak - a guide to the perplexed</a></p></div></div>
+
+<div class="footdef"><sup><a id="fn.8" class="footnum" href="#fnr.8">8</a></sup> <div class="footpara"><p class="footpara"><a href="http://www.slideshare.net/esug/8-gilad-brachaesug08">Newspeak: Evolving Smalltalk for the age of the Net</a></p></div></div>
+
+<div class="footdef"><sup><a id="fn.9" class="footnum" href="#fnr.9">9</a></sup> <div class="footpara"><p class="footpara"><a href="http://gbracha.blogspot.ca/2007/03/sobs.html">SOBs</a></p></div></div>
+
+<div class="footdef"><sup><a id="fn.10" class="footnum" href="#fnr.10">10</a></sup> <div class="footpara"><p class="footpara"><a href="http://gbracha.blogspot.ca/2007/06/constructors-considered-harmful.html">Constructors Considered Harmful</a></p></div></div>
+
+<div class="footdef"><sup><a id="fn.11" class="footnum" href="#fnr.11">11</a></sup> <div class="footpara"><p class="footpara"><a href="http://gbracha.blogspot.ca/2007/08/object-initialization-and-construction.html">Object Initialization and Construction Revisited</a></p></div></div>
+
+<div class="footdef"><sup><a id="fn.12" class="footnum" href="#fnr.12">12</a></sup> <div class="footpara"><p class="footpara"><a href="http://bracha.org/dyla.pdf">On the Interaction of Method Lookup and Scope with Inheritance and Nesting</a></p></div></div>
+
+<div class="footdef"><sup><a id="fn.13" class="footnum" href="#fnr.13">13</a></sup> <div class="footpara"><p class="footpara"><a href="http://gbracha.blogspot.ca/2008/02/cutting-out-static.html">Cutting out Static</a></p></div></div>
+
+<div class="footdef"><sup><a id="fn.14" class="footnum" href="#fnr.14">14</a></sup> <div class="footpara"><p class="footpara"><a href="https://yow.eventer.com/yow-2013-1080/explorations-in-next-generation-web-languages-by-gilad-bracha-1431%20">Explorations in Next Generation Web Languages - presentation slides</a></p></div></div>
+
+<div class="footdef"><sup><a id="fn.15" class="footnum" href="#fnr.15">15</a></sup> <div class="footpara"><p class="footpara"><a href="http://gbracha.blogspot.ca/2007/01/representation-independent-code.html">Representation Independent Code</a></p></div></div>
+
+<div class="footdef"><sup><a id="fn.16" class="footnum" href="#fnr.16">16</a></sup> <div class="footpara"><p class="footpara"><a href="http://bracha.org/mirrors.pdf">Mirrors: Design principles for meta-level facilities of object-oriented programming languages</a></p></div></div>
+
+<div class="footdef"><sup><a id="fn.17" class="footnum" href="#fnr.17">17</a></sup> <div class="footpara"><p class="footpara"><a href="http://gbracha.blogspot.ca/2007/05/message-based-programming.html">Message base programming</a></p></div></div>
+
+<div class="footdef"><sup><a id="fn.18" class="footnum" href="#fnr.18">18</a></sup> <div class="footpara"><p class="footpara"><a href="http://gbracha.blogspot.ca">Room 101</a></p></div></div>
+
+
+</div>
+</div>

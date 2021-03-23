@@ -111,14 +111,21 @@ Assuming our Jekyll is configured the serve settings to "watch" (to pick up and 
 </p>
 
 <ol class="org-ol">
-<li><code>$ jekyll serve --baseurl=''</code> (a shell command, step 5 in text) 
+<li><code>$ cd $BLOG; jekyll serve --baseurl=''</code> (a shell command, step 5 in text) 
 <ul class="org-ul">
 <li>Starts jekyll server locally, so we can view the blog changes locally in the browser, before pushing to github.</li>
 </ul></li>
 <li><code>M-x: org2jekyll-create-draft</code> (an emacs command, step 1 in text)
 <ul class="org-ul">
 <li>Creates an empty blog post, with today's date, e.g. <code>$BLOG/org/a-test-blog.org</code>.</li>
-<li>Asks a series a questions about the blog title, and so on</li>
+<li>Asks a series a questions about the type (blog, page), and so on
+<ul class="org-ul">
+<li>Layout: {post | default} - usr r-mouse/l-mouse to select post</li>
+<li>Title:</li>
+<li>Description:</li>
+<li>Tags (space separated)</li>
+<li>Categories (space separated)</li>
+</ul></li>
 </ul></li>
 <li><b>Edit the post content</b> in org mode : Add the blog text.</li>
 <li><code>M-x: org2jekyll-publish</code> (an emacs command, step 3 in text)
