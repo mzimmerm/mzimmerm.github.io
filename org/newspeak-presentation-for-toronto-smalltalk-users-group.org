@@ -13,11 +13,11 @@
 
 There is a PDF version of this document:
 
-- [[file:../../org/newspeak-TUG-presentation-november-2014-pdf-published-2019.pdf]].
+- [[file:img/newspeak-TUG-presentation-november-2014-pdf-published-2019.pdf]]
 
 * Newspeak: A nutshell image
 
-[[img:newspeak-syntax.png]]
+[[file:img/newspeak-syntax.png]]
 
 * *The Newspeak language*. Presentation at the Toronto Smalltalk Users Group (TUG)
 
@@ -53,7 +53,6 @@ See [[References]] for full references and credits.
 
 Material of this presentation is based on ideas and sometimes copied from material in the footnotes section.
 
-
 * Newspeak: Where to start learning it
 
 If I was to point out two links to start, they would be:
@@ -88,13 +87,13 @@ As Newspeak changes, if you want to run code from this document unchanged, pleas
 You can paste code such as class definitions directly from this text into the Newspeak Browser using following steps:
 
 - Tools -> Newspeak Browser
-   [[img:newspeak-browser.png]]
+   [[file:img/newspeak-browser.png]]
 - Categories -> click AATUG (this category must be created first)
-  [[img:newspeak-browser-categories.png]]
+  [[file:img/newspeak-browser-categories.png]]
 - Click the + beside the AATUG will bring the new class definer section
-  [[img:newspeak-browser-category-code.png]]
+  [[file:img/newspeak-browser-category-code.png]]
 - In the above, select, delete, and paste in a class definition from this document, for example
-  [[img:newspeak-browser-category-code-detail.png]]
+  [[file:img/newspeak-browser-category-code-detail.png]]
 
 
 * Newspeak: Behind the name - George Orwell's 1984
@@ -404,7 +403,7 @@ class CarLibrarySmall = Object () (
 
 This section describes how to create a Newspeak application "Hello brave new World", following [fn:Bracha-Perplexed:[[https://docs.google.com/viewer?url=http://bracha.org/newspeak-101.pdf][Newspeak on Squeak - a guide to the perplexed]]] 
 
-- ==> Start in the Newspeak browser AATUG category, and click the + icon: [[img:newspeak-browser-category.png]]
+- ==> Start in the Newspeak browser AATUG category, and click the + icon: [[file:img/newspeak-browser-category.png]]
   Add this code:
 
   #+BEGIN_SRC 
@@ -415,7 +414,7 @@ This section describes how to create a Newspeak application "Hello brave new Wor
   )
   #+END_SRC
 
-  Click on the checkmark - [[img:newspeak-define-new-class.png]]
+  Click on the checkmark - [[file:img/newspeak-define-new-class.png]]
 Several comments about the code:
 
 - The code ~(|Transcript = platform etc )~ is the *initializer*. Initializers in Newspeak perform the guarantee that no object is observed uninitialized, as in both Java or Smalltalk. For more details of what this means, see [[*Smalltalk: But there is another problem: no absolute guarantee that /myCar/ instance is initialized]]
@@ -513,7 +512,7 @@ class CarLibrary = Object()(
 
 Below is an annotated and (over) colored example of a Newspeak class declaration. See http://lively-kernel.org/repository/webwerkstatt/users/mzimmerm/Projects/Newspeak/NewspeakSyntax.xhtml?forceInvalidateCache=1414792071362 for more details.
 
-[[img:newspeak-syntax.png]]
+[[file:img/newspeak-syntax.png]]
 
 ***** Syntactic Elements in the CarLibrary example above:
 
@@ -1387,22 +1386,22 @@ Migrating client code to use the correct datetime library is a matter of switchi
 
 - Paste the above code for the CarRaceApp into a top level class. Notice that on "accept" (clicking the checkmark or do Ctrl-S), two icons appear on top of the class definition: [deploy] and [run]. State after accepting the above code:
  
-  [[img:newspeak-car-race-app-class.png]]
+  [[file:img/newspeak-car-race-app-class.png]]
 
 - Click on [run] and a Transcript showing Tied race: "Car with color red took 10 minutes Car with color blue took 10 minutes" should show:
-   [[img:newspeak-car-race-app-log.png]]
+   [[file:img/newspeak-car-race-app-log.png]]
 
 - Click on [deploy] and select "As NOF". Notice that a CarRaceApp.nof file appeared in the directory where Newspeak runs:
   
-  [[img:newspeak-car-race-app-deploy-nof.png]]
+  [[file:img/newspeak-car-race-app-deploy-nof.png]]
 
 - How to Run the Application Saved in the NOF file?
 
   - Currently, there appears no way to run the NOF from outside the Newspeak IDE. I assume that is intended to be changed?
 
-  - To run the CarRaceApp.nof from inside the IDE, click on the Settings wheel [[img:newspeak-settings-icon.png]], and select "Run App". A dialog will appear which allows to select the NOF file.
+  - To run the CarRaceApp.nof from inside the IDE, click on the Settings wheel [[file:img/newspeak-settings-icon.png]], and select "Run App". A dialog will appear which allows to select the NOF file.
  
-  [[img:newspeak-car-race-app-run.png]]
+  [[file:img/newspeak-car-race-app-run.png]]
 
   - Notes:
 
@@ -1440,7 +1439,7 @@ All code in Newspeak, is (can) under the covers be managed in MemoryHole (backed
 
 - Because Newspeak has a code export in text format, users can also ignore the MemoryHole, and save/load classes from files, using any source code control
 
-- To use MemoryHole link, need a Mercurial repo or Local Git repo - created local git at: *$HOME/software/newspeak/newspeak-2013-09-14/tug-git-repo/*,but the process does not work and ends up in an exception. See also [[img:newspeak-memory-hole.png]]
+- To use MemoryHole link, need a Mercurial repo or Local Git repo - created local git at: *$HOME/software/newspeak/newspeak-2013-09-14/tug-git-repo/*,but the process does not work and ends up in an exception. See also [[file:img/newspeak-memory-hole.png]]
 
   
 

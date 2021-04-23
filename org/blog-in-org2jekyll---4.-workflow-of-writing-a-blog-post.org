@@ -92,7 +92,7 @@ Notes:
      - Copies directory ~$BLOG/org/css/~ to ~$BLOG/css~
      - Copies directory ~$BLOG/org/js/~  to ~$BLOG/js~
      - Org-exports the blog ~$BLOG/org/a-test-blog.org~  to html and places the html to the ~$BLOG/_posts/2021-04-20-a-test-blog.html~
-       - Converts the links ~[[img:some-file.some-ext]]~ in the .org file to links in the html file. 
+       - Converts the link types ~[[img:some-file.some-ext]]~ and ~[[file:img/some-file.some-ext]]~ in the .org file to links in the html file. 
      - Notes:
        - If you want to rename a blog, remove the html from the ~_posts~ directory.
        - The blog index is built from all ~html~ files in the ~_posts~ directory

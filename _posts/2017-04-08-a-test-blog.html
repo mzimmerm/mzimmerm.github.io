@@ -54,21 +54,22 @@ categories:
 </li>
 </ul>
 </li>
-<li><a href="#orga233edd">14. Problem 1: org-html-publish-to-html and org-publish-attachment messes up export from image link to html by adding file:// to html</a>
+<li><a href="#orgefa6a4f">14. Image export and publishing to HTML : issues and solutions</a>
 <ul>
-<li><a href="#org096a549">14.1. The better solution - creating new org mode tags which are, during org export to html translated to html understood by Jekyll. Those tags are <b>img:</b> and <b>post-jekyll:</b></a>
+<li><a href="#org2f4a4d5">14.1. Image export issue</a></li>
+<li><a href="#orgf4d47db">14.2. The image export solution - creating and modifying link types</a>
 <ul>
-<li><a href="#orgec2758e">14.1.1. Test the correct solution: my specific org link types - <b>img:</b> and <b>post-jekyll:</b></a></li>
-<li><a href="#org3a38487">14.1.2. Test my <code>img:</code> link</a></li>
-<li><a href="#org287ebb4">14.1.3. Test my <code>post-jekyll:</code> link</a></li>
+<li><a href="#org51d2d14">14.2.1. The image export solution with motivation</a></li>
+<li><a href="#org06b55b9">14.2.2. The image export solution - testing</a></li>
+<li><a href="#org957ef14">14.2.3. Why is the <b>file:</b> org link type solution better than <b>img:</b>?</a></li>
 </ul>
 </li>
-<li><a href="#orgb41d358">14.2. The workaround solution - creating a link for images</a>
+<li><a href="#orgd012f9d">14.3. The image export workaround (NOT needed)</a>
 <ul>
-<li><a href="#org629268f">14.2.1. Testing the workaround solution</a></li>
+<li><a href="#orge003549">14.3.1. The workaround - motivation</a></li>
+<li><a href="#orga95f160">14.3.2. The workaround - testing</a></li>
 </ul>
 </li>
-<li><a href="#org137e787">14.3. Image export problem in detail (two solutions described in the two sections above):</a></li>
 </ul>
 </li>
 <li><a href="#orgc37d14e">15. MathJax configurations</a></li>
@@ -99,10 +100,11 @@ Details are inline, here is a summary.
 <div class="outline-text-3" id="text-1-1">
 <dl class="org-dl">
 <dt>Nice fontification in Babel code blocks</dt><dd>Installed from Melpa, package <code>htmlize</code></dd>
-<dt>Images and links showing correctly</dt><dd>Created new org mode tags for images and links :
+<dt>Images and links showing correctly</dt><dd>Created new org mode link types for images and links :
 <ul class="org-ul">
-<li><b>img:</b> tag to correctly export links to images to html.</li>
-<li><b>post-jekyll:</b> tag to correctly export links to other org files (in blog) to html.</li>
+<li><b>img:</b> link type to correctly export links to images to html.</li>
+<li><b>file:</b> link type changes to correctly export links to images to html.</li>
+<li><b>post-jekyll:</b> link type to correctly export links to other org files (in blog) to html.</li>
 </ul></dd>
 <dt>ASCIIMath working</dt><dd>customize <code>org-export-with-sub-superscripts</code> to 'do not interpret'. This can also be set per file using option <code>#+OPTIONS: ^:nil</code>.</dd>
 <dt>Mathjax working</dt><dd>in <code>_includes/header.html</code>, added <code>{ % include mathjax-stuff-new.html % }</code> which adds script, src-ed to a online MathJax.js, properly configured as <code>TeX-MML-AM_CHTML</code>.</dd>
@@ -603,152 +605,15 @@ adfd
 </div>
 </div>
 
-<div id="outline-container-orga233edd" class="outline-2">
-<h2 id="orga233edd"><span class="section-number-2">14</span> Problem 1: org-html-publish-to-html and org-publish-attachment messes up export from image link to html by adding <a href="file://">file://</a> to html</h2>
+<div id="outline-container-orgefa6a4f" class="outline-2">
+<h2 id="orgefa6a4f"><span class="section-number-2">14</span> Image export and publishing to HTML : issues and solutions</h2>
 <div class="outline-text-2" id="text-14">
 </div>
-<div id="outline-container-org096a549" class="outline-3">
-<h3 id="org096a549"><span class="section-number-3">14.1</span> The better solution - creating new org mode tags which are, during org export to html translated to html understood by Jekyll. Those tags are <b>img:</b> and <b>post-jekyll:</b></h3>
+<div id="outline-container-org2f4a4d5" class="outline-3">
+<h3 id="org2f4a4d5"><span class="section-number-3">14.1</span> Image export issue</h3>
 <div class="outline-text-3" id="text-14-1">
 <p>
-<b>The core of the solution is here, and now in my init.el</b>: <a href="http://stackoverflow.com/questions/14684263/how-to-org-mode-image-absolute-path-of-export-html">http://stackoverflow.com/questions/14684263/how-to-org-mode-image-absolute-path-of-export-html</a>
-</p>
-
-<p>
-With help from the above link, I created my new org mode tags: <b>img:</b> and <b>post-jekyll:</b>. Then I added functions (in init.el), managing how they are exported.
-</p>
-</div>
-
-<div id="outline-container-orgec2758e" class="outline-4">
-<h4 id="orgec2758e"><span class="section-number-4">14.1.1</span> Test the correct solution: my specific org link types - <b>img:</b> and <b>post-jekyll:</b></h4>
-<div class="outline-text-4" id="text-14-1-1">
-<p>
-Using the new org-custom-link-img-follow works: <i><b>expected:</b> a small image just after the dash</i> - <img src="/img/a-test-blog.org_test-image.png" alt="nil"/>. More tests below.
-</p>
-
-<p>
-The link above uses the "new" <code>img</code> tag, and generates the slash starting src: &lt;img src="/img/a-test-blog.org_test-image.png" alt="nil"/&gt;
-</p>
-
-
-<p>
-But several issues:
-</p>
-
-<ol class="org-ol">
-<li>The image link works in Jekyll but does not show in emacs</li>
-
-<li><p>
-It is already obsolete in org 8. Org 9 requires a different solution. See this doc from org documentation:
-</p>
-<blockquote>
-<p>
-org-add-link-type is a compiled Lisp function in ‘org-compat.el’.
-</p>
-
-<p>
-(org-add-link-type TYPE &amp;optional FOLLOW EXPORT)
-</p>
-
-<p>
-This function is obsolete since Org 9.0;
-use `org-link-set-parameters' instead.
-</p>
-
-<p>
-Add a new TYPE link.
-FOLLOW and EXPORT are two functions.
-</p>
-</blockquote></li>
-
-<li><p>
-Try this
-</p>
-<div class="org-src-container">
-<pre class="src src-elisp">(org-open-file <span style="color: #e9b96e;">"./img/a-test-blog.org_test-image.png"</span>)
-</pre>
-</div></li>
-
-<li><p>
-This line shows why the img: will not display in emacs - only file: can be image
-</p>
-<div class="org-src-container">
-<pre class="src src-elisp">(<span style="color: #b4fa70;">when</span> (<span style="color: #b4fa70;">and</span> (equal (org-element-property <span style="color: #e090d7;">:type</span> link) <span style="color: #e9b96e;">"file"</span>)
-</pre>
-</div></li>
-</ol>
-</div>
-</div>
-
-<div id="outline-container-org3a38487" class="outline-4">
-<h4 id="org3a38487"><span class="section-number-4">14.1.2</span> Test my <code>img:</code> link</h4>
-<div class="outline-text-4" id="text-14-1-2">
-<p>
-The link <code>[[img:a-test-blog.org_test-image.png]]</code> after html conversion, <i><b>expected:</b> a small image just after the dash</i> - <img src="/img/a-test-blog.org_test-image.png" alt="nil"/>
-</p>
-</div>
-</div>
-
-<div id="outline-container-org287ebb4" class="outline-4">
-<h4 id="org287ebb4"><span class="section-number-4">14.1.3</span> Test my <code>post-jekyll:</code> link</h4>
-<div class="outline-text-4" id="text-14-1-3">
-<p>
-The precondition is the post must be already org2-published
-</p>
-
-<p>
-The link <code>[[post-jekyll:blog-in-org-2-jekyll---1.-motivation.org][a short series about writing in org mode]]</code> after html conversion, <i><b>expected:</b> a working link just after the dash</i> - <a href="{% post_url 2017-04-08-blog-in-org-2-jekyll---1.-motivation %}">a short series about writing in org mode</a>
-</p>
-</div>
-</div>
-</div>
-
-<div id="outline-container-orgb41d358" class="outline-3">
-<h3 id="orgb41d358"><span class="section-number-3">14.2</span> The workaround solution - creating a link for images</h3>
-<div class="outline-text-3" id="text-14-2">
-<p>
-There is a simpler but hack-ier solution to display exported images correctly: We create a directory link from the org/img directory to a img directory above the posts. This works because the generated <code>&lt;img src=../../some-img.png&gt;</code> tag in, say, 2017/04/a-test-blog.html, reaches ../../img.
-</p>
-
-<p>
-This makes images works both in org and html, with the caveat the images are referenced as [../../img/some-image.png].
-</p>
-
-<p>
-In more detail, do this:
-</p>
-
-<div class="org-src-container">
-<pre class="src src-sh"><span style="color: #e090d7;">cd</span> $<span style="color: #fcaf3e;">BLOG</span> <span style="color: #73d216;"># </span><span style="color: #73d216;">e.g. /whatever/mzimmerm.github.io/</span>
-<span style="color: #e090d7;">cd</span> ..
-ln -s $<span style="color: #fcaf3e;">BLOG</span>/org/img img
-</pre>
-</div>
-
-<p>
-If we prepare the above link (ln), we can use the "regular" ../img/some-file type link for images in org - as long as images are placed to the $BLOG/../img directory, image links will work after html conversion and serving in Jekyll.
-</p>
-</div>
-
-<div id="outline-container-org629268f" class="outline-4">
-<h4 id="org629268f"><span class="section-number-4">14.2.1</span> Testing the workaround solution</h4>
-<div class="outline-text-4" id="text-14-2-1">
-<p>
-An inline link to <code>[[../../img/a-test-blog.org_test-image.png]]</code> should display a image.  <i><b>expected:</b> a small image just after the dash</i> - <img src="../../img/a-test-blog.org_test-image.png" alt="a-test-blog.org_test-image.png" />
-</p>
-
-<p>
-The link above, generates html like this: <code>&lt;img src="../../img/a-test-blog.org_test-image.png"&gt;</code> which works when served in an http server, because the generated blog posts are located in <code>root:2017/04/a-test-blog</code>, and two levels up to <code>img</code> exists and is not outside the http server root folder. At the same time it works in emacs org mode, as this workaround created the "faked" link directory "org/../../img", where "org" is the current directory while editing in emacs.
-</p>
-</div>
-</div>
-</div>
-
-<div id="outline-container-org137e787" class="outline-3">
-<h3 id="org137e787"><span class="section-number-3">14.3</span> Image export problem in detail (two solutions described in the two sections above):</h3>
-<div class="outline-text-3" id="text-14-3">
-<p>
-I am using org mode publishing to html, using C-c C-e h H (tried to publish to html file as well, same result). Is there a way to specify the link in org so that the published image path starts with /, like this:
+org-html-publish-to-html (C-c C-e h H) and org-publish-attachment messes up export from <b>file:</b> link type to html by generating
 </p>
 
 <blockquote>
@@ -756,13 +621,12 @@ I am using org mode publishing to html, using C-c C-e h H (tried to publish to h
 &lt;img src="/img/a-image.png" \&gt;?
 </p>
 </blockquote>
-
 <p>
-Note: The starting slash is a standard in any "normal" static html serving, as in expresses "path from the served root"
+which does NOT start at root, and does not work under http servers which can only serve on "path starting at served root". A question: is this behavior of org http export a bug or is there a rationalle?
 </p>
 
 <p>
-There is no way to achieve this in "out of the box" org mode*. I tried those:
+There is no way to achieve this in "out of the box" org mode*. I tried those in the default org-html-publish-to-html :
 </p>
 
 <table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
@@ -778,26 +642,26 @@ There is no way to achieve this in "out of the box" org mode*. I tried those:
 <tbody>
 <tr>
 <td class="org-left">Org</td>
-<td class="org-left">Works?</td>
+<td class="org-left">Works in org?</td>
 <td class="org-left">Published as</td>
 </tr>
 
 <tr>
 <td class="org-left">[/img/a-image.png]</td>
 <td class="org-left">NO</td>
-<td class="org-left">&lt;img src="f ile:///img/a-image.png" \&gt;</td>
+<td class="org-left">&lt;img src="fil e:///img/a-image.png" \&gt;</td>
 </tr>
 
 <tr>
 <td class="org-left">[~/some-dir/img/a-image.png]</td>
 <td class="org-left">NO</td>
-<td class="org-left">&lt;img src="f ile:///some-dir/img/a-image.png"\&gt;</td>
+<td class="org-left">&lt;img src="fil e:///some-dir/img/a-image.png"\&gt;</td>
 </tr>
 
 <tr>
-<td class="org-left">[f ile:///img/a-image.png]</td>
+<td class="org-left">[fil e:///img/a-image.png]</td>
 <td class="org-left">NO</td>
-<td class="org-left">&lt;img src="f ile:///img/a-image.png"\&gt;</td>
+<td class="org-left">&lt;img src="fil e:///img/a-image.png"\&gt;</td>
 </tr>
 
 <tr>
@@ -821,21 +685,145 @@ There is no way to achieve this in "out of the box" org mode*. I tried those:
 </table>
 
 <p>
-None of them results in what I am trying to get.
+None of them results will work when under a http server, as path to not start at root.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgf4d47db" class="outline-3">
+<h3 id="orgf4d47db"><span class="section-number-3">14.2</span> The image export solution - creating and modifying link types</h3>
+<div class="outline-text-3" id="text-14-2">
+</div>
+<div id="outline-container-org51d2d14" class="outline-4">
+<h4 id="org51d2d14"><span class="section-number-4">14.2.1</span> The image export solution with motivation</h4>
+<div class="outline-text-4" id="text-14-2-1">
+<p>
+I created new org mode link types which are, during org export to html translated to html understood by Jekyll. Those link types are <b>img:</b> and <b>post-jekyll:</b>
 </p>
 
 <p>
-Basically, the publish adds the word "<a href="file:///">file:///</a>" in the , unless the the org link image path is one of:
+*The core of the solution is inspired from <a href="http://stackoverflow.com/questions/14684263/how-to-org-mode-image-absolute-path-of-export-html">http://stackoverflow.com/questions/14684263/how-to-org-mode-image-absolute-path-of-export-html</a>.
 </p>
+
 <ul class="org-ul">
-<li>./img</li>
-<li>../img ../../img etc</li>
-<li><a href="img">img</a></li>
+<li>I created my new org mode link types: <b>img:</b> and <b>post-jekyll:</b>.</li>
+<li>I also changed the default behavior of export of the <b>file:</b> link type export - see <code>org-custom-link-file-follow</code> and <code>org-custom-link-file-export</code> and attached it to the <b>file:</b> link type.</li>
 </ul>
 
 <p>
-If the org links uses a absolute path, or starts with <a href="file://">file://</a>, the org2jekyll-publish (presumably calling org-export-to-html) adds <a href="file:///">file:///</a> to the img src url. This does not work when served in any http server. (A secondary question: is adding the <a href="file:///">file:///</a> by org2jekyll-publish a bug or is there a rationalle?)
+Note: The <b>file:</b> type changes actually allow NOT NEEDING the <b>img:</b> type at all.
 </p>
+</div>
+</div>
+
+<div id="outline-container-org06b55b9" class="outline-4">
+<h4 id="org06b55b9"><span class="section-number-4">14.2.2</span> The image export solution - testing</h4>
+<div class="outline-text-4" id="text-14-2-2">
+<p>
+Below are test of <b>file:</b> (changes only) <b>img:</b>,  <b>post-jekyll:</b> link types
+</p>
+
+<ol class="org-ol">
+<li>Test <b>img:</b>                   : <code>[[img:a-test-blog.org_test-image.png]]</code> after html conversion: <i><b>expected in html not in org:</b> a small image just after the dash</i> - <img src="/img/a-test-blog.org_test-image.png" alt="nil"/>.</li>
+<li>Test <b>file:</b> (BEST SOLUTION)  : <code>[[file:img/a-test-blog.org_test-image.png]]</code> after html conversion: <i><b>expected:</b> a small image just after the dash</i> - <img src="/img/a-test-blog.org_test-image.png" alt="nil"/>.</li>
+<li>Test <b>file:</b>                  : <code>file:img/a-test-blog.org_test-image.png</code> after html conversion: <i><b>expected in html not in org:</b> a small image just after the dash</i> - <img src="/img/a-test-blog.org_test-image.png" alt="nil"/>.</li>
+<li>Test my <b>post-jekyll:</b>        : <code>[[post-jekyll:blog-in-org-2-jekyll---1.-motivation.org][a short series about writing in org mode]]</code> after html conversion, <i><b>expected:</b> a working link just to another post after the dash</i> - <a href="{% post_url 2017-04-08-blog-in-org-2-jekyll---1.-motivation %}">a short series about writing in org mode</a>
+<ul class="org-ul">
+<li>The precondition is the post must be already org2-published</li>
+</ul></li>
+<li><p>
+Test non-image <b>file:</b> links  : <code>[[file:img/a-test-blog.org-test-file.txt]]</code> after html conversion, <i><b>expected in html not in org:</b> a working link to text file after the dash</i> - <a href="/img/a-test-blog.org-test-file.txt">img/a-test-blog.org-test-file.txt</a>
+</p>
+
+<p>
+Notes:
+</p></li>
+
+<li><p>
+Both <b>img:</b> on image and <b>file:</b> on image generate:
+</p>
+<div class="org-src-container">
+<pre class="src src-html">&lt;<span style="color: #fce94f;">img</span> <span style="color: #fcaf3e;">src</span>=<span style="color: #e9b96e;">"/img/a-test-blog.org_test-image.png"</span> <span style="color: #fcaf3e;">alt</span>=<span style="color: #e9b96e;">"nil"</span>/&gt;
+</pre>
+</div></li>
+<li><p>
+<b>file:</b> on non-image generates:
+</p>
+<div class="org-src-container">
+<pre class="src src-html">&lt;<span style="color: #fce94f;">a</span> <span style="color: #fcaf3e;">href</span>=<span style="color: #e9b96e;">"/img/a-test-page.pdf"</span>&gt;/img/a-test-page.pdf&lt;/<span style="color: #fce94f;">a</span>&gt;
+</pre>
+</div></li>
+</ol>
+</div>
+</div>
+
+<div id="outline-container-org957ef14" class="outline-4">
+<h4 id="org957ef14"><span class="section-number-4">14.2.3</span> Why is the <b>file:</b> org link type solution better than <b>img:</b>?</h4>
+<div class="outline-text-4" id="text-14-2-3">
+<ol class="org-ol">
+<li><p>
+The <b>img:</b> link type works in Jekyll but does not show in emacs. This line in ob.el shows why the <b>img:</b> will not display in org mode - only file: can be image in org mode
+</p>
+<div class="org-src-container">
+<pre class="src src-elisp">(<span style="color: #b4fa70;">when</span> (<span style="color: #b4fa70;">and</span> (equal (org-element-property <span style="color: #e090d7;">:type</span> link) <span style="color: #e9b96e;">"file"</span>)
+</pre>
+</div></li>
+
+<li><p>
+Try this
+</p>
+<div class="org-src-container">
+<pre class="src src-elisp">(org-open-file <span style="color: #e9b96e;">"./img/a-test-blog.org_test-image.png"</span>)
+</pre>
+</div></li>
+</ol>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgd012f9d" class="outline-3">
+<h3 id="orgd012f9d"><span class="section-number-3">14.3</span> The image export workaround (NOT needed)</h3>
+<div class="outline-text-3" id="text-14-3">
+</div>
+<div id="outline-container-orge003549" class="outline-4">
+<h4 id="orge003549"><span class="section-number-4">14.3.1</span> The workaround - motivation</h4>
+<div class="outline-text-4" id="text-14-3-1">
+<p>
+There is a simpler but hack-ier solution to display exported images correctly: We create a directory link from the org/img directory to a img directory above the posts. This works because the generated <code>&lt;img src=/../../some-img.png&gt;</code> tag in, say, 2017/04/a-test-blog.html, reaches ../../img.
+</p>
+
+<p>
+This makes images works both in org and html, with the caveat the images are referenced as [../../img/some-image.png].
+</p>
+
+<p>
+In more detail, do this:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-sh"><span style="color: #e090d7;">cd</span> $<span style="color: #fcaf3e;">BLOG</span> <span style="color: #73d216;"># </span><span style="color: #73d216;">e.g. /whatever/mzimmerm.github.io/</span>
+<span style="color: #e090d7;">cd</span> ..
+ln -s $<span style="color: #fcaf3e;">BLOG</span>/org/img img
+</pre>
+</div>
+
+<p>
+If we prepare the above link (ln), we can use a "no link type" link in the org file
+</p>
+</div>
+</div>
+
+<div id="outline-container-orga95f160" class="outline-4">
+<h4 id="orga95f160"><span class="section-number-4">14.3.2</span> The workaround - testing</h4>
+<div class="outline-text-4" id="text-14-3-2">
+<p>
+An inline link to <code>[[../../img/a-test-blog.org_test-image.png]]</code> should display a image.  <i><b>expected:</b> a small image just after the dash</i> - [[../../img/a-test-blog.org_test-image.png]
+</p>
+
+<p>
+The link above, generates html like this: <code>&lt;img src="/../../img/a-test-blog.org_test-image.png"&gt;</code> which works when served in an http server, because the generated blog posts are located in <code>root:2017/04/a-test-blog</code>, and two levels up to <code>img</code> exists and is not outside the http server root folder. At the same time it works in emacs org mode, as this workaround created the "faked" link directory "org/../../img", where "org" is the current directory while editing in emacs.
+</p>
+</div>
 </div>
 </div>
 </div>
