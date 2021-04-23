@@ -11,4 +11,4 @@
 
 * New blog test title
 
-Delete this after publish, test only
+Delete this after publish, test only.

@@ -2,5 +2,5 @@
 Bacause there is no Yaml front matter, this page does not get published
 * My page 1
 
-In org mode
+In org mode.
 

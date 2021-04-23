@@ -15,7 +15,6 @@ There is a PDF version of this document:
 
 - [[file:../../org/newspeak-TUG-presentation-november-2014-pdf-published-2019.pdf]].
 
-
 * Newspeak: A nutshell image
 
 [[img:newspeak-syntax.png]]
@@ -1524,4 +1523,4 @@ This file is licensed under Creative Commons Attribution ShareAlike 3.0: http://
 
 C-c C-e l p , then run 
 
-pandoc -f latex  newspeak-TUG-presentation-full-version.tex -o newspeak-TUG-presentation-full-version.pdf 
+pandoc -f latex  newspeak-TUG-presentation-full-version.tex -o newspeak-TUG-presentation-full-version.pdf

@@ -105,6 +105,7 @@ Created an empty file with Org front matter like this:
 #+CATEGORIES: categories_required
 #+END_SRC
 
+* Name of this file
 The file name is *a-test-blog.org* so this is concatenated from title, with no date. 
 
 * Verbatim vs Code markup: = vs ~
@@ -353,9 +354,10 @@ With help from the above link, I created my new org mode tags: *img:* and *post-
 
 *** Test the correct solution: my specific org link types - *img:* and *post-jekyll:*
 
-Using the new org-custom-link-img-follow works: /*expected:* a small image just after the dash/ - [[img:a-test-blog.org_20170416_034103_28551Ciq.png]]. More tests below.
+Using the new org-custom-link-img-follow works: /*expected:* a small image just after the dash/ - [[img:a-test-blog.org_test-image.png]]. More tests below.
 
-The link above uses the "new" ~img~ tag, and generates the slash starting src: <img src="/img/a-test-blog.org_20170416_034103_28551Ciq.png" alt="nil"/>
+The link above uses the "new" ~img~ tag, and generates the slash starting src: <img src="/img/a-test-blog.org_test-image.png" alt="nil"/>
+
 
 But several issues:
 
@@ -376,7 +378,7 @@ But several issues:
 
 3. Try this
   #+BEGIN_SRC elisp
-  (org-open-file "./img/a-test-blog.org_20170416_034103_28551Ciq.png")
+  (org-open-file "./img/a-test-blog.org_test-image.png")
   #+END_SRC
 
 4. This line shows why the img: will not display in emacs - only file: can be image
@@ -386,7 +388,7 @@ But several issues:
 
 *** Test my ~img:~ link
 
-The link ~[[img:a-test-blog.org_20170416_034103_28551Ciq.png]]~ after html conversion, /*expected:* a small image just after the dash/ - [[img:a-test-blog.org_20170416_034103_28551Ciq.png]]
+The link ~[[img:a-test-blog.org_test-image.png]]~ after html conversion, /*expected:* a small image just after the dash/ - [[img:a-test-blog.org_test-image.png]]
 
 *** Test my ~post-jekyll:~ link
 
@@ -398,7 +400,7 @@ The link ~[[post-jekyll:blog-in-org-2-jekyll---1.-motivation.org][a short series
 
 There is a simpler but hack-ier solution to display exported images correctly: We create a directory link from the org/img directory to a img directory above the posts. This works because the generated ~<img src=../../some-img.png>~ tag in, say, 2017/04/a-test-blog.html, reaches ../../img.
 
-This makes images works both in org and html.
+This makes images works both in org and html, with the caveat the images are referenced as [../../img/some-image.png].
 
 In more detail, do this:
 
@@ -408,17 +410,15 @@ cd ..
 ln -s $BLOG/org/img img
 #+END_SRC 
 
-Now in org, we can use the "regular" file:/// link for images - as long as images are placed to the $BLOG/../img directory, image links will work after html conversion and serving in Jekyll.
+If we prepare the above link (ln), we can use the "regular" ../img/some-file type link for images in org - as long as images are placed to the $BLOG/../img directory, image links will work after html conversion and serving in Jekyll.
 
 *** Testing the workaround solution
 
-This should display a image:
+An inline link to ~[[../../img/a-test-blog.org_test-image.png]]~ should display a image.  /*expected:* a small image just after the dash/ - [[../../img/a-test-blog.org_test-image.png]]
 
-[[../../img/a-test-blog.org_20170416_034103_28551Ciq.png]]
+The link above, generates html like this: ~<img src="../../img/a-test-blog.org_test-image.png">~ which works when served in an http server, because the generated blog posts are located in ~root:2017/04/a-test-blog~, and two levels up to ~img~ exists and is not outside the http server root folder. At the same time it works in emacs org mode, as this workaround created the "faked" link directory "org/../../img", where "org" is the current directory while editing in emacs.
 
-The link above, generates html like this: ~<img src="../../img/a-test-blog.org_20170416_034103_28551Ciq.png" alt="a-test-blog.org_20170416_034103_28551Ciq.png" />~
-
-** Problem in detail (solutions described above):
+** Image export problem in detail (two solutions described in the two sections above):
 
 I am using org mode publishing to html, using C-c C-e h H (tried to publish to html file as well, same result). Is there a way to specify the link in org so that the published image path starts with /, like this:
 
@@ -428,114 +428,116 @@ I am using org mode publishing to html, using C-c C-e h H (tried to publish to h
 
 Note: The starting slash is a standard in any "normal" static html serving, as in expresses "path from the served root"
 
-There is not way to achieve this in "out of the box" org mode*. I tried those:
+There is no way to achieve this in "out of the box" org mode*. I tried those:
 
-#+BEGIN_QUOTE
-Org                                 Published
-[[/img/a-image.png]          BAD    <img src="f ile:///img/a-image.png" \>
-[[./img/a-image.png]         OK     <img src="./img/a-image.png"\>
-[[../img/a-image.png]        OK     <img src="../img/a-image.png"\>
-[[f ile:///img/a-image.png]  BAD    <img src="f ile:///img/a-image.png"\>
-[[f ile:img/a-image.png]     OK     <img src="img/a-image.png"\>
-[[~/some-dir/img/a-image.png] BAD   <img src="f ile:///some-dir/img/a-image.png"\>
-
-#+END_QUOTE
+| Org                          | Works? | Published as                                   |
+| [/img/a-image.png]           | NO     | <img src="f ile:///img/a-image.png" \>         |
+| [~/some-dir/img/a-image.png] | NO     | <img src="f ile:///some-dir/img/a-image.png"\> |
+| [f ile:///img/a-image.png]   | NO     | <img src="f ile:///img/a-image.png"\>          |
+| [./img/a-image.png]          | OK     | <img src="./img/a-image.png"\>                 |
+| [../img/a-image.png]         | OK     | <img src="../img/a-image.png"\>                |
+| [f ile:img/a-image.png]      | OK     | <img src="img/a-image.png"\>                   |
 
 None of them results in what I am trying to get.
 
-Basically, the publish puts file: in the src URL, unless the org link image path is one of:
+Basically, the publish adds the word "file:///" in the , unless the the org link image path is one of:
 - ./img
 - ../img ../../img etc
 - file:img 
 
-If the org links uses a absolute path, or starts with file://, the publish adds file:/// to the img src url. (secondary question: is this a bug or is there a rationalle?)
+If the org links uses a absolute path, or starts with file://, the org2jekyll-publish (presumably calling org-export-to-html) adds file:/// to the img src url. This does not work when served in any http server. (A secondary question: is adding the file:/// by org2jekyll-publish a bug or is there a rationalle?)
 
 * MathJax configurations
 
-MathJax can be passed options to configure it to display varioius formats
+MathJax can be passed options to configure it to display various formats:
 
 #+BEGIN_QUOTE
-Here's snippet from our documentation http://docs.mathjax.org/en/latest/configuration.html 
-
-TeX-MML-AM_HTMLorMML.js
 Allows math to be specified in TeX, LaTeX, MathML, or AsciiMath notation, with the AMSmath and AMSsymbols packages included, producing output using MathML if the browser supports it sufficiently, and HTML-with-CSS otherwise.
 #+END_QUOTE
 
+See http://docs.mathjax.org/en/latest/
 
+The two sections below describe some nuances for displaying Latex and ASCIIMath in Org2Jekyll and Jekyll.
 
 * Math Formulas using Latex
 
-First, delete this stuff: Must be configured directly in Jekyll, in mathjax-stuff-new.html
+First, delete the following from the org file if present after ~org2jekyll-create-draft~:
+
 OPTIONS: tex:t
 HTML_MATHJAX: path:"http://cdn.mathjax.org/mathjax/latest/MathJax.js"
 HTML_MATHJAX: align: left indent: 5em tagside: left font: Neo-Euler
 
+The Javascript that MathJax will use, must be configured directly in Jekyll, in ~./_includes/mathjax-stuff-new.html~. Also, see the ~./_includes/mathjax-stuff.html~ which I found somewhere - maybe it's Jekyll default.
 
-There are 3 ways to put Latex in org text
+There are 3 ways to put Latex in org text:
 
-1. Start with \begin .. \end{equation}, surround by empty lines
+1. Start with \begin .. \end{equation}, surround by empty lines. Example:
 
   \begin{equation}  x=\sqrt{b}
   \end{equation}
 
-2. Start with double dollar $ $ on lines above and below:  display mode: \ [...\ ] or $ $...$ $
+2. Display mode: Start with double dollar on lines above and below Latex:  ~\[..latex here..\]~ or ~$$..latex here..$$~. Examples:
 
   $$
   x = \sqrt{b} + c^4
   $$
 
-3. Inline mode: \(...\) or $...$ but this may clash on export with dollars etc. *do not use $*
+  \[
+  y = \sqrt{c} + d^3
+  \]
 
-  $x = \sqrt{b} + c^4$
+3. Inline mode: Put ~\(..latex here..\)~ or ~$..latex here..$~  around latex. But this may clash on export with dollars etc. This is some latex inline, e.g. $x = \sqrt{b} + c^4$ or \(y = \sqrt{c} + d^3\) which is nice.  *Prefer using ~\(etc\)*
 
-4. If in doubt for inline, use the above: group inside slash-( slash-) like in this: ~\ ( some latex \ ). That  works even inline, e.g. \( x = \sqrt{b} + c^4 \) - nice.
-
-5. Try org-preview-latex-fragment (bound to C-c C-x C-l). s C-c C-x C-l here (or C-u C-c C-x C-l to preview everything in the subtree, or C-u C-u C-c C-x C-l to preview everything in the buffer)
-
-6. 
+4. Try ~org-preview-latex-fragment~ (bound to C-c C-x C-l). s C-c C-x C-l here (or C-u C-c C-x C-l to preview everything in the subtree, or C-u C-u C-c C-x C-l to preview everything in the buffer)
+ 
 * Math Formulas using ASCIIMath
 
 *An important prerequisit to get this working in org export, is to customize ~org-export-with-sub-superscripts~ to 'do not interpret'. This can also be set per file using option # + OPTIONS: ^:nil*
- 
-Sum: `sum_(i=1)^n i^3=((n(n+1))/2)^2`
 
-Prescripts: `{::}_(\92)^238U` or `{::}_92^238U` ? Both work, so use simple one
+1. Sum: `sum_(i=1)^n i^3=((n(n+1))/2)^2`
 
-Separate the < sign with spaces so `x < y` displays nicely 
+2. Prescripts: `{::}_(\92)^238U` or `{::}_92^238U` ? Both work, so use the second which is simple.
 
-Integrals: `int_0^oo e^(-x^2) dx = sqrt(pi) / 2`
+3. Separate the < sign with spaces so `x < y` displays nicely 
 
+4. Integrals: `int_0^oo e^(-x^2) dx = sqrt(pi) / 2`
+
+5.
+
+
+** Numbering equations in ASCIIMath
+
+   
 After some trying, these are the ways to number equations - no way to do it on the right, and no way to add spacing
 
-So just use the first, e.g. (1).
+1. This renders nice, so just use the first, e.g. (1).
 
-This renders nice:
+  (1) `a^2 + b^2 = c^2`
 
-(1) `a^2 + b^2 = c^2`
+  (2) `ax^2 + bx + c = 0`
 
-(2) `ax^2 + bx + c = 0`
+  (3) `x = (-b+-sqrt(b^2-4ac))/(2a)`
 
-(3) `x = (-b+-sqrt(b^2-4ac))/(2a)`
 
-Below, space before dot prevents interpretation as list item li
+2. Below, space before dot prevents interpretation as list item li. So just use the (1,2,3) format above.
 
-This does not render nice:
+  4 . `m = (y_2 - y_1)/(x_2 - x_1) = (Delta y)/(Delta x)`
 
-1 .   `m = (y_2 - y_1)/(x_2 - x_1) = (Delta y)/(Delta x)`
+  5 . `f'(x) = lim_(Delta x->0)(f(x+Delta x)-f(x))/(Delta x)`
 
-2 .   `f'(x) = lim_(Delta x->0)(f(x+Delta x)-f(x))/(Delta x)`
+  6 . `d/dx [x^n] = nx^(n - 1)`
 
-3 .   `d/dx [x^n] = nx^(n - 1)`
+  `7 . int_a^b f(x) dx = [F(x)]_a^b = F(b) - F(a)`
 
-This renders nice:
+  `8 . int_a^b f(x) dx = f(c) (b - a)`
 
-`7 . int_a^b f(x) dx = [F(x)]_a^b = F(b) - F(a)`
+  `9 . "average value"=1/(b-a) int_a^b f(x) dx`
 
-`8 . int_a^b f(x) dx = f(c) (b - a)`
-
-`9 . "average value"=1/(b-a) int_a^b f(x) dx`
-
-`10 . d/dx[int_a^x f(t) dt] = f(x)`
+  `10 . d/dx[int_a^x f(t) dt] = f(x)`
+  
+  `11 . (a + b)^n = ∑_(k=0)^n▒(n¦k) a^k b^(n-k)` This is UnicodeMath
+  
+  `12 . (a + b)^n = sum_(k=0)^n ((n), (k)) a^k b^(n-k)` This is AsciiMath
 
 * Section added 2019-08-03
 

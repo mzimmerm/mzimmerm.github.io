@@ -1,0 +1,12 @@
+#+STARTUP: showall
+#+STARTUP: hidestars
+#+OPTIONS: H:2 num:nil tags:t toc:nil timestamps:t
+#+LAYOUT: post
+#+AUTHOR: mzimmerm
+#+DATE: 2021-04-20 Tue 16:20
+#+TITLE: What is probability of 3 heads of 4 coin tosses - a review of combinatorics
+#+DESCRIPTION: This musing started with a simple question on the Bruce trail walk on 4th line. Actually, it started by talking about probability that mRNA vaccines also cause the VITT blood clots. That was around 2021-04-05, just after CVST was first reported. Much more is known today. This blog is purely about combinatorics, sets, and probabilities.   
+#+TAGS: math walk-musings combinatorics
+#+CATEGORIES: category-math category-walk-musings category-combinatorics
+
+* chapter 1

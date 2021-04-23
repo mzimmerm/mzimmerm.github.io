@@ -1,0 +1,14 @@
+#+STARTUP: showall
+#+STARTUP: hidestars
+#+OPTIONS: H:2 num:nil tags:t toc:nil timestamps:t
+#+LAYOUT: post
+#+AUTHOR: mzimmerm
+#+DATE: 2021-04-20 Tue 16:02
+#+TITLE: Musing while walking
+#+DESCRIPTION: These days, I am walking a lot. Of course, walking is the most productive thinking and fun time. But walk thinking is elusive. This series is here "for myself only" - to frame those walk thoughts, preserve them for potentially getting back to them later, or simply not to forget what was already thought through. 
+#+TAGS:  math walk-musings combinatorics
+#+CATEGORIES: category-math category-walk-musings category-combinatorics
+
+* A memory cache for walking and thinking
+
+These days, I am walking a lot. Of course, walking is the most productive thinking and fun time. But walk thinking is elusive. This series is here "for myself only" - to frame those walk thoughts, preserve them for potentially getting back to them later, or simply not to forget what was already thought through.

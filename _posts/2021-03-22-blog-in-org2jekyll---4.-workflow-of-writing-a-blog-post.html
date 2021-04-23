@@ -21,6 +21,7 @@ This post is part 4 of  <a href="{% post_url 2017-04-08-blog-in-org-2-jekyll---1
 TL;DR: If you do not want to read this, go to <a href="#org1e75ab5">1.1</a>
 </p>
 
+
 <p>
 This part 4 describes next steps after configuring the stack for blogging in Jekyll and emacs org mode, as described in <a href="{% post_url 2017-04-14-blog-in-org-2-jekyll---2.-configure-all-software %}">the software configuration step of this series</a>. As a brief repeat from the previous part 3, we need the following to configure the blog stack:
 </p>
@@ -117,23 +118,44 @@ Assuming our Jekyll is configured the serve settings to "watch" (to pick up and 
 </ul></li>
 <li><code>M-x: org2jekyll-create-draft</code> (an emacs command, step 1 in text)
 <ul class="org-ul">
-<li>Creates an empty blog post, with today's date, e.g. <code>$BLOG/org/a-test-blog.org</code>.</li>
 <li>Asks a series a questions about the type (blog, page), and so on
 <ul class="org-ul">
-<li>Layout: {post | default} - usr r-mouse/l-mouse to select post</li>
-<li>Title:</li>
-<li>Description:</li>
-<li>Tags (space separated)</li>
-<li>Categories (space separated)</li>
+<li>Layout: {post | default} - use r-mouse/l-mouse to select post</li>
+<li>Title e.g.: A test blog - No column or dot (this creates  a-test-blog&#x2014;no-column-or-dot.org - replaces spaces with - and converts to lowercase)</li>
+<li>Description e.g.: A longer description</li>
+<li>Tags (space separated), e.g.: math walk-musings combinatorics</li>
+<li>Categories (space separated) e.g.: category-math category-walk-musings category-combinatorics</li>
 </ul></li>
+<li>Creates an empty blog post, with today's date, e.g. <code>$BLOG/a-test-blog.org</code></li>
 </ul></li>
 <li><b>Edit the post content</b> in org mode : Add the blog text.</li>
 <li><code>M-x: org2jekyll-publish</code> (an emacs command, step 3 in text)
 <ul class="org-ul">
 <li><b>Locally publishes the post which is being edited</b>. Details of this local publishing step: 
 <ul class="org-ul">
-<li>Org-exports the blog from the <code>org</code> directory to html and places the html to the <code>_posts</code> directory</li>
-<li>The Jekyll auto-watch will the build the final blog file and place it to <code>_site</code> directory.</li>
+<li>Copies directory <code>$BLOG/org/img/</code> to <code>$BLOG/img</code></li>
+<li>Copies directory <code>$BLOG/org/css/</code> to <code>$BLOG/css</code></li>
+<li>Copies directory <code>$BLOG/org/js/</code>  to <code>$BLOG/js</code></li>
+<li>Org-exports the blog <code>$BLOG/org/a-test-blog.org</code>  to html and places the html to the <code>$BLOG/_posts/2021-04-20-a-test-blog.html</code>
+<ul class="org-ul">
+<li>Converts the links <code>[[img:some-file.some-ext]]</code> in the .org file to links in the html file.</li>
+</ul></li>
+<li>Notes:
+<ul class="org-ul">
+<li>If you want to rename a blog, remove the html from the <code>_posts</code> directory.</li>
+<li>The blog index is built from all <code>html</code> files in the <code>_posts</code> directory</li>
+</ul></li>
+</ul></li>
+<li><b>The Jekyll auto-watch will then copy all "special" dirs from _posts to _site, in detail</b>: 
+<ul class="org-ul">
+<li>Copies <code>$BLOG/_posts/2021-04-20-a-test-blog.html</code> to <code>$BLOG/_site/2021/04/20/a-test-blog.html</code>
+<ul class="org-ul">
+<li>Note: This probably includes some additional building from the first to the second html.</li>
+</ul></li>
+<li>Copies directory <code>$BLOG/img/</code> to <code>$BLOG/_site/img</code></li>
+<li>Copies directory <code>$BLOG/css/</code> to <code>$BLOG/_site/css</code></li>
+<li>Copies directory <code>$BLOG/js/</code>  to <code>$BLOG/_site/js</code></li>
+<li>Copies directory <code>$BLOG/org/</code> to <code>$BLOG/_site/org</code> !!! This is NOT DESIRABLE</li>
 </ul></li>
 </ul></li>
 <li><b>Test the post</b> on  <a href="http://127.0.0.1:4000/">http://127.0.0.1:4000/</a>.

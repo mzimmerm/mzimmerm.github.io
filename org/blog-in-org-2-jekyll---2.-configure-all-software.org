@@ -32,6 +32,7 @@ So for now, this is this blog stack:
 - [[https://jekyllrb.com/][Jekyll]] for blog and website building (using the theme [[https://github.com/scotte/jekyll-clean][jekyll clean]])
 - [[https://github.com/ardumont/org2jekyll][org2jekyll]] for writing the blog posts in [[http://orgmode.org/][org-mode]]. This also allows writing Math using [[http://asciimath.org/][ASCIIMath]] and LaTex.
 
+  
 Below is a quick summary of setup steps that achieved installation of this block software stack.
 
 1) *Setup Github Pages on [[https://github.io][github.io]]*: I created my github page at github.io, and cloned it to my local directory, ~BLOG=\~/mzimmerm.github.io~ . This step is best described in https://pages.github.com/. The end result of this step was a local directory, synchronized with my repo at https://github.com/mzimmerm/mzimmerm.github.io. It only contained index.html. 
@@ -46,7 +47,7 @@ Below is a quick summary of setup steps that achieved installation of this block
      - The ~org2jekyll-source-directory~ points to the "source" directory where posts are created in org format - this should be the full path to the ~org~ directory.
      - The ~org2jekyll-jekyll-directory~ points to the "target" location where org publishes. This should be the top level of the blog, ~$BLOG~.
      - The ~org2jekyll-blog-author~ is the author name.
-
+       
 ** Notes
 
 - The Jekyll theme I use, is created by the "legacy method" - it is a plain directory tree with files. More recent themes are created as a Ruby Gem. My overall theme preference would be the theme used by Org2Jekyll in https://github.com/ardumont/org2jekyll which uses the Gem method but I was unable to build it. Ruby configuration is convoluted, even with RVM.

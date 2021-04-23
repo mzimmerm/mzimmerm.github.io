@@ -16,6 +16,7 @@ This post is part 4 of  [[post-jekyll:blog-in-org-2-jekyll---1.-motivation.org][
 
 TL;DR: If you do not want to read this, go to [[Conclusion]]
 
+
 This part 4 describes next steps after configuring the stack for blogging in Jekyll and emacs org mode, as described in [[post-jekyll:blog-in-org-2-jekyll---2.-configure-all-software.org][the software configuration step of this series]]. As a brief repeat from the previous part 3, we need the following to configure the blog stack:
 
 - Setup Github pages and it's local repo (for example, in directory ~BLOG=~/mzimmerm.github.io~).
@@ -77,25 +78,33 @@ Notes:
 1) ~$ cd $BLOG; jekyll serve --baseurl=''~ (a shell command, step 5 in text) 
    - Starts jekyll server locally, so we can view the blog changes locally in the browser, before pushing to github.
 2) ~M-x: org2jekyll-create-draft~ (an emacs command, step 1 in text)
-   - Creates an empty blog post, with today's date, e.g. =$BLOG/org/a-test-blog.org=.
    - Asks a series a questions about the type (blog, page), and so on
-     - Layout: {post | default} - usr r-mouse/l-mouse to select post
-     - Title: 
-     - Description: 
-     - Tags (space separated)
-     - Categories (space separated)
+     - Layout: {post | default} - use r-mouse/l-mouse to select post
+     - Title e.g.: A test blog - No column or dot (this creates  a-test-blog---no-column-or-dot.org - replaces spaces with - and converts to lowercase)
+     - Description e.g.: A longer description 
+     - Tags (space separated), e.g.: math walk-musings combinatorics 
+     - Categories (space separated) e.g.: category-math category-walk-musings category-combinatorics
+   - Creates an empty blog post, with today's date, e.g. ~$BLOG/a-test-blog.org~
 3) *Edit the post content* in org mode : Add the blog text.
 4) ~M-x: org2jekyll-publish~ (an emacs command, step 3 in text)
    - *Locally publishes the post which is being edited*. Details of this local publishing step: 
-     - Org-exports the blog from the =org= directory to html and places the html to the =_posts= directory
-       - This step does not copy files in the =org/img= directory
-       - This step does convert the links [ [ img : some-file.some-ext ] ] in the .org file to links in html file looking like 
-     - The Jekyll auto-watch will then: 
-       - build the final blog file and place it to =_site= directory. 
-       - copy all files from =org/img= directory to the =_site/img= directory
+     - Copies directory ~$BLOG/org/img/~ to ~$BLOG/img~
+     - Copies directory ~$BLOG/org/css/~ to ~$BLOG/css~
+     - Copies directory ~$BLOG/org/js/~  to ~$BLOG/js~
+     - Org-exports the blog ~$BLOG/org/a-test-blog.org~  to html and places the html to the ~$BLOG/_posts/2021-04-20-a-test-blog.html~
+       - Converts the links ~[[img:some-file.some-ext]]~ in the .org file to links in the html file. 
+     - Notes:
+       - If you want to rename a blog, remove the html from the ~_posts~ directory.
+       - The blog index is built from all ~html~ files in the ~_posts~ directory
+   - *The Jekyll auto-watch will then copy all "special" dirs from _posts to _site, in detail*: 
+     - Copies ~$BLOG/_posts/2021-04-20-a-test-blog.html~ to ~$BLOG/_site/2021/04/20/a-test-blog.html~
+       - Note: This probably includes some additional building from the first to the second html.
+     - Copies directory ~$BLOG/img/~ to ~$BLOG/_site/img~
+     - Copies directory ~$BLOG/css/~ to ~$BLOG/_site/css~
+     - Copies directory ~$BLOG/js/~  to ~$BLOG/_site/js~
+     - Copies directory ~$BLOG/org/~ to ~$BLOG/_site/org~ !!! This is NOT DESIRABLE
 5) *Test the post* on  http://127.0.0.1:4000/.
    - Browse to the above link to view the post locally.
    - Go back to step 3 to re-edit if needed.
 6) ~$ git commit; git push~
    - Pushes the blog post to Github. The server there builds and serves our post, and makes it available for readers.
-

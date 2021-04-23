@@ -28,6 +28,7 @@ A few weekends ago I figured the reasonably best approach was [[https://github.i
 
 Once I decided to switch over from Blogspot to [[https://github.io][github.io]] (which uses [[https://jekyllrb.com][Jekyll]]), I started to look for options to use Org to web page creation and blogging. 
 
+
 ** Selecting a package to blog in Org mode in Jekyll
 
 Jekyll is by default, using Markdown to write blog posts. There seem to be three ways to blog in org-mode with Jekyll:
@@ -61,4 +62,3 @@ This is a first post in this blog on [[https://github.io][github.io]], using [[h
 I hope the simplicity of Org mode and publishing on github.io will inspire me to write here more often. 
 
 The next step is to document how I installed all this, and the workflow of writing a blog in this Org mode + Jekyll environment.
-

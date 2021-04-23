@@ -14,6 +14,7 @@
 
 This post is part 3 of  [[post-jekyll:blog-in-org-2-jekyll---1.-motivation.org][a short series about writing in org mode]] using org2jekyll.
 
+
 The Jekyll theme on this page is slightly modified from the original *jekyll clean* theme. If you like the theme, you can use it from this blog, or from the original site https://github.com/scotte/jekyll-clean
 
 The theme (optionally) uses Disqus for comments and (optionally) includes Google Analytics. Both are off by default, and can be changed in ~config.yml~
