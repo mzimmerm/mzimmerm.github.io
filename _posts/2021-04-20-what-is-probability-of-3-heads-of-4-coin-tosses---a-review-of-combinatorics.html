@@ -1,0 +1,112 @@
+---
+date: 2021-04-20 16:20
+author: mzimmerm
+layout: post
+title: What is probability of 3 heads of 4 coin tosses - a review of combinatorics
+excerpt: This musing started with a simple question on the Bruce trail walk on 4th line. It started by talking about probability that mRNA vaccines also cause the VITT blood clots. That was around 2021-04-05, just after CVST was first reported. Much more is known today. This blog is purely about combinatorics, sets, and probabilities.   
+tags: 
+- math
+- walk-musings
+- combinatorics
+categories: 
+- category-math
+- category-walk-musings
+- category-combinatorics
+---
+
+<div id="outline-container-orga11f43c" class="outline-2">
+<h2 id="orga11f43c">Motivation</h2>
+<div class="outline-text-2" id="text-orga11f43c">
+<p>
+Purely self directed combinatorics review with some sketches of proofs. This musing started with a simple question on the Bruce trail walk on 4th line, while talking to Jitka about probability that mRNA vaccines can also cause the CVST blood clots, as the vector vaccines do. That was around 2021-04-05, just after CVST was first reported. Much more is known today.
+</p>
+
+<p>
+This blog is purely about combinatorics, sets, and probabilities, not about vaccines.
+</p>
+
+<p>
+A simple follow model lead to a question: "What is the probability of 3 heads in 4 coin tosses". In turn, it lead to my recaping the combinatorics basis, during the next few days walks. All with no Wikipedia access :) (but references are inserted here where helpful)
+</p>
+</div>
+</div>
+
+<div id="outline-container-org12f8e9d" class="outline-2">
+<h2 id="org12f8e9d">The basic formulation of combinatorics</h2>
+<div class="outline-text-2" id="text-org12f8e9d">
+</div>
+<div id="outline-container-orgc236fcf" class="outline-3">
+<h3 id="orgc236fcf">Somewhat abstract and vague formulation</h3>
+<div class="outline-text-3" id="text-orgc236fcf">
+<p>
+Combinatorics typically concerns with this problem: Given a countable set of possible states
+</p>
+
+<p>
+`N = { a_1, .., a_n }`
+</p>
+
+<p>
+and a set describing experiments 
+</p>
+
+<p>
+`X = { e_1, .. e_x }`
+</p>
+
+<p>
+(either one experiment with `x` results or `x` experiments)
+</p>
+
+<p>
+we can ask, how many possible results we can get when we run either one experiment with `x` results or `x` experiments with the states in `N`.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgc2269aa" class="outline-3">
+<h3 id="orgc2269aa">Formulation using balls and boxes</h3>
+<div class="outline-text-3" id="text-orgc2269aa">
+<p>
+This formulation imagines that `N`, is a set of balls, which we can further imagine to be numbered, so
+</p>
+
+<p>
+`N = { 1, .., n }`
+</p>
+
+<p>
+and `X` is a set of boxes, to which we are placing the numbered balls.
+</p>
+
+<p>
+We can ask about all the possible ways to place the balls into the boxes. Any ball can go into at most one box. However, we can distinguish the following experiment "types":
+</p>
+<ul class="org-ul">
+<li>With/Without Replacement : After placing the ball into the box, we may allow to "replace" the ball we just used back into the set `N`, so it is available for the next experiment again, or keep it out of the set (making it not available).</li>
+<li>With/Without Order: In addition, we can ignore the ball numbers ordering (or not).</li>
+</ul>
+
+<p>
+The experiment "types" define 4 combinations. More on that later
+</p>
+</div>
+</div>
+
+<div id="outline-container-org5b2ba39" class="outline-3">
+<h3 id="org5b2ba39">Formulation using building a number from digits</h3>
+<div class="outline-text-3" id="text-org5b2ba39">
+<p>
+Similar to balls and boxes, we can imagine we are building a number out of digits `1, .., n`. We do not restrict the number of digits in any way - we can use for example one Unicode point to one digit. But to make things simple, we simply imagine digits 0 to 9 or less.
+</p>
+
+<p>
+Everything from the <a href="#orgc2269aa">Formulation using balls and boxes</a>
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgccf7242" class="outline-3">
+<h3 id="orgccf7242">Formulation using sampling</h3>
+</div>
+</div>

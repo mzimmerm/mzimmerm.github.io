@@ -5,8 +5,120 @@
 #+AUTHOR: mzimmerm
 #+DATE: 2021-04-20 Tue 16:20
 #+TITLE: What is probability of 3 heads of 4 coin tosses - a review of combinatorics
-#+DESCRIPTION: This musing started with a simple question on the Bruce trail walk on 4th line. Actually, it started by talking about probability that mRNA vaccines also cause the VITT blood clots. That was around 2021-04-05, just after CVST was first reported. Much more is known today. This blog is purely about combinatorics, sets, and probabilities.   
+#+DESCRIPTION: This musing started with a simple question on the Bruce trail walk on 4th line. It started by talking about probability that mRNA vaccines also cause the VITT blood clots. That was around 2021-04-05, just after CVST was first reported. Much more is known today. This blog is purely about combinatorics, sets, and probabilities.   
 #+TAGS: math walk-musings combinatorics
 #+CATEGORIES: category-math category-walk-musings category-combinatorics
 
-* chapter 1
+* Motivation
+
+Purely self directed combinatorics review with some sketches of proofs. This musing started with a simple question on the Bruce trail walk on 4th line, while talking to Jitka about probability that mRNA vaccines can also cause the CVST blood clots, as the vector vaccines do. That was around 2021-04-05, just after CVST was first reported. Much more is known today.
+
+This blog is purely about combinatorics, sets, and probabilities, not about vaccines.
+
+A simple follow model lead to a question: "What is the probability of 3 heads in 4 coin tosses". In turn, it lead to my recaping the combinatorics basis, during the next few days walks. All with no Wikipedia access :) (but references are inserted here where helpful)
+
+* The basic formulation of combinatorics
+
+** Somewhat abstract and vague formulation
+
+Imagine
+- an object that can only be in certain set of states (the state implicitly defines an *identity* of the object).
+- an experiment: select randomly one of the object's state. The result of the experiment is one state.  
+
+Combinatorics deals with this question:
+
+Given a countable set of possible *states* of an object 
+
+`N = { a_1, .., a_n }`
+
+and given an experiment which randomly selects one state
+
+and a countable set of possible *independent repetitions of the experiment* (repetition index implicitly defines *identity* of the experiment)
+
+`X = { e_1, .. e_x }`.
+
+If we define *combined experiment* as the experiment repeated `x` times, the core question of combinatorics: How many possible *combined experiment* *results* exist, when we do experiments `e_1, .. e_x`? (That is, we repeat experiment `x` times, each experiment with some state from `N`).
+
+*** Notes on formulation and results constraints:
+
+From the formulation, we take for granted, that the following statements are true (they serve for illustration - they are not mutually exclusive)
+- there are exactly `x` experiments
+- each experiment result contains exactly one state from `N`
+- there can be no experiments without a result, or with a result not from `N`
+
+*** Distinguishers on the experiment, the combined result, and the identity of the combined result - 4 types of combined experiment
+
+When defining the experiment, we can place some constraints on the the construction of each experiment and on how we count the combined result
+
+- Individual experiments construction:
+  - With or Without Replacement : After doing experiment 1, we may perform the followup experiments 
+    - with    replacement:    either allow to "replace" the state we just used (`a_i`), back into the set `N`, so it is available for the next experiment again (this is called *with replacement*),
+    - without replacement: keep the state out of the set `N`, making the state not available for experiment 2, 3, etc) (this is called *without replacement*)
+- Combined experiment results identity (that is, counting)
+  - Use or Ignore Order of the combined result: Independently of the above, we can assume that, in the *combined experiment result*
+    - identity uses    order: the multiple result state ordering matters when we distinguish combined results (this is like *with order*, also called *permutations*)
+    - identity ignores order: the multiple result state ordering does not matter (*without order*, also called *combinations*)
+
+Note 1:    
+
+- The "replacement" section adds constraints on how individual experiments after experiment 1 are constructed:
+  - either they use the same set `N` for all follow up experiments, making all experiments independent
+  - or they use a set `N` "reduced" by the previous experiments, making the follow-up experiments dependend
+- The "order" section can be described as *how we define identity of the combined result*: 
+  - either, we define two combined results as identical, only if the exact sequence of states in the multiple result is the same.
+  - or      we define two combined results as identical, if we can find a reordering that is the same.
+  
+
+Note 2:
+
+In the multiple results set, the there are obviously:
+- more "with replacement" than "without replacement" multi-results
+- more "with order" than "without order" multi-results.
+
+  
+*** Example
+
+todo
+
+** Formulation using balls and boxes
+
+In this formulation
+
+- the *object* is a *ball*, the set `N` (*states of the ball*) may be the ball unique colors, for example, `N = { red, green, blue }`, or unique digits written on the ball,  `N = { ball1, ball2, ball3 }`.
+- the *experiment* is a process of placing the *ball into a slot*. Each experiment has one slot.
+- the *combined experiment* *results* is a set of slots, each containing one ball. 
+  
+In other words, this formulation imagines that `N`, is a set of distinquishable (non-identical) balls, which we can imagine to be numbered, or colored
+
+`N = { ball_1, .., ball_n }`
+
+and `X = { box_1, .., box_x }` is a set of boxes, to which each experiment places the numbered balls.
+
+
+*** Example
+
+todo
+
+** Formulation using building a number from digits
+
+Similar to balls and boxes, we can imagine we are building a number out of digits `1, .., n`. We do not restrict the number of digits in any way - we can use for example one Unicode point to one digit. But to make things simple, we simply imagine digits 0 to 9 or less.
+
+Everything from the [[*Formulation using balls and boxes]]
+
+
+*** Example
+
+todo
+
+** Formulation using sampling
+
+
+
+
+
+** Unused notes
+
+Note: In the abstract: We can do either
+- one experiment with `x` states from `N` or
+- `x` independent experiments with any state from `N`
+

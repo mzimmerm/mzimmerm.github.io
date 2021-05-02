@@ -76,7 +76,16 @@ categories:
 <li><a href="#org6c3a5ac">16. Math Formulas using Latex</a></li>
 <li><a href="#org89ae06c">17. Math Formulas using ASCIIMath</a>
 <ul>
-<li><a href="#orgc7bc4c1">17.1. Numbering equations in ASCIIMath</a></li>
+<li><a href="#orgc7bc4c1">17.1. Numbering equations in ASCIIMath</a>
+<ul>
+<li><a href="#org27e4017">17.1.1. Numbering equations in ASCIIMath - a full example</a>
+<ul>
+<li><a href="#org2c53fad">17.1.1.1. Combinatorics basics</a></li>
+<li><a href="#org4ed9c41">17.1.1.2. Combinatorics advanced</a></li>
+</ul>
+</li>
+</ul>
+</li>
 </ul>
 </li>
 <li><a href="#org41f3278">18. Section added 2019-08-03</a></li>
@@ -928,6 +937,14 @@ Display mode: Start with double dollar on lines above and below Latex:  <code>\[
 <h3 id="orgc7bc4c1"><span class="section-number-3">17.1</span> Numbering equations in ASCIIMath</h3>
 <div class="outline-text-3" id="text-17-1">
 <p>
+Test link references:
+</p>
+<ul class="org-ul">
+<li><a href="#org37da9ec">somesection-10</a></li>
+<li><a href="#orgcbd893e">section.10</a></li>
+</ul>
+
+<p>
 After some trying, these are the ways to number equations - no way to do it on the right, and no way to add spacing
 </p>
 
@@ -947,10 +964,7 @@ This renders nice, so just use the first, e.g. (1).
 <p>
 (3) `x = (-b+-sqrt(b^2-4ac))/(2a)`
 </p></li>
-</ol>
 
-
-<ol class="org-ol">
 <li><p>
 Below, space before dot prevents interpretation as list item li. So just use the (1,2,3) format above.
 </p>
@@ -990,7 +1004,60 @@ Below, space before dot prevents interpretation as list item li. So just use the
 <p>
 `12 . (a + b)^n = sum_(k=0)^n ((n), (k)) a^k b^(n-k)` This is AsciiMath
 </p></li>
+
+<li><p>
+Use org <code>#+name: eqn:somesection-10</code> then <code>[ [eqn:] [1] ]</code> as reference (does not seem too good) 
+</p>
+<p>
+(eqn.10) `m = (y_2 - y_1)/(x_2 - x_1) = (Delta y)/(Delta x)`
+</p>
+<ul class="org-ul">
+<li>reference: <a href="#org37da9ec">somesection-10</a></li>
+</ul></li>
+
+<li>BEST Use <code>&lt; &lt;1.n&gt; &gt;(1.n)</code> before equation, then <code>[ [1.n] [1.n] ]</code> as reference
+<ul class="org-ul">
+<li><a id="orgcbd893e"></a> (section.10) `m = (y_2 - y_1)/(x_2 - x_1) = (Delta y)/(Delta x)`</li>
+<li>reference: <a href="#orgcbd893e">section.10</a></li>
+<li></li>
+</ul></li>
 </ol>
+</div>
+
+
+<div id="outline-container-org27e4017" class="outline-4">
+<h4 id="org27e4017"><span class="section-number-4">17.1.1</span> Numbering equations in ASCIIMath - a full example</h4>
+<div class="outline-text-4" id="text-17-1-1">
+<p>
+So let's say have some chapters, and want to number all equations by chapter. This is how to do it
+</p>
+</div>
+
+<div id="outline-container-org2c53fad" class="outline-5">
+<h5 id="org2c53fad"><span class="section-number-5">17.1.1.1</span> Combinatorics basics</h5>
+<div class="outline-text-5" id="text-17-1-1-1">
+<p>
+In this chaptes, we introduce some basics The core equation is
+</p>
+
+<p>
+`c^2 = a^2 + b^2               ` <a id="orgfca6242"></a>(basics.10) 
+</p>
+</div>
+</div>
+
+<div id="outline-container-org4ed9c41" class="outline-5">
+<h5 id="org4ed9c41"><span class="section-number-5">17.1.1.2</span> Combinatorics advanced</h5>
+<div class="outline-text-5" id="text-17-1-1-2">
+<p>
+This is more advanced. In the basics section, we introduced <a href="#orgfca6242">basics.10</a>. In this chapter we will prove
+</p>
+
+<p>
+`(a + b)^n = sum_(k=0)^n ((n), (k)) a^k b^(n-k)        ` <a id="org627c8b2"></a>(advanced.10)  
+</p>
+</div>
+</div>
 </div>
 </div>
 </div>

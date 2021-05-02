@@ -496,6 +496,9 @@ There are 3 ways to put Latex in org text:
 
 ** Numbering equations in ASCIIMath
 
+Test link references:
+- [[eqn:somesection-10][somesection-10]]
+- [[section.10][section.10]]
    
 After some trying, these are the ways to number equations - no way to do it on the right, and no way to add spacing
 
@@ -506,7 +509,6 @@ After some trying, these are the ways to number equations - no way to do it on t
   (2) `ax^2 + bx + c = 0`
 
   (3) `x = (-b+-sqrt(b^2-4ac))/(2a)`
-
 
 2. Below, space before dot prevents interpretation as list item li. So just use the (1,2,3) format above.
 
@@ -527,6 +529,33 @@ After some trying, these are the ways to number equations - no way to do it on t
   `11 . (a + b)^n = ∑_(k=0)^n▒(n¦k) a^k b^(n-k)` This is UnicodeMath
   
   `12 . (a + b)^n = sum_(k=0)^n ((n), (k)) a^k b^(n-k)` This is AsciiMath
+
+3. Use org ~#+name: eqn:somesection-10~ then ~[ [eqn:] [1] ]~ as reference (does not seem too good) 
+   #+name: eqn:somesection-10
+   (eqn.10) `m = (y_2 - y_1)/(x_2 - x_1) = (Delta y)/(Delta x)`
+   - reference: [[eqn:somesection-10][somesection-10]]
+
+4. BEST Use ~< <1.n> >(1.n)~ before equation, then ~[ [1.n] [1.n] ]~ as reference
+   - <<section.10>> (section.10) `m = (y_2 - y_1)/(x_2 - x_1) = (Delta y)/(Delta x)`
+   - reference: [[section.10][section.10]]
+   -
+
+
+*** Numbering equations in ASCIIMath - a full example
+
+So let's say have some chapters, and want to number all equations by chapter. This is how to do it
+
+**** Combinatorics basics
+
+In this chaptes, we introduce some basics The core equation is
+
+`c^2 = a^2 + b^2` <<basics.10>>(basics.10) 
+
+**** Combinatorics advanced
+
+This is more advanced. In the basics section, we introduced [[basics.10][basics.10]]. In this chapter we will prove
+
+`(a + b)^n = sum_(k=0)^n ((n), (k)) a^k b^(n-k)` <<advanced.10>>(advanced.10)  
 
 * Section added 2019-08-03
 

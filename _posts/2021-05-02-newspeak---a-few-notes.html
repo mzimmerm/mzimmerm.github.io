@@ -1,0 +1,950 @@
+---
+date: 2021-05-02 12:51
+author: mzimmerm
+layout: post
+title: Newspeak - a few notes
+excerpt: Running, not yet published notes on Newspeak
+tags: 
+- newspeak
+- programming
+categories: 
+- category-newspeak
+- category-blog
+- category-programming
+---
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#org3d484da">1. This document: Introduction to Newspeak on Webassembly (Wasm)</a></li>
+<li><a href="#org058c104">2. Newspeak quickstart and hands on: code, build and deploy a Newspeak counter app</a>
+<ul>
+<li><a href="#orgd19ff8f">2.1. Run the online version of the Newspeak IDE. Maybe read some docs. Maybe watch some videos.</a></li>
+<li><a href="#org0386a44">2.2. Build, run, and debug <code>CounterApp</code> in Newspeak</a></li>
+<li><a href="#org14eec62">2.3. Download, install, and start a local Newspeak server</a></li>
+<li><a href="#org2fffd3b">2.4. Deploy the CounterApp into the local Newspeak server</a></li>
+</ul>
+</li>
+<li><a href="#org5362505">3. Newspeak on Webassembly (Wasm) - installation methods</a>
+<ul>
+<li><a href="#org575b242">3.1. Simle methods to install and run Newspeak</a>
+<ul>
+<li><a href="#orgc759bfe">3.1.1. Install method 1: No installation or setup, run Newspeak online (<b>Recommended for a quick start</b>)</a></li>
+<li><a href="#org66f0bb8">3.1.2. Install method 2: Download and start a local version of Newspeak webserver</a></li>
+</ul>
+</li>
+<li><a href="#orgc43aabe">3.2. Advanced methods to install and run Newspeak</a>
+<ul>
+<li><a href="#orga7a4894">3.2.1. Install method 3: Setup a local Newspeak webserver from code on Github.</a></li>
+<li><a href="#org9b1ad30">3.2.2. Install method 4: Download or setup a local Electron version of Newspeak on Linux</a></li>
+<li><a href="#org84d7710">3.2.3. Install method 5: Manual setup which will produce an equivalent of Install method 2</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#org1e6a4a1">4. <span class="todo TODO">TODO</span> Why does only the "app" file have the [deploy] [run] [debug[ links?</a></li>
+<li><a href="#orgdb59b99">5. Q&amp;A</a>
+<ul>
+<li><a href="#org88e254f">5.1. <span class="todo TODO">TODO</span> Working with code</a></li>
+<li><a href="#org0fda8f4">5.2. How would I build and deploy a "Hello world" application?</a></li>
+<li><a href="#org2c72efd">5.3. In the IDE (browser), how do I save my changes?</a></li>
+<li><a href="#org746a587">5.4. Why to refresh the online IDE?</a></li>
+</ul>
+</li>
+<li><a href="#orge3a1ea6">6. <span class="todo TODO">TODO</span> SECTIONS NOT READY. IGNORE FOR NOW</a>
+<ul>
+<li><a href="#org5cf8dc5">6.1. <span class="todo TODO">TODO</span> Structure of paragraphs</a></li>
+<li><a href="#org2e4ec24">6.2. <span class="todo TODO">TODO</span> Newspeak terms:</a></li>
+<li><a href="#org4294c10">6.3. <span class="todo TODO">TODO</span> Newspeak syntax</a>
+<ul>
+<li><a href="#org26a9d6c">6.3.1. Comments <code>(* comment *)</code></a></li>
+<li><a href="#org77f009f">6.3.2. Class definition</a></li>
+<li><a href="#org2ba4842">6.3.3. Definitions in Newspeak have syntax similar to <code>someName = ( .. code here ..)</code></a>
+<ul>
+<li><a href="#orgc642ce8">6.3.3.1. Class definition examples:</a>
+<ul>
+<li><a href="#org07f3826">6.3.3.1.1. Class definition:</a></li>
+<li><a href="#org0ac9d98">6.3.3.1.2. A commented class definition:</a></li>
+<li><a href="#org17959c2">6.3.3.1.3. Class definition with uninitialized slot:</a></li>
+<li><a href="#org72b3fa9">6.3.3.1.4. Class definition with initialized slot:</a></li>
+<li><a href="#org0635700">6.3.3.1.5. Class definition with uninitialized slot followed by some code:</a></li>
+<li><a href="#org847d1cf">6.3.3.1.6. Class definition defining a constructor which allow parameters passing:</a></li>
+</ul>
+</li>
+<li><a href="#orgf860e15">6.3.3.2. Instance method definition examples:</a></li>
+<li><a href="#orgfe93434">6.3.3.3. <span class="todo TODO">TODO</span> A somewhat full flegded example of declaring <b>a library</b>, <b>a class</b>, <b>a class initializer slots</b> (members)  <b>a method</b> etc.</a></li>
+<li><a href="#org5d6c7dc">6.3.3.4. <span class="todo TODO">TODO</span> Instance Method definition examples:</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<p>
+<b>Originally intended as a blog, for now, keep as a normal document</b>
+</p>
+
+<div id="outline-container-org3d484da" class="outline-2">
+<h2 id="org3d484da"><span class="section-number-2">1</span> This document: Introduction to Newspeak on Webassembly (Wasm)</h2>
+<div class="outline-text-2" id="text-1">
+<p>
+TL;DR: The purpose of this document is to help starting with Newspeak version 3 (year 2021, runs on Webassembly), and hopefully reduce your startup time a bit.
+</p>
+
+<p>
+Much of this document is collected from the existing Newspeak sources:
+</p>
+
+<ul class="org-ul">
+<li>The Newspeak google groups posts at <a href="https://groups.google.com/g/newspeaklanguage">https://groups.google.com/g/newspeaklanguage</a></li>
+<li>The Newspeak core site at <a href="https://newspeaklanguage.org/">https://newspeaklanguage.org/</a></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org058c104" class="outline-2">
+<h2 id="org058c104"><span class="section-number-2">2</span> Newspeak quickstart and hands on: code, build and deploy a Newspeak counter app</h2>
+<div class="outline-text-2" id="text-2">
+<p>
+TL;DR: This quickstart section attempts to provide an incremental introduction to Newspeak by first describing the environment, then giving some hands-on through building and deploying a <code>CounterApp</code>.
+</p>
+</div>
+
+<div id="outline-container-orgd19ff8f" class="outline-3">
+<h3 id="orgd19ff8f"><span class="section-number-3">2.1</span> Run the online version of the Newspeak IDE. Maybe read some docs. Maybe watch some videos.</h3>
+<div class="outline-text-3" id="text-2-1">
+<p>
+TL;DR: This section describes what is the online version of Newspeak IDE, and how to use it.
+</p>
+
+<p>
+This is a brief section. Starting with Newspeak is easy. We just point the browser to <a href="https://newspeaklanguage.org/samples/primordialsoup.html?snapshot=HopscotchWebIDE.vfuel">https://newspeaklanguage.org/samples/primordialsoup.html?snapshot=HopscotchWebIDE.vfuel</a>.
+</p>
+
+<p>
+In more detail, let us try the following (skip if you know Smalltalk basics):
+</p>
+
+<ul class="org-ul">
+<li>Action: In a new browser tab, open the Newspeak online IDE at <a href="https://newspeaklanguage.org/samples/primordialsoup.html?snapshot=HopscotchWebIDE.vfuel">https://newspeaklanguage.org/samples/primordialsoup.html?snapshot=HopscotchWebIDE.vfuel</a></li>
+<li>Result: The Newspeak IDE opens, similar to <img src="/img/newspeak---a-few-notes.org-newspeak-ide-start.png" alt="nil"/></li>
+<li>To edit source code: Click "Newspeak Source" in <img src="/img/newspeak---a-few-notes.org-go-to-newspeak-source.png" alt="nil"/></li>
+<li>Result: A new page opens, showing Newspeak classes, similar to <img src="/img/newspeak---a-few-notes.org-newspeak-source.png" alt="nil"/>
+<ul class="org-ul">
+<li>Notes:
+<ul class="org-ul">
+<li>The blue links are classes. To view, or change them, click the class link</li>
+<li>Click the "+" beside the "Root" to add a class</li>
+</ul></li>
+</ul></li>
+
+<li>To run some Newspeak expressions: Click on "Workspaces"
+<ul class="org-ul">
+<li>Result: A new page opens, similar to <img src="/img/newspeak---a-few-notes.org-workspaces.png" alt="nil"/></li>
+</ul></li>
+<li>To run some code, type, for example "1+2" into the text field, and from keyboard, <b>Shift + ENTER</b>. This will evaluate the expression and produce
+<ul class="org-ul">
+<li>Result: evaluated expression
+<img src="/img/newspeak---a-few-notes.org-workspaces-expression.png" alt="nil"/></li>
+</ul></li>
+</ul>
+
+<p>
+Notes:
+</p>
+
+<ul class="org-ul">
+<li>We are now using Newspeak, in it's full power.</li>
+<li>The browser tab opened on <a href="https://newspeaklanguage.org/samples/primordialsoup.html?snapshot=HopscotchWebIDE.vfuel">https://newspeaklanguage.org/samples/primordialsoup.html?snapshot=HopscotchWebIDE.vfuel</a> IS the Newspeak IDE.</li>
+<li>Everything we do in the IDE is alive, changes and actions have immediate responses in the running system.</li>
+<li>About the changes you make:
+<ul class="org-ul">
+<li>Any changes we make (for example: add a class, change a class, evaluate something in the workspace) are stored in the browser local storage in regular intervals.</li>
+<li>To save your changes in the browser local storage explicitly "now", click on the diskette "save" button <img src="/img/newspeak---a-few-notes.org-save-button.png" alt="nil"/></li>
+<li>Saving changes outside the browser:
+<ul class="org-ul">
+<li>If you do clear your browser local storage, your changes will be lost.</li>
+<li>Obviously, for long term work, we will want to save our work. The current approach, is to "export" all classes you changed in a directory on your system, and potentially create a code repository in that directory. For more details, see <a href="#org88e254f">5.1</a>.</li>
+</ul></li>
+</ul></li>
+</ul>
+
+<p>
+Documentation:
+</p>
+
+<ul class="org-ul">
+<li>We can look at documentation sites and videos
+<ul class="org-ul">
+<li>The core site for all Newspeak is <a href="https://newspeaklanguage.org/">https://newspeaklanguage.org/</a>. It has <b>papers, talks, demos, and repo links.</b></li>
+<li>A great start would be the last 2 videos on the "talks" tab <a href="https://newspeaklanguage.org/talks.html">https://newspeaklanguage.org/talks.html</a>
+<ul class="org-ul">
+<li>Live IDEs in the Web Browser: What's Holding Us Back - <a href="https://youtu.be/CJX_6B24Hho">https://youtu.be/CJX_6B24Hho</a></li>
+<li>What is a Live Programming System? - <a href="https://youtu.be/VUfZ1sL4aps">https://youtu.be/VUfZ1sL4aps</a></li>
+</ul></li>
+</ul></li>
+</ul>
+
+<p>
+Next:
+</p>
+
+<p>
+In the next section <a href="#org0386a44">2.2</a>, we show how to create a simple <code>CounterApp</code> in Newspeak.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org0386a44" class="outline-3">
+<h3 id="org0386a44"><span class="section-number-3">2.2</span> Build, run, and debug <code>CounterApp</code> in Newspeak</h3>
+<div class="outline-text-3" id="text-2-2">
+<p>
+TL;DR: This section describes 
+</p>
+
+<ul class="org-ul">
+<li>How to build, run, and debug a Newspeak app (<code>CounterApp</code> ) in development mode, inside the online Newspeak IDE.</li>
+</ul>
+
+<p>
+Notes: 
+</p>
+
+<ul class="org-ul">
+<li>This section uses the online Newspeak at <a href="https://newspeaklanguage.org/samples/primordialsoup.html?snapshot=HopscotchWebIDE.vfuel">https://newspeaklanguage.org/samples/primordialsoup.html?snapshot=HopscotchWebIDE.vfuel</a></li>
+<li>However, a local Newspeak server could be used instead.
+<ul class="org-ul">
+<li>If we wanted to deploy the <code>CounterApp</code> in "production", we would need a local Newspeak - because there is no way to deploy the app to the online Newspeak site.</li>
+<li>Deployment of the  <code>CounterApp</code> to "production" requires our "own" Newspeak, such as the local Newspeak server. See <a href="#org14eec62">2.3</a> for how to install Newspeak locally.</li>
+</ul></li>
+<li>The code of the <code>CounterApp</code> already exists - in the Newspeak github at <a href="https://github.com/newspeaklanguage/newspeak">https://github.com/newspeaklanguage/newspeak</a>. We borrow it without talking about Newspeak code until later.</li>
+<li>We may ask, "what is an app in Newspeak"? In a nutshell, an "app" is an instance of a class - obviously. But which class, and what does the class need, to be able to "live" or "run" inside a Newspeak IDE or Newspeak runtime? Read on for details (actually, the coding details are todo).</li>
+</ul>
+
+<p>
+<b>Steps: To create and run the Counter app (from existing code that we borrow), do the following:</b>
+</p>
+
+<ul class="org-ul">
+<li>Action: In a new browser tab, open the Newspeak online IDE at <a href="https://newspeaklanguage.org/samples/primordialsoup.html?snapshot=HopscotchWebIDE.vfuel">https://newspeaklanguage.org/samples/primordialsoup.html?snapshot=HopscotchWebIDE.vfuel</a></li>
+<li>Result: The Newspeak IDE opens, similar to <img src="/img/newspeak---a-few-notes.org-newspeak-ide-start.png" alt="nil"/>
+<ul class="org-ul">
+<li>Note: The "Did you know" section is a ever-changing hint system</li>
+</ul></li>
+<li>Action: Click "Newspeak Source" in <img src="/img/newspeak---a-few-notes.org-go-to-newspeak-source.png" alt="nil"/></li>
+<li>Result: A new page opens, showing Newspeak classes, similar to <img src="/img/newspeak---a-few-notes.org-newspeak-source.png" alt="nil"/></li>
+
+<li>Action: On the top right of the page (in the same line where we see "Root +", click the vertical 3-dot link <img src="/img/newspeak---a-few-notes.org-3-vertical-dots.png" alt="nil"/></li>
+<li>Result: A popup  <img src="/img/newspeak---a-few-notes.org-compile-files.png" alt="nil"/> shows</li>
+
+<li>Action: Click "Compile Files"</li>
+<li>Result: OS file browser opens, and ask us to select files in the operating system filebrowser.</li>
+<li>Action: Navigate to the directory where we checked out the Newspeak github repo, and select <code>CounterApp.ns</code> and <code>CounterUI.ns</code></li>
+<li>Result: <b>The classes from the selected <code>.ns</code> files now show in your IDE.</b> It should look like this <img src="/img/newspeak---a-few-notes.org-counter-classes.png" alt="nil"/>
+<ul class="org-ul">
+<li>Note 1: We have "imported" the code of the  <code>CounterApp.ns</code> and <code>CounterUI.ns</code> classes to Newspeak by running "Compile file". Normally, we would add the classes through the IDE by clicking on the "+" button <img src="/img/newspeak---a-few-notes.org-root-plus-button.png" alt="nil"/>. We choose to "import" files at the moment to concentrate on the process, not the code.</li>
+
+<li>Note 2: Click on the <code>CounterApp</code> or <code>CounterUI</code> link. This shows the code of the corresponding class "source code".</li>
+<li>Note 3: The <code>CounterApp</code> shows links to <code>[deploy] [configuration] [run] [debug]</code>. Why only the "app" classes such as <code>CounterApp</code> (and no other classes) do show the <code>[deploy] [configuration] [run] [debug]</code> links in the Newspeak IDE? That is because the "app" classes represent a runnable Newspeak application.</li>
+<li><b>Question: What makes a Newspeak class a "runnable Newspeak application"?. todo</b></li>
+</ul></li>
+<li>Action: To save your changes in the browser local storage explicitly "now", click on the diskette "save" button <img src="/img/newspeak---a-few-notes.org-save-button.png" alt="nil"/></li>
+
+<li>Result: Our changes are stored in the browser local storage.</li>
+
+<li>Action: Click on the [run] link beside the  <code>CounterApp</code>. This runs the code in the app (specifically, the <code>CounterUI</code> code). The code presents a counter (integer), and 3 buttons, which actions are to "increment", "decrement" and "reset" the counter.</li>
+<li>Result: The counter app opens and runs in the same browser tab; it should look like this:  <img src="/img/newspeak---a-few-notes.org-counter-app-running.png" alt="nil"/></li>
+<li>Action: click on "increment"</li>
+<li>Result: counter increments by one.</li>
+<li>Note: We can click [debug] instead of [run] and a debugger will open.</li>
+</ul>
+
+
+<p>
+Summary: 
+</p>
+
+<ul class="org-ul">
+<li>We have shown how to build, run, and debug, a Newspeak app <code>CounterApp</code> in "development mode", inside a Newspeak IDE.</li>
+<li>A browser tab opened on <a href="https://newspeaklanguage.org/samples/primordialsoup.html?snapshot=HopscotchWebIDE.vfuel">https://newspeaklanguage.org/samples/primordialsoup.html?snapshot=HopscotchWebIDE.vfuel</a> IS the Newspeak IDE.</li>
+<li><b>We are now running or debugging the CounterApp in Newspeak online IDE! (in "development mode")</b></li>
+<li>Newspeak online is similar to (but we dare say superior to) running, in "development mode", a Java, Android or Flutter application in IntelliJ, Eclipse, Visual Studio, Atom, Emacs, vi, or any IDE.</li>
+</ul>
+
+<p>
+Next: 
+</p>
+
+<ul class="org-ul">
+<li>Let's pretend the CounterApp is useful, useable, and production ready.</li>
+<li>How do we deploy it for us to use it as a browser app "in production mode"? Read the <a href="#org2fffd3b">2.4</a> section.</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org14eec62" class="outline-3">
+<h3 id="org14eec62"><span class="section-number-3">2.3</span> Download, install, and start a local Newspeak server</h3>
+<div class="outline-text-3" id="text-2-3">
+<p>
+TL;DR: This section describes:
+</p>
+
+<ul class="org-ul">
+<li>How to download, install, and start the <b>local Newspeak server</b>.</li>
+<li>That pointing a browser to <a href="http://localhost:8080/primordialsoup.html?snapshot=HopscotchWebIDE.vfuel">http://localhost:8080/primordialsoup.html?snapshot=HopscotchWebIDE.vfuel</a> runs the local version of Newspeak IDE (in the browser)</li>
+</ul>
+
+<p>
+Assumptions and notes: 
+</p>
+
+<ul class="org-ul">
+<li>Python 3 needs to be installed on our system.</li>
+<li>We can potentially skip this section. However, if we want to deploy a Newspeak app such as the <code>CounterApp</code>, this section is needed.</li>
+</ul>
+
+<p>
+<b>Steps: To download, install, and start using a local Newspeak server as IDE, do the following:</b>
+</p>
+
+<ul class="org-ul">
+<li>Action: Go to <a href="https://newspeaklanguage.org/downloads.html">https://newspeaklanguage.org/downloads.html</a></li>
+<li>Result: Opens the download page</li>
+<li>Action: Click on "For all platforms", download and unzip <a href="https://github.com/newspeaklanguage/newspeaklanguage.github.io/raw/master/servable.zip">https://github.com/newspeaklanguage/newspeaklanguage.github.io/raw/master/servable.zip</a> to the directory from which you want to serve, for example <code>$HOME/software/newspeak/my-serve-http</code></li>
+<li>Result: Files extracted in directory <code>$HOME/software/newspeak/my-serve-http/servable</code>
+<ul class="org-ul">
+<li>Note:   The file <code>$HOME/software/newspeak/my-serve-http/servable/server.py</code> defines the port on which the Newspeak server runs. The port is set to 8080. Edit the file and change port if needed.</li>
+</ul></li>
+<li><p>
+Action: Start the Newspeak server 
+</p>
+<div class="org-src-container">
+<pre class="src src-shell"><span style="color: #e090d7;">cd</span> $<span style="color: #fcaf3e;">HOME</span>/software/newspeak/my-serve-http/servable
+chmod u+x serve.sh
+./serve.sh
+</pre>
+</div></li>
+<li>Result: "serving at port 8080"</li>
+<li>Action: Navigate browser to <a href="http://localhost:8080/primordialsoup.html?snapshot=HopscotchWebIDE.vfuel">http://localhost:8080/primordialsoup.html?snapshot=HopscotchWebIDE.vfuel</a></li>
+<li>Result: Opens the locally hosted Newspeak IDE, similar to
+<img src="/img/newspeak---a-few-notes.org-local-ide.png" alt="nil"/>
+<ul class="org-ul">
+<li>Note: This is exactly the same as the online version. We can now start editing Newspeak code by clicking on the "Newspeak Source" link.</li>
+</ul></li>
+</ul>
+
+<p>
+Summary: 
+</p>
+
+<ul class="org-ul">
+<li>In this section we installed the local Newspeak server, and started using the served Newspeak IDE.</li>
+</ul>
+
+<p>
+Next: <a href="#org2fffd3b">2.4</a>
+</p>
+</div>
+</div>
+
+<div id="outline-container-org2fffd3b" class="outline-3">
+<h3 id="org2fffd3b"><span class="section-number-3">2.4</span> Deploy the CounterApp into the local Newspeak server</h3>
+<div class="outline-text-3" id="text-2-4">
+<p>
+TL;DR: This section describes 
+</p>
+
+<ul class="org-ul">
+<li>How to deploy the <code>CounterApp</code>, created in the section <a href="#org0386a44">2.2</a>, into the local Newspeak server.</li>
+<li>That the deployment consists of creating a deployable file, <code>CounterApp.vfuel</code>, and placing it in the running local Newspeak server.</li>
+<li>How to run <code>CounterApp</code> from the local Newspeak server.</li>
+</ul>
+
+<p>
+Assumptions and notes: 
+</p>
+
+<ul class="org-ul">
+<li>we will create the deployable file, <code>CounterApp.vfuel</code> in the online Newspeak at <a href="https://newspeaklanguage.org/samples/primordialsoup.html?snapshot=HopscotchWebIDE.vfuel">https://newspeaklanguage.org/samples/primordialsoup.html?snapshot=HopscotchWebIDE.vfuel</a></li>
+<li><b>However, apps can NOT be deployed to the online version (there are no facilities for it. Maybe there should be?). We can do the coding online (as described above), but the actual deployment has to be done into a Newspeak system we run locally.</b></li>
+<li>So, we assume we already installed the local Newspeak server in <a href="#org14eec62">2.3</a>.* The deployable file, <code>CounterApp.vfuel</code>, will be deployed into the local Newspeak server.</li>
+</ul>
+
+<p>
+<b>Steps: To create the deployable file, <code>CounterApp.vfuel</code> and deploy it to the local Newspeak, do the following:</b>
+</p>
+
+<ul class="org-ul">
+<li>Still in the "Newspeak Source" similar to <img src="/img/newspeak---a-few-notes.org-newspeak-source.png" alt="nil"/>,</li>
+
+<li>Action: In the class list, find the <code>CounterApp</code>, and click on the [deploy] to the right of the "CounterApp"</li>
+<li>Result: a popup showing deployment options: <img src="/img/newspeak---a-few-notes.org-click-deploy-on-counter-app.png" alt="nil"/></li>
+<li>Action: Select <code>asVictoryFuelWithMirrors</code>. We choose the option 'asVictoryFuelWithMirrors' if our app uses the GUI (there's some mirror dependency in the UI) and 'asVictoryFuel' otherwise.</li>
+<li>Result: After a long wait, a file named <code>CounterApp.vfuel</code> is created, and asked to be saved.</li>
+<li>Action: Save the file <code>CounterApp.vfuel</code> on our disk to the directory where local Newspeak was deployed - for example <code>$HOME/software/newspeak/my-serve-http/servable</code></li>
+<li>Result: The counter app is now deployed to the local Newspeak server.</li>
+<li>Action: In a new browser tab, navigate to the local Newspeak server at <a href="http://localhost:8080/primordialsoup.html?snapshot=CounterApp.vfuel">http://localhost:8080/primordialsoup.html?snapshot=CounterApp.vfuel</a></li>
+<li>Result: In the new tab, the "locally deployed" <code>CounterApp</code> is now running
+<img src="/img/newspeak---a-few-notes.org-counter-app-local-run.png" alt="nil"/></li>
+</ul>
+
+<p>
+Summary: 
+</p>
+
+<ul class="org-ul">
+<li>In this section, using online Newspeak, we built our "Newspeak production deployable" file <code>CounterApp.vfuel</code>, and deployed it to the local Newspeak version at <a href="http://localhost:8080/primordialsoup.html?snapshot=CounterApp.vfuel">http://localhost:8080/primordialsoup.html?snapshot=CounterApp.vfuel</a>.</li>
+</ul>
+
+<p>
+Next: This is the end of coding, building and running the <code>CounterApp</code>
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org5362505" class="outline-2">
+<h2 id="org5362505"><span class="section-number-2">3</span> Newspeak on Webassembly (Wasm) - installation methods</h2>
+<div class="outline-text-2" id="text-3">
+<p>
+TL;DR There are several methods of installing Newspeak. This section is describing them. Initially, we should probably consider <a href="#org8825ff5">Install method 1</a> (use Newspeak online) or <a href="#org541fe06">Install method 2</a> (download and start a local Newspeak webserver). 
+</p>
+</div>
+
+<div id="outline-container-org575b242" class="outline-3">
+<h3 id="org575b242"><span class="section-number-3">3.1</span> Simle methods to install and run Newspeak</h3>
+<div class="outline-text-3" id="text-3-1">
+</div>
+<div id="outline-container-orgc759bfe" class="outline-4">
+<h4 id="orgc759bfe"><span class="section-number-4">3.1.1</span> <a id="org8825ff5"></a> Install method 1: No installation or setup, run Newspeak online (<b>Recommended for a quick start</b>)</h4>
+<div class="outline-text-4" id="text-3-1-1">
+<p>
+TL;DR: This section describes the simpliest setup - in fact, this method requires no setup. 
+</p>
+
+<ul class="org-ul">
+<li>Action: Navigate your browser to Newspeak online at <a href="https://newspeaklanguage.org/samples/primordialsoup.html?snapshot=HopscotchWebIDE.vfuel">https://newspeaklanguage.org/samples/primordialsoup.html?snapshot=HopscotchWebIDE.vfuel</a>,</li>
+<li>Result: You should see a page similar to this</li>
+</ul>
+
+
+<div id="orgef21249" class="figure">
+<p><img src="/img/newspeak---a-few-notes.org-newspeak-ide-start.png" alt="nil"/>
+</p>
+</div>
+
+
+<p>
+Notes:
+</p>
+
+<ul class="org-ul">
+<li>By using this page, you are now using the Newspeak IDE</li>
+<li>Click on "Newspeak Source" to see and edit code.</li>
+<li>Your changes will be stored in browser local storage.</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org66f0bb8" class="outline-4">
+<h4 id="org66f0bb8"><span class="section-number-4">3.1.2</span> <a id="org541fe06"></a> Install method 2: Download and start a local version of Newspeak webserver</h4>
+<div class="outline-text-4" id="text-3-1-2">
+<p>
+This method is described in detail in the "hands on" section todo link 
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgc43aabe" class="outline-3">
+<h3 id="orgc43aabe"><span class="section-number-3">3.2</span> Advanced methods to install and run Newspeak</h3>
+<div class="outline-text-3" id="text-3-2">
+</div>
+<div id="outline-container-orga7a4894" class="outline-4">
+<h4 id="orga7a4894"><span class="section-number-4">3.2.1</span> <a id="org1e17444"></a> Install method 3: Setup a local Newspeak webserver from code on Github.</h4>
+<div class="outline-text-4" id="text-3-2-1">
+<p>
+The method is described in the "Just in Case" section in <a href="https://github.com/newspeaklanguage/newspeak">https://github.com/newspeaklanguage/newspeak</a>.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org9b1ad30" class="outline-4">
+<h4 id="org9b1ad30"><span class="section-number-4">3.2.2</span> <a id="org2c4e907"></a> Install method 4: Download or setup a local Electron version of Newspeak on Linux</h4>
+<div class="outline-text-4" id="text-3-2-2">
+<p>
+In this method, we can either dowload the available versions for Windows and Mac, see <a href="https://newspeaklanguage.org/downloads.html">https://newspeaklanguage.org/downloads.html</a>, section "Dowloadable IDE App". 
+</p>
+
+<p>
+We can also buiild it ourselves. 
+</p>
+
+<p>
+Electron is basically Chromium underneath. It's just set up to read from a page that's built in to the app. So no server needs to be started. It starts with starting the app.
+</p>
+
+<p>
+An advantage of Electron that I have seen is a better integration with OS File access dialogs.  It doesn't insist on using a downloads directory for everything (and while browsers let you set the directory, they don't let you change it on the fly, on a file-by-file basis).
+</p>
+</div>
+</div>
+
+<div id="outline-container-org84d7710" class="outline-4">
+<h4 id="org84d7710"><span class="section-number-4">3.2.3</span> <a id="org1915049"></a> Install method 5: Manual setup which will produce an equivalent of <a href="#org541fe06">Install method 2</a></h4>
+<div class="outline-text-4" id="text-3-2-3">
+<p>
+As this method produces an equivalent that is already downloadable, this is only if we want to dig in more details, but not going all the way to doing all the steps in <a href="#org1e17444">Install method 3</a>.
+</p>
+
+<p>
+If the build isn't working for you there is one option that hasn't been discussed, which is relevant to Linux folk who don't have an Electron app. You can get the web IDE vfuel file at:
+</p>
+
+<p>
+<a href="https://newspeaklanguage.org/samples/HopscotchWebIDE.vfuel">https://newspeaklanguage.org/samples/HopscotchWebIDE.vfuel</a> 
+</p>
+
+<p>
+BUT &#x2026; this isn't enough because you need a bunch more stuff, such as primordialsoup.html, primordialsoup.js, primordialsoup.wasm.
+If you run that, you'll find that you also need a longish list of .png files for the various images used by the IDE. Here they are (proably a few that are no longer used too).
+</p>
+
+<p>
+accept16px.png				hsHistoryDownImage.png
+accept16pxDown.png			hsHistoryImage.png
+accept16pxOver.png			hsHistoryOutImage.png
+arrowGreenLeft.png			hsHistoryOverImage.png
+arrowGreenRight.png			hsHomeDownImage.png
+arrowOrangeLeft.png			hsHomeImage.png
+cancel16px.png				hsHomeOutImage.png
+cancel16pxDown.png			hsHomeOverImage.png
+cancel16pxOver.png			hsNewDownImage.png
+classPresenterImage.png			hsNewImage.png
+classUnknownImage.png			hsNewOutImage.png
+clearImage.png				hsNewOverImage.png
+conflictRed.png				hsRefreshDownImage.png
+disclosureClosedImage.png		hsRefreshImage.png
+disclosureMinusImage.png		hsRefreshOutImage.png
+disclosureOpenImage.png			hsRefreshOverImage.png
+disclosurePlusImage.png			hsReorderDownImage.png
+disclosureTransitionImage.png		hsReorderImage.png
+downloadImage.png			hsReorderOutImage.png
+editImage.png				hsReorderOverImage.png
+findImage.png				hsToolsDownImage.png
+findSquareLeftDownImage.png		hsToolsImage.png
+findSquareLeftImage.png			hsToolsOutImage.png
+findSquareLeftOutImage.png		hsToolsOverImage.png
+findSquareLeftOverImage.png		itemBothOverride.png
+helpImage.png				itemDeleteImage.png
+hsAddDownImage.png			itemMenuImage.png
+hsAddImage.png				itemReferencesImage.png
+hsAddOutImage.png			itemSubOverride.png
+hsAddOverImage.png			itemSuperOverride.png
+hsBackDownImage.png			languageJS.png
+hsBackImage.png				languageM.png
+hsBackOutImage.png			languageNewspeak3.png
+hsBackOverImage.png			languageSmalltalk.png
+hsCollapseDownImage.png			menu16px.png
+hsCollapseImage.png			menu16pxDown.png
+hsCollapseOutImage.png			menu16pxOver.png
+hsCollapseOverImage.png			menuButtonImage.png
+hsDropdownDownImage.png			metaMenuDownImage.png
+hsDropdownImage.png			metaMenuImage.png
+hsDropdownOutImage.png			metaMenuOutImage.png
+hsDropdownOverImage.png			metaMenuOverImage.png
+hsExpandDownImage.png			operateMenuDownImage.png
+hsExpandImage.png			operateMenuImage.png
+hsExpandOutImage.png			operateMenuOutImage.png
+hsExpandOverImage.png			operateMenuOverImage.png
+hsFindDownImage.png			peekingeye1610.png
+hsFindImage.png				privateImage.png
+hsFindOutImage.png			protectedImage.png
+hsFindOverImage.png			publicImage.png
+hsForwardDownImage.png			repositoryGit.png
+hsForwardImage.png			repositoryMercurial.png
+hsForwardOutImage.png			saveImage.png
+hsForwardOverImage.png			tinySubclassResponsibilityImage.png
+</p>
+
+<p>
+You can place it all in the directory of your choice and serve from there (the serve.sh script wants it in the repo, in the out directory).
+It seems easier to build, but I'm putting it out there.
+</p>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org1e6a4a1" class="outline-2">
+<h2 id="org1e6a4a1"><span class="section-number-2">4</span> <span class="todo TODO">TODO</span> Why does only the "app" file have the [deploy] [run] [debug[ links?</h2>
+<div class="outline-text-2" id="text-4">
+<p>
+This is a todo
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgdb59b99" class="outline-2">
+<h2 id="orgdb59b99"><span class="section-number-2">5</span> Q&amp;A</h2>
+<div class="outline-text-2" id="text-5">
+<p>
+Much of this Q&amp;A is sourced or simply pasted from the Newspeak google group posts at <a href="https://groups.google.com/g/newspeaklanguage">https://groups.google.com/g/newspeaklanguage</a>
+</p>
+</div>
+
+<div id="outline-container-org88e254f" class="outline-3">
+<h3 id="org88e254f"><span class="section-number-3">5.1</span> <span class="todo TODO">TODO</span> Working with code</h3>
+<div class="outline-text-3" id="text-5-1">
+<p>
+todo
+</p>
+</div>
+</div>
+
+<div id="outline-container-org0fda8f4" class="outline-3">
+<h3 id="org0fda8f4"><span class="section-number-3">5.2</span> How would I build and deploy a "Hello world" application?</h3>
+<div class="outline-text-3" id="text-5-2">
+<p>
+TL;DR: For a detail description of building and running a Newspeak app, read the section <a href="#org058c104">2</a>
+</p>
+
+<p>
+The text below is a general introduction.
+</p>
+
+<p>
+How would I go by building and running a "Hello world" application? I know I can create a class, in the browser IDE .. ok .. but from there, how to I "create and deploy the application" so I end up with something like the ToDo app &#x2026; hmm, I should probably do my homework and study it, but any high level notes on that?
+</p>
+
+<p>
+<b>Two options to build an app</b>
+</p>
+
+<ol class="org-ol">
+<li>Easy but flakey. There is a 'deploy' option that the IDE displays for apps.  It's buggy and slow, but mostly works if you are prepared to wait a ridiculous amount of time, and tolerate the fact that the app will be too large due to bugs in the serialization code :-(. I need to fix that, but you can deploy apps that way, especially if they are small. You choose the option 'asVictoryFuelWithMirrors' if your app uses the GUI (I think there's some mirror dependency in the UI)  and 'asVictoryFuel' otherwise.
+<ul class="org-ul">
+<li>Details:  where is the deploy button. Go to 'Newspeak source code". Look at HopscotchWebIDE class (it's the one app pre-loaded in the system). You'll see the deploy link in two places. In the Root namespace itself - if your window is wide enough, it will show on the same line as the link for the class. If you open the class, it will be at the top, to the right of the class name.</li>
+</ul></li>
+
+<li>Slightly more complex, but works better. You use a script that runs the C version of the PSoup VM to do  the deployment. THis is faster, more reliable and produces smaller deployments.</li>
+</ol>
+
+<p>
+In either case, .vfuel file is produced.  Assuming you are running Newspeak using option 1 (a local server, <a href="#org8825ff5">3.1.1</a>), you can then serve that file and run your app. A proper writeup describing this will take a bit longer.
+</p>
+
+<p>
+<b>Deployment of the app</b>
+</p>
+
+<p>
+This .vfuel can then be deployed into a (locally installed) Newspeak server, see <a href="#org8825ff5">3.1.1</a>.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org2c72efd" class="outline-3">
+<h3 id="org2c72efd"><span class="section-number-3">5.3</span> In the IDE (browser), how do I save my changes?</h3>
+<div class="outline-text-3" id="text-5-3">
+<p>
+Newspeak doesn't have an image. So what do I actually do to develop software? I mean, I presume I run a copy of Newspeak somehow, and start adding classes to it. But then where / how do my additions get saved if there isn't an image? When I've added a couple of classes to a running Newspeak environment, I presume they don't just disappear when I switch my computer off? So where do they go? Or where do I put them?
+</p>
+
+<p>
+There are several options:
+</p>
+
+<ol class="org-ol">
+<li>You can do nothing, and all your changes will be preserved in web browser local storage as backup.</li>
+<li>You can press the save icon (the one just to the left of the search pane at the top) and all the changes you've made will be saved in web browser local storage.
+I'll explain below how (a) and (b) differ.</li>
+<li>You can save top level classes to files (gasp; yes, it hurts me as much as it hurts you), and reload them explicitly if the system is restarted for whatever reason.</li>
+</ol>
+
+<p>
+Each has pros and cons. For example, until we integrate source control into the IDE (similar to what we used to do in Squeak Smalltalk based system) you have to save files by hand so you can save them under source control. Saving files is also more explicitly under your control, and avoids any potential problems due to bugs/misunderstanding of the save/backup system. 
+</p>
+
+<p>
+On the other hand, option (b) means that you don't have to save individual top level classes. You just press the save button periodically, as you might in an image. It won't save your state, but it will save your code. Bear in mind that the web-based system is young and will crash occasionally, but also that the system saves your changes as backup regardless of whether you saved explicitly. So not saving isn't a real concern.
+</p>
+
+<p>
+How does the save/backup system work? On restart, we check to see if there are any changes and/or any saved versions. If a saved version exists, we check if there are any subsequent unsaved changes. If not, we use the saved version.  If there are unsaved changes, a dialog will come up asking you how to proceed. It will offer three choices: restore from backup (getting you back to where you were), use last saved version, or use the current version, ergo the version from distribution you are using.
+</p>
+
+<p>
+There are a few caveats - a few classes are exempt from this discipline due to bootstrap issues (things like KernelForPrimordialSoup and HopscotchWebIDE). If you tamper with these - save the class explicitly! Also, web storage can surprise you on mobile platforms, where things can be thrown out after a certain amount of time (7 days on iOS?) and the system as a whole may exhibit bugs.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org746a587" class="outline-3">
+<h3 id="org746a587"><span class="section-number-3">5.4</span> Why to refresh the online IDE?</h3>
+<div class="outline-text-3" id="text-5-4">
+<p>
+Why will you refresh? Apart from the odd crash, the more common problem is the performance issues that have been discussed in this forum in December/January. Basically, we have an unresolved problem that the system slows down painfully under prolonged/heavy use. Refreshing and loading from backup works fairly well for small values of well  Obviously unacceptable as you lose IDE state (debuggers, workspace/inspector contents, unsaved editors, presenter state such as what method presenters are expanded or collapsed) but it's better than an unresponsive (sluggish to dead) system.
+</p>
+</div>
+</div>
+</div>
+
+
+<div id="outline-container-orge3a1ea6" class="outline-2">
+<h2 id="orge3a1ea6"><span class="section-number-2">6</span> <span class="todo TODO">TODO</span> SECTIONS NOT READY. IGNORE FOR NOW</h2>
+<div class="outline-text-2" id="text-6">
+</div>
+<div id="outline-container-org5cf8dc5" class="outline-3">
+<h3 id="org5cf8dc5"><span class="section-number-3">6.1</span> <span class="todo TODO">TODO</span> Structure of paragraphs</h3>
+<div class="outline-text-3" id="text-6-1">
+<p>
+TL;DR: This section describes 
+</p>
+
+<ul class="org-ul">
+<li></li>
+</ul>
+
+<p>
+Assumptions: 
+</p>
+
+<ul class="org-ul">
+<li></li>
+</ul>
+
+<p>
+Notes:
+</p>
+
+<ul class="org-ul">
+<li></li>
+</ul>
+
+<p>
+<b>Steps: To achieve YYYYY, do the following:</b>
+</p>
+
+
+<ul class="org-ul">
+<li>Action:</li>
+<li>Result:</li>
+<li>Can contain:
+<ul class="org-ul">
+<li>Question: What makes a Newspeak class a "runnable Newspeak application"?. todo</li>
+<li>Note:</li>
+</ul></li>
+</ul>
+
+
+<p>
+Summary: 
+</p>
+
+<ul class="org-ul">
+<li></li>
+</ul>
+
+<p>
+Next: 
+</p>
+</div>
+</div>
+
+<div id="outline-container-org2e4ec24" class="outline-3">
+<h3 id="org2e4ec24"><span class="section-number-3">6.2</span> <span class="todo TODO">TODO</span> Newspeak terms:</h3>
+<div class="outline-text-3" id="text-6-2">
+<dl class="org-dl">
+<dt><code>.vfuel</code></dt><dd>Files with this extension are essentially "deployable applications in wasm". They can be deployed by copying them into the running Newspeak web server. todo - this is not quite correct.</dd>
+</dl>
+</div>
+</div>
+
+
+<div id="outline-container-org4294c10" class="outline-3">
+<h3 id="org4294c10"><span class="section-number-3">6.3</span> <span class="todo TODO">TODO</span> Newspeak syntax</h3>
+<div class="outline-text-3" id="text-6-3">
+</div>
+<div id="outline-container-org26a9d6c" class="outline-4">
+<h4 id="org26a9d6c"><span class="section-number-4">6.3.1</span> Comments <code>(* comment *)</code></h4>
+<div class="outline-text-4" id="text-6-3-1">
+<p>
+Code like <code>(* comment *)</code> is a comment. We use this in our examples, but sometimes, we just say <code>( .. code here .. )</code> - the latter would not compile.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org77f009f" class="outline-4">
+<h4 id="org77f009f"><span class="section-number-4">6.3.2</span> Class definition</h4>
+<div class="outline-text-4" id="text-6-3-2">
+<pre class="example">
+
+</pre>
+</div>
+</div>
+
+<div id="outline-container-org2ba4842" class="outline-4">
+<h4 id="org2ba4842"><span class="section-number-4">6.3.3</span> Definitions in Newspeak have syntax similar to <code>someName = ( .. code here ..)</code></h4>
+<div class="outline-text-4" id="text-6-3-3">
+<p>
+In any Newspeak code, we will quickly discover syntax segments such as <code>someName = ( .. code here ..)</code>. The text below is somewhat vague, and somewhat incorrect, but should help orienting us in Newspeak code.
+</p>
+
+<p>
+Note that the brackets <code>(</code> and <code>)</code> can be all inline, on lines by itself, or combined on one line for readability - whitespace is ignored during parsing.
+</p>
+
+<p>
+At all places, such syntax is a definition of something: <b>a library</b>, <b>a class</b>, <b>a class initializer slots</b> (members)  <b>a method</b> etc.
+</p>
+
+<p>
+Note that for example for class definition, there may be multiple sections, such as  <code>someName = ( .. code here ..)( .. other code here ..)</code>
+</p>
+</div>
+
+<div id="outline-container-orgc642ce8" class="outline-5">
+<h5 id="orgc642ce8"><span class="section-number-5">6.3.3.1</span> Class definition examples:</h5>
+<div class="outline-text-5" id="text-6-3-3-1">
+</div>
+<div id="outline-container-org07f3826" class="outline-6">
+<h6 id="org07f3826"><span class="section-number-6">6.3.3.1.1</span> Class definition:</h6>
+<div class="outline-text-6" id="text-6-3-3-1-1">
+<pre class="example">
+class RGBCar = ()()
+</pre>
+
+<p>
+From the specs: the above also defines a constructor : Class definitions create a <b>class factory object</b> that can produce instances of the class. The factory object <b>supports at least one message</b> that produces new instances. This is known as the <b>primary factory method</b>. By default, it is called new.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org0ac9d98" class="outline-6">
+<h6 id="org0ac9d98"><span class="section-number-6">6.3.3.1.2</span> A commented class definition:</h6>
+<div class="outline-text-6" id="text-6-3-3-1-2">
+<pre class="example">
+class RGBCar = (
+  (* instance initializer: inits slots and runs initializer code*)
+)(
+  (* class body: defines instance methods or inner classes *)
+):(
+  (* class methods are in a group after : *)
+)
+</pre>
+
+<p>
+What is initializer code? It is code that runs first before class instances are "returned" (visible) to context.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org17959c2" class="outline-6">
+<h6 id="org17959c2"><span class="section-number-6">6.3.3.1.3</span> Class definition with uninitialized slot:</h6>
+<div class="outline-text-6" id="text-6-3-3-1-3">
+<pre class="example">
+class RGBCar = ( |rgbColor. numWheels.| )()
+</pre>
+</div>
+</div>
+
+<div id="outline-container-org72b3fa9" class="outline-6">
+<h6 id="org72b3fa9"><span class="section-number-6">6.3.3.1.4</span> Class definition with initialized slot:</h6>
+<div class="outline-text-6" id="text-6-3-3-1-4">
+<pre class="example">
+class RGBCar = ( |rgbColor = "Blue". numWheels = 4. | )()
+</pre>
+</div>
+</div>
+
+<div id="outline-container-org0635700" class="outline-6">
+<h6 id="org0635700"><span class="section-number-6">6.3.3.1.5</span> Class definition with uninitialized slot followed by some code:</h6>
+<div class="outline-text-6" id="text-6-3-3-1-5">
+<pre class="example">
+class RGBCar = ( |rgbColor.| rgbColor = "Blue". )()
+</pre>
+</div>
+</div>
+
+<div id="outline-container-org847d1cf" class="outline-6">
+<h6 id="org847d1cf"><span class="section-number-6">6.3.3.1.6</span> Class definition defining a constructor which allow parameters passing:</h6>
+<div class="outline-text-6" id="text-6-3-3-1-6">
+<pre class="example">
+class RGBCar rgbColoe: aRgbcolor = (
+  |rgbColor ::= aRgbColor.| (* ::= means mutable. immutable would be just = *)
+)(
+)
+</pre>
+</div>
+</div>
+</div>
+
+
+<div id="outline-container-orgf860e15" class="outline-5">
+<h5 id="orgf860e15"><span class="section-number-5">6.3.3.2</span> Instance method definition examples:</h5>
+<div class="outline-text-5" id="text-6-3-3-2">
+<pre class="example">
+class RGBCar = (
+  | rgbColor = "Blue".
+    numWheels = 4.
+  |
+)(
+  public color = ^rgbColor.
+  public commentColor: aComment = ( ^ rgbColor, aComment ). (* comma is string concatenator! *)
+)
+
+</pre>
+</div>
+</div>
+<div id="outline-container-orgfe93434" class="outline-5">
+<h5 id="orgfe93434"><span class="section-number-5">6.3.3.3</span> <span class="todo TODO">TODO</span> A somewhat full flegded example of declaring <b>a library</b>, <b>a class</b>, <b>a class initializer slots</b> (members)  <b>a method</b> etc.</h5>
+<div class="outline-text-5" id="text-6-3-3-3">
+<p>
+Note that classes can be nested. Library is just a class with nested classes.
+</p>
+
+<pre class="example">
+
+class CarLibrary = (
+    (* library initializer would usually be empty*)
+  )
+  (
+    class RGBCar = (
+      (*slots and initializer code*)
+    )(
+      (* instance methods or inner classes *)
+    ):(
+      (* class methods are in a group after : *)
+    )
+  )
+:
+(
+)
+</pre>
+</div>
+</div>
+
+<div id="outline-container-org5d6c7dc" class="outline-5">
+<h5 id="org5d6c7dc"><span class="section-number-5">6.3.3.4</span> <span class="todo TODO">TODO</span> Instance Method definition examples:</h5>
+<div class="outline-text-5" id="text-6-3-3-4">
+<p>
+Note: Method definition is normally called method definition. But let us keep the same term, definition.
+</p>
+
+<p>
+Methods are defined in the second code section 
+</p>
+<pre class="example">
+class 
+
+
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
