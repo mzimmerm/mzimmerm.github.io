@@ -9,8 +9,6 @@
 #+TAGS: newspeak programming
 #+CATEGORIES: category-newspeak category-blog category-programming
 
-*Originally intended as a blog, for now, keep as a normal document*
-
 * This document: Introduction to Newspeak on Webassembly (Wasm)
 
 TL;DR: The purpose of this document is to help starting with Newspeak version 3 (year 2021, runs on Webassembly), and hopefully reduce your startup time a bit.
@@ -20,6 +18,15 @@ Much of this document is collected from the existing Newspeak sources:
 - The Newspeak google groups posts at https://groups.google.com/g/newspeaklanguage
 - The Newspeak core site at https://newspeaklanguage.org/
 
+
+* Changelog
+
+|       Date |   | Author       |   | Change                                           |
+|------------+---+--------------+---+--------------------------------------------------|
+| 2021-05-02 |   | Gilad Bracha |   | Important clarifications throughout the document |
+|            |   |              |   |                                                  |
+
+  
 * Newspeak quickstart and hands on: code, build and deploy a Newspeak counter app
 
 TL;DR: This quickstart section attempts to provide an incremental introduction to Newspeak by first describing the environment, then giving some hands-on through building and deploying a ~CounterApp~.
@@ -30,7 +37,7 @@ TL;DR: This section describes what is the online version of Newspeak IDE, and ho
 
 This is a brief section. Starting with Newspeak is easy. We just point the browser to https://newspeaklanguage.org/samples/primordialsoup.html?snapshot=HopscotchWebIDE.vfuel.
 
-In more detail, let us try the following (skip if you know Smalltalk basics):
+In more detail, let us try the following:
 
 - Action: In a new browser tab, open the Newspeak online IDE at https://newspeaklanguage.org/samples/primordialsoup.html?snapshot=HopscotchWebIDE.vfuel
 - Result: The Newspeak IDE opens, similar to [[file:img/newspeak---a-few-notes.org-newspeak-ide-start.png]]
@@ -48,11 +55,13 @@ In more detail, let us try the following (skip if you know Smalltalk basics):
 
 Notes:
 
-- We are now using Newspeak, in it's full power.
+- We are now using Newspeak, in its full power.
 - The browser tab opened on https://newspeaklanguage.org/samples/primordialsoup.html?snapshot=HopscotchWebIDE.vfuel IS the Newspeak IDE.
 - Everything we do in the IDE is alive, changes and actions have immediate responses in the running system.
 - About the changes you make:
-  - Any changes we make (for example: add a class, change a class, evaluate something in the workspace) are stored in the browser local storage in regular intervals.
+  - Any changes we make (for example: add a class, change a class,
+    evaluate something in the workspace) are stored in the browser
+    local storage under an entry named "backup".
   - To save your changes in the browser local storage explicitly "now", click on the diskette "save" button [[file:img/newspeak---a-few-notes.org-save-button.png]]
   - Saving changes outside the browser:
     - If you do clear your browser local storage, your changes will be lost.
@@ -90,20 +99,28 @@ Notes:
 - Action: In a new browser tab, open the Newspeak online IDE at https://newspeaklanguage.org/samples/primordialsoup.html?snapshot=HopscotchWebIDE.vfuel
 - Result: The Newspeak IDE opens, similar to [[file:img/newspeak---a-few-notes.org-newspeak-ide-start.png]]
   - Note: The "Did you know" section is a ever-changing hint system
-- Action: Click "Newspeak Source" in [[file:img/newspeak---a-few-notes.org-go-to-newspeak-source.png]]
+- Action: Click "Newspeak Source" in [[file:img/newspeak---a-few-notes.org-go-to-newspeak-source.png]] 
 - Result: A new page opens, showing Newspeak classes, similar to [[file:img/newspeak---a-few-notes.org-newspeak-source.png]]
 
-- Action: On the top right of the page (in the same line where we see "Root +", click the vertical 3-dot link [[file:img/newspeak---a-few-notes.org-3-vertical-dots.png]]
+- Action: On the top right of the page (in the same line where we see
+  "Root +", click the vertical 3-dot menu link [[file:img/newspeak---a-few-notes.org-3-vertical-dots.png]]
 - Result: A popup  [[file:img/newspeak---a-few-notes.org-compile-files.png]] shows
 
 - Action: Click "Compile Files" 
 - Result: OS file browser opens, and ask us to select files in the operating system filebrowser. 
 - Action: Navigate to the directory where we checked out the Newspeak github repo, and select ~CounterApp.ns~ and ~CounterUI.ns~
 - Result: *The classes from the selected ~.ns~ files now show in your IDE.* It should look like this [[file:img/newspeak---a-few-notes.org-counter-classes.png]]
-  - Note 1: We have "imported" the code of the  ~CounterApp.ns~ and ~CounterUI.ns~ classes to Newspeak by running "Compile file". Normally, we would add the classes through the IDE by clicking on the "+" button [[file:img/newspeak---a-few-notes.org-root-plus-button.png]]. We choose to "import" files at the moment to concentrate on the process, not the code.
+  - Note 1: We have loaded the code of the  ~CounterApp.ns~ and
+    ~CounterUI.ns~ classes into Newspeak by running "Compile
+    file". We could add the classes through the IDE by
+    clicking on the "+" button
+    [[file:img/newspeak---a-few-notes.org-root-plus-button.png]] and
+    typing code in. We
+    choose to load pre-existing files at the moment to concentrate on the process, not the code.
    
-  - Note 2: Click on the ~CounterApp~ or ~CounterUI~ link. This shows the code of the corresponding class "source code". 
-  - Note 3: The ~CounterApp~ shows links to ~[deploy] [configuration] [run] [debug]~. Why only the "app" classes such as ~CounterApp~ (and no other classes) do show the ~[deploy] [configuration] [run] [debug]~ links in the Newspeak IDE? That is because the "app" classes represent a runnable Newspeak application.
+  - Note 2: Click on the ~CounterApp~ or ~CounterUI~ link. This shows the corresponding class. 
+  - Note 3: The ~CounterApp~ shows links to ~[deploy] [configuration]
+    [run] [debug]~. Why do only the "app" classes such as ~CounterApp~ (and no other classes) show the ~[deploy] [configuration] [run] [debug]~ links in the Newspeak IDE? That is because the "app" classes represent a runnable Newspeak application.
   - *Question: What makes a Newspeak class a "runnable Newspeak application"?. todo*
 - Action: To save your changes in the browser local storage explicitly "now", click on the diskette "save" button [[file:img/newspeak---a-few-notes.org-save-button.png]]
 
@@ -132,12 +149,14 @@ Next:
 
 TL;DR: This section describes:
 
-- How to download, install, and start the *local Newspeak server*.
-- That pointing a browser to http://localhost:8080/primordialsoup.html?snapshot=HopscotchWebIDE.vfuel runs the local version of Newspeak IDE (in the browser)
+- How to download, install, and start a *local Newspeak server*.
+- Then pointing a browser to http://localhost:8080/primordialsoup.html?snapshot=HopscotchWebIDE.vfuel runs the local version of Newspeak IDE (in the browser)
 
 Assumptions and notes: 
 
-- Python 3 needs to be installed on our system.
+- If Python is installed on our system, running the serve.sh script that comes with
+  the download will start a server. You can always start a server of
+  your choice instead.
 - We can potentially skip this section. However, if we want to deploy a Newspeak app such as the ~CounterApp~, this section is needed.  
 
 *Steps: To download, install, and start using a local Newspeak server as IDE, do the following:*
@@ -176,7 +195,8 @@ TL;DR: This section describes
 Assumptions and notes: 
 
 - we will create the deployable file, ~CounterApp.vfuel~ in the online Newspeak at https://newspeaklanguage.org/samples/primordialsoup.html?snapshot=HopscotchWebIDE.vfuel 
-- *However, apps can NOT be deployed to the online version (there are no facilities for it. Maybe there should be?). We can do the coding online (as described above), but the actual deployment has to be done into a Newspeak system we run locally.*
+- *However, apps can NOT be deployed to the online version, since
+  that would require write access to the newspeak web site. We can do the coding online (as described above), but the actual deployment has to be done into a Newspeak system we control.*
 - So, we assume we already installed the local Newspeak server in [[*Download, install, and start a local Newspeak server]].* The deployable file, ~CounterApp.vfuel~, will be deployed into the local Newspeak server.
 
 *Steps: To create the deployable file, ~CounterApp.vfuel~ and deploy it to the local Newspeak, do the following:*
@@ -203,11 +223,11 @@ Next: This is the end of coding, building and running the ~CounterApp~
 
 TL;DR There are several methods of installing Newspeak. This section is describing them. Initially, we should probably consider [[install-method-1][Install method 1]] (use Newspeak online) or [[install-method-2][Install method 2]] (download and start a local Newspeak webserver). 
 
-** Simle methods to install and run Newspeak
+** Simple methods to install and run Newspeak
 
 *** <<install-method-1>> Install method 1: No installation or setup, run Newspeak online (*Recommended for a quick start*)
 
-TL;DR: This section describes the simpliest setup - in fact, this method requires no setup. 
+TL;DR: This section describes the simplest setup - in fact, this method requires no setup. 
 
 - Action: Navigate your browser to Newspeak online at https://newspeaklanguage.org/samples/primordialsoup.html?snapshot=HopscotchWebIDE.vfuel, 
 - Result: You should see a page similar to this
@@ -328,11 +348,18 @@ TL;DR: For a detail description of building and running a Newspeak app, read the
 
 The text below is a general introduction.
 
-How would I go by building and running a "Hello world" application? I know I can create a class, in the browser IDE .. ok .. but from there, how to I "create and deploy the application" so I end up with something like the ToDo app ... hmm, I should probably do my homework and study it, but any high level notes on that?
+How would I go about building and running a "Hello world" application? I know I can create a class, in the browser IDE .. ok .. but from there, how to I "create and deploy the application" so I end up with something like the ToDo app ... hmm, I should probably do my homework and study it, but any high level notes on that?
 
 *Two options to build an app*
 
-1) Easy but flakey. There is a 'deploy' option that the IDE displays for apps.  It's buggy and slow, but mostly works if you are prepared to wait a ridiculous amount of time, and tolerate the fact that the app will be too large due to bugs in the serialization code :-(. I need to fix that, but you can deploy apps that way, especially if they are small. You choose the option 'asVictoryFuelWithMirrors' if your app uses the GUI (I think there's some mirror dependency in the UI)  and 'asVictoryFuel' otherwise.
+1) Easy but flakey. There is a 'deploy' option that the IDE displays
+   for apps.  It's buggy and slow, but mostly works if you are
+   prepared to wait a ridiculous amount of time, and tolerate the fact
+   that the app will be too large due to bugs in the serialization
+   code :-(. We need to fix that, but you can deploy apps that way,
+   especially if they are small. You choose the option
+   'asVictoryFuelWithMirrors' if your app uses the GUI (there's some,
+   probably gratuitous, mirror dependency in the UI)  and 'asVictoryFuel' otherwise.
    - Details:  where is the deploy button. Go to 'Newspeak source code". Look at HopscotchWebIDE class (it's the one app pre-loaded in the system). You'll see the deploy link in two places. In the Root namespace itself - if your window is wide enough, it will show on the same line as the link for the class. If you open the class, it will be at the top, to the right of the class name.
 
 2) Slightly more complex, but works better. You use a script that runs the C version of the PSoup VM to do  the deployment. THis is faster, more reliable and produces smaller deployments. 
