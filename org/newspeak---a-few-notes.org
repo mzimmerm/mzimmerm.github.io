@@ -11,7 +11,7 @@
 
 * This document: Introduction to Newspeak on Webassembly (Wasm)
 
-TL;DR: The purpose of this document is to help starting with Newspeak version 3 (year 2021, runs on Webassembly), and hopefully reduce your startup time a bit.
+TL;DR: The purpose of this document is to help starting with Newspeak version 3 (year 2021, runs on Webassembly), and hopefully reduce your startup time a bit. We intent for a reader to follow this document sequentially, but of course jumping around is good as well.
 
 Much of this document is collected from the existing Newspeak sources:
 
@@ -21,15 +21,16 @@ Much of this document is collected from the existing Newspeak sources:
 
 * Changelog
 
-|       Date |   | Author       |   | Change                                           |
-|------------+---+--------------+---+--------------------------------------------------|
-| 2021-05-02 |   | Gilad Bracha |   | Important clarifications throughout the document |
-|            |   |              |   |                                                  |
+|       Date |   | Author           |   | Change                                                                                                                                  |
+|------------+---+------------------+---+-----------------------------------------------------------------------------------------------------------------------------------------|
+| 2021-05-02 |   | Gilad Bracha     |   | Important clarifications throughout the document                                                                                        |
+| 2021-05-04 |   | Milan Zimmermann |   | Expanded on using the Newspeak IDE, mostly in section [[*Run the online version of the Newspeak IDE. Maybe read some docs. Maybe watch some videos.]]           |
+|            |   |                  |   |                                                                                                                                         |
 
   
 * Newspeak quickstart and hands on: code, build and deploy a Newspeak counter app
 
-TL;DR: This quickstart section attempts to provide an incremental introduction to Newspeak by first describing the environment, then giving some hands-on through building and deploying a ~CounterApp~.
+TL;DR: This quickstart section attempts to provide an incremental introduction to Newspeak by first showing the Newspeak live IDE, then giving some hands-on through building and deploying a sample Newspeak app called ~CounterApp~. A spoiler: we can look ahead and run the app we will be building - a pre-existing online version of the ~CounterApp~ runs on https://newspeaklanguage.org/samples/primordialsoup.html?snapshot=CounterApp.vfuel. 
 
 ** Run the online version of the Newspeak IDE. Maybe read some docs. Maybe watch some videos. 
 
@@ -40,23 +41,39 @@ This is a brief section. Starting with Newspeak is easy. We just point the brows
 In more detail, let us try the following:
 
 - Action: In a new browser tab, open the Newspeak online IDE at https://newspeaklanguage.org/samples/primordialsoup.html?snapshot=HopscotchWebIDE.vfuel
-- Result: The Newspeak IDE opens, similar to [[file:img/newspeak---a-few-notes.org-newspeak-ide-start.png]]
-- To edit source code: Click "Newspeak Source" in [[file:img/newspeak---a-few-notes.org-go-to-newspeak-source.png]]
-- Result: A new page opens, showing Newspeak classes, similar to [[file:img/newspeak---a-few-notes.org-newspeak-source.png]]
-  - Notes:
-    - The blue links are classes. To view, or change them, click the class link 
-    - Click the "+" beside the "Root" to add a class
-
-- To run some Newspeak expressions: Click on "Workspaces"
-  - Result: A new page opens, similar to [[file:img/newspeak---a-few-notes.org-workspaces.png]]
-- To run some code, type, for example "1+2" into the text field, and from keyboard, *Shift + ENTER*. This will evaluate the expression and produce
-  - Result: evaluated expression
+- Result: The Newspeak IDE opens, similar to
+  [[file:img/newspeak---a-few-notes.org-newspeak-ide-start.png]]
+- Action: To edit source code: Click on the"Newspeak Source" link
+  [[file:img/newspeak---a-few-notes.org-go-to-newspeak-source.png]]
+- Result: A new page opens, showing Newspeak classes, similar to
+  [[file:img/newspeak---a-few-notes.org-newspeak-source.png]]
+- Note: The blue links are classes. To view, or change them, click the class link 
+- Action: Click the "+" beside the "Root" to add a class.
+- Result: A class editor opens, with a template of a new class definition. At first, let's just create a dummy class by editing the template
+  [[file:img/newspeak---a-few-notes.org-newspeak-source-defining-a-new-class.png]]
+- Action: Click the little checkbox to "Accept" the new class definition
+  [[file:img/newspeak---a-few-notes.org-accept-image.png]]
+- Result: The class now appears in the list of classes (may need to scroll down, classes are sorted alphabetically)
+  [[file:img/newspeak---a-few-notes.org-my-new-class-now-added.png]]
+- Action: Return back to the main page by pressing the browser "Back" button, to get back to
+  [[file:img/newspeak---a-few-notes.org-newspeak-ide-start.png]]
+- To run some Newspeak expressions: Click on the "Workspaces" link
+  [[file:img/newspeak---a-few-notes.org-go-to-workspaces.png]]
+  - Result: A new page opens, similar to
+    [[file:img/newspeak---a-few-notes.org-workspaces.png]]
+- To run some simple one-liner code, type for example "1+2" into the text field, and press keyboard *Shift + ENTER*. This will evaluate the expression and print a result "3"
+  - Result: expression "1+2" was evaluated to "3"
     [[file:img/newspeak---a-few-notes.org-workspaces-expression.png]]
-
+- To run multi-line Newspeak code, type the code line by line. Press keyboard *ENTER* to open new lines. When ready tu run the code, highlight all lines, then press keyboard *Shift + ENTER* to run the code (evaluate all highlighted lines). The image below shows the Workspace after the *Shift + ENTER* was pressed, showing the code, and result "2".
+      [[file:img/newspeak---a-few-notes.org-workspaces-multiline-expression.png]]
+  - The image above uses a white-mode image, as the dark-mode pages do not show highlight too well.
+  - When running multi-line code, we can of course alse paste it from outside, instead of typing it
+- To save your changes in the browser local storage explicitly "now", click on the diskette "save" button [[file:img/newspeak---a-few-notes.org-save-button.png]].
+  
 Notes:
 
 - We are now using Newspeak, in its full power.
-- The browser tab opened on https://newspeaklanguage.org/samples/primordialsoup.html?snapshot=HopscotchWebIDE.vfuel IS the Newspeak IDE.
+- The browser tab opened on https://newspeaklanguage.org/samples/primordialsoup.html?snapshot=HopscotchWebIDE.vfuel IS the Newspeak live IDE.
 - Everything we do in the IDE is alive, changes and actions have immediate responses in the running system.
 - About the changes you make:
   - Any changes we make (for example: add a class, change a class,
@@ -66,7 +83,11 @@ Notes:
     For example, in Chrome or Chromium, press F12 , then go to the Application tab.
     In the Storage section expand "Local Storage".
     You can see your changes in the appropriate URL, under key="backup".
-  - To save your changes in the browser local storage explicitly "now", click on the diskette "save" button [[file:img/newspeak---a-few-notes.org-save-button.png]]
+  - To save your changes in the browser local storage explicitly "now", click on the diskette "save" button [[file:img/newspeak---a-few-notes.org-save-button.png]].
+  - If you ever see this message:
+    [[file:img/newspeak---a-few-notes.org-message-restore-from-backup.png]]
+    - This message tells us, we did make changes, such as added a class, without pressing the the diskette "save" button [[file:img/newspeak---a-few-notes.org-save-button.png]], and reloaded. In most situations, pressing *Restore from backup* is the best choice.
+    - For search purposes, here is the text: "You have backup changes that are newer than your last save. Do you want to restore these changes, or load from the last save? Restore from backup  Load older saved version Use current version, ignoring both saved and backup versions"
   - Saving changes outside the browser:
     - If you do clear your browser local storage, your changes will be lost.
     - Obviously, for long term work, we will want to save our work. The current approach, is to "export" all classes you changed in a directory on your system, and potentially create a code repository in that directory. For more details, see [[*Working with code]]. 
@@ -79,6 +100,12 @@ Documentation:
     - Live IDEs in the Web Browser: What's Holding Us Back - https://youtu.be/CJX_6B24Hho
     - What is a Live Programming System? - https://youtu.be/VUfZ1sL4aps
 
+Summary:
+
+- This section showed the simpliest way of starting with Newspeak - we just point the browser to https://newspeaklanguage.org/samples/primordialsoup.html?snapshot=HopscotchWebIDE.vfuel and start using it.
+  - In "Workspaces", we can experiment with Newspeak expressions, or snippets of code.
+  - In "Newspeak Source", we can experiment with adding Newspeak classes, or creating a Newspeak app, such as the app created in  the next section.   
+    
 Next:
 
 In the next section [[*Build, run, and debug ~CounterApp~ in Newspeak]], we show how to create a simple ~CounterApp~ in Newspeak.
@@ -87,7 +114,7 @@ In the next section [[*Build, run, and debug ~CounterApp~ in Newspeak]], we show
 
 TL;DR: This section describes 
 
-- How to build, run, and debug a Newspeak app (~CounterApp~ ) in development mode, inside the online Newspeak IDE. 
+- How to build, run, and debug a Newspeak app (~CounterApp~ ) in development mode, inside the *online* Newspeak IDE. 
 
 Notes: 
 
@@ -172,9 +199,13 @@ Assumptions and notes:
   - Note:   The file ~$HOME/software/newspeak/my-serve-http/servable/server.py~ defines the port on which the Newspeak server runs. The port is set to 8080. Edit the file and change port if needed.
 - Action: Start the Newspeak server 
   #+begin_src shell
-  cd $HOME/software/newspeak/my-serve-http/servable
-  chmod u+x serve.sh
-  ./serve.sh
+    # The directory just above "servable" must be the directory
+    # where we saved the zip file, see above.
+    # The zip has the "servable" node in it.
+    # todo: change the instructions to curl in.
+    cd $HOME/software/newspeak/my-serve-http/servable
+    chmod u+x serve.sh
+    ./serve.sh
   #+end_src
 - Result: "serving at port 8080"
 - Action: Navigate browser to http://localhost:8080/primordialsoup.html?snapshot=HopscotchWebIDE.vfuel
@@ -555,6 +586,7 @@ class
 
 #+end_src
 
+*** 
 
 
 
