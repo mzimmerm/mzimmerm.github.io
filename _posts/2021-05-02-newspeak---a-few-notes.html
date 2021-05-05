@@ -20,7 +20,7 @@ categories:
 <li><a href="#org8742814">2. Changelog</a></li>
 <li><a href="#org058c104">3. Newspeak quickstart and hands on: code, build and deploy a Newspeak counter app</a>
 <ul>
-<li><a href="#orgd19ff8f">3.1. Run the online version of the Newspeak IDE. Maybe read some docs. Maybe watch some videos.</a></li>
+<li><a href="#orga5faf6a">3.1. Run the online version of the Newspeak IDE. Maybe read some docs. Maybe watch some videos</a></li>
 <li><a href="#org0386a44">3.2. Build, run, and debug <code>CounterApp</code> in Newspeak</a></li>
 <li><a href="#org14eec62">3.3. Download, install, and start a local Newspeak server</a></li>
 <li><a href="#org2fffd3b">3.4. Deploy the CounterApp into the local Newspeak server</a></li>
@@ -30,15 +30,15 @@ categories:
 <ul>
 <li><a href="#orge001de9">4.1. Simple methods to install and run Newspeak</a>
 <ul>
-<li><a href="#orgc759bfe">4.1.1. Install method 1: No installation or setup, run Newspeak online (<b>Recommended for a quick start</b>)</a></li>
-<li><a href="#org66f0bb8">4.1.2. Install method 2: Download and start a local version of Newspeak webserver</a></li>
+<li><a href="#orgf461871">4.1.1. Installation method 1: No installation or setup, run Newspeak online (<b>Recommended for a quick start</b>)</a></li>
+<li><a href="#orgb6f0ac6">4.1.2. Installation method 2: Download and start a local version of Newspeak webserver</a></li>
 </ul>
 </li>
 <li><a href="#orgc43aabe">4.2. Advanced methods to install and run Newspeak</a>
 <ul>
-<li><a href="#orga7a4894">4.2.1. Install method 3: Setup a local Newspeak webserver from code on Github.</a></li>
-<li><a href="#org9b1ad30">4.2.2. Install method 4: Download or setup a local Electron version of Newspeak on Linux</a></li>
-<li><a href="#org84d7710">4.2.3. Install method 5: Manual setup which will produce an equivalent of Install method 2</a></li>
+<li><a href="#org9aa3607">4.2.1. Installation method 3: Setup a local Newspeak webserver from code on Github.</a></li>
+<li><a href="#orgf086f8b">4.2.2. Installation method 4: Download or setup a local Electron version of Newspeak on Linux</a></li>
+<li><a href="#org677a454">4.2.3. Installation method 5: Manual setup which will produce an equivalent of Installation method 2 (local Newspeak server)</a></li>
 </ul>
 </li>
 </ul>
@@ -59,7 +59,7 @@ categories:
 <li><a href="#org4294c10">7.3. <span class="todo TODO">TODO</span> Newspeak syntax</a>
 <ul>
 <li><a href="#org26a9d6c">7.3.1. Comments <code>(* comment *)</code></a></li>
-<li><a href="#org77f009f">7.3.2. Class definition</a></li>
+<li><a href="#org77f009f">7.3.2. <span class="todo TODO">TODO</span> Class definition</a></li>
 <li><a href="#org2ba4842">7.3.3. Definitions in Newspeak have syntax similar to <code>someName = ( .. code here ..)</code></a>
 <ul>
 <li><a href="#orgc642ce8">7.3.3.1. Class definition examples:</a>
@@ -77,7 +77,7 @@ categories:
 <li><a href="#org5d6c7dc">7.3.3.4. <span class="todo TODO">TODO</span> Instance Method definition examples:</a></li>
 </ul>
 </li>
-<li><a href="#org325afe7">7.3.4. </a></li>
+<li><a href="#org0b2cf08">7.3.4. A rant about <code>x:, x::, x::=, x=, x</code> etc</a></li>
 </ul>
 </li>
 </ul>
@@ -90,7 +90,7 @@ categories:
 <h2 id="org3d484da"><span class="section-number-2">1</span> This document: Introduction to Newspeak on Webassembly (Wasm)</h2>
 <div class="outline-text-2" id="text-1">
 <p>
-TL;DR: The purpose of this document is to help starting with Newspeak version 3 (year 2021, runs on Webassembly), and hopefully reduce your startup time a bit. We intent for a reader to follow this document sequentially, but of course jumping around is good as well.
+TL;DR: The purpose of this document is to help starting with Newspeak version 3 (year 2021, runs on Webassembly). Hopefully reduce reader's start time a bit. It is intended that a reader follows this document sequentially, but of course jumping around is good too.
 </p>
 
 <p>
@@ -145,7 +145,7 @@ Much of this document is collected from the existing Newspeak sources:
 <td class="org-left">&#xa0;</td>
 <td class="org-left">Milan Zimmermann</td>
 <td class="org-left">&#xa0;</td>
-<td class="org-left">Expanded on using the Newspeak IDE, mostly in section <a href="#orgd19ff8f">3.1</a></td>
+<td class="org-left">Expanded on using the Newspeak IDE, mostly in the section <a href="#orga5faf6a">3.1</a></td>
 </tr>
 
 <tr>
@@ -165,15 +165,15 @@ Much of this document is collected from the existing Newspeak sources:
 <h2 id="org058c104"><span class="section-number-2">3</span> Newspeak quickstart and hands on: code, build and deploy a Newspeak counter app</h2>
 <div class="outline-text-2" id="text-3">
 <p>
-TL;DR: This quickstart section attempts to provide an incremental introduction to Newspeak by first showing the Newspeak live IDE, then giving some hands-on through building and deploying a sample Newspeak app called <code>CounterApp</code>. A spoiler: we can look ahead and run the app we will be building - a pre-existing online version of the <code>CounterApp</code> runs on <a href="https://newspeaklanguage.org/samples/primordialsoup.html?snapshot=CounterApp.vfuel">https://newspeaklanguage.org/samples/primordialsoup.html?snapshot=CounterApp.vfuel</a>. 
+TL;DR: This quickstart section attempts to provide an incremental introduction to Newspeak. First, we introduce the Newspeak live IDE, then we build and deploy a sample Newspeak app called <code>CounterApp</code>. A spoiler: we can look ahead and run the app we will be building - the <code>CounterApp</code> - online at <a href="https://newspeaklanguage.org/samples/primordialsoup.html?snapshot=CounterApp.vfuel">https://newspeaklanguage.org/samples/primordialsoup.html?snapshot=CounterApp.vfuel</a>. 
 </p>
 </div>
 
-<div id="outline-container-orgd19ff8f" class="outline-3">
-<h3 id="orgd19ff8f"><span class="section-number-3">3.1</span> Run the online version of the Newspeak IDE. Maybe read some docs. Maybe watch some videos.</h3>
+<div id="outline-container-orga5faf6a" class="outline-3">
+<h3 id="orga5faf6a"><span class="section-number-3">3.1</span> Run the online version of the Newspeak IDE. Maybe read some docs. Maybe watch some videos</h3>
 <div class="outline-text-3" id="text-3-1">
 <p>
-TL;DR: This section describes what is the online version of Newspeak IDE, and how to use it.
+TL;DR: This section introduces the online version of Newspeak IDE, and how to use it.
 </p>
 
 <p>
@@ -188,7 +188,7 @@ In more detail, let us try the following:
 <li>Action: In a new browser tab, open the Newspeak online IDE at <a href="https://newspeaklanguage.org/samples/primordialsoup.html?snapshot=HopscotchWebIDE.vfuel">https://newspeaklanguage.org/samples/primordialsoup.html?snapshot=HopscotchWebIDE.vfuel</a></li>
 <li>Result: The Newspeak IDE opens, similar to
 <img src="/img/newspeak---a-few-notes.org-newspeak-ide-start.png" alt="nil"/></li>
-<li>Action: To edit source code: Click on the"Newspeak Source" link
+<li>Action: To edit source code: Click the "Newspeak Source" link
 <img src="/img/newspeak---a-few-notes.org-go-to-newspeak-source.png" alt="nil"/></li>
 <li>Result: A new page opens, showing Newspeak classes, similar to
 <img src="/img/newspeak---a-few-notes.org-newspeak-source.png" alt="nil"/></li>
@@ -202,7 +202,7 @@ In more detail, let us try the following:
 <img src="/img/newspeak---a-few-notes.org-my-new-class-now-added.png" alt="nil"/></li>
 <li>Action: Return back to the main page by pressing the browser "Back" button, to get back to
 <img src="/img/newspeak---a-few-notes.org-newspeak-ide-start.png" alt="nil"/></li>
-<li>To run some Newspeak expressions: Click on the "Workspaces" link
+<li>To run some Newspeak expressions: Click the "Workspaces" link
 <img src="/img/newspeak---a-few-notes.org-go-to-workspaces.png" alt="nil"/>
 <ul class="org-ul">
 <li>Result: A new page opens, similar to
@@ -217,7 +217,7 @@ In more detail, let us try the following:
 <img src="/img/newspeak---a-few-notes.org-workspaces-multiline-expression.png" alt="nil"/>
 <ul class="org-ul">
 <li>The image above uses a white-mode image, as the dark-mode pages do not show highlight too well.</li>
-<li>When running multi-line code, we can of course alse paste it from outside, instead of typing it</li>
+<li>When running multi-line code, we can paste it from outside, instead of typing it.</li>
 </ul></li>
 <li>To save your changes in the browser local storage explicitly "now", click on the diskette "save" button <img src="/img/newspeak---a-few-notes.org-save-button.png" alt="nil"/>.</li>
 </ul>
@@ -278,7 +278,7 @@ Summary:
 <li>This section showed the simpliest way of starting with Newspeak - we just point the browser to <a href="https://newspeaklanguage.org/samples/primordialsoup.html?snapshot=HopscotchWebIDE.vfuel">https://newspeaklanguage.org/samples/primordialsoup.html?snapshot=HopscotchWebIDE.vfuel</a> and start using it.
 <ul class="org-ul">
 <li>In "Workspaces", we can experiment with Newspeak expressions, or snippets of code.</li>
-<li>In "Newspeak Source", we can experiment with adding Newspeak classes, or creating a Newspeak app, such as the app created in  the next section.</li>
+<li>In "Newspeak Source", we can experiment with adding Newspeak classes, or creating a Newspeak app, such as the app created in the next section.</li>
 </ul></li>
 </ul>
 
@@ -396,7 +396,7 @@ TL;DR: This section describes:
 
 <ul class="org-ul">
 <li>How to download, install, and start a <b>local Newspeak server</b>.</li>
-<li>Then pointing a browser to <a href="http://localhost:8080/primordialsoup.html?snapshot=HopscotchWebIDE.vfuel">http://localhost:8080/primordialsoup.html?snapshot=HopscotchWebIDE.vfuel</a> runs the local version of Newspeak IDE (in the browser)</li>
+<li>That opening a browser tab at <a href="http://localhost:8080/primordialsoup.html?snapshot=HopscotchWebIDE.vfuel">http://localhost:8080/primordialsoup.html?snapshot=HopscotchWebIDE.vfuel</a> runs the local version of Newspeak IDE (reaching the just installed local Newspeak server).</li>
 </ul>
 
 <p>
@@ -450,6 +450,7 @@ Summary:
 
 <ul class="org-ul">
 <li>In this section we installed the local Newspeak server, and started using the served Newspeak IDE.</li>
+<li>The installation method described here is the <a href="#org541fe06">Installation method 2 (local Newspeak server)</a></li>
 </ul>
 
 <p>
@@ -519,7 +520,7 @@ Next: This is the end of coding, building and running the <code>CounterApp</code
 <h2 id="org5362505"><span class="section-number-2">4</span> Newspeak on Webassembly (Wasm) - installation methods</h2>
 <div class="outline-text-2" id="text-4">
 <p>
-TL;DR There are several methods of installing Newspeak. This section is describing them. Initially, we should probably consider <a href="#org8825ff5">Install method 1</a> (use Newspeak online) or <a href="#org541fe06">Install method 2</a> (download and start a local Newspeak webserver). 
+TL;DR There are several methods of installing Newspeak. This section is describing them. Initially, we should probably consider <a href="#org8825ff5">Installation method 1 (no install - using Newspeak online)</a> or <a href="#org541fe06">Installation method 2 (local Newspeak server)</a>.
 </p>
 </div>
 
@@ -527,11 +528,11 @@ TL;DR There are several methods of installing Newspeak. This section is describi
 <h3 id="orge001de9"><span class="section-number-3">4.1</span> Simple methods to install and run Newspeak</h3>
 <div class="outline-text-3" id="text-4-1">
 </div>
-<div id="outline-container-orgc759bfe" class="outline-4">
-<h4 id="orgc759bfe"><span class="section-number-4">4.1.1</span> <a id="org8825ff5"></a> Install method 1: No installation or setup, run Newspeak online (<b>Recommended for a quick start</b>)</h4>
+<div id="outline-container-orgf461871" class="outline-4">
+<h4 id="orgf461871"><span class="section-number-4">4.1.1</span> <a id="org8825ff5"></a> Installation method 1: No installation or setup, run Newspeak online (<b>Recommended for a quick start</b>)</h4>
 <div class="outline-text-4" id="text-4-1-1">
 <p>
-TL;DR: This section describes the simplest setup - in fact, this method requires no setup. 
+TL;DR: This section describes the simplest setup - in fact, this is a "no setup, no installation" method. We only need a browser and internet access.
 </p>
 
 <ul class="org-ul">
@@ -540,7 +541,7 @@ TL;DR: This section describes the simplest setup - in fact, this method requires
 </ul>
 
 
-<div id="org744acdd" class="figure">
+<div id="org94b29bc" class="figure">
 <p><img src="/img/newspeak---a-few-notes.org-newspeak-ide-start.png" alt="nil"/>
 </p>
 </div>
@@ -554,16 +555,33 @@ Notes:
 <li>By using this page, you are now using the Newspeak IDE</li>
 <li>Click on "Newspeak Source" to see and edit code.</li>
 <li>Your changes will be stored in browser local storage.</li>
+<li>A more detailed description of what we can do with Newspeak is in the introduction section <a href="#orga5faf6a">3.1</a></li>
 </ul>
 </div>
 </div>
 
-<div id="outline-container-org66f0bb8" class="outline-4">
-<h4 id="org66f0bb8"><span class="section-number-4">4.1.2</span> <a id="org541fe06"></a> Install method 2: Download and start a local version of Newspeak webserver</h4>
+<div id="outline-container-orgb6f0ac6" class="outline-4">
+<h4 id="orgb6f0ac6"><span class="section-number-4">4.1.2</span> <a id="org541fe06"></a> Installation method 2: Download and start a local version of Newspeak webserver</h4>
 <div class="outline-text-4" id="text-4-1-2">
 <p>
-This method is described in detail in the "hands on" section todo link 
+This method is described in detail in the "hands on" section <a href="#org14eec62">3.3</a>. Follow the steps there.
 </p>
+
+<p>
+Differences of this installation from <a href="#org8825ff5">Installation method 1 (no install - using Newspeak online)
+</a>- If we install using this method:
+</p>
+<ul class="org-ul">
+<li>Pros:
+<ul class="org-ul">
+<li>No need for internet access</li>
+<li>Your version does not change if you need stability (this may be a cons too)</li>
+</ul></li>
+<li>Cons:
+<ul class="org-ul">
+<li>We have to run our own Newspeak server, and reinstall to care of any updates or bugs fixed.</li>
+</ul></li>
+</ul>
 </div>
 </div>
 </div>
@@ -572,24 +590,20 @@ This method is described in detail in the "hands on" section todo link
 <h3 id="orgc43aabe"><span class="section-number-3">4.2</span> Advanced methods to install and run Newspeak</h3>
 <div class="outline-text-3" id="text-4-2">
 </div>
-<div id="outline-container-orga7a4894" class="outline-4">
-<h4 id="orga7a4894"><span class="section-number-4">4.2.1</span> <a id="org1e17444"></a> Install method 3: Setup a local Newspeak webserver from code on Github.</h4>
+<div id="outline-container-org9aa3607" class="outline-4">
+<h4 id="org9aa3607"><span class="section-number-4">4.2.1</span> <a id="org1e17444"></a> Installation method 3: Setup a local Newspeak webserver from code on Github.</h4>
 <div class="outline-text-4" id="text-4-2-1">
 <p>
-The method is described in the "Just in Case" section in <a href="https://github.com/newspeaklanguage/newspeak">https://github.com/newspeaklanguage/newspeak</a>.
+This method is described in the "Just in Case" section in <a href="https://github.com/newspeaklanguage/newspeak">https://github.com/newspeaklanguage/newspeak</a>.
 </p>
 </div>
 </div>
 
-<div id="outline-container-org9b1ad30" class="outline-4">
-<h4 id="org9b1ad30"><span class="section-number-4">4.2.2</span> <a id="org2c4e907"></a> Install method 4: Download or setup a local Electron version of Newspeak on Linux</h4>
+<div id="outline-container-orgf086f8b" class="outline-4">
+<h4 id="orgf086f8b"><span class="section-number-4">4.2.2</span> <a id="org2c4e907"></a> Installation method 4: Download or setup a local Electron version of Newspeak on Linux</h4>
 <div class="outline-text-4" id="text-4-2-2">
 <p>
-In this method, we can either dowload the available versions for Windows and Mac, see <a href="https://newspeaklanguage.org/downloads.html">https://newspeaklanguage.org/downloads.html</a>, section "Dowloadable IDE App". 
-</p>
-
-<p>
-We can also buiild it ourselves. 
+To install using this method, dowload the available versions for Windows and Mac, see <a href="https://newspeaklanguage.org/downloads.html">https://newspeaklanguage.org/downloads.html</a>, section "Dowloadable IDE App". 
 </p>
 
 <p>
@@ -602,11 +616,11 @@ An advantage of Electron that I have seen is a better integration with OS File a
 </div>
 </div>
 
-<div id="outline-container-org84d7710" class="outline-4">
-<h4 id="org84d7710"><span class="section-number-4">4.2.3</span> <a id="org1915049"></a> Install method 5: Manual setup which will produce an equivalent of <a href="#org541fe06">Install method 2</a></h4>
+<div id="outline-container-org677a454" class="outline-4">
+<h4 id="org677a454"><span class="section-number-4">4.2.3</span> <a id="org1915049"></a> Installation method 5: Manual setup which will produce an equivalent of <a href="#org541fe06">Installation method 2 (local Newspeak server)</a></h4>
 <div class="outline-text-4" id="text-4-2-3">
 <p>
-As this method produces an equivalent that is already downloadable, this is only if we want to dig in more details, but not going all the way to doing all the steps in <a href="#org1e17444">Install method 3</a>.
+As this method produces an equivalent that is already downloadable, this is only if we want to dig in more details, but not going all the way to doing all the steps in <a href="#org1e17444">Installation method 3</a>.
 </p>
 
 <p>
@@ -895,7 +909,7 @@ Code like <code>(* comment *)</code> is a comment. We use this in our examples, 
 </div>
 
 <div id="outline-container-org77f009f" class="outline-4">
-<h4 id="org77f009f"><span class="section-number-4">7.3.2</span> Class definition</h4>
+<h4 id="org77f009f"><span class="section-number-4">7.3.2</span> <span class="todo TODO">TODO</span> Class definition</h4>
 <div class="outline-text-4" id="text-7-3-2">
 <pre class="example">
 
@@ -943,6 +957,10 @@ From the specs: the above also defines a constructor : Class definitions create 
 <div id="outline-container-org0ac9d98" class="outline-6">
 <h6 id="org0ac9d98"><span class="section-number-6">7.3.3.1.2</span> A commented class definition:</h6>
 <div class="outline-text-6" id="text-7-3-3-1-2">
+<p>
+This code shows the three blocks a class definition can have, with comments what code we define or write in each block:
+</p>
+
 <pre class="example">
 class RGBCar = (
   (* instance initializer: inits slots and runs initializer code*)
@@ -1063,8 +1081,177 @@ class
 </div>
 </div>
 
-<div id="outline-container-org325afe7" class="outline-4">
-<h4 id="org325afe7"><span class="section-number-4">7.3.4</span> </h4>
+<div id="outline-container-org0b2cf08" class="outline-4">
+<h4 id="org0b2cf08"><span class="section-number-4">7.3.4</span> A rant about <code>x:, x::, x::=, x=, x</code> etc</h4>
+<div class="outline-text-4" id="text-7-3-4">
+<p>
+APL (<a href="https://aplwiki.com/wiki/Simple_examples">https://aplwiki.com/wiki/Simple_examples</a>) is beautiful (not that I ever learned it, not even close). I appreciate its extreme terseness, and its use of non-ascii characters. I would appreciate it much more if I was a pro in it. But I assume that would take a long time, and I would have to live in it daily.
+</p>
+
+<p>
+I do not appreciate extreme terseness in "mainstream" programming languages as much. It can accumulate to the point, even working with a language daily, I scratch my head reading code "what is this sequence of ?, =, +, /" - or what you have it.
+</p>
+
+<p>
+A language may start with duplicating some "common" arithmetics operators
+</p>
+
+<p>
+<code>+, *, /, -, %</code> (ok, why? math uses "mod". But I digress), then we may have <code>++, ~/</code> (ok, already I had to look that up) etc..
+</p>
+
+<p>
+Then of course there may be the assignment versions of those
+</p>
+
+<p>
+<code>+=, *=, /=, -=, %=</code> etc.. not even talking <code>|=</code> etc..
+</p>
+
+<p>
+Then we may have relational operators
+</p>
+
+<p>
+<code>&gt;, &lt;, &gt;=, &lt;=</code> - these are obvious as they are mostly borrowed from math .. sort of .. because mainstream keyboards are stuck on ascii, &lt;= is a poor translation of it's math counterpart  
+</p>
+
+<p>
+equality operators
+</p>
+
+<p>
+<code>==, !=</code> - not always obvious, as languages uses conflict 
+</p>
+
+<p>
+Then we may have the bitwise and shift operators
+</p>
+
+<p>
+<code>&amp;, |, ^</code> (another one I had to look up), shift left <code>&lt;&lt;</code>, etc ..
+</p>
+
+<p>
+and of course the logical operators
+</p>
+
+<p>
+<code>||, &amp;&amp;, !</code>
+</p>
+
+<p>
+and perhaps the "dot" and "dot dot" - the object member access syntactic elements
+</p>
+
+<p>
+<code>., ..</code> 
+</p>
+
+<p>
+etc
+</p>
+
+<p>
+I suppose, most of the curly braces languages do use all of the above the same way - that is why I only do not remember a relatively small subset of them :( , and I do not complain that much :)
+</p>
+
+<p>
+But, reading code, many of those operators are still a pain and require some king of mental pause or a mental switch! Code is read much more often than written. When writing code, they are a bit of a pain as well, perhaps not as much, as one uses a relatively small subset (or the obvious subset such as those used in arithmetics).
+</p>
+
+<p>
+Ok, fair enough .. well not quite fair, but accepted by years of burning this into our brains.
+</p>
+
+<p>
+But later, the language users may start to complain: "I have to write this and that, and it's too much typing", or "oh we need to screen for null so much" and so we get:
+</p>
+
+<p>
+<code>expr ? stmt : stmt2</code> - most bracey languages have this, so it should go to the above
+</p>
+
+<p>
+and
+</p>
+
+<p>
+<code>?.</code> - as in <code>myObject.?myProperty</code>
+</p>
+
+<p>
+and
+</p>
+
+<p>
+<code>??</code> - as in <code>myStr ?? "empty"</code>
+</p>
+
+<p>
+and
+</p>
+
+<p>
+<code>??=</code> as in <code>value ??= 5</code>
+</p>
+
+<p>
+and maybe
+</p>
+
+<p>
+<code>...?</code> as i <code>['first', ...?aList]</code>
+</p>
+
+
+<p>
+The mental pause with those, depending on how much you use the language in question, can be significant. To the point, one cannot really read the code fluently unless embedded in the particular language daily.
+</p>
+
+
+<p>
+I realize this stuff is todo 
+</p>
+
+<p>
+also
+</p>
+
+
+<p>
+Operator	Name	Meaning
+()	Function application	Represents a function call
+[]	List access	Refers to the value at the specified index in the list
+.	Member access	Refers to a property of an expression; example: foo.bar selects property bar from expression foo
+?.	Conditional member access	Like ., but the leftmost operand can be null; example: foo?.bar selects property bar from expression foo unless foo is null (in which case the value of foo?.bar is null)
+</p>
+
+<p>
+todo
+</p>
+
+
+<p>
+All this long story above gets me to my main point of syntax difficulty with Newspeak. When first studying Newspeak, it took me forever to figure out the <code>x:, x::, x::=, x=, x</code>. What I mean:
+</p>
+
+<pre class="example">
+class RGBCar = (
+  (* instance initializer: inits slots and runs initializer code*)
+  |
+  numWheels = 4.
+  mats ::= 'basic'.
+  |
+)(
+  (* class body: defines instance methods or inner classes *)
+):(
+  (* class methods are in a group after : *)
+)
+
+
+</pre>
+</div>
 </div>
 </div>
 </div>

@@ -11,7 +11,7 @@
 
 * This document: Introduction to Newspeak on Webassembly (Wasm)
 
-TL;DR: The purpose of this document is to help starting with Newspeak version 3 (year 2021, runs on Webassembly), and hopefully reduce your startup time a bit. We intent for a reader to follow this document sequentially, but of course jumping around is good as well.
+TL;DR: The purpose of this document is to help starting with Newspeak version 3 (year 2021, runs on Webassembly). Hopefully reduce reader's start time a bit. It is intended that a reader follows this document sequentially, but of course jumping around is good too.
 
 Much of this document is collected from the existing Newspeak sources:
 
@@ -21,20 +21,20 @@ Much of this document is collected from the existing Newspeak sources:
 
 * Changelog
 
-|       Date |   | Author           |   | Change                                                                                                                                  |
-|------------+---+------------------+---+-----------------------------------------------------------------------------------------------------------------------------------------|
-| 2021-05-02 |   | Gilad Bracha     |   | Important clarifications throughout the document                                                                                        |
-| 2021-05-04 |   | Milan Zimmermann |   | Expanded on using the Newspeak IDE, mostly in section [[*Run the online version of the Newspeak IDE. Maybe read some docs. Maybe watch some videos.]]           |
-|            |   |                  |   |                                                                                                                                         |
+|       Date |   | Author           |   | Change                                                                                                                                               |
+|------------+---+------------------+---+------------------------------------------------------------------------------------------------------------------------------------------------------|
+| 2021-05-02 |   | Gilad Bracha     |   | Important clarifications throughout the document                                                                                                     |
+| 2021-05-04 |   | Milan Zimmermann |   | Expanded on using the Newspeak IDE, mostly in the section [[*Run the online version of the Newspeak IDE. Maybe read some docs. Maybe watch some videos]] |
+|            |   |                  |   |                                                                                                                                                      |
 
   
 * Newspeak quickstart and hands on: code, build and deploy a Newspeak counter app
 
-TL;DR: This quickstart section attempts to provide an incremental introduction to Newspeak by first showing the Newspeak live IDE, then giving some hands-on through building and deploying a sample Newspeak app called ~CounterApp~. A spoiler: we can look ahead and run the app we will be building - a pre-existing online version of the ~CounterApp~ runs on https://newspeaklanguage.org/samples/primordialsoup.html?snapshot=CounterApp.vfuel. 
+TL;DR: This quickstart section attempts to provide an incremental introduction to Newspeak. First, we introduce the Newspeak live IDE, then we build and deploy a sample Newspeak app called ~CounterApp~. A spoiler: we can look ahead and run the app we will be building - the ~CounterApp~ - online at https://newspeaklanguage.org/samples/primordialsoup.html?snapshot=CounterApp.vfuel. 
 
-** Run the online version of the Newspeak IDE. Maybe read some docs. Maybe watch some videos. 
+** Run the online version of the Newspeak IDE. Maybe read some docs. Maybe watch some videos
 
-TL;DR: This section describes what is the online version of Newspeak IDE, and how to use it.
+TL;DR: This section introduces the online version of Newspeak IDE, and how to use it.
 
 This is a brief section. Starting with Newspeak is easy. We just point the browser to https://newspeaklanguage.org/samples/primordialsoup.html?snapshot=HopscotchWebIDE.vfuel.
 
@@ -43,7 +43,7 @@ In more detail, let us try the following:
 - Action: In a new browser tab, open the Newspeak online IDE at https://newspeaklanguage.org/samples/primordialsoup.html?snapshot=HopscotchWebIDE.vfuel
 - Result: The Newspeak IDE opens, similar to
   [[file:img/newspeak---a-few-notes.org-newspeak-ide-start.png]]
-- Action: To edit source code: Click on the"Newspeak Source" link
+- Action: To edit source code: Click the "Newspeak Source" link
   [[file:img/newspeak---a-few-notes.org-go-to-newspeak-source.png]]
 - Result: A new page opens, showing Newspeak classes, similar to
   [[file:img/newspeak---a-few-notes.org-newspeak-source.png]]
@@ -57,7 +57,7 @@ In more detail, let us try the following:
   [[file:img/newspeak---a-few-notes.org-my-new-class-now-added.png]]
 - Action: Return back to the main page by pressing the browser "Back" button, to get back to
   [[file:img/newspeak---a-few-notes.org-newspeak-ide-start.png]]
-- To run some Newspeak expressions: Click on the "Workspaces" link
+- To run some Newspeak expressions: Click the "Workspaces" link
   [[file:img/newspeak---a-few-notes.org-go-to-workspaces.png]]
   - Result: A new page opens, similar to
     [[file:img/newspeak---a-few-notes.org-workspaces.png]]
@@ -67,7 +67,7 @@ In more detail, let us try the following:
 - To run multi-line Newspeak code, type the code line by line. Press keyboard *ENTER* to open new lines. When ready tu run the code, highlight all lines, then press keyboard *Shift + ENTER* to run the code (evaluate all highlighted lines). The image below shows the Workspace after the *Shift + ENTER* was pressed, showing the code, and result "2".
       [[file:img/newspeak---a-few-notes.org-workspaces-multiline-expression.png]]
   - The image above uses a white-mode image, as the dark-mode pages do not show highlight too well.
-  - When running multi-line code, we can of course alse paste it from outside, instead of typing it
+  - When running multi-line code, we can paste it from outside, instead of typing it.
 - To save your changes in the browser local storage explicitly "now", click on the diskette "save" button [[file:img/newspeak---a-few-notes.org-save-button.png]].
   
 Notes:
@@ -104,7 +104,7 @@ Summary:
 
 - This section showed the simpliest way of starting with Newspeak - we just point the browser to https://newspeaklanguage.org/samples/primordialsoup.html?snapshot=HopscotchWebIDE.vfuel and start using it.
   - In "Workspaces", we can experiment with Newspeak expressions, or snippets of code.
-  - In "Newspeak Source", we can experiment with adding Newspeak classes, or creating a Newspeak app, such as the app created in  the next section.   
+  - In "Newspeak Source", we can experiment with adding Newspeak classes, or creating a Newspeak app, such as the app created in the next section.   
     
 Next:
 
@@ -181,7 +181,7 @@ Next:
 TL;DR: This section describes:
 
 - How to download, install, and start a *local Newspeak server*.
-- Then pointing a browser to http://localhost:8080/primordialsoup.html?snapshot=HopscotchWebIDE.vfuel runs the local version of Newspeak IDE (in the browser)
+- That opening a browser tab at http://localhost:8080/primordialsoup.html?snapshot=HopscotchWebIDE.vfuel runs the local version of Newspeak IDE (reaching the just installed local Newspeak server).
 
 Assumptions and notes: 
 
@@ -216,6 +216,7 @@ Assumptions and notes:
 Summary: 
 
 - In this section we installed the local Newspeak server, and started using the served Newspeak IDE.
+- The installation method described here is the [[install-method-2][Installation method 2 (local Newspeak server)]]   
 
 Next: [[*Deploy the CounterApp into the local Newspeak server]]
 
@@ -256,13 +257,13 @@ Next: This is the end of coding, building and running the ~CounterApp~
 
 * Newspeak on Webassembly (Wasm) - installation methods
 
-TL;DR There are several methods of installing Newspeak. This section is describing them. Initially, we should probably consider [[install-method-1][Install method 1]] (use Newspeak online) or [[install-method-2][Install method 2]] (download and start a local Newspeak webserver). 
+TL;DR There are several methods of installing Newspeak. This section is describing them. Initially, we should probably consider [[install-method-1][Installation method 1 (no install - using Newspeak online)]] or [[install-method-2][Installation method 2 (local Newspeak server)]].
 
 ** Simple methods to install and run Newspeak
 
-*** <<install-method-1>> Install method 1: No installation or setup, run Newspeak online (*Recommended for a quick start*)
+*** <<install-method-1>> Installation method 1: No installation or setup, run Newspeak online (*Recommended for a quick start*)
 
-TL;DR: This section describes the simplest setup - in fact, this method requires no setup. 
+TL;DR: This section describes the simplest setup - in fact, this is a "no setup, no installation" method. We only need a browser and internet access.
 
 - Action: Navigate your browser to Newspeak online at https://newspeaklanguage.org/samples/primordialsoup.html?snapshot=HopscotchWebIDE.vfuel, 
 - Result: You should see a page similar to this
@@ -275,30 +276,37 @@ Notes:
 - By using this page, you are now using the Newspeak IDE
 - Click on "Newspeak Source" to see and edit code.
 - Your changes will be stored in browser local storage.
+- A more detailed description of what we can do with Newspeak is in the introduction section [[*Run the online version of the Newspeak IDE. Maybe read some docs. Maybe watch some videos]]  
 
-*** <<install-method-2>> Install method 2: Download and start a local version of Newspeak webserver
+*** <<install-method-2>> Installation method 2: Download and start a local version of Newspeak webserver
 
-This method is described in detail in the "hands on" section todo link 
+This method is described in detail in the "hands on" section [[*Download, install, and start a local Newspeak server]]. Follow the steps there.
+
+Differences of this installation from [[install-method-1][Installation method 1 (no install - using Newspeak online)
+]]- If we install using this method:
+ - Pros:
+   - No need for internet access
+   - Your version does not change if you need stability (this may be a cons too)
+ - Cons:
+   - We have to run our own Newspeak server, and reinstall to care of any updates or bugs fixed.
 
 ** Advanced methods to install and run Newspeak 
 
-*** <<install-method-3>> Install method 3: Setup a local Newspeak webserver from code on Github.
+*** <<install-method-3>> Installation method 3: Setup a local Newspeak webserver from code on Github.
 
-The method is described in the "Just in Case" section in https://github.com/newspeaklanguage/newspeak.
+This method is described in the "Just in Case" section in https://github.com/newspeaklanguage/newspeak.
 
-*** <<install-method-4>> Install method 4: Download or setup a local Electron version of Newspeak on Linux
+*** <<install-method-4>> Installation method 4: Download or setup a local Electron version of Newspeak on Linux
 
-In this method, we can either dowload the available versions for Windows and Mac, see https://newspeaklanguage.org/downloads.html, section "Dowloadable IDE App". 
-
-We can also buiild it ourselves. 
+To install using this method, dowload the available versions for Windows and Mac, see https://newspeaklanguage.org/downloads.html, section "Dowloadable IDE App". 
 
 Electron is basically Chromium underneath. It's just set up to read from a page that's built in to the app. So no server needs to be started. It starts with starting the app.
 
 An advantage of Electron that I have seen is a better integration with OS File access dialogs.  It doesn't insist on using a downloads directory for everything (and while browsers let you set the directory, they don't let you change it on the fly, on a file-by-file basis).
 
-*** <<install-method-5>> Install method 5: Manual setup which will produce an equivalent of [[install-method-2][Install method 2]] 
+*** <<install-method-5>> Installation method 5: Manual setup which will produce an equivalent of [[install-method-2][Installation method 2 (local Newspeak server)]] 
 
-As this method produces an equivalent that is already downloadable, this is only if we want to dig in more details, but not going all the way to doing all the steps in [[install-method-3][Install method 3]].
+As this method produces an equivalent that is already downloadable, this is only if we want to dig in more details, but not going all the way to doing all the steps in [[install-method-3][Installation method 3]].
 
 If the build isn't working for you there is one option that hasn't been discussed, which is relevant to Linux folk who don't have an Electron app. You can get the web IDE vfuel file at:
 
@@ -472,7 +480,7 @@ Next:
 
 Code like ~(* comment *)~ is a comment. We use this in our examples, but sometimes, we just say ~( .. code here .. )~ - the latter would not compile.
 
-*** Class definition
+*** TODO Class definition
 #+begin_src 
 
 #+end_src
@@ -498,6 +506,8 @@ class RGBCar = ()()
 From the specs: the above also defines a constructor : Class definitions create a *class factory object* that can produce instances of the class. The factory object *supports at least one message* that produces new instances. This is known as the *primary factory method*. By default, it is called new.
 
 ***** A commented class definition:
+
+This code shows the three blocks a class definition can have, with comments what code we define or write in each block:
 
 #+begin_src
 class RGBCar = (
@@ -586,7 +596,111 @@ class
 
 #+end_src
 
-*** 
+*** A rant about ~x:, x::, x::=, x=, x~ etc 
+
+APL (https://aplwiki.com/wiki/Simple_examples) is beautiful (not that I ever learned it, not even close). I appreciate its extreme terseness, and its use of non-ascii characters. I would appreciate it much more if I was a pro in it. But I assume that would take a long time, and I would have to live in it daily.
+
+I do not appreciate extreme terseness in "mainstream" programming languages as much. It can accumulate to the point, even working with a language daily, I scratch my head reading code "what is this sequence of ?, =, +, /" - or what you have it.
+
+A language may start with duplicating some "common" arithmetics operators
+
+~+, *, /, -, %~ (ok, why? math uses "mod". But I digress), then we may have ~++, ~/~ (ok, already I had to look that up) etc..
+
+Then of course there may be the assignment versions of those
+
+~+=, *=, /=, -=, %=~ etc.. not even talking ~|=~ etc..
+
+Then we may have relational operators
+
+~>, <, >=, <=~ - these are obvious as they are mostly borrowed from math .. sort of .. because mainstream keyboards are stuck on ascii, <= is a poor translation of it's math counterpart  
+
+equality operators
+
+~==, !=~ - not always obvious, as languages uses conflict 
+
+Then we may have the bitwise and shift operators
+
+~&, |, ^~ (another one I had to look up), shift left ~<<~, etc ..
+
+and of course the logical operators
+
+~||, &&, !~
+
+and perhaps the "dot" and "dot dot" - the object member access syntactic elements
+
+~., ..~ 
+
+etc
+
+I suppose, most of the curly braces languages do use all of the above the same way - that is why I only do not remember a relatively small subset of them :( , and I do not complain that much :)
+
+But, reading code, many of those operators are still a pain and require some king of mental pause or a mental switch! Code is read much more often than written. When writing code, they are a bit of a pain as well, perhaps not as much, as one uses a relatively small subset (or the obvious subset such as those used in arithmetics).
+
+Ok, fair enough .. well not quite fair, but accepted by years of burning this into our brains.
+
+But later, the language users may start to complain: "I have to write this and that, and it's too much typing", or "oh we need to screen for null so much" and so we get:
+
+~expr ? stmt : stmt2~ - most bracey languages have this, so it should go to the above
+
+and
+
+~?.~ - as in ~myObject.?myProperty~
+
+and
+
+~??~ - as in ~myStr ?? "empty"~
+
+and
+
+~??=~ as in ~value ??= 5~
+
+and maybe
+
+~...?~ as i ~['first', ...?aList]~
+
+
+The mental pause with those, depending on how much you use the language in question, can be significant. To the point, one cannot really read the code fluently unless embedded in the particular language daily.
+
+
+I realize this stuff is todo 
+
+also
+
+
+Operator	Name	Meaning
+()	Function application	Represents a function call
+[]	List access	Refers to the value at the specified index in the list
+.	Member access	Refers to a property of an expression; example: foo.bar selects property bar from expression foo
+?.	Conditional member access	Like ., but the leftmost operand can be null; example: foo?.bar selects property bar from expression foo unless foo is null (in which case the value of foo?.bar is null)
+
+todo
+
+
+All this long story above gets me to my main point of syntax difficulty with Newspeak. When first studying Newspeak, it took me forever to figure out the ~x:, x::, x::=, x=, x~. What I mean:
+
+#+begin_src 
+class RGBCar = (
+  (* instance initializer: inits slots and runs initializer code*)
+  |
+  numWheels = 4.
+  mats ::= 'basic'.
+  |
+)(
+  (* class body: defines instance methods or inner classes *)
+):(
+  (* class methods are in a group after : *)
+)
+
+
+#+end_src
+
+
+
+
+
+
+
+
 
 
 
