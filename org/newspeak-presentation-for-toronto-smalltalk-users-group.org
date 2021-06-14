@@ -446,6 +446,8 @@ Several comments about the code:
 
 *** Newspeak 101: How to define a more complex class - class Thing and it's subclass Car, both living in CarLibrary module.
 
+<<thing-class-definition>> Let's start with defining class /Thing/ in /CarLibrary/:
+
 #+BEGIN_SRC
 class CarLibrary = Object()(
 
@@ -463,6 +465,8 @@ class CarLibrary = Object()(
 
 )
 #+END_SRC
+
+<<car-class-definition>> Next, let's add a class /Car/:
 
 #+BEGIN_SRC
 class CarLibrary = Object()(
@@ -492,6 +496,7 @@ class CarLibrary = Object()(
   )( 
     (* instance methods *)
     'category misc'
+    color = (^ color. )
     printMe       = (^ 'I am a Car, my color is ', color.)
     printColor     = (^ 'My color is ', color.)
   )
@@ -501,7 +506,7 @@ class CarLibrary = Object()(
 
 - Unlike Smalltalk, Newspeak has a text representation of code - you can paste the above code to the Newspeak IDE.
 
-- Paste Car and Thing under TugPresentation
+- Paste the code for /Car/ and /Thing/ under TugPresentation
 
 - Note that after pasting the above to the Newspeak IDE, some things are underlined, for example method names. This looks like a syntax error but it is not - underline shows message names that may not be known and top level class names.
 
@@ -518,9 +523,9 @@ Below is an annotated and (over) colored example of a Newspeak class declaration
 
 ******* Class Declaration (line 2)
     
-    Let us ignore the outer class CarLibrary starting at line 1 and closing at line 23.
+    The outer class /CarLibrary/ starting at line 1 and closing at line 23.
     
-    On line 2, class RGBCar is declared. As part of the declaration, a constructor "rgbColor: aRgbColor" is declared. This would be used in client code as
+    On line 2, class RGBCar is declared. As part of the declaration, a constructor /#rgbColor: aRgbColor/ is declared. This would be used in client code as
 
     #+BEGIN_SRC 
     |car|
@@ -610,7 +615,7 @@ The = character can appear in the following syntactic context:
 
 *** Newspeak 101: Representation independence
 
-Newspeak objects are independent of their representation. We have changed the layout of Car  to RgbCar with two additions. 
+Newspeak objects are independent of their representation. We have changed the layout of Car to RgbCar with two additions. 
 
 The RgbCar class has the same API as the Car class, because:
 
@@ -972,8 +977,19 @@ Let us create a simple class in Java, Smalltalk and Newspeak: /Thing and Car/:
 
   #+BEGIN_SRC
   (* 
-     - TODO - Repeat Car constructor from previous section here:
+     - Repeating the Car constructor from previous section here, with comments removed
   *)
+
+  class Car color: aColor = Thing (
+    |
+    color ::= aColor.
+    | 
+  )( 
+    'category misc'
+    color = (^ rgbColor, 'converted to String name') (* todo: call some converter From RgbColor To String *)
+    printMe       = (^ 'I am a Car, my color is ', color.)
+    printColor     = (^ 'My color is ', color.)
+  )
   #+END_SRC
 
 - How is the Newspeak constructor different from the constructors in Java and instance creators in Smalltalk, and how does it solve the issues discussed? A summary from  [fn:Bracha-Constructors-Revisited: [[http://gbracha.blogspot.ca/2007/08/object-initialization-and-construction.html][Object Initialization and Construction Revisited]]]:
@@ -1024,7 +1040,7 @@ class CarLibrary = Object()(
   )( 
     (* instance methods *)
     'category convert rgbColor to string color'
-    public color = (^ rgbColor, 'converted to String name') (* call some converter From RgbColor To String *)
+    color = (^ rgbColor, 'converted to String name') (* call some converter From RgbColor To String *)
 
     'category show'
     printMe        = (^ 'I am a RGBCar, my rgbColor is ', rgbColor.)
@@ -1046,7 +1062,7 @@ class CarLibrary = Object()(
 )
 #+END_SRC
 
-Clients may call the RGBCar using either one of the color: rgbColor constructors, as follows:
+Clients may call the RGBCar using either one of the /#color:/ or /#rgbColor:/ constructors, as follows:
 
   #+BEGIN_SRC 
   (RGBCar rgbColor: '#FFCCCC') printMe -> 'I am a RGBCar, my rgbColor is #FFCCCC'
@@ -1058,25 +1074,31 @@ or
    (RGBCar color: 'blue') printMe. -> 'I am a RGBCar, my rgbColor is blue converted to RGB'.
   #+END_SRC
 
-The ability to take the Car class and create a different version of it, named RGBCar is also an example of /Representation Independence/ in Newspeak - we can now delete Car, and rename RGBCar to Car, and no clients will notice , because:
+The ability to take the Car class and create a different version of it, named RGBCar is also an example of /Representation Independence/ in Newspeak. What is meant by that?
+- Let's assume we have a class /Car/, with the API defined in [[car-class-definition]].
+- Let's assume that /Car/ is imported by, and used by, some client code around the word.
+- Let's assume we (the creators of /Car/) want to change internals of /Car/ (reimplement it with different internal state)- that is, we want to change the representation of how color is stored, from /#color/ slot to /#rgbColor/ slot.
+- Such representation change is possible in Newspeak as no internal state is exposed except by a message send, which can be adapted to a different internal representation. In the example above, we defined /RGBCar/. After testing /RGBCar/, we can now delete /Car/, and rename /RGBCar/ to /Car/, then start distributing the new /Car/ implementation (representation) to clients. No clients will notice and continue to work, because:
 
-1. Clients can still create the Car the same way as before (no need to change the client code):
+1. Clients can still create the /Car/ the same way as before (no need to change the client code):
     
    #+BEGIN_SRC 
    (renamed from RGB)Car color: 'blue'.
    #+END_SRC
 
-   Because a "legacy" color: constructor was provided as a class method.
+   Because a "legacy" /#color:/ constructor was provided as a class method in /RGBCar/ (the new implementation of /Car/).
 
-2. Clients can still send /color/ to Car:
-    
+2. No internals of the (original or new) /Car/ class are exposed except by message send (even internally: If a class addresses it's slot, it does so by a message send!). In other words, if before the change any client was calling
+
    #+BEGIN_SRC 
-   (renamed from RGB)Car color: 'blue' color.
+   car := (renamed from RGB)Car color: 'blue'.
+   carsColor := car color.
    #+END_SRC
 
-   - This is because we provided, in RGBCar, the "legacy" /color/ method
+   The result in /carsColor/ would be the same before and after we changed the implementation of /Car/ because we provided an adaptor from the old /Car/ /#color/ to the new /(renamed from RGB)Car/ /#color/. There is no client code change.
+   
 
-Altough note that we only pseudo-implemented the /color/ method, the result in our case is not 100% the same, but making it the same is just a matter of mechanics of a converter between color and RGB col
+(Altough note that we only pseudo-implemented the /#color:/ method, the result in our case is not 100% the same, but making it the same is just a matter of mechanics of a converter between color and RGB color)
 
 
 ***** Nested classes and Inner classes: Significance of nested classes and examples

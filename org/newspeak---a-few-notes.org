@@ -8,6 +8,7 @@
 #+DESCRIPTION: Running, not yet published notes on Newspeak
 #+TAGS: newspeak programming
 #+CATEGORIES: category-newspeak category-blog category-programming
+#+TODO: TODO IN-PROGRESS-NOW IN-PROGRESS WAITING NOTE DONE
 
 * This document: Introduction to Newspeak on Webassembly (Wasm)
 
@@ -25,6 +26,7 @@ Much of this document is collected from the existing Newspeak sources:
 |------------+---+------------------+---+------------------------------------------------------------------------------------------------------------------------------------------------------|
 | 2021-05-02 |   | Gilad Bracha     |   | Important clarifications throughout the document                                                                                                     |
 | 2021-05-04 |   | Milan Zimmermann |   | Expanded on using the Newspeak IDE, mostly in the section [[*Run the online version of the Newspeak IDE. Maybe read some docs. Maybe watch some videos]] |
+| 2021-06-07 |   | Milan Zimmermann |   | Wording changes and clarifications in several sections                                                                                               |
 |            |   |                  |   |                                                                                                                                                      |
 
   
@@ -51,8 +53,8 @@ In more detail, let us try the following:
 - Action: Click the "+" beside the "Root" to add a class.
 - Result: A class editor opens, with a template of a new class definition. At first, let's just create a dummy class by editing the template
   [[file:img/newspeak---a-few-notes.org-newspeak-source-defining-a-new-class.png]]
-- Action: Click the little checkbox to "Accept" the new class definition
-  [[file:img/newspeak---a-few-notes.org-accept-image.png]]
+- Action: Click the checkbox on the top right [[file:img/newspeak---a-few-notes.org-accept-image.png]] to "Accept" the new class definition
+
 - Result: The class now appears in the list of classes (may need to scroll down, classes are sorted alphabetically)
   [[file:img/newspeak---a-few-notes.org-my-new-class-now-added.png]]
 - Action: Return back to the main page by pressing the browser "Back" button, to get back to
@@ -64,26 +66,25 @@ In more detail, let us try the following:
 - To run some simple one-liner code, type for example "1+2" into the text field, and press keyboard *Shift + ENTER*. This will evaluate the expression and print a result "3"
   - Result: expression "1+2" was evaluated to "3"
     [[file:img/newspeak---a-few-notes.org-workspaces-expression.png]]
-- To run multi-line Newspeak code, type the code line by line. Press keyboard *ENTER* to open new lines. When ready tu run the code, highlight all lines, then press keyboard *Shift + ENTER* to run the code (evaluate all highlighted lines). The image below shows the Workspace after the *Shift + ENTER* was pressed, showing the code, and result "2".
+- To run multi-line Newspeak code, type the code line by line. Press keyboard *ENTER* to open new lines. When ready tu run the code, highlight all lines, then press keyboard *Shift + ENTER* to run the code. Another term for running code like this, is "evaluating all highlighted lines"). The image below shows the Workspace after the *Shift + ENTER* was pressed, showing the evaluated code, and the result of the evaluated code: ~2~.
       [[file:img/newspeak---a-few-notes.org-workspaces-multiline-expression.png]]
   - The image above uses a white-mode image, as the dark-mode pages do not show highlight too well.
   - When running multi-line code, we can paste it from outside, instead of typing it.
-- To save your changes in the browser local storage explicitly "now", click on the diskette "save" button [[file:img/newspeak---a-few-notes.org-save-button.png]].
+- To save our changes "now", click on the diskette "save" button [[file:img/newspeak---a-few-notes.org-save-button.png]]. The changes are saved in the browser local storage. See Notes below for discussion on storing changes.
   
 Notes:
 
 - We are now using Newspeak, in its full power.
 - The browser tab opened on https://newspeaklanguage.org/samples/primordialsoup.html?snapshot=HopscotchWebIDE.vfuel IS the Newspeak live IDE.
 - Everything we do in the IDE is alive, changes and actions have immediate responses in the running system.
-- About the changes you make:
-  - Any changes we make (for example: add a class, change a class,
-    evaluate something in the workspace) are stored in the browser
-    local storage under an entry named "backup".
-  - To look at the changes you made, go to the browser debugger.
-    For example, in Chrome or Chromium, press F12 , then go to the Application tab.
+-  <<local-storage-high-level>> Are the changes we made (the evaluated code, or classes added in later sections) stored anywhere, and if so, where and how?
+  - There is a fine point we should make. This section was accessing only the online version of the Newspeak IDE. A crude description would be that "the Newspeak IDE is the file ~HopscotchWebIDE.vfuel~ which the browser interprets when pointing to the URL https://newspeaklanguage.org/samples/primordialsoup.html?snapshot=HopscotchWebIDE.vfuel. However, we need to realize that the browser immediately downloads and caches this file. Changing anything in Newspeak (adding a class, typing to the Workspace), causes the changes to be saved locally. If we close the browser, and visit the same online URL again. we will see the site as we left it - with the local changes "added" to the vanilla online Newspeak IDE!
+  - *Any changes we make (for example: we add a class, we change a class, evaluate something in the workspace) are stored in the browser local storage under an entry named "backup".*
+  - To look at the changes we made, go to the browser debugger.
+    For example, in Chrome or Chromium, press F12, then go to the Application tab.
     In the Storage section expand "Local Storage".
-    You can see your changes in the appropriate URL, under key="backup".
-  - To save your changes in the browser local storage explicitly "now", click on the diskette "save" button [[file:img/newspeak---a-few-notes.org-save-button.png]].
+    You can see our changes in the appropriate URL, under key="backup".
+  - At any time, working with Newspeak: to save your changes in explicitly "now", click on the diskette "save" button [[file:img/newspeak---a-few-notes.org-save-button.png]].
   - If you ever see this message:
     [[file:img/newspeak---a-few-notes.org-message-restore-from-backup.png]]
     - This message tells us, we did make changes, such as added a class, without pressing the the diskette "save" button [[file:img/newspeak---a-few-notes.org-save-button.png]], and reloaded. In most situations, pressing *Restore from backup* is the best choice.
@@ -108,68 +109,70 @@ Summary:
     
 Next:
 
-In the next section [[*Build, run, and debug ~CounterApp~ in Newspeak]], we show how to create a simple ~CounterApp~ in Newspeak.
+In the next section [[*Build, run, and debug the ~CounterApp~ in Newspeak (in the online version)]], we show how to create a simple ~CounterApp~ in Newspeak.
 
-** Build, run, and debug ~CounterApp~ in Newspeak
+** Build, run, and debug the ~CounterApp~ in Newspeak (in the online version)
 
 TL;DR: This section describes 
 
-- How to build, run, and debug a Newspeak app (~CounterApp~ ) in development mode, inside the *online* Newspeak IDE. 
+- How to create, run and debug a Newspeak app (~CounterApp~) in development mode, in the *online* Newspeak IDE. 
 
+Prerequisits:
+
+- We will need code for the ~CounterApp~. However, for us to skip any implementation details and concentrate on the IDE, in this section, we will simply borrow the code. The code of the ~CounterApp~ already exists - in the Newspeak github repo at https://github.com/newspeaklanguage/newspeak. We borrow it without talking about Newspeak code until later. To fullfill the prerequisite, do one of the following:
+  - Clone the newspeak repo locally. 
+  - Alternatively, download the files ~CounterApp.ns~ and ~CounterUI.ns~ from Github to the local filesystem. To do that, just click https://raw.githubusercontent.com/newspeaklanguage/newspeak/master/CounterUI.ns, then https://raw.githubusercontent.com/newspeaklanguage/newspeak/master/CounterApp.ns, then right-click and select "Save as..." to save each file.
+
+ 
 Notes: 
 
 - This section uses the online Newspeak at https://newspeaklanguage.org/samples/primordialsoup.html?snapshot=HopscotchWebIDE.vfuel
 - However, a local Newspeak server could be used instead.
   - If we wanted to deploy the ~CounterApp~ in "production", we would need a local Newspeak - because there is no way to deploy the app to the online Newspeak site.
   - Deployment of the  ~CounterApp~ to "production" requires our "own" Newspeak, such as the local Newspeak server. See [[*Download, install, and start a local Newspeak server]] for how to install Newspeak locally.
-- The code of the ~CounterApp~ already exists - in the Newspeak github at https://github.com/newspeaklanguage/newspeak. We borrow it without talking about Newspeak code until later.
 - We may ask, "what is an app in Newspeak"? In a nutshell, an "app" is an instance of a class - obviously. But which class, and what does the class need, to be able to "live" or "run" inside a Newspeak IDE or Newspeak runtime? Read on for details (actually, the coding details are todo).
 
-*Steps: To create and run the Counter app (from existing code that we borrow), do the following:*
+*Steps: To create and run the ~CounterApp~ (from existing code that we borrow from Newspeak Github), do the following:*
 
-- Action: In a new browser tab, open the Newspeak online IDE at https://newspeaklanguage.org/samples/primordialsoup.html?snapshot=HopscotchWebIDE.vfuel
+- Action: In a new browser tab, open the online Newspeak IDE at https://newspeaklanguage.org/samples/primordialsoup.html?snapshot=HopscotchWebIDE.vfuel
 - Result: The Newspeak IDE opens, similar to [[file:img/newspeak---a-few-notes.org-newspeak-ide-start.png]]
   - Note: The "Did you know" section is a ever-changing hint system
 - Action: Click "Newspeak Source" in [[file:img/newspeak---a-few-notes.org-go-to-newspeak-source.png]] 
 - Result: A new page opens, showing Newspeak classes, similar to [[file:img/newspeak---a-few-notes.org-newspeak-source.png]]
-
-- Action: On the top right of the page (in the same line where we see
-  "Root +", click the vertical 3-dot menu link [[file:img/newspeak---a-few-notes.org-3-vertical-dots.png]]
+  - Note on the result: In the result, you should NOT see classes named ~CounterApp~ or ~CounterUI~. If you do, you have most likely run through this tutorial before, and the classes are already in your browser local storage. To clean any local changes saved locally for the online Newspeak, see the [[local-storage-high-level]] section. 
+- *Motivation for the next action: We want to build the sample app ~CounterApp~. We choose to build it simply by downloading and compiling two files from the existing source from the Newspeak github repo.*
+- Action: On the top right of the page (in the same line where we see "Root +") [[file:img/newspeak---a-few-notes.org-3-vertical-dots.png]], click the vertical 3-dot menu link on the far right.
 - Result: A popup  [[file:img/newspeak---a-few-notes.org-compile-files.png]] shows
 
-- Action: Click "Compile Files" 
+- Action: Click "Compile Files". This will ask us to select files stored on disk, and compile them.
 - Result: OS file browser opens, and ask us to select files in the operating system filebrowser. 
-- Action: Navigate to the directory where we checked out the Newspeak github repo, and select ~CounterApp.ns~ and ~CounterUI.ns~
-- Result: *The classes from the selected ~.ns~ files now show in your IDE.* It should look like this [[file:img/newspeak---a-few-notes.org-counter-classes.png]]
+- Action: Navigate to the directory where we checked out the Newspeak github repo, OR where we saved the source for the ~.ns~ files (see Prerequisits of this section). Select ~CounterApp.ns~ and ~CounterUI.ns~
+- Result: *The classes from the selected ~.ns~ files compile, and show in your IDE.* In your class list (the list under Root +), you should now see a section similar to this [[file:img/newspeak---a-few-notes.org-counter-classes.png]]
   - Note 1: We have loaded the code of the  ~CounterApp.ns~ and
     ~CounterUI.ns~ classes into Newspeak by running "Compile
-    file". We could add the classes through the IDE by
-    clicking on the "+" button
-    [[file:img/newspeak---a-few-notes.org-root-plus-button.png]] and
-    typing code in. We
-    choose to load pre-existing files at the moment to concentrate on the process, not the code.
+    file". Alternatively, we could have added the classes through the IDE by
+    clicking the "+" button
+    [[file:img/newspeak---a-few-notes.org-root-plus-button.png]] and typing or pasting the code in.
+    Instead, we choose to load pre-existing files at the moment to concentrate on the process, not the code.
    
   - Note 2: Click on the ~CounterApp~ or ~CounterUI~ link. This shows the corresponding class. 
-  - Note 3: The ~CounterApp~ shows links to ~[deploy] [configuration]
-    [run] [debug]~. Why do only the "app" classes such as ~CounterApp~ (and no other classes) show the ~[deploy] [configuration] [run] [debug]~ links in the Newspeak IDE? That is because the "app" classes represent a runnable Newspeak application.
+  - Note 3: The ~CounterApp~ shows links to ~[deploy] [configuration] [run] [debug]~. Why do only the "app" classes such as ~CounterApp~ (and no other classes) show the ~[deploy] [configuration] [run] [debug]~ links in the Newspeak IDE? That is because the "app" classes represent a runnable Newspeak application.
   - *Question: What makes a Newspeak class a "runnable Newspeak application"?. todo*
-- Action: To save your changes in the browser local storage explicitly "now", click on the diskette "save" button [[file:img/newspeak---a-few-notes.org-save-button.png]]
+- Action: To save the classes we added, (~CounterApp~ or ~CounterUI~) in the browser local storage explicitly "now", click on the diskette "save" button [[file:img/newspeak---a-few-notes.org-save-button.png]]
 
-- Result: Our changes are stored in the browser local storage.
+- Result: The two classes are stored in the browser local storage. To read more about details of the browser local storage, see [[local-storage-high-level]] section.
 
-- Action: Click on the [run] link beside the  ~CounterApp~. This runs the code in the app (specifically, the ~CounterUI~ code). The code presents a counter (integer), and 3 buttons, which actions are to "increment", "decrement" and "reset" the counter. 
-- Result: The counter app opens and runs in the same browser tab; it should look like this:  [[file:img/newspeak---a-few-notes.org-counter-app-running.png]]
+- Action: Click on the [run] link beside the  ~CounterApp~. This runs the code in the app (specifically, the ~CounterUI~ code). 
+- Result: The counter app opens and runs in the same browser tab; it should look like this:  [[file:img/newspeak---a-few-notes.org-counter-app-running.png]] The code presents a counter (integer), and 3 buttons, which actions are to "increment", "decrement" and "reset" the counter. 
 - Action: click on "increment"
 - Result: counter increments by one.
 - Note: We can click [debug] instead of [run] and a debugger will open.
 
-
 Summary: 
 
-- We have shown how to build, run, and debug, a Newspeak app ~CounterApp~ in "development mode", inside a Newspeak IDE. 
-- A browser tab opened on https://newspeaklanguage.org/samples/primordialsoup.html?snapshot=HopscotchWebIDE.vfuel IS the Newspeak IDE.
-- *We are now running or debugging the CounterApp in Newspeak online IDE! (in "development mode")* 
-- Newspeak online is similar to (but we dare say superior to) running, in "development mode", a Java, Android or Flutter application in IntelliJ, Eclipse, Visual Studio, Atom, Emacs, vi, or any IDE.  
+- We have shown how to build, run, and debug, a Newspeak app ~CounterApp~ in "development mode", inside the online Newspeak IDE. 
+- Newspeak online is similar to (but we dare say superior to) running, in "development mode", a Java, Android or Flutter application in IntelliJ, Eclipse, Visual Studio, Atom, Emacs, vi, or any IDE.
+- See comments in the [[local-storage-high-level]] section to understand more about how changes are stored in Newspeak.
 
 Next: 
 
@@ -181,37 +184,47 @@ Next:
 TL;DR: This section describes:
 
 - How to download, install, and start a *local Newspeak server*.
-- That opening a browser tab at http://localhost:8080/primordialsoup.html?snapshot=HopscotchWebIDE.vfuel runs the local version of Newspeak IDE (reaching the just installed local Newspeak server).
+- How opening a browser tab at http://localhost:8080/primordialsoup.html?snapshot=HopscotchWebIDE.vfuel runs the local version of the Newspeak IDE (reaching the just installed local Newspeak server).
 
-Assumptions and notes: 
+Prerequisits: 
 
-- If Python is installed on our system, running the serve.sh script that comes with
-  the download will start a server. You can always start a server of
-  your choice instead.
-- We can potentially skip this section. However, if we want to deploy a Newspeak app such as the ~CounterApp~, this section is needed.  
+- Python is installed on your system. This is needed for the ~serve.sh~ script to run an http server. 
 
-*Steps: To download, install, and start using a local Newspeak server as IDE, do the following:*
+Notes: 
 
-- Action: Go to https://newspeaklanguage.org/downloads.html
-- Result: Opens the download page 
-- Action: Click on "For all platforms", download and unzip https://github.com/newspeaklanguage/newspeaklanguage.github.io/raw/master/servable.zip to the directory from which you want to serve, for example ~$HOME/software/newspeak/my-serve-http~
-- Result: Files extracted in directory ~$HOME/software/newspeak/my-serve-http/servable~
-  - Note:   The file ~$HOME/software/newspeak/my-serve-http/servable/server.py~ defines the port on which the Newspeak server runs. The port is set to 8080. Edit the file and change port if needed.
-- Action: Start the Newspeak server 
-  #+begin_src shell
-    # The directory just above "servable" must be the directory
-    # where we saved the zip file, see above.
-    # The zip has the "servable" node in it.
-    # todo: change the instructions to curl in.
-    cd $HOME/software/newspeak/my-serve-http/servable
-    chmod u+x serve.sh
-    ./serve.sh
-  #+end_src
-- Result: "serving at port 8080"
-- Action: Navigate browser to http://localhost:8080/primordialsoup.html?snapshot=HopscotchWebIDE.vfuel
-- Result: Opens the locally hosted Newspeak IDE, similar to
+- You can use a server of your choice instead of the Python server needed by ~serve.sh~. Just place all the files downloaded in the sections below to your server's serving directory.
+- You can potentially skip this section. However, if you want to deploy a Newspeak app such as the ~CounterApp~, this section is needed.  
+
+*Action steps to download, install, and start using a local Newspeak server*
+
+- First, you may want to review the Newspeak downloads page at https://newspeaklanguage.org/downloads.html, in particular the "For all platforms" link.  
+- Next, to install and start a local Newspeak server, you can 
+  - Either download and unzip the file *servable.zip* from the link above (https://github.com/newspeaklanguage/newspeaklanguage.github.io/raw/master/servable.zip) to any directory, then start the Newspeak server by running ~serve.sh~ from the extracted file.
+  - Or run the following commands from the command line 
+    #+begin_src shell
+      MY_SERVE_NEWSPEAK=$HOME/software/newspeak/my-serve-http
+      mkdir --parent $MY_SERVE_NEWSPEAK || echo Unable to create directory $MY_SERVE_NEWSPEAK 
+      cd $MY_SERVE_NEWSPEAK
+      curl --location https://github.com/newspeaklanguage/newspeaklanguage.github.io/raw/master/servable.zip --output $MY_SERVE_NEWSPEAK/servable.zip
+      unzip -o servable.zip
+      
+      # The directory just above "servable" must be the directory
+      # where we saved the zip file, see above.
+  
+      cd servable
+      # Make serve.sh executable, and start the Newspeak local server.
+      chmod u+x serve.sh
+      ./serve.sh
+    #+end_src
+- Expected Result: "serving at port 8080". Note: In *servable.zip* there is a file ~server.py~, which defines the Newspeak server port. The port is set to 8080. Edit the file and change port if needed.
+
+
+To use the local Newspeak server, navigate browser to http://localhost:8080/primordialsoup.html?snapshot=HopscotchWebIDE.vfuel. This should open the locally hosted Newspeak IDE, started using the ~./serve.sh~ command. 
+
+Your browser should show a page similar to 
   [[file:img/newspeak---a-few-notes.org-local-ide.png]]
-  - Note: This is exactly the same as the online version. We can now start editing Newspeak code by clicking on the "Newspeak Source" link.
+
+Note: The use of the local version is the same as the use of the online version. We can now start editing Newspeak code by clicking on the "Newspeak Source" link.
 
 Summary: 
 
@@ -224,34 +237,55 @@ Next: [[*Deploy the CounterApp into the local Newspeak server]]
 
 TL;DR: This section describes 
 
-- How to deploy the ~CounterApp~, created in the section [[*Build, run, and debug ~CounterApp~ in Newspeak]], into the local Newspeak server.
-- That the deployment consists of creating a deployable file, ~CounterApp.vfuel~, and placing it in the running local Newspeak server.
-- How to run ~CounterApp~ from the local Newspeak server.
-  
-Assumptions and notes: 
+- How to create and deploy the ~CounterApp~ into the local version of Newspeak.
+- That the deployment is achieved by creating a deployable file, ~CounterApp.vfuel~, in the online Newspeak at https://newspeaklanguage.org/samples/primordialsoup.html?snapshot=HopscotchWebIDE.vfuel and placing it in the running local Newspeak server.
+- How to run the ~CounterApp~ from the local Newspeak server, by accessing the  ~CounterApp.vfuel~ from the local HTTP server.
 
-- we will create the deployable file, ~CounterApp.vfuel~ in the online Newspeak at https://newspeaklanguage.org/samples/primordialsoup.html?snapshot=HopscotchWebIDE.vfuel 
-- *However, apps can NOT be deployed to the online version, since
-  that would require write access to the newspeak web site. We can do the coding online (as described above), but the actual deployment has to be done into a Newspeak system we control.*
-- So, we assume we already installed the local Newspeak server in [[*Download, install, and start a local Newspeak server]].* The deployable file, ~CounterApp.vfuel~, will be deployed into the local Newspeak server.
+Prerequisits: 
 
-*Steps: To create the deployable file, ~CounterApp.vfuel~ and deploy it to the local Newspeak, do the following:*
+1. We have followed the online section [[*Build, run, and debug the ~CounterApp~ in Newspeak (in the online version)]]. In that section, we have downloaded (from Newspeak Github) and compiled two classes ~CounterApp~ and ~CounterUI~ *while attached to the online Newspeak*.
+   - This statement requires a "fine point" explanation. 
+     - In the earlier section  [[*Build, run, and debug the ~CounterApp~ in Newspeak (in the online version)]], the two classes, ~CounterApp~ and ~CounterUI~, were saved to the browser local storage. 
+     - In this current section, we re-attach to online Newspeak at https://newspeaklanguage.org/samples/primordialsoup.html?snapshot=HopscotchWebIDE.vfuel. 
+     - As explained in [[local-storage-high-level]], the changes we made in the online version are still stored locally in the browser local storage. 
+     - So, when we re-attach to online Newspeak in this section, the classes ~CounterApp~ and ~CounterUI~ are still available. We use them to "create the CounterApp" (by saving it "as victory fuels" - that is, as file ~CounterApp.vfuel~) which is the app. 
+     - This app - the  file ~CounterApp.vfuel~ - can then be copied to the serving directory of local Newspeak, and can be opened from there.
+2. We have installed the local version of Newspeak by following the section [[*Download, install, and start a local Newspeak server]].*
 
-- Still in the "Newspeak Source" similar to [[file:img/newspeak---a-few-notes.org-newspeak-source.png]], 
 
+Notes: 
+
+- We will create the deployable file, ~CounterApp.vfuel~ using the online Newspeak at https://newspeaklanguage.org/samples/primordialsoup.html?snapshot=HopscotchWebIDE.vfuel 
+- *However, apps can NOT be deployed to the online version, since that would require write access to the newspeak web site. We can do the coding online (as described above), but the actual deployment has to be done into a Newspeak system we control.*
+- The deployable file, ~CounterApp.vfuel~, will be deployed into the local Newspeak server as  http://localhost:8080/primordialsoup.html?snapshot=CounterApp.vfuel. (this link will only work when we finish all steps in this section)
+
+One more "fine point" note:
+
+- This flipping between the online Newspeak and local Newspeak could be confusing. We could have started by downloading Newspeak locally, and follow the whole turorial in local Newspeak. However, we thought that may discourage some people who want to "take the shortest path", start online, and expand from there.
+
+
+*Steps: Now we have introduced the context, we start the core of this section: We create the deployable file, ~CounterApp.vfuel~ and deploy it to the local Newspeak, by following the Action/Result steps below:*
+
+- Action: Navigate to the online version of Newspeak at https://newspeaklanguage.org/samples/primordialsoup.html?snapshot=HopscotchWebIDE.vfuel and click the "Newspeak Source"
+- Result: Under "Root" you should see an alphabetically organized list of classes, similar to [[file:img/newspeak---a-few-notes.org-newspeak-source.png]], 
+  - Note: If you followed the online section [[*Build, run, and debug the ~CounterApp~ in Newspeak (in the online version)]], there should be ~CounterApp~ and ~CounterUI~ classes in the alphabetic list.
 - Action: In the class list, find the ~CounterApp~, and click on the [deploy] to the right of the "CounterApp"
-- Result: a popup showing deployment options: [[file:img/newspeak---a-few-notes.org-click-deploy-on-counter-app.png]]
+- Result: a popup showing deployment options (starting with ~asVictoryFuel~: [[file:img/newspeak---a-few-notes.org-click-deploy-on-counter-app.png]]
 - Action: Select ~asVictoryFuelWithMirrors~. We choose the option 'asVictoryFuelWithMirrors' if our app uses the GUI (there's some mirror dependency in the UI) and 'asVictoryFuel' otherwise.
 - Result: After a long wait, a file named ~CounterApp.vfuel~ is created, and asked to be saved.
 - Action: Save the file ~CounterApp.vfuel~ on our disk to the directory where local Newspeak was deployed - for example ~$HOME/software/newspeak/my-serve-http/servable~
-- Result: The counter app is now deployed to the local Newspeak server.
-- Action: In a new browser tab, navigate to the local Newspeak server at http://localhost:8080/primordialsoup.html?snapshot=CounterApp.vfuel
-- Result: In the new tab, the "locally deployed" ~CounterApp~ is now running
+- Result: *The counter app is now deployed to the local Newspeak server!*
+
+
+To prove the counter app is now deployed to the local Newspeak server, do the following:
+
+- Action: Open a new browser tab, and navigate to the just saved application  ~CounterApp.vfuel~ in the local Newspeak server as http://localhost:8080/primordialsoup.html?snapshot=CounterApp.vfuel
+- Result: In the new tab, you should see the "locally deployed" ~CounterApp~ is now running
   [[file:img/newspeak---a-few-notes.org-counter-app-local-run.png]]
 
 Summary: 
 
-- In this section, using online Newspeak, we built our "Newspeak production deployable" file ~CounterApp.vfuel~, and deployed it to the local Newspeak version at http://localhost:8080/primordialsoup.html?snapshot=CounterApp.vfuel.
+- In this section, using the online Newspeak, we built our "Newspeak production deployable" file ~CounterApp.vfuel~, and deployed it to the local Newspeak version at http://localhost:8080/primordialsoup.html?snapshot=CounterApp.vfuel.
 
 Next: This is the end of coding, building and running the ~CounterApp~
 
@@ -385,7 +419,7 @@ Much of this Q&A is sourced or simply pasted from the Newspeak google group post
 
 todo
 
-** How would I build and deploy a "Hello world" application?
+** How would I build and deploy a "Hello world" or a ~CounterApp~ application?
 
 TL;DR: For a detail description of building and running a Newspeak app, read the section [[*Newspeak quickstart and hands on: code, build and deploy a Newspeak counter app]]
 
@@ -407,19 +441,24 @@ How would I go about building and running a "Hello world" application? I know I 
 
 2) Slightly more complex, but works better. You use a script that runs the C version of the PSoup VM to do  the deployment. THis is faster, more reliable and produces smaller deployments. 
 
-In either case, .vfuel file is produced.  Assuming you are running Newspeak using option 1 (a local server, [[install-method-1]]), you can then serve that file and run your app. A proper writeup describing this will take a bit longer.
+In either case, .vfuel file is produced.  Assuming you are running Newspeak using option 1 (a local server, [[install-method-1]]), you can then serve that file and run your app.
 
 *Deployment of the app*
 
-This .vfuel can then be deployed into a (locally installed) Newspeak server, see [[install-method-1]].
+This .vfuel can then be deployed into a (locally installed) Newspeak server.
+
+- For instructions on how to install the server see [[install-method-1]]
+- For instructions on how to deploy a sample app, in particular the ~CounterApp~, see [[*Deploy the CounterApp into the local Newspeak server]].
 
 ** In the IDE (browser), how do I save my changes?
+
+TL;DR: For a detail description of how Newspeak handles changes, and how to save them, see [[local-storage-high-level]]
 
 Newspeak doesn't have an image. So what do I actually do to develop software? I mean, I presume I run a copy of Newspeak somehow, and start adding classes to it. But then where / how do my additions get saved if there isn't an image? When I've added a couple of classes to a running Newspeak environment, I presume they don't just disappear when I switch my computer off? So where do they go? Or where do I put them?
 
 There are several options:
 
-1) You can do nothing, and all your changes will be preserved in web browser local storage as backup. 
+1) You can do nothing, and all your changes will be preserved in web browser local storage using the key "backup". 
 2) You can press the save icon (the one just to the left of the search pane at the top) and all the changes you've made will be saved in web browser local storage.
      I'll explain below how (a) and (b) differ.
 3) You can save top level classes to files (gasp; yes, it hurts me as much as it hurts you), and reload them explicitly if the system is restarted for whatever reason.
@@ -436,6 +475,116 @@ There are a few caveats - a few classes are exempt from this discipline due to b
 
 Why will you refresh? Apart from the odd crash, the more common problem is the performance issues that have been discussed in this forum in December/January. Basically, we have an unresolved problem that the system slows down painfully under prolonged/heavy use. Refreshing and loading from backup works fairly well for small values of well  Obviously unacceptable as you lose IDE state (debuggers, workspace/inspector contents, unsaved editors, presenter state such as what method presenters are expanded or collapsed) but it's better than an unresponsive (sluggish to dead) system.
 
+
+** IN-PROGRESS Programming in Newspeak
+
+#+begin_src newspeak
+
+#+end_src
+
+*** The Newspeak IDE
+
+**** Updading one IDE related class that was fixed on Github source into local Newspeak IDE
+
+Let's say that I am using local Newspeak.
+
+The regular way of updating it to the latest (thus getting fixes done since the last deployment), would be to simply re-download as described in [[install-method-1]].
+
+Could there be situations we do not want to simply reinstall the local Newspeak server? Perhaps one example of such situation is that we run our local Newspeak server with changed files, and we want to patch a class that has a known fix, without reinstalling the local Newspeak and losing changes.
+
+To describe a concrete (somewhat artificial) situation: Let's say that on Github, there is a bug fix or change in a 'system' class, ~Browsing.ns~, and we want to update this single class locally. We can identify changed files or files with fixes, and compile them in (that is, start using them) the local version, using this process:
+  
+- Look for files committed on Github. 
+- Find files changed since your last local install - let's say file ~Browsing.ns~ changed today. As my local server uses the servable.zip file, ~Browser.ns~ is already compiled in my local vfuel.
+- So from the browser IDE, http://localhost:8080/primordialsoup.html?snapshot=HopscotchWebIDE.vfuel from the 3-dot I "compile" the new version of Browsing.ns 
+- Saved from IDE
+- Confirm, by re-exporting of Browsing.ns, that the change is in my local version.
+
+*** IN-PROGRESS Program and app distribution: Namespace, Global namespace, manifest
+
+**** IN-PROGRESS-NOW How to put together a program given a global namespace?
+
+Next, there is the question of how you put together your program given the global namespace. This is the domain of build scripts in traditional software. In Newspeak, you can write these scripts in Newspeak itself.  These would take a namespace object as a parameter (what we often call a manifest). You'd typically pass in the IDE top level namespace (try evaluating ide namespacing manifest in a workspace). Of course, you can always override the behavior of a given manifest by wrapping it.
+
+So you write class with a #packageLibraryUsing: method that takes a manifest and instantiates your library as you wish. The manifest needs have all the code you need. Importantly, the manifest is still under 'end user control' and should contain only top level classes (we can also enforce that) so no state or access to the outside world is provided. Thus, the #packageLibraryUsing: methods are like build scripts, and they can call other #packageLibraryUsing: methods, just like build scripts or makefiles refer to others. The difference being that none of this is hardwired to a specific global namespace.
+
+This is very similar to how one builds apps.  There are no examples of this pattern, because we have no third party libraries yet.
+
+**** IN-PROGRESS-NOW Example of bringing dependencies into an application and publishing an application
+
+
+Imagine a convention whereby *every library intended for distribution is sent out as a class which:*
+
+ - has a factory (or in general, class method) method ~#packageLibraryUsingManifest: manifest~ - 
+ - has a ~#build: platform~ method - this method, given a platform object, produces a working instance of the module we actually want to distribute
+
+Now developer A (Alice) intends to distribute a module MyMod1.
+It depends on some other code she developed, say, MyMod2, which in turn depends on a 3rd party library from developer B (Bob).
+The module Alice distributes is below.
+
+#+BEGIN_SRC newspeak
+class MyModules packageLibraryUsingManifest: manifest = ( 
+ (* packageManager: ... metadata describing the expected dependencies *)
+  |
+  MyMod1 = manifest MyMod1.
+  MyMod2 = manifest MyMod2.
+  My3rdPartyDep = manifest My3rdPartyDep packageLibraryUsingManifest: manifest.
+  |
+) (
+   public build: platform = (
+      |
+      my3rdPartDependency = My3rdPartyDep build: platform.
+      myMod2 = MyMod2 usingPlatform: platform and: my3rdPartDependency.
+      myMod1 = MyMod1 usingPlatform: platform mod2: myMod2.
+      |
+     ^myMod1
+   )
+)
+#+END_SRC
+
+The ~#build: platform~ method encapsulates the knowledge of how to build Alice's code, using an internal library she wrote (MyMod2) and Bob's library.  
+
+Note that Alice is using the same convention as Bob, and builds Bob's code with no knowledge of its internal dependencies.
+Developer C (Carol) uses these same conventions to build Alice's code. She can do so regardless of whether
+- she is *building an app* (where she'd call ~#packageLibraryUsing: manifest~ from the app's factory, and ~#build:~ from ~#main:args:~
+- or she is *building another library* (where she'd call ~#packageLibraryUsing:~ from the library factory).
+
+If Alice decides to replace Bob's code with code from developer D (David), she changes MyModules, but Carol's code does not change. Likewise, if Bob or David change their dependencies, neither Alice nor Carol change their code.
+
+It isn't necessary for everyone to follow the exact same convention - what's critical is that a given module maintains its convention so its build API is stable. Of course, a common convention is good, especially for tools. 
+
+Alice could just distribute an instance of MyModules, but this hardwires the versions of all the dependencies.  Assuming she doesn't do that, it is true that Carol needs to download all the pieces and their sub-pieces from Bob and Alice etc. She loads them into the IDE (or the IDE does so by reading the metadata) and the IDE's namespace is used to produce the manifest object passed in when anyone builds an app.
+
+Somehow, I'm sure you'll have more questions. Note that ~platform~ and ~manifest~ need to be distinct.
+- ~Platforms~ are for runtime capabilities and are security critical.
+- ~Manifests~ are for code construction. 
+
+Anyway, I think this answers the question. You are right that we haven't used this pattern, and I have not ever written it up. I've discussed some variations with people over the years, with people who come up with scenarios of the "how will this ever work" variety.
+I have yet to encounter a scenario that Newspeak modularity doesn't handle. I'm not aware of any other language that has that property.
+
+Thanks for forcing me to write it up. I have an ambition to write a live Newspeak book (in Newspeak system of course) and you've just made me start writing pieces of it in email :-).
+
+--
+Cheers, Gilad
+Gilad Bracha
+29 Apr 2021, 19:32:52
+to newspeak...@googlegroups.com
+
+**** IN-PROGRESS What is a 'manifest'?
+
+
+TL;DR: manifest is an object which shows known 'libraries' that can be 'imported'
+
+In Workspaces, Evaluate
+#+begin_src newspeak
+ide namespacing manifest
+#+end_src
+
+- result shows instance of manifest, with field ~namespace~, instance of Map 
+- ~namespace~ keys are things like "Kernel", "Icons", "CollectionsForPrimordialSoup"
+- values are instances of those
+- The point of the manifest is todo 
+  
 
 * TODO SECTIONS NOT READY. IGNORE FOR NOW 
 
