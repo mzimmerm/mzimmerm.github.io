@@ -24,7 +24,7 @@
 
   # + SETUPFILE: setup-html-export.txt "Any PROPERTY and other settings can be put here, and used in all blogs. This probably works if extension is org but then it's published"
 
-*This post is a test of misc org features, and their Html export. Reviewed till ch 6 included. *
+*This post is a test of misc org features, and their Html export. Reviewed till ch 6 included. Review progress on Ch 7.*
 
 * Things I had to add or modify, to get org and org html export working
 
