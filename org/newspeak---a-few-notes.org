@@ -8,7 +8,7 @@
 #+DESCRIPTION: Running, not yet published notes on Newspeak
 #+TAGS: newspeak programming
 #+CATEGORIES: category-newspeak category-blog category-programming
-#+TODO: TODO IN-PROGRESS-NOW IN-PROGRESS WAITING NOTE DONE
+#+TODO: TODO IN-PROGRESS-NOW IN-PROGRESS-NOW-DONE IN-PROGRESS WAITING NOTE DONE
 
 * This document: Introduction to Newspeak on Webassembly (Wasm)
 
@@ -27,7 +27,8 @@ Much of this document is collected from the existing Newspeak sources:
 | 2021-05-02 |   | Gilad Bracha     |   | Important clarifications throughout the document                                                                                                     |
 | 2021-05-04 |   | Milan Zimmermann |   | Expanded on using the Newspeak IDE, mostly in the section [[*Run the online version of the Newspeak IDE. Maybe read some docs. Maybe watch some videos]] |
 | 2021-06-07 |   | Milan Zimmermann |   | Wording changes and clarifications in several sections                                                                                               |
-|            |   |                  |   |                                                                                                                                                      |
+| 2021-07-05 |   | Milan Zimmermann |   | Clarifications on saving:  "lastSaved" vs "backup"                                                                                                   |
+| 2021-07-05 |   | Milan Zimmermann |   |                                                                                                                                                      |
 
   
 * Newspeak quickstart and hands on: code, build and deploy a Newspeak counter app
@@ -53,7 +54,7 @@ In more detail, let us try the following:
 - Action: Click the "+" beside the "Root" to add a class.
 - Result: A class editor opens, with a template of a new class definition. At first, let's just create a dummy class by editing the template
   [[file:img/newspeak---a-few-notes.org-newspeak-source-defining-a-new-class.png]]
-- Action: Click the checkbox on the top right [[file:img/newspeak---a-few-notes.org-accept-image.png]] to "Accept" the new class definition
+- Action: Click the checkbox on the top right [[file:img/newspeak---a-few-notes.org-accept-image.png]] to "Accept" the new class definition. Note: Clicking the "Accept" button is important. If you make any code changes, or workspace code changes, do not forget to click "Accept", otherwise your changes will be lost immediately after moving away from the source editing page. See the discussions in the "saving changes" section  [[local-storage-high-level]].
 
 - Result: The class now appears in the list of classes (may need to scroll down, classes are sorted alphabetically)
   [[file:img/newspeak---a-few-notes.org-my-new-class-now-added.png]]
@@ -66,36 +67,26 @@ In more detail, let us try the following:
 - To run some simple one-liner code, type for example "1+2" into the text field, and press keyboard *Shift + ENTER*. This will evaluate the expression and print a result "3"
   - Result: expression "1+2" was evaluated to "3"
     [[file:img/newspeak---a-few-notes.org-workspaces-expression.png]]
-- To run multi-line Newspeak code, type the code line by line. Press keyboard *ENTER* to open new lines. When ready tu run the code, highlight all lines, then press keyboard *Shift + ENTER* to run the code. Another term for running code like this, is "evaluating all highlighted lines"). The image below shows the Workspace after the *Shift + ENTER* was pressed, showing the evaluated code, and the result of the evaluated code: ~2~.
+- To run multi-line Newspeak code, type the code line by line. Press keyboard *ENTER* to open new lines. When ready tu run the code, *highlight all lines, then press keyboard Shift + ENTER* to run the code. Another term for running code like this, is "evaluating all highlighted lines"). The image below shows the Workspace after the *Shift + ENTER* was pressed, showing the evaluated code, and the result of the evaluated code: ~2~.
       [[file:img/newspeak---a-few-notes.org-workspaces-multiline-expression.png]]
   - The image above uses a white-mode image, as the dark-mode pages do not show highlight too well.
   - When running multi-line code, we can paste it from outside, instead of typing it.
-- To save our changes "now", click on the diskette "save" button [[file:img/newspeak---a-few-notes.org-save-button.png]]. The changes are saved in the browser local storage. See Notes below for discussion on storing changes.
+- To save our changes "now", click on the diskette "Save" button [[file:img/newspeak---a-few-notes.org-save-button.png]]. The changes are saved in the browser local storage. See Notes below for discussion on the details.
   
 Notes:
 
 - We are now using Newspeak, in its full power.
 - The browser tab opened on https://newspeaklanguage.org/samples/primordialsoup.html?snapshot=HopscotchWebIDE.vfuel IS the Newspeak live IDE.
 - Everything we do in the IDE is alive, changes and actions have immediate responses in the running system.
--  <<local-storage-high-level>> Are the changes we made (the evaluated code, or classes added in later sections) stored anywhere, and if so, where and how?
-  - There is a fine point we should make. This section was accessing only the online version of the Newspeak IDE. A crude description would be that "the Newspeak IDE is the file ~HopscotchWebIDE.vfuel~ which the browser interprets when pointing to the URL https://newspeaklanguage.org/samples/primordialsoup.html?snapshot=HopscotchWebIDE.vfuel. However, we need to realize that the browser immediately downloads and caches this file. Changing anything in Newspeak (adding a class, typing to the Workspace), causes the changes to be saved locally. If we close the browser, and visit the same online URL again. we will see the site as we left it - with the local changes "added" to the vanilla online Newspeak IDE!
-  - *Any changes we make (for example: we add a class, we change a class, evaluate something in the workspace) are stored in the browser local storage under an entry named "backup".*
-  - To look at the changes we made, go to the browser debugger.
-    For example, in Chrome or Chromium, press F12, then go to the Application tab.
-    In the Storage section expand "Local Storage".
-    You can see our changes in the appropriate URL, under key="backup".
-  - At any time, working with Newspeak: to save your changes in explicitly "now", click on the diskette "save" button [[file:img/newspeak---a-few-notes.org-save-button.png]].
-  - If you ever see this message:
-    [[file:img/newspeak---a-few-notes.org-message-restore-from-backup.png]]
-    - This message tells us, we did make changes, such as added a class, without pressing the the diskette "save" button [[file:img/newspeak---a-few-notes.org-save-button.png]], and reloaded. In most situations, pressing *Restore from backup* is the best choice.
-    - For search purposes, here is the text: "You have backup changes that are newer than your last save. Do you want to restore these changes, or load from the last save? Restore from backup  Load older saved version Use current version, ignoring both saved and backup versions"
-  - Saving changes outside the browser:
-    - If you do clear your browser local storage, your changes will be lost.
-    - Obviously, for long term work, we will want to save our work. The current approach, is to "export" all classes you changed in a directory on your system, and potentially create a code repository in that directory. For more details, see [[*Working with code]]. 
 
+
+Saving your changes:
+
+*Any changes we make (for example: we add a class, we change a class, evaluate something in the workspace) are stored in the browser local storage in two entries: "lastSaved" and "backup".* The "Accept" button [[file:img/newspeak---a-few-notes.org-accept-image.png]] saves the changes in local storage under the key "backup", while the "Save" button [[file:img/newspeak---a-few-notes.org-save-button.png]], saves the changes under the key "lastSaved".  See the "saving changes" section [[local-storage-high-level]] for details.
+  
 Documentation:
 
-- We can look at documentation sites and videos
+- Some selected documentation sites and videos:
   - The core site for all Newspeak is https://newspeaklanguage.org/. It has *papers, talks, demos, and repo links.*
   - A great start would be the last 2 videos on the "talks" tab https://newspeaklanguage.org/talks.html
     - Live IDEs in the Web Browser: What's Holding Us Back - https://youtu.be/CJX_6B24Hho
@@ -105,7 +96,13 @@ Summary:
 
 - This section showed the simpliest way of starting with Newspeak - we just point the browser to https://newspeaklanguage.org/samples/primordialsoup.html?snapshot=HopscotchWebIDE.vfuel and start using it.
   - In "Workspaces", we can experiment with Newspeak expressions, or snippets of code.
-  - In "Newspeak Source", we can experiment with adding Newspeak classes, or creating a Newspeak app, such as the app created in the next section.   
+  - In "Newspeak Source", we can experiment with adding Newspeak classes, or creating a Newspeak app, such as the app created in the next section.
+
+Potential "gotchas":
+
+- If you make code changes, do not forget to click the "Accept" button [[file:img/newspeak---a-few-notes.org-accept-image.png]]. Otherwise your changes will be lost immediately after moving away from the source editing page.
+- What is the difference between The "Save" button [[file:img/newspeak---a-few-notes.org-save-button.png]], and the "Accept" button [[file:img/newspeak---a-few-notes.org-accept-image.png]]? 
+  - The "Accept" button is needed to save your changes beyond moving away from the editor. For example, if you make a change to a class method, and do not click "Accept", your changes will be lost after pressing the browser "Back" button, browser "Reload" - generally any state changes.
     
 Next:
 
@@ -139,7 +136,7 @@ Notes:
   - Note: The "Did you know" section is a ever-changing hint system
 - Action: Click "Newspeak Source" in [[file:img/newspeak---a-few-notes.org-go-to-newspeak-source.png]] 
 - Result: A new page opens, showing Newspeak classes, similar to [[file:img/newspeak---a-few-notes.org-newspeak-source.png]]
-  - Note on the result: In the result, you should NOT see classes named ~CounterApp~ or ~CounterUI~. If you do, you have most likely run through this tutorial before, and the classes are already in your browser local storage. To clean any local changes saved locally for the online Newspeak, see the [[local-storage-high-level]] section. 
+  - Note on the result: In the result, you should NOT see classes named ~CounterApp~ or ~CounterUI~. If you do, you have most likely run through this tutorial before, and the classes are already in your browser local storage. To clean any local changes saved locally for the online Newspeak, you can clean them in the browser local storage. See the "saving changes" section [[local-storage-high-level]]. 
 - *Motivation for the next action: We want to build the sample app ~CounterApp~. We choose to build it simply by downloading and compiling two files from the existing source from the Newspeak github repo.*
 - Action: On the top right of the page (in the same line where we see "Root +") [[file:img/newspeak---a-few-notes.org-3-vertical-dots.png]], click the vertical 3-dot menu link on the far right.
 - Result: A popup  [[file:img/newspeak---a-few-notes.org-compile-files.png]] shows
@@ -158,7 +155,7 @@ Notes:
   - Note 2: Click on the ~CounterApp~ or ~CounterUI~ link. This shows the corresponding class. 
   - Note 3: The ~CounterApp~ shows links to ~[deploy] [configuration] [run] [debug]~. Why do only the "app" classes such as ~CounterApp~ (and no other classes) show the ~[deploy] [configuration] [run] [debug]~ links in the Newspeak IDE? That is because the "app" classes represent a runnable Newspeak application.
   - *Question: What makes a Newspeak class a "runnable Newspeak application"?. todo*
-- Action: To save the classes we added, (~CounterApp~ or ~CounterUI~) in the browser local storage explicitly "now", click on the diskette "save" button [[file:img/newspeak---a-few-notes.org-save-button.png]]
+- Action: To save the classes we added, (~CounterApp~ or ~CounterUI~) in the browser local storage explicitly "now", click on the diskette "Save" button [[file:img/newspeak---a-few-notes.org-save-button.png]]
 
 - Result: The two classes are stored in the browser local storage. To read more about details of the browser local storage, see [[local-storage-high-level]] section.
 
@@ -247,7 +244,7 @@ Prerequisits:
    - This statement requires a "fine point" explanation. 
      - In the earlier section  [[*Build, run, and debug the ~CounterApp~ in Newspeak (in the online version)]], the two classes, ~CounterApp~ and ~CounterUI~, were saved to the browser local storage. 
      - In this current section, we re-attach to online Newspeak at https://newspeaklanguage.org/samples/primordialsoup.html?snapshot=HopscotchWebIDE.vfuel. 
-     - As explained in [[local-storage-high-level]], the changes we made in the online version are still stored locally in the browser local storage. 
+     - As explained in the "saving changes" section [[local-storage-high-level]], the changes we made in the online version are still stored locally in the browser local storage. 
      - So, when we re-attach to online Newspeak in this section, the classes ~CounterApp~ and ~CounterUI~ are still available. We use them to "create the CounterApp" (by saving it "as victory fuels" - that is, as file ~CounterApp.vfuel~) which is the app. 
      - This app - the  file ~CounterApp.vfuel~ - can then be copied to the serving directory of local Newspeak, and can be opened from there.
 2. We have installed the local version of Newspeak by following the section [[*Download, install, and start a local Newspeak server]].*
@@ -413,13 +410,98 @@ This is a todo
 
 * Q&A
 
-Much of this Q&A is sourced or simply pasted from the Newspeak google group posts at https://groups.google.com/g/newspeaklanguage
+Much of this Q&A is sourced and expanded, or simply pasted from the Newspeak google group posts at https://groups.google.com/g/newspeaklanguage
 
 ** TODO Working with code
 
 todo
 
-** How would I build and deploy a "Hello world" or a ~CounterApp~ application?
+*** Saving your code changes. How is the local storage handled, and how is "lastSaved" different from "backup"?
+
+For a complete discussion, see [[local-storage-high-level]].
+ 
+ 
+** IN-PROGRESS-NOW Building (packaging) and distributing Newspeak your Newspeak app (program in general) 
+
+*** IN-PROGRESS-NOW-DONE Concepts: Building (packaging), submitting, installing an app (program in general) in 'mainstream' software 
+
+TL;DR: The intent of this section is to describe the "mainstream" lifecycle of developing, building, distributing, installing, and running a program, for the purpose of describing Newspeak builds.
+
+This section is not meant to be a self-contained or axiomatic description of concepts - it will rely on terms and concepts that are not always uniquelly defined or described. Concepts may overlap, and are meta-circular so this section is vague.
+
+We will use the following terms: 
+  - The *program*, *app*, *application* interchangeably, these terms describe the software the /end-user/ interacts with to achieve some desired goal. These terms are overlapping, but generally are similar on the web, iOS, Android, or desktop. In addition, it is hard to define a /program/ simply, as some programs may have multiple components (client, server, database, etc). This section pretends a /program/ is the component the /end-user/ interacts with.
+  - The *package* (noun) is the artifact (usually a file) that contains the /program/ in a form available for distribution in the /repository/. Often, this is called the /program package/ or the /packaged program/.
+  - The *end-user* is the user of the /program/.
+  - The *system* is the software which allows the /end-user/ to use the /program/. 
+    - Examples:
+      - /Web      system/  is the browser. However, a *web server* on which the /program package/ is installed, must be also available, making the whole web the /end-user's system/.
+      - /Newspeak system/  is the browser. All comments from the web apply. 
+        - Note: Newspeak development is development for the Web. Except it does not necessarily use HTML and CSS, and likely would not use Javascript. In addition, any Newspeak program can be /packaged/ as an iOS or an Android app.
+      - /iOS      system/  is the operating system if /end-user/ uses Apple phone or tablet to install and run the /program/.
+      - /Android  system/  is the operating system if /end-user/ uses Android phone or tablet to install and run the /program/.
+      - /Linux    system/  is the operating system if /end-user/ uses Linux to install and run the /program/.
+  - The *developer* is the person, persons, or organization who /create/ the /program/, and make it available to the /end-user/, by submitting it (copying it) to a /repository/ or to a /web server/. 
+  - The *repository* is the location (accessible by a URI) where /package/s of /program/s are stored for public access by the /end-user/. 
+    - The concept of /repository/ is different for the Web and in Newspeak on one end, and iOS, Android or desktop on the other end. 
+      - On the web and Newspeak, there is no /repository/ the /end-user/ need to worry about. 
+        - The developer (or organization) typically controls the webserver into which the /program package/ is /installed/.
+        - The /repository/ and the /web server/ collapse into one. 
+        - The /end-user/ does NOT /install/ any /program/ on their /system/, instead, they navigate their browser to an URL to /run/ or /use/ the /program/ which was placed there as a /package/ by the /developer/. 
+        - The /install/ action is an action of the /developer/ (equivalent to the /submit to repository/ action), not an action by the end user. 
+      - On iOS, Android or desktop, the /repository/ is some publicly provided site from which the /end-user/ can /install/ the /packaged program/.
+    - However, there is a concept of *browser programs repository* as well: the browser authoring organization often maintains a *repository of extensions* to which a /program package/ can be submitted and made available to the end-user. 
+  - To *build* a /program/ is the action of the /developer/, which makes the /program/ available for distribution in the /repository/ by creating a /program package/. Sometimes the verb 'to package' is used instead of 'to build'. We will avoid using 'to package' as a verb.
+  - To *submit* a /program/ to a /repository/ is the action of the /developer/ which makes a /program/ which has been previously /built/, available to the /end-user/. 
+  - To *install*, or *deploy* a /package/:
+    - On the web, and in Newspeak, is an action of the /developer/ who places the program /package/ to a web server, from where the /end-user/ runs the /program/.
+    - On the iOS, Android, or desktop, is an action of the /end-user/, who /install/ s the program from the /repository/ into their /system/. 
+ 
+The main point of this section is that *a program may be /developed/ once, but the /system/ on which the program is made available to the /end-user/, dictates how the program is /build/, /submitted/, and /installed/.* (Some of those steps are overlapping or not needed depending on the /end-user/'s /system/.)
+
+We can summarize the lifecycle of allowing the /end-user/ to use a program created by a developer as follows:
+
+- Developer *develops* the *program*.
+  - Examples:
+    - /Web      developer/ *develops* a web program in a combination of HTML, CSS, and Javascript. 
+    - /Newspeak developer/ *develops* a web program in Newspeak. 
+    - /iOS      developer/ *develops* an iOS app.
+    - /Android  developer/ *develops* an Android app.
+    - /Linux    developer/ *develops* a Linux program.
+- From the program, developer *builds* a *program package*.
+  - Examples:
+    - /Web      developer/ *builds* a ~.zip file or a .jar~ file of all the components needed to run his/her program inside the web server. The zip or jar file is the *web program package*
+    - /Newspeak developer/ *builds* a ~.vfuel~ file from their Newspeak program. The ~.vfuel~ file is the *Newspeak program package for the web*. 
+    - /iOS      developer/ *builds* an ~iOS app file~ for distribution in Apple store.
+    - /Android  developer/ *builds* an ~.apk file~ for distribution in Google Playstore.
+    - /Linux    developer/ *builds* an ~.rpm file~ for distribution (for example, in the Opensuse OSS repository).
+    - Note: In the above examples, the *program package* is the .zip file, .vfuel file, .iOSapp file, .apk file, .rpm file. 
+- Developer *submits* the *program package* into a *repository* of packages for *distribution* to end-user. 
+  - /Web      developer/ *submits* (copies) the *web program package* (the zip or jar file) into a running (or to be started) webserver. This step is generally different from iOS, Android, or desktop, in that the /repository/ is not necessarrily publicly available. See discussion in the term /repository/ above.
+  - /Newspeak developer/ *submits* the ~.vfuel~ file to the *Newspeak repository*. Note: there is currently no publicly available repository of Newspeak programs in the form of .vfuel files. The end-user must receive the .vfuel file from the developer by some secure means OR, run the ~.vfuel~ file on the web, where it is installed by the developer into a end-user-trusted website. The Newspeak program lifecycle is the same as the lifecycle for the web. 
+  - /iOS      developer/ *submits* the ~iOS app~ for distribution in Apple store (*repository*).
+  - /Android  programme/ *submits* the ~.apk file~ for distribution in Google Playstore (*repository*).
+  - /Linux    developer/ *submits* the ~.rpm file~ for distribution in the *repository* (for example, OpenSUSE OSS repository)
+- End-user *installs* (or copies) the *program package* from the *repository* into their *system*.
+  - /Web      end-user/ generally does not have to do anything here. The developer /installs/ the program for the /end-user/.
+    - Note: that there is an alternative to this process on the web. The /end-user/ can run their own /web server/, for example locally, and install the developer-provided /web program package/ (a .zip or .jar file) into the server they control.
+  - /Newspeak end-user/ is generally in the same position as the /web end-user/ - he/she does not have to do anything here.
+    - Note: As the Newspeak process generally is the same as the web process, there is an alternative: The /end-user/ can run their own /web server/, for example locally, and install the developer-provided Newspeak ~.vfuel~ file into their local Newspeak server. The ~.vfuel~ file is the *Newspeak program package for the web*. We haved used this process in our ~CounterApp~ local deployment. See section [[*Deploy the CounterApp into the local Newspeak server]].
+  - /iOS      end-user/ *installs* the ~iOS app~ from Apple store (*repository*).
+  - /Android  end-user/ *installs* the ~.apk file~ from Google Playstore (*repository*).
+  - /Linux    end-user/ *installs* the ~.rpm file~ from the *repository* (for example, OpenSUSE OSS repository)
+- End-user *runs* the *program* from the *program package* (which is now installed on their system) on their system.
+  - /Web      end-user/ *navigates their browser* to the URL where the developer /installed/ the /program/. 
+    - Note: If the /end-user/ runs their own (local) server, the URL would point to the local server, as discussed int the /install/ section above.
+  - /Newspeak end-user/ *navigates their browser* to the URL where the developer /installed/ the /program/ (same as on the web) . For example, /end-user/ may navigate to the ~CounterApp~ on the Newspeak website, where it was installed: https://newspeaklanguage.org/samples/primordialsoup.html?snapshot=CounterApp.vfuel.
+    - Note: If the /end-user/ runs their own /web server/ for Newspeak, for example locally, and installed the developer-provided Newspeak ~.vfuel~ file into their local Newspeak server, the URL would be http://localhost:8080/primordialsoup.html?snapshot=CounterApp.vfuel. See section [[*Deploy the CounterApp into the local Newspeak server]].
+  - /iOS      end-user/ *runs* the ~iOS app~ from Apple store (*repository*).
+  - /Android  end-user/ *runs* the ~.apk file~ from Google Playstore (*repository*).
+  - /Linux    end-user/ *runs* the ~.rpm file~ from the *repository* (for example, OpenSUSE OSS repository)
+ 
+*** A Concrete Newspeak example: Building (packaging) and deployment of a concrete app
+
+**** How would I build and deploy a "Hello world" or a ~CounterApp~ application?
 
 TL;DR: For a detail description of building and running a Newspeak app, read the section [[*Newspeak quickstart and hands on: code, build and deploy a Newspeak counter app]]
 
@@ -449,69 +531,17 @@ This .vfuel can then be deployed into a (locally installed) Newspeak server.
 
 - For instructions on how to install the server see [[install-method-1]]
 - For instructions on how to deploy a sample app, in particular the ~CounterApp~, see [[*Deploy the CounterApp into the local Newspeak server]].
+*** IN-PROGRESS Newspeak general: Building (packaging) and installing a Newspeak app - Namespace, Global namespace, manifest
 
-** In the IDE (browser), how do I save my changes?
+**** IN-PROGRESS-NOW How to package a program for distribution, given a global namespace?
 
-TL;DR: For a detail description of how Newspeak handles changes, and how to save them, see [[local-storage-high-level]]
-
-Newspeak doesn't have an image. So what do I actually do to develop software? I mean, I presume I run a copy of Newspeak somehow, and start adding classes to it. But then where / how do my additions get saved if there isn't an image? When I've added a couple of classes to a running Newspeak environment, I presume they don't just disappear when I switch my computer off? So where do they go? Or where do I put them?
-
-There are several options:
-
-1) You can do nothing, and all your changes will be preserved in web browser local storage using the key "backup". 
-2) You can press the save icon (the one just to the left of the search pane at the top) and all the changes you've made will be saved in web browser local storage.
-     I'll explain below how (a) and (b) differ.
-3) You can save top level classes to files (gasp; yes, it hurts me as much as it hurts you), and reload them explicitly if the system is restarted for whatever reason.
-
-Each has pros and cons. For example, until we integrate source control into the IDE (similar to what we used to do in Squeak Smalltalk based system) you have to save files by hand so you can save them under source control. Saving files is also more explicitly under your control, and avoids any potential problems due to bugs/misunderstanding of the save/backup system. 
-
-On the other hand, option (b) means that you don't have to save individual top level classes. You just press the save button periodically, as you might in an image. It won't save your state, but it will save your code. Bear in mind that the web-based system is young and will crash occasionally, but also that the system saves your changes as backup regardless of whether you saved explicitly. So not saving isn't a real concern.
-
-How does the save/backup system work? On restart, we check to see if there are any changes and/or any saved versions. If a saved version exists, we check if there are any subsequent unsaved changes. If not, we use the saved version.  If there are unsaved changes, a dialog will come up asking you how to proceed. It will offer three choices: restore from backup (getting you back to where you were), use last saved version, or use the current version, ergo the version from distribution you are using.
-
-There are a few caveats - a few classes are exempt from this discipline due to bootstrap issues (things like KernelForPrimordialSoup and HopscotchWebIDE). If you tamper with these - save the class explicitly! Also, web storage can surprise you on mobile platforms, where things can be thrown out after a certain amount of time (7 days on iOS?) and the system as a whole may exhibit bugs.
-
-** Why to refresh the online IDE?
-
-Why will you refresh? Apart from the odd crash, the more common problem is the performance issues that have been discussed in this forum in December/January. Basically, we have an unresolved problem that the system slows down painfully under prolonged/heavy use. Refreshing and loading from backup works fairly well for small values of well  Obviously unacceptable as you lose IDE state (debuggers, workspace/inspector contents, unsaved editors, presenter state such as what method presenters are expanded or collapsed) but it's better than an unresponsive (sluggish to dead) system.
-
-
-** IN-PROGRESS Programming in Newspeak
-
-#+begin_src newspeak
-
-#+end_src
-
-*** The Newspeak IDE
-
-**** Updading one IDE related class that was fixed on Github source into local Newspeak IDE
-
-Let's say that I am using local Newspeak.
-
-The regular way of updating it to the latest (thus getting fixes done since the last deployment), would be to simply re-download as described in [[install-method-1]].
-
-Could there be situations we do not want to simply reinstall the local Newspeak server? Perhaps one example of such situation is that we run our local Newspeak server with changed files, and we want to patch a class that has a known fix, without reinstalling the local Newspeak and losing changes.
-
-To describe a concrete (somewhat artificial) situation: Let's say that on Github, there is a bug fix or change in a 'system' class, ~Browsing.ns~, and we want to update this single class locally. We can identify changed files or files with fixes, and compile them in (that is, start using them) the local version, using this process:
-  
-- Look for files committed on Github. 
-- Find files changed since your last local install - let's say file ~Browsing.ns~ changed today. As my local server uses the servable.zip file, ~Browser.ns~ is already compiled in my local vfuel.
-- So from the browser IDE, http://localhost:8080/primordialsoup.html?snapshot=HopscotchWebIDE.vfuel from the 3-dot I "compile" the new version of Browsing.ns 
-- Saved from IDE
-- Confirm, by re-exporting of Browsing.ns, that the change is in my local version.
-
-*** IN-PROGRESS Program and app distribution: Namespace, Global namespace, manifest
-
-**** IN-PROGRESS-NOW How to put together a program given a global namespace?
-
-Next, there is the question of how you put together your program given the global namespace. This is the domain of build scripts in traditional software. In Newspeak, you can write these scripts in Newspeak itself.  These would take a namespace object as a parameter (what we often call a manifest). You'd typically pass in the IDE top level namespace (try evaluating ide namespacing manifest in a workspace). Of course, you can always override the behavior of a given manifest by wrapping it.
+Next, there is the question of how you put together your program given the global namespace.  This is the domain of build scripts in traditional software. In Newspeak, you can write these scripts in Newspeak itself.  The build script would take a *namespace object* as a parameter (what we often call a *manifest*). You'd typically pass in the IDE's top level namespace (try evaluating ~ide namespacing manifest~ in a workspace). Of course, you can always override the behavior of a given manifest by wrapping it.
 
 So you write class with a #packageLibraryUsing: method that takes a manifest and instantiates your library as you wish. The manifest needs have all the code you need. Importantly, the manifest is still under 'end user control' and should contain only top level classes (we can also enforce that) so no state or access to the outside world is provided. Thus, the #packageLibraryUsing: methods are like build scripts, and they can call other #packageLibraryUsing: methods, just like build scripts or makefiles refer to others. The difference being that none of this is hardwired to a specific global namespace.
 
 This is very similar to how one builds apps.  There are no examples of this pattern, because we have no third party libraries yet.
 
 **** IN-PROGRESS-NOW Example of bringing dependencies into an application and publishing an application
-
 
 Imagine a convention whereby *every library intended for distribution is sent out as a class which:*
 
@@ -546,7 +576,7 @@ The ~#build: platform~ method encapsulates the knowledge of how to build Alice's
 
 Note that Alice is using the same convention as Bob, and builds Bob's code with no knowledge of its internal dependencies.
 Developer C (Carol) uses these same conventions to build Alice's code. She can do so regardless of whether
-- she is *building an app* (where she'd call ~#packageLibraryUsing: manifest~ from the app's factory, and ~#build:~ from ~#main:args:~
+- she is *building an app* (where she'd call ~#packageLibraryUsing: manifest~ from the app's factory, and ~#build: platform~ from ~#main: platform args: args~
 - or she is *building another library* (where she'd call ~#packageLibraryUsing:~ from the library factory).
 
 If Alice decides to replace Bob's code with code from developer D (David), she changes MyModules, but Carol's code does not change. Likewise, if Bob or David change their dependencies, neither Alice nor Carol change their code.
@@ -555,23 +585,22 @@ It isn't necessary for everyone to follow the exact same convention - what's cri
 
 Alice could just distribute an instance of MyModules, but this hardwires the versions of all the dependencies.  Assuming she doesn't do that, it is true that Carol needs to download all the pieces and their sub-pieces from Bob and Alice etc. She loads them into the IDE (or the IDE does so by reading the metadata) and the IDE's namespace is used to produce the manifest object passed in when anyone builds an app.
 
-Somehow, I'm sure you'll have more questions. Note that ~platform~ and ~manifest~ need to be distinct.
-- ~Platforms~ are for runtime capabilities and are security critical.
-- ~Manifests~ are for code construction. 
+Note that ~platform~ and ~manifest~ need are quite different. Manifests are a development thing. Platforms are a deployment thing.
 
-Anyway, I think this answers the question. You are right that we haven't used this pattern, and I have not ever written it up. I've discussed some variations with people over the years, with people who come up with scenarios of the "how will this ever work" variety.
-I have yet to encounter a scenario that Newspeak modularity doesn't handle. I'm not aware of any other language that has that property.
+- ~Platforms~ are for runtime capabilities and are security critical. The platform is something that gives you the only connections to the world outside Newspeak. 
+- ~Manifest~ are for code construction (see ~#packageUsing: manifest~). The Newspeak IDE provides a global namespace, which is a real object that you can pass around.  That object is a manifest.
 
-Thanks for forcing me to write it up. I have an ambition to write a live Newspeak book (in Newspeak system of course) and you've just made me start writing pieces of it in email :-).
+
+Anyway, hopefully this helps to answer the question. 
 
 --
 Cheers, Gilad
 Gilad Bracha
 29 Apr 2021, 19:32:52
 to newspeak...@googlegroups.com
+(slightly edited and merged from other posts by Milan Zimmermann)
 
-**** IN-PROGRESS What is a 'manifest'?
-
+**** IN-PROGRESS-NOW What is a 'manifest'?
 
 TL;DR: manifest is an object which shows known 'libraries' that can be 'imported'
 
@@ -584,6 +613,77 @@ ide namespacing manifest
 - ~namespace~ keys are things like "Kernel", "Icons", "CollectionsForPrimordialSoup"
 - values are instances of those
 - The point of the manifest is todo 
+
+** Saving changes: In the IDE (browser), how do I save my changes <<local-storage-high-level>> ?
+
+TL;DR: Any changes we make (for example: we add a class, we change a class, evaluate something in the workspace) are stored in the browser local storage in two entries: "lastSaved" and "backup". Clicking the "Accept" button  [[file:img/newspeak---a-few-notes.org-accept-image.png]] saves the changes in local storage under the key "backup", while clicking the "Save" button [[file:img/newspeak---a-few-notes.org-save-button.png]], at any time after "Accept", saves the changes under the key "lastSaved".
+
+Description of how changes are saved:
+
+- How is the local storage handled, and how is "lastSaved" different from "backup"?
+  - After making any code change or addition, to keep the changes, you have to click the "Accept" button [[file:img/newspeak---a-few-notes.org-accept-image.png]]. Clicking "Accept" saves the changes in local storage under the key "backup".
+  - while
+  - Clicking the "Save" button [[file:img/newspeak---a-few-notes.org-save-button.png]], at any time after "Accept", saves the changes under the key "lastSaved" (the changes under "backup" are added and merged in to the changes under "lastSaved". Once saved using the "Save" button, changes are stored "forever", unless you reset browser local storage for the site. We need to clarify, that making a change, followed by just clicking "Save" without a previous "Accept", nothing is saved. So "Accept" and "Save" are sort of like two phase commit.
+
+- To look at the changes made, go to the browser debugger.
+  For example, in Chrome or Chromium:
+  - Press F12 to open Chrome debuger. 
+  - Then click the "Application" tab.
+  - In the "Storage" section expand "Local Storage".
+  - You can see our changes in the appropriate URL, both under the key *lastSaved* and the key *backup*.
+
+- How does the lastSaved/backup system work on restart? On restart, we check to see if there are any changes under the key "backup" and/or any saved versions under the key "lastSaved" . If "lastSaved" changes exists, we check if there are any subsequent changes under "backup". If not, we use the "lastSaved" version.  If there are unsaved changes, a dialog will come up asking you how to proceed:  [[file:img/newspeak---a-few-notes.org-message-restore-from-backup.png]]
+  - This message tells us, we did make code changes, then clicked "Accept" [[file:img/newspeak---a-few-notes.org-accept-image.png]], without pressing "Save" [[file:img/newspeak---a-few-notes.org-save-button.png]], and reloaded the page. This means, changes are stored under the key "backup" but not(yet) under "lastSaved". In most situations, pressing *Restore from backup* is the best choice. Your code will load the changes from the "backup" key, and contain all your changes. At any time, you can click "Save" and merge the "backup" changes to "lastSaved".
+  - For search purposes, here is the text of the message: "You have backup changes that are newer than your last save. Do you want to restore these changes, or load from the last save? Restore from backup  Load older saved version Use current version, ignoring both saved and backup versions"
+- Saving changes outside the browser:
+  - If you do clear your browser local storage, your changes will be lost.
+  - Obviously, for long term work, we will want to save our work. The current approach, is to "export" all classes you changed in a directory on your system, and potentially create a code repository in that directory. For more details, see [[*Working with code]]. 
+
+- Note: There is a fine point we should make. This section was accessing only the online version of the Newspeak IDE. A crude description would be that "the Newspeak IDE is the file ~HopscotchWebIDE.vfuel~ which the browser interprets when pointing to the URL https://newspeaklanguage.org/samples/primordialsoup.html?snapshot=HopscotchWebIDE.vfuel. However, we need to realize that the browser immediately downloads and caches this file. Changing anything in Newspeak (adding a class, typing to the Workspace), causes the changes to be saved locally. If we close the browser, and visit the same online URL again. we will see the site as we left it - with the local changes "added" to the vanilla online Newspeak IDE!
+
+
+*** More notes on saving changes
+
+Newspeak doesn't have an image. So what do I actually do to develop software? I mean, I presume I run a copy of Newspeak somehow, and start adding classes to it. But then where / how do my additions get saved if there isn't an image? When I've added a couple of classes to a running Newspeak environment, I presume they don't just disappear when I switch my computer off? So where do they go? Or where do I put them?
+
+There are several options:
+
+1) You can do nothing, and all your changes will be preserved in web browser local storage using the key "backup". 
+2) You can press the save button and all the changes you've made will be saved in web browser local storage under the same key. We will explain below how 1) and 2) differ.
+3) You can save top level classes to files (gasp; yes, it hurts me as much as it hurts you), and reload them explicitly if the system is restarted for whatever reason.
+
+Each has pros and cons. For example, until we integrate source control into the IDE (similar to what we used to do in Squeak Smalltalk based system) you have to save files by hand (option 3) ) so you can save them under source control. Saving files is also more explicitly under your control, and avoids any potential problems due to bugs/misunderstanding of the save/backup system. 
+
+On the other hand, option 2) means that you don't have to save individual top level classes. You just press the save button periodically, as you might in an image. It won't save your state, but it will save your code. Bear in mind that the web-based system is young and will crash occasionally, but also that *the system saves your changes as backup regardless of whether you saved explicitly*. So the system does 2) for you periodically, explicit saving isn't a real concern.
+
+
+
+There are a few caveats - a few classes are exempt from this discipline due to bootstrap issues (things like KernelForPrimordialSoup and HopscotchWebIDE). If you tamper with these - save the class explicitly! Also, web storage can surprise you on mobile platforms, where things can be thrown out after a certain amount of time (7 days on iOS?) and the system as a whole may exhibit bugs.
+
+** Why to refresh the online IDE?
+
+Why will you refresh? Apart from the odd crash, the more common problem is the performance issues that have been discussed in this forum in December/January. Basically, we have an unresolved problem that the system slows down painfully under prolonged/heavy use. Refreshing and loading from backup works fairly well for small values of well  Obviously unacceptable as you lose IDE state (debuggers, workspace/inspector contents, unsaved editors, presenter state such as what method presenters are expanded or collapsed) but it's better than an unresponsive (sluggish to dead) system.
+
+** IN-PROGRESS Programming in Newspeak
+
+*** The Newspeak IDE
+
+**** Updading one IDE related class that was fixed on Github source into local Newspeak IDE
+
+Let's say that I am using local Newspeak.
+
+The regular way of updating it to the latest (thus getting fixes done since the last deployment), would be to simply re-download as described in [[install-method-1]].
+
+Could there be situations we do not want to simply reinstall the local Newspeak server? Perhaps one example of such situation is that we run our local Newspeak server with changed files, and we want to patch a class that has a known fix, without reinstalling the local Newspeak and losing changes.
+
+To describe a concrete (somewhat artificial) situation: Let's say that on Github, there is a bug fix or change in a 'system' class, ~Browsing.ns~, and we want to update this single class locally. We can identify changed files or files with fixes, and compile them in (that is, start using them in) the local version, using the following process:
+  
+- Look for files committed on Github. 
+- Find files changed since your last local install - let's say file ~Browsing.ns~ changed today to fix a bug. As your local server uses the servable.zip file, ~Browser.ns~ is already compiled in your local vfuel.
+- So from the browser IDE, http://localhost:8080/primordialsoup.html?snapshot=HopscotchWebIDE.vfuel from the 3-dot I "compile" the new version of Browsing.ns 
+- Save the changes from IDE (clicking the save diskette image)
+- Confirm, by re-exporting of Browsing.ns, that the change is in my local version.
+- The result of the above process is your local server are now using the github-fixed ~Browsing.ns~.
   
 
 * TODO SECTIONS NOT READY. IGNORE FOR NOW 
