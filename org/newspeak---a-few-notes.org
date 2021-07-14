@@ -484,7 +484,7 @@ As a note, I realize my questions have already been asked by Phil a few months a
 A) Let me describe the concrete example I use:
 --------------------- 
 
-- I am starting with the existing ~counterApp~ - this consists of two files, CounterApp.ns and CounterUI.ns. I have copied and renamed them as CounterAppWithDependencies.ns and CounterUIWithDependencies.ns. The code flow is unchanged, the CounterAppWithDependencies packages itself in #packageUsing:, then instantiates CounterUIWithDependencies in it's #main:args:, etc
+- I am starting with the existing ~CounterApp~ - this consists of two files, CounterApp.ns and CounterUI.ns. I have copied and renamed them as CounterAppWithDependencies.ns and CounterUIWithDependencies.ns. The code flow is unchanged, the CounterAppWithDependencies packages itself in #packageUsing:, then instantiates CounterUIWithDependencies in it's #main:args:, etc
 
 - The task was to add a class which would provide a translation. This is called ATranslation.ns (The only purpose of the leading A is for the class to show up on top of the IDE to find it quickly :) )
 
@@ -727,6 +727,9 @@ ide namespacing manifest Collections
 *** IN-PROGRESS-NOW Snippets of wisdom from various sources
 
 Sources (may not be complete)
+- Newspeak user group on Google groups: 
+
+Snippets of wisdom
 
 - StringTest>>#testShout is the Smalltalk way of identifying the testShout method of the StringTest class. When you actually type the code into the browser, you don’t have to type the class name or the >>; instead, you just make sure that the appropriate class is selected. Documentation example in text should show abstract argument names:
   #+begin_example
@@ -754,6 +757,10 @@ Sources (may not be complete)
 - ~ide namespacing manifest Collections~
 - Workspace: ~collections~
 - If you are learning, make everything public. everything = each method, slot, and inner class. It may not be the right thing, but it helps as the error messages are not the best currently. You will just get "Does not understand" too many times. First time it took me a day to figure out hehe. 
+- so, basically, if I have an HTML string with a <div class='helpButton'>, this code in ClassPresenter>>helpText:  can insert a Hopscotch(?) instance of  HelpButton (assuming HelpButton was implemented) and the HelpButton instance will present itself as Html on that div? Hmm, maybe that org-to-ampleforth just got more exciting - but I have to hold myselt. -- answer: Pretty much. You need to define the mapping from div classes to Newspeak widgets, as ClassPresenter>>helpText: does for the widgets it uses.
+-  Library is an informal term. Any Newspeak module definition (i.e., a top level class) is a library, and to use, it you call its class methods, most likely to instantiate it.
+If you want to deploy a module, well, you need to use it via an app (i.e, define something with #packageUsing: and #main:args:), directly or indirectly. 
+
 
 
 
