@@ -1,0 +1,365 @@
+#    -*- mode: org -*-
+
+
+Archived entries from file /home/mzimmermann/dev/my-projects-source/public-on-github/mzimmerm.github.io/org/newspeak---a-few-notes.org
+
+
+* TODO SECTIONS NOT READY. IGNORE FOR NOW 
+  :PROPERTIES:
+  :ARCHIVE_TIME: 2021-07-14 Wed 12:02
+  :ARCHIVE_FILE: ~/dev/my-projects-source/public-on-github/mzimmerm.github.io/org/newspeak---a-few-notes.org
+  :ARCHIVE_CATEGORY: newspeak---a-few-notes
+  :ARCHIVE_TODO: TODO
+  :END:
+
+** TODO Structure of paragraphs
+
+TL;DR: This section describes 
+
+- 
+
+Assumptions: 
+
+- 
+
+Notes:
+
+- 
+
+*Steps: To achieve YYYYY, do the following:*
+
+
+- Action: 
+- Result:  
+- Can contain:
+  - Question: What makes a Newspeak class a "runnable Newspeak application"?. todo 
+  - Note: 
+
+
+Summary: 
+
+- 
+
+Next: 
+
+** TODO Newspeak terms:
+
+- ~.vfuel~ :: Files with this extension are essentially "deployable applications in wasm". They can be deployed by copying them into the running Newspeak web server. todo - this is not quite correct.
+
+  
+** TODO Newspeak syntax
+
+*** Comments ~(* comment *)~ 
+
+Code like ~(* comment *)~ is a comment. We use this in our examples, but sometimes, we just say ~( .. code here .. )~ - the latter would not compile.
+
+*** TODO Class definition
+#+begin_src 
+
+#+end_src
+
+*** Definitions in Newspeak have syntax similar to ~someName = ( .. code here ..)~
+
+In any Newspeak code, we will quickly discover syntax segments such as ~someName = ( .. code here ..)~. The text below is somewhat vague, and somewhat incorrect, but should help orienting us in Newspeak code.
+
+Note that the brackets ~(~ and ~)~ can be all inline, on lines by itself, or combined on one line for readability - whitespace is ignored during parsing.
+
+At all places, such syntax is a definition of something: *a library*, *a class*, *a class initializer slots* (members)  *a method* etc.
+
+Note that for example for class definition, there may be multiple sections, such as  ~someName = ( .. code here ..)( .. other code here ..)~
+
+**** Class definition examples:
+
+***** Class definition:
+
+#+begin_src
+class RGBCar = ()()
+#+end_src
+
+From the specs: the above also defines a constructor : Class definitions create a *class factory object* that can produce instances of the class. The factory object *supports at least one message* that produces new instances. This is known as the *primary factory method*. By default, it is called new.
+
+***** A commented class definition:
+
+This code shows the three blocks a class definition can have, with comments what code we define or write in each block:
+
+#+begin_src
+class RGBCar = (
+  (* instance initializer: inits slots and runs initializer code*)
+)(
+  (* class body: defines instance methods or inner classes *)
+):(
+  (* class methods are in a group after : *)
+)
+#+end_src
+
+What is initializer code? It is code that runs first before class instances are "returned" (visible) to context.
+
+***** Class definition with uninitialized slot:
+
+#+begin_src
+class RGBCar = ( |rgbColor. numWheels.| )()
+#+end_src
+
+***** Class definition with initialized slot:
+
+#+begin_src
+class RGBCar = ( |rgbColor = "Blue". numWheels = 4. | )()
+#+end_src
+
+***** Class definition with uninitialized slot followed by some code:
+
+#+begin_src
+class RGBCar = ( |rgbColor.| rgbColor = "Blue". )()
+#+end_src
+
+***** Class definition defining a constructor which allow parameters passing:
+
+#+begin_src
+class RGBCar rgbColoe: aRgbcolor = (
+  |rgbColor ::= aRgbColor.| (* ::= means mutable. immutable would be just = *)
+)(
+)
+#+end_src
+
+ 
+**** Instance method definition examples:
+
+#+begin_src
+class RGBCar = (
+  | rgbColor = "Blue".
+    numWheels = 4.
+  |
+)(
+  public color = ^rgbColor.
+  public commentColor: aComment = ( ^ rgbColor, aComment ). (* comma is string concatenator! *)
+)
+
+#+end_src
+**** TODO A somewhat full flegded example of declaring *a library*, *a class*, *a class initializer slots* (members)  *a method* etc.
+
+Note that classes can be nested. Library is just a class with nested classes.
+
+#+begin_src 
+
+class CarLibrary = (
+    (* library initializer would usually be empty*)
+  )
+  (
+    class RGBCar = (
+      (*slots and initializer code*)
+    )(
+      (* instance methods or inner classes *)
+    ):(
+      (* class methods are in a group after : *)
+    )
+  )
+:
+(
+)
+#+end_src
+
+**** TODO Instance Method definition examples:
+
+Note: Method definition is normally called method definition. But let us keep the same term, definition.
+
+Methods are defined in the second code section 
+#+begin_src
+class 
+
+
+#+end_src
+
+*** A rant about ~x:, x::, x::=, x=, x~ etc 
+
+APL (https://aplwiki.com/wiki/Simple_examples) is beautiful (not that I ever learned it, not even close). I appreciate its extreme terseness, and its use of non-ascii characters. I would appreciate it much more if I was a pro in it. But I assume that would take a long time, and I would have to live in it daily.
+
+I do not appreciate extreme terseness in "mainstream" programming languages as much. It can accumulate to the point, even working with a language daily, I scratch my head reading code "what is this sequence of ?, =, +, /" - or what you have it.
+
+A language may start with duplicating some "common" arithmetics operators
+
+~+, *, /, -, %~ (ok, why? math uses "mod". But I digress), then we may have ~++, ~/~ (ok, already I had to look that up) etc..
+
+Then of course there may be the assignment versions of those
+
+~+=, *=, /=, -=, %=~ etc.. not even talking ~|=~ etc..
+
+Then we may have relational operators
+
+~>, <, >=, <=~ - these are obvious as they are mostly borrowed from math .. sort of .. because mainstream keyboards are stuck on ascii, <= is a poor translation of it's math counterpart  
+
+equality operators
+
+~==, !=~ - not always obvious, as languages uses conflict 
+
+Then we may have the bitwise and shift operators
+
+~&, |, ^~ (another one I had to look up), shift left ~<<~, etc ..
+
+and of course the logical operators
+
+~||, &&, !~
+
+and perhaps the "dot" and "dot dot" - the object member access syntactic elements
+
+~., ..~ 
+
+etc
+
+I suppose, most of the curly braces languages do use all of the above the same way - that is why I only do not remember a relatively small subset of them :( , and I do not complain that much :)
+
+But, reading code, many of those operators are still a pain and require some king of mental pause or a mental switch! Code is read much more often than written. When writing code, they are a bit of a pain as well, perhaps not as much, as one uses a relatively small subset (or the obvious subset such as those used in arithmetics).
+
+Ok, fair enough .. well not quite fair, but accepted by years of burning this into our brains.
+
+But later, the language users may start to complain: "I have to write this and that, and it's too much typing", or "oh we need to screen for null so much" and so we get:
+
+~expr ? stmt : stmt2~ - most bracey languages have this, so it should go to the above
+
+and
+
+~?.~ - as in ~myObject.?myProperty~
+
+and
+
+~??~ - as in ~myStr ?? "empty"~
+
+and
+
+~??=~ as in ~value ??= 5~
+
+and maybe
+
+~...?~ as i ~['first', ...?aList]~
+
+
+The mental pause with those, depending on how much you use the language in question, can be significant. To the point, one cannot really read the code fluently unless embedded in the particular language daily.
+
+
+I realize this stuff is todo 
+
+also
+
+
+Operator	Name	Meaning
+()	Function application	Represents a function call
+[]	List access	Refers to the value at the specified index in the list
+.	Member access	Refers to a property of an expression; example: foo.bar selects property bar from expression foo
+?.	Conditional member access	Like ., but the leftmost operand can be null; example: foo?.bar selects property bar from expression foo unless foo is null (in which case the value of foo?.bar is null)
+
+todo
+
+
+All this long story above gets me to my main point of syntax difficulty with Newspeak. When first studying Newspeak, it took me forever to figure out the ~x:, x::, x::=, x=, x~. What I mean:
+
+#+begin_src 
+class RGBCar = (
+  (* instance initializer: inits slots and runs initializer code*)
+  |
+  numWheels = 4.
+  mats ::= 'basic'.
+  |
+)(
+  (* class body: defines instance methods or inner classes *)
+):(
+  (* class methods are in a group after : *)
+)
+
+
+#+end_src
+
+
+
+
+
+
+
+
+
+
+
+
+* IN-PROGRESS Concepts: Packaging and distributing an app in 'mainstream' software - OLD LONG VERSION, PROBABLY REMOVE
+:PROPERTIES:
+:ARCHIVE_TIME: 2021-07-14 Wed 12:40
+:ARCHIVE_FILE: ~/dev/my-projects-source/public-on-github/mzimmerm.github.io/org/newspeak---a-few-notes.org
+:ARCHIVE_OLPATH: Programming in Newspeak/Packaging and distributing a Newspeak app
+:ARCHIVE_CATEGORY: newspeak---a-few-notes
+:ARCHIVE_TODO: IN-PROGRESS
+:END:
+
+TL;DR: The intent of this section is to describe the "mainstream" lifecycle of developing, building, distributing, installing, and running a program, for the purpose of describing Newspeak builds.
+
+This section is not meant to be a self-contained or axiomatic description of concepts - it will rely on terms and concepts that are not always uniquelly defined or described. Concepts may overlap, and are meta-circular so this section is vague.
+
+We will use the following terms: 
+  - The *program*, *app*, *application* interchangeably, these terms describe the software the /end-user/ interacts with to achieve some desired goal. These terms are overlapping, but generally are similar on the web, iOS, Android, or desktop. In addition, it is hard to define a /program/ simply, as some programs may have multiple components (client, server, database, etc). This section pretends a /program/ is the component the /end-user/ interacts with.
+  - The *package* (noun) is the artifact (usually a file) that contains the /program/ in a form available for distribution in the /repository/. Often, this is called the /program package/ or the /packaged program/.
+  - The *end-user* is the user of the /program/.
+  - The *system* is the software which allows the /end-user/ to use the /program/. 
+    - Examples:
+      - /Web      system/  is the browser. However, a *web server* on which the /program package/ is installed, must be also available, making the whole web the /end-user's system/.
+      - /Newspeak system/  is the browser. All comments from the web apply. 
+        - Note: Newspeak development is development for the Web. Except it does not necessarily use HTML and CSS, and likely would not use Javascript. In addition, any Newspeak program can be /packaged/ as an iOS or an Android app.
+      - /iOS      system/  is the operating system if /end-user/ uses Apple phone or tablet to install and run the /program/.
+      - /Android  system/  is the operating system if /end-user/ uses Android phone or tablet to install and run the /program/.
+      - /Linux    system/  is the operating system if /end-user/ uses Linux to install and run the /program/.
+  - The *developer* is the person, persons, or organization who /create/ the /program/, and make it available to the /end-user/, by submitting it (copying it) to a /repository/ or to a /web server/. 
+  - The *repository* is the location (accessible by a URI) where /package/s of /program/s are stored for public access by the /end-user/. 
+    - The concept of /repository/ is different for the Web and in Newspeak on one end, and iOS, Android or desktop on the other end. 
+      - On the web and Newspeak, there is no /repository/ the /end-user/ need to worry about. 
+        - The developer (or organization) typically controls the webserver into which the /program package/ is /installed/.
+        - The /repository/ and the /web server/ collapse into one. 
+        - The /end-user/ does NOT /install/ any /program/ on their /system/, instead, they navigate their browser to an URL to /run/ or /use/ the /program/ which was placed there as a /package/ by the /developer/. 
+        - The /install/ action is an action of the /developer/ (equivalent to the /submit to repository/ action), not an action by the end user. 
+      - On iOS, Android or desktop, the /repository/ is some publicly provided site from which the /end-user/ can /install/ the /packaged program/.
+    - However, there is a concept of *browser programs repository* as well: the browser authoring organization often maintains a *repository of extensions* to which a /program package/ can be submitted and made available to the end-user. 
+  - To *build* a /program/ is the action of the /developer/, which makes the /program/ available for distribution in the /repository/ by creating a /program package/. Sometimes the verb 'to package' is used instead of 'to build'. We will avoid using 'to package' as a verb.
+  - To *submit* a /program/ to a /repository/ is the action of the /developer/ which makes a /program/ which has been previously /built/, available to the /end-user/. 
+  - To *install*, or *deploy* a /package/:
+    - On the web, and in Newspeak, is an action of the /developer/ who places the program /package/ to a web server, from where the /end-user/ runs the /program/.
+    - On the iOS, Android, or desktop, is an action of the /end-user/, who /install/ s the program from the /repository/ into their /system/. 
+ 
+The main point of this section is that *a program may be /developed/ once, but the /system/ on which the program is made available to the /end-user/, dictates how the program is /build/, /submitted/, and /installed/.* (Some of those steps are overlapping or not needed depending on the /end-user/'s /system/.)
+
+We can summarize the lifecycle of allowing the /end-user/ to use a program created by a developer as follows:
+
+- Developer *develops* the *program*.
+  - Examples:
+    - /Web      developer/ *develops* a web program in a combination of HTML, CSS, and Javascript. 
+    - /Newspeak developer/ *develops* a web program in Newspeak. 
+    - /iOS      developer/ *develops* an iOS app.
+    - /Android  developer/ *develops* an Android app.
+    - /Linux    developer/ *develops* a Linux program.
+- From the program, developer *builds* a *program package*.
+  - Examples:
+    - /Web      developer/ *builds* a ~.zip file or a .jar~ file of all the components needed to run his/her program inside the web server. The zip or jar file is the *web program package*
+    - /Newspeak developer/ *builds* a ~.vfuel~ file from their Newspeak program. The ~.vfuel~ file is the *Newspeak program package for the web*. 
+    - /iOS      developer/ *builds* an ~iOS app file~ for distribution in Apple store.
+    - /Android  developer/ *builds* an ~.apk file~ for distribution in Google Playstore.
+    - /Linux    developer/ *builds* an ~.rpm file~ for distribution (for example, in the Opensuse OSS repository).
+    - Note: In the above examples, the *program package* is the .zip file, .vfuel file, .iOSapp file, .apk file, .rpm file. 
+- Developer *submits* the *program package* into a *repository* of packages for *distribution* to end-user. 
+  - /Web      developer/ *submits* (copies) the *web program package* (the zip or jar file) into a running (or to be started) webserver. This step is generally different from iOS, Android, or desktop, in that the /repository/ is not necessarrily publicly available. See discussion in the term /repository/ above.
+  - /Newspeak developer/ *submits* the ~.vfuel~ file to the *Newspeak repository*. Note: there is currently no publicly available repository of Newspeak programs in the form of .vfuel files. The end-user must receive the .vfuel file from the developer by some secure means OR, run the ~.vfuel~ file on the web, where it is installed by the developer into a end-user-trusted website. The Newspeak program lifecycle is the same as the lifecycle for the web. 
+  - /iOS      developer/ *submits* the ~iOS app~ for distribution in Apple store (*repository*).
+  - /Android  programme/ *submits* the ~.apk file~ for distribution in Google Playstore (*repository*).
+  - /Linux    developer/ *submits* the ~.rpm file~ for distribution in the *repository* (for example, OpenSUSE OSS repository)
+- End-user *installs* (or copies) the *program package* from the *repository* into their *system*.
+  - /Web      end-user/ generally does not have to do anything here. The developer /installs/ the program for the /end-user/.
+    - Note: that there is an alternative to this process on the web. The /end-user/ can run their own /web server/, for example locally, and install the developer-provided /web program package/ (a .zip or .jar file) into the server they control.
+  - /Newspeak end-user/ is generally in the same position as the /web end-user/ - he/she does not have to do anything here.
+    - Note: As the Newspeak process generally is the same as the web process, there is an alternative: The /end-user/ can run their own /web server/, for example locally, and install the developer-provided Newspeak ~.vfuel~ file into their local Newspeak webserver. The ~.vfuel~ file is the *Newspeak program package for the web*. We haved used this process in our ~CounterApp~ local deployment. See section [[Deploy ~CounterApp~ as standalone app into local Newspeak webserver]].
+  - /iOS      end-user/ *installs* the ~iOS app~ from Apple store (*repository*).
+  - /Android  end-user/ *installs* the ~.apk file~ from Google Playstore (*repository*).
+  - /Linux    end-user/ *installs* the ~.rpm file~ from the *repository* (for example, OpenSUSE OSS repository)
+- End-user *runs* the *program* from the *program package* (which is now installed on their system) on their system.
+  - /Web      end-user/ *navigates their browser* to the URL where the developer /installed/ the /program/. 
+    - Note: If the /end-user/ runs their own (local) server, the URL would point to the local server, as discussed int the /install/ section above.
+  - /Newspeak end-user/ *navigates their browser* to the URL where the developer /installed/ the /program/ (same as on the web) . For example, /end-user/ may navigate to the ~CounterApp~ on the Newspeak website, where it was installed: https://newspeaklanguage.org/samples/primordialsoup.html?snapshot=CounterApp.vfuel.
+    - Note: If the /end-user/ runs their own /web server/ for Newspeak, for example locally, and installed the developer-provided Newspeak ~.vfuel~ file into their local Newspeak webserver, the URL would be http://localhost:8080/primordialsoup.html?snapshot=CounterApp.vfuel. See section [[Deploy ~CounterApp~ as standalone app into local Newspeak webserver]].
+  - /iOS      end-user/ *runs* the ~iOS app~ from Apple store (*repository*).
+  - /Android  end-user/ *runs* the ~.apk file~ from Google Playstore (*repository*).
+  - /Linux    end-user/ *runs* the ~.rpm file~ from the *repository* (for example, OpenSUSE OSS repository)
+ 
+
+

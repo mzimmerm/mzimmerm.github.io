@@ -12,9 +12,9 @@
 
 * This document: Introduction to Newspeak on Webassembly (Wasm)
 
-TL;DR: The purpose of this document is to help starting with Newspeak version 3 (year 2021, runs on Webassembly). Hopefully reduce reader's start time a bit. It is intended that a reader follows this document sequentially, but of course jumping around is good too.
+TL;DR: Newspeak is a modern, principled platform and language: dynamic, reflective, modular. It supports both object-oriented and functional styles. But having reached here, you probably already know that much. The purpose of this document is to help starting with Newspeak version 3 (year 2021, runs on Webassembly). Hopefully reduce reader's start time a bit. It is intended that a reader follows this document sequentially, but of course jumping around is good too.
 
-Much of this document is collected from the existing Newspeak sources:
+Much of this document is collected from existing Newspeak sources:
 
 - The Newspeak google groups posts at https://groups.google.com/g/newspeaklanguage
 - The Newspeak core site at https://newspeaklanguage.org/
@@ -31,7 +31,7 @@ Much of this document is collected from the existing Newspeak sources:
 | 2021-07-05 |   | Milan Zimmermann |   |                                                                                                                                                      |
 
   
-* Newspeak quickstart: Explore the IDE. Then develop ~CounterApp~, package it and deploy it
+* Newspeak: A quickstart.  Explore the IDE. Then develop ~CounterApp~, package it and deploy it
 
 TL;DR: This quickstart section attempts to provide an incremental introduction to Newspeak. First, we introduce the Newspeak online IDE, then we build and deploy a sample Newspeak app called ~CounterApp~. A spoiler: we can look ahead and run the app we will be building - the ~CounterApp~ - online at https://newspeaklanguage.org/samples/primordialsoup.html?snapshot=CounterApp.vfuel. 
 
@@ -71,7 +71,7 @@ In more detail, let us try the following:
       [[file:img/newspeak---a-few-notes.org-workspaces-multiline-expression.png]]
   - The image above uses a white-mode image, as the dark-mode pages do not show highlight too well.
   - When running multi-line code, we can paste it from outside, instead of typing it.
-- To save our changes "now", click on the diskette "Save" button [[file:img/newspeak---a-few-notes.org-save-button.png]]. The changes are saved in the browser local storage. See Notes below for discussion on the details.
+- To save our changes "now", click the diskette "Save" button [[file:img/newspeak---a-few-notes.org-save-button.png]]. The changes are saved in the browser local storage. See Notes below for discussion on the details.
   
 Notes:
 
@@ -126,9 +126,9 @@ Prerequisits:
 Notes: 
 
 - To deploy the ~CounterApp~, this section uses the online Newspeak at https://newspeaklanguage.org/samples/primordialsoup.html?snapshot=HopscotchWebIDE.vfuel
-- However, a local Newspeak server could be used instead.
+- However, a local Newspeak webserver could be used instead.
   - If we wanted to deploy the ~CounterApp~ in "production", we would need a local Newspeak - because there is no way to deploy the app to the online Newspeak site.
-  - Deployment of the  ~CounterApp~ to "production" requires our "own" Newspeak, such as the local Newspeak server. See [[Download, install, and start a local Newspeak server]] for how to install Newspeak locally.
+  - Deployment of the  ~CounterApp~ to "production" requires our "own" Newspeak, such as the local Newspeak webserver. See [[Download, install, and start a local Newspeak webserver]] for how to install Newspeak locally.
 - We may ask, "what is an app in Newspeak"? In a nutshell, an "app" is an instance of a class - obviously. But which class, and what does the class need, to be able to "live" or "run" inside a Newspeak IDE or Newspeak runtime? Read on for details (actually, the coding details are todo).
 
 *Steps: To create and run the ~CounterApp~ (from existing code that we borrow from Newspeak Github), follow the Action/Result steps below:*
@@ -153,14 +153,14 @@ Notes:
     clicking the "+" button
     [[file:img/newspeak---a-few-notes.org-root-plus-button.png]] and typing or pasting the code in.
     Instead, we choose to load pre-existing files at the moment to concentrate on the process, not the code.   
-  - Note 2: Click on the ~CounterApp~ or ~CounterUI~ link. This shows the corresponding class. 
+  - Note 2: click the ~CounterApp~ or ~CounterUI~ link. This shows the corresponding class. 
   - Note 3: The ~CounterApp~ shows links to ~[deploy] [configuration] [run] [debug]~. Why do only the "app" classes such as ~CounterApp~ (and no other classes) show the ~[deploy] [configuration] [run] [debug]~ links in the Newspeak IDE? That is because the "app" classes represent a runnable Newspeak application.
   - *Question: What makes a Newspeak class a "runnable Newspeak application"?. todo*
-- Action: To save the classes we added, (~CounterApp~ or ~CounterUI~) in the browser local storage explicitly "now", click on the diskette "Save" button [[file:img/newspeak---a-few-notes.org-save-button.png]]
+- Action: To save the classes we added, (~CounterApp~ or ~CounterUI~) in the browser local storage explicitly "now", click the diskette "Save" button [[file:img/newspeak---a-few-notes.org-save-button.png]]
 - Result: The two classes are stored in the browser local storage. To read more about details of the browser local storage, see [[*Saving changes in Newspeak]].
-- Action: Click on the *[run]* link beside the  ~CounterApp~. This runs the code in the app (specifically, the ~CounterUI~ code). 
+- Action: click the *[run]* link beside the  ~CounterApp~. This runs the code in the app (specifically, the ~CounterUI~ code). 
 - Result: The counter app opens and runs in the same browser tab; it should look like this:  [[file:img/newspeak---a-few-notes.org-counter-app-running.png]] The code presents a counter (integer), and 3 buttons, which actions are to "increment", "decrement" and "reset" the counter. 
-- Action: click on "increment"
+- Action: click "increment"
 - Result: counter increments by one.
 - Note: We can click [debug] instead of [run] and a debugger will open.
 
@@ -173,15 +173,15 @@ Summary:
 Next: 
 
 - Let's pretend the CounterApp is useful, useable, and production ready.
-- How do we deploy it for us to use it as a browser app "in production mode"? Read the [[Deploy ~CounterApp~ as standalone app into local Newspeak server]] section.
+- How do we deploy it for us to use it as a browser app "in production mode"? Read the [[Deploy ~CounterApp~ as standalone app into local Newspeak webserver]] section.
 
 
-** Download, install, and start a local Newspeak server
+** Download, install, and start a local Newspeak webserver
 
 TL;DR: This section describes:
 
-- How to download, install, and start a *local Newspeak server*.
-- How opening a browser tab at http://localhost:8080/primordialsoup.html?snapshot=HopscotchWebIDE.vfuel runs the local version of the Newspeak IDE (reaching the just installed local Newspeak server).
+- How to download, install, and start a *local Newspeak webserver*.
+- How opening a browser tab at http://localhost:8080/primordialsoup.html?snapshot=HopscotchWebIDE.vfuel runs the local version of the Newspeak IDE (reaching the just installed local Newspeak webserver).
 
 Prerequisits: 
 
@@ -192,10 +192,10 @@ Notes:
 - You can use a server of your choice instead of the Python server needed by ~serve.sh~. Just place all the files downloaded in the sections below to your server's serving directory.
 - You can potentially skip this section. However, if you want to deploy a Newspeak app such as the ~CounterApp~, this section is needed.  
 
-*Action steps to download, install, and start using a local Newspeak server*
+*Action steps to download, install, and start using a local Newspeak webserver*
 
 - First, you may want to review the Newspeak downloads page at https://newspeaklanguage.org/downloads.html, in particular the *For all platforms* link.  
-- Next, to install and start a local Newspeak server, you can 
+- Next, to install and start a local Newspeak webserver, you can 
   - Either download and unzip the file *servable.zip* from the link above (https://github.com/newspeaklanguage/newspeaklanguage.github.io/raw/master/servable.zip) to any directory, then start the Newspeak server by running ~serve.sh~ from the extracted file.
   - Or run the following commands from the command line 
     #+begin_src shell :noeval
@@ -216,7 +216,7 @@ Notes:
 - Expected Result: "serving at port 8080". Note: In *servable.zip* there is a file ~server.py~, which defines the Newspeak server port. The port is set to 8080. Edit the file and change port if needed.
 
 
-To use the local Newspeak server, navigate browser to http://localhost:8080/primordialsoup.html?snapshot=HopscotchWebIDE.vfuel. This should open the locally hosted Newspeak IDE, started using the ~./serve.sh~ command. 
+To use the local Newspeak webserver, navigate browser to http://localhost:8080/primordialsoup.html?snapshot=HopscotchWebIDE.vfuel. This should open the locally hosted Newspeak IDE, started using the ~./serve.sh~ command. 
 
 Your browser should show a page similar to 
   [[file:img/newspeak---a-few-notes.org-local-ide.png]]
@@ -225,19 +225,19 @@ Note: The use of the local version is the same as the use of the online version.
 
 Summary: 
 
-- In this section we installed the local Newspeak server, and started using the served Newspeak IDE.
-- The installation method described here is the [[install-method-2][Installation method 2 (local Newspeak server)]]   
+- In this section we installed the local Newspeak webserver, and started using the served Newspeak IDE.
+- The installation method described here is the [[install-method-2][Installation method 2 (local Newspeak webserver)]]   
 
-Next: [[*Deploy ~CounterApp~ as standalone app into local Newspeak server]]
+Next: [[*Deploy ~CounterApp~ as standalone app into local Newspeak webserver]]
 
 
-** Deploy ~CounterApp~ as standalone app into local Newspeak server
+** Deploy ~CounterApp~ as standalone app into local Newspeak webserver
 
 TL;DR: This section describes 
 
 - How to create and deploy the ~CounterApp~ into the local version of Newspeak.
-- That the deployment is achieved by creating a deployable file, ~CounterApp.vfuel~, in the online Newspeak at https://newspeaklanguage.org/samples/primordialsoup.html?snapshot=HopscotchWebIDE.vfuel and placing it in the running local Newspeak server.
-- How to run the ~CounterApp~ from the local Newspeak server, by accessing the  ~CounterApp.vfuel~ from the local HTTP server.
+- That the deployment is achieved by creating a deployable file, ~CounterApp.vfuel~, in the online Newspeak at https://newspeaklanguage.org/samples/primordialsoup.html?snapshot=HopscotchWebIDE.vfuel and placing it in the running local Newspeak webserver.
+- How to run the ~CounterApp~ from the local Newspeak webserver, by accessing the  ~CounterApp.vfuel~ from the local HTTP server.
 
 Prerequisits: 
 
@@ -248,14 +248,14 @@ Prerequisits:
      - As explained in [[*Saving changes in Newspeak]], the changes we made in the online version are still stored locally in the browser local storage. 
      - So, when we re-attach to online Newspeak in this section, the classes ~CounterApp~ and ~CounterUI~ are still available. We use them to "create the CounterApp" (by saving it "as victory fuels" - that is, as file ~CounterApp.vfuel~) which is the app. 
      - This app - the  file ~CounterApp.vfuel~ - can then be copied to the serving directory of local Newspeak, and can be opened from there.
-2. We have installed the local version of Newspeak by following the section [[*Download, install, and start a local Newspeak server]].*
+2. We have installed the local version of Newspeak by following the section [[*Download, install, and start a local Newspeak webserver]].*
 
 
 Notes: 
 
 - We will create the deployable file, ~CounterApp.vfuel~ using the online Newspeak at https://newspeaklanguage.org/samples/primordialsoup.html?snapshot=HopscotchWebIDE.vfuel 
 - *However, apps can NOT be deployed to the online version, since that would require write access to the newspeak web site. We can do the coding online (as described above), but the actual deployment has to be done into a Newspeak system we control.*
-- The deployable file, ~CounterApp.vfuel~, will be deployed into the local Newspeak server as  http://localhost:8080/primordialsoup.html?snapshot=CounterApp.vfuel. (this link will only work when we finish all steps in this section)
+- The deployable file, ~CounterApp.vfuel~, will be deployed into the local Newspeak webserver as  http://localhost:8080/primordialsoup.html?snapshot=CounterApp.vfuel. (this link will only work when we finish all steps in this section)
 
 One more "fine point" note:
 
@@ -267,17 +267,17 @@ One more "fine point" note:
 - Action: Navigate to the online version of Newspeak at https://newspeaklanguage.org/samples/primordialsoup.html?snapshot=HopscotchWebIDE.vfuel and click the "Newspeak Source"
 - Result: Under "Root" you should see an alphabetically organized list of classes, similar to [[file:img/newspeak---a-few-notes.org-newspeak-source.png]], 
   - Note: If you followed the online section [[*Build, run, and debug the ~CounterApp~ in Newspeak (in the online version)]], there should be ~CounterApp~ and ~CounterUI~ classes in the alphabetic list.
-- Action: In the class list, find the ~CounterApp~, and click on the [deploy] to the right of the "CounterApp"
-- Result: a popup showing deployment options (starting with ~asVictoryFuel~: [[file:img/newspeak---a-few-notes.org-click-deploy-on-counter-app.png]]
+- Action: In the class list, find the ~CounterApp~, and click the [deploy] to the right of the "CounterApp"
+- Result: a popup showing deployment options, starting with ~asVictoryFuel~: [[file:img/newspeak---a-few-notes.org-click-deploy-on-counter-app.png]]
 - Action: Select ~asVictoryFuelWithMirrors~. We choose the option 'asVictoryFuelWithMirrors' if our app uses the GUI (there's some mirror dependency in the UI) and 'asVictoryFuel' otherwise.
 - Result: After a long wait, a file named ~CounterApp.vfuel~ is created, and asked to be saved.
 - Action: Save the file ~CounterApp.vfuel~ on our disk to the directory where local Newspeak was deployed - for example ~$HOME/software/newspeak/my-serve-http/servable~
-- Result: *The counter app is now deployed to the local Newspeak server!*
+- Result: *The counter app is now deployed to the local Newspeak webserver!*
 
 
-To prove the counter app is now deployed to the local Newspeak server, do the following:
+To prove the counter app is now deployed to the local Newspeak webserver, do the following:
 
-- Action: Open a new browser tab, and navigate to the just saved application  ~CounterApp.vfuel~ in the local Newspeak server as http://localhost:8080/primordialsoup.html?snapshot=CounterApp.vfuel
+- Action: Open a new browser tab, and navigate to the just saved application  ~CounterApp.vfuel~ in the local Newspeak webserver as http://localhost:8080/primordialsoup.html?snapshot=CounterApp.vfuel
 - Result: In the new tab, you should see the "locally deployed" ~CounterApp~ is now running
   [[file:img/newspeak---a-few-notes.org-counter-app-local-run.png]]
 
@@ -288,9 +288,54 @@ Summary:
 Next: This is the end of coding, building and running the ~CounterApp~
 
 
-* Newspeak on Webassembly (Wasm) - using Newspeak online, and various local installation methods
+* IN-PROGRESS-NOW Hello, World, Newspeak is different. The first week of a personal journey around the Newspeak platform.
 
-TL;DR There are several ways of using Newspeak: Using the online web version (no installation required, see [[install-method-1][Installation method 1]]), installing and using your system-local web version ([[install-method-2][Installation method 2]]), or more "advanced" methods described in [[*Advanced methods to install and run Newspeak]] (this includes installing and using an Electron-based version in [[install-method-4][ Installation method 4]]. This section is describing all methods. Initially, users should consider [[install-method-1][Installation method 1]] or [[install-method-2][Installation method 2]].
+This section final goal is to build a 'Hello, World' App, deploy it as a standalone web app, and run it.
+
+But first, I would like to walk back and capture my amazement, surprises, and gotchas during a journey of the first week learning Newspeak, but polish those surprises so they can be hopefully followed. Actually "the first week" is now completely true, I did first discover Newspeak almost when it started, read available articles back then, and covered the syntax which helped. But I did not have time back then to get hands dirty.
+
+Most learning, and often "unlearning" for me was the discovery different the Newspeak platform is, compared to most mainstream platforms, such as Java, Python, C++, even Smalltalk (with Smalltalk, Newspeak shares syntax and extreme late boundedness).
+
+At this moment I should give readers some links to jump off here and do this alone. If you found this, you probably already searched to learn about Newspeak. But I believe, if you get back here after googling and reading the links, the rest of this text may still be helpful :) .. so, some selected links:
+
+- First of all, the home of the Newspeak language is https://newspeaklanguage.org/ has all documentation, videos, links to installers and more.
+- Second, to run Newspeak online, navigate to  https://newspeaklanguage.org/samples/primordialsoup.html?snapshot=CounterApp.vfuel.
+- Next, if I was to select only a few selected documents:
+  - [[http://bracha.org/newspeak.pdf][The Newspeak programming platform]] is an older document, but introduces both the syntax, and the core principles of Newspeak.
+  - [[https://newspeaklanguage.org/samples/Literate/Literate.html][Newspeak by example]]  introduces the syntax of Newspeak as a live document; a Newspeak REPL; reader can type and evaluate Newspeak expression in a web page.
+- Or to recommend a hands-on Newspeak introduction
+  - Either use (still relevant where not Squeak dependent) [[https://newspeaklanguage.org/ns101/ns101.html][Newspeak on Squeak - A Guide for the Perplexed]]
+  - Or follow the hands-on section of this document [[*Newspeak: A quickstart.  Explore the IDE. Then develop ~CounterApp~, package it and deploy it]]
+
+Getting back to my first week journey; it is unfair to hikers, as my journey was at times, that of a wanderer almost lost in a forest; haphazardly reading all I can get my hands on, trying code snippets things in the IDE, re-tracing running and deploying the existing ~CounterApp~, and overall, taking one step forward, then two steps back as the step forward discovered more unknowns.
+
+Some concrete talk please!
+
+Ok. But first one more paragraph of metatalk. Just a heads up, I will start using the word *platform* a lot. Let me try explain what I mean by /platform/ or /computer language platform/. Often we think of learning a "computer language" as learning its syntax. But syntax is only a small part of being able to be productive in the language. It all those things around that means to master a "computer language": learn how is it installed, how to create a project to start writing a useful program (editors, command line, IDE), learn the core idioms, learn how to use programs written by other people in that language (learning the libraries), learn how are the programs we write are packaged and send to users to use (building, packaging and installing apps), learn how to secure the resulting program. It is all these things listed in the long sentence that I mean by the "language platform". I believe we should start using the term "learning a language platform" rather than "learning a computer language"   
+
+So first, Newspeak syntax is not a major obstacle. Well, it is quite different too, even for someone knowing Smalltalk, which Newspeak shares syntax with. But one can get syntax basics from the links above. Also, Newspeak syntax is a bit like speaking English. Just differently from the mainstream. I will not address syntax too much here.
+
+Second, Newspeak is a principled language and *platform* (in the sense described). Gilad Bracha and collaborating authors describe several principles (adherence to which removes many mainstream platforms' weaknesses). Those principles are described in the above linked paper [[http://bracha.org/newspeak.pdf][The Newspeak programming platform]] and other documents.
+
+Third, as this section title states, Newspeak is different. The being different is not there for fun. It is there to implement those principles: Dynamicity, Modularity, Security, Reflectivity, support for both object-oriented and functional styles and more. 
+
+Fourth, but the being different does came at an initial price (for me at least), often in the form of unlearning.
+
+More concrete talk please!
+
+Newspeak *is* the IDE. There is no command line per se (there is, but it is inside the IDE. It is called the Workspace). But I knew all this from Smalltalk. So let us open the Newspeak IDE to poke around. Just navigate to  https://newspeaklanguage.org/samples/primordialsoup.html?snapshot=CounterApp.vfuel to start. Then click the "Newspeak source" link.   
+
+We are greeted with the word "Root" on top left, and a list of, what looks like classes. 
+
+
+* Newspeak: Using it and installing it.  Online vs. local installation
+
+TL;DR There are several ways of using Newspeak:
+- Using the online web version (no installation required, see [[install-method-1][Installation method 1 (online, no local installation)]]
+- Using Newspeak locally in browser after installing your local Newspeak webserver, see [[install-method-2][Installation method 2 (local Newspeak webserver)]]
+- Using Newspeak locally or as a mobile App, after installing it by other methods, see [[*System specific methods to install and run Newspeak]] (this includes installing and using an Electron-based version in [[install-method-4][Installation method 3]].
+
+This section is describing all usage ways and installation methods. Initially, users should consider [[install-method-1][Installation method 1 (online, no local installation)]] or [[install-method-2][Installation method 2 (local Newspeak webserver)]].
 
 ** Simple methods to install and run Newspeak
 
@@ -307,17 +352,17 @@ TL;DR: This section describes the simplest setup - in fact, this is a "no setup,
 Notes:
 
 - By using this page, you are now using the Newspeak IDE
-- Click on "Newspeak Source" to see and edit code.
-- Your changes will be stored in browser local storage.
+- click the "Newspeak Source" link to view code, edit edit code and manipulate code.
+- Your changes will be stored in the browser local storage.
 - A more detailed description of what we can do with Newspeak is in the introduction section [[Run the online version of the Newspeak IDE. Read docs, watch videos]]  
 
 
-*** <<install-method-2>> Installation method 2: Download and start a local version of Newspeak webserver
+*** <<install-method-2>> Installation method 2: Download and start a local Newspeak webserver
 
-This method downloads a pre-packaged Newspeak, and allows you to start your local webserver, which starts the pre-packaged Newspeak. This method is described in detail in the "hands on" section [[Download, install, and start a local Newspeak server]]. Follow the steps there.
+This method downloads a pre-packaged Newspeak, and allows you to start your local Newspeak webserver, which starts the pre-packaged Newspeak. This method is described in detail in the "hands on" section [[Download, install, and start a local Newspeak webserver]]. Follow the steps there.
 
-Differences of this installation from [[install-method-1][Installation method 1]] (no install - using Newspeak online)
-- If we install using this method 2:
+Differences of this installation from using Newspeak online described in [[install-method-1][Installation method 1 (online, no local installation)]]
+- If we install using this method 2 (local Newspeak webserver):
 - Pros:
   - No need for internet access
   - Your version does not change if you need stability (this may be a cons too)
@@ -325,14 +370,7 @@ Differences of this installation from [[install-method-1][Installation method 1]
   - We have to run our own Newspeak server, and reinstall to care of any updates or bugs fixed.
 
 
-** Advanced methods to install and run Newspeak 
-
-*** <<install-method-3>> Installation method 3: Setup a local Newspeak webserver from code on Github.
-
-This method is described in the "Just in Case" section in https://github.com/newspeaklanguage/newspeak.
-
-
-*** <<install-method-4>> Installation method 4: Download or setup a local Electron version of Newspeak on MacOS or Windows
+*** <<install-method-3>> Installation method 3: Download or setup a local Electron version of Newspeak on MacOS or Windows
 
 To install using this method, dowload the available versions for Windows and Mac, see https://newspeaklanguage.org/downloads.html, section "Dowloadable IDE App". 
 
@@ -341,9 +379,16 @@ Electron is basically Chromium underneath. It's just set up to read from a page 
 An advantage of Electron that I have seen is a better integration with OS File access dialogs.  It doesn't insist on using a downloads directory for everything (and while browsers let you set the directory, they don't let you change it on the fly, on a file-by-file basis).
 
 
-*** <<install-method-5>> Installation method 5: Manual setup which will produce an equivalent of [[install-method-2][Installation method 2]] (local Newspeak server)
+** System specific methods to install and run Newspeak 
 
-As this method produces an equivalent that is already downloadable, this is only if we want to dig in more details, but not going all the way to doing all the steps in [[install-method-3][Installation method 3]].
+*** <<install-method-4>> Installation method 4: Setup a local Newspeak webserver from code on Github.
+
+This method is described in the "Just in Case" section in https://github.com/newspeaklanguage/newspeak.
+
+
+*** <<install-method-5>> Installation method 5: Manual setup which will produce an equivalent of [[install-method-2][Installation method 2 (local Newspeak webserver)]]
+
+As this method produces an equivalent that is already downloadable, this is only if we want to dig in more details, but not going all the way to doing all the steps in [[install-method-4][Installation method 4]].
 
 If the build isn't working for you there is one option that hasn't been discussed, which is relevant to Linux folk who don't have an Electron app. You can get the web IDE vfuel file at:
 
@@ -416,13 +461,24 @@ It seems easier to build, but I'm putting it out there.
 
 ** The Newspeak IDE
 
-*** Updading one IDE related class that was fixed on Github source into local Newspeak IDE
+*** Updating the IDE
 
-Let's say that I am using local Newspeak.
+How to update the IDE? The answer differs depending on what version you are using.
 
-The regular way of updating it to the latest (thus getting fixes done since the last deployment), would be to simply re-download as described in [[install-method-1]].
+**** Updating the online version
 
-Could there be situations we do not want to simply reinstall the local Newspeak server? Perhaps one example of such situation is that we run our local Newspeak server with changed files, and we want to patch a class that has a known fix, without reinstalling the local Newspeak and losing changes.
+If you use Newspeak as online from https://newspeaklanguage.org/samples/primordialsoup.html?snapshot=HopscotchWebIDE.vfuel, no updating is necessary. If a newer version is installed online, a reload will update.
+
+After the update, the system will ask user if to re-apply your browser-local storage changes from the /backup/ and /lastSaved/. For details of the local changes re-application, see [[** Saving changes in Newspeak]].
+
+**** Updating your local Newspeak webserver, installed as in [[install-method-2][Installation method 2 (local Newspeak webserver)]].
+
+To update your local Newspeak webserver to the latest (thus getting fixes done since the last deployment), re-download and unzip as described in [[* Download, install, and start a local Newspeak webserver]]
+
+
+*** Updading a single class that was fixed on Github source into local Newspeak webserver (thus IDE)
+
+Could there be situations we do not want to simply reinstall the local Newspeak webserver? Perhaps one example of such situation is that we run our local Newspeak webserver with changed files, and we want to patch a class that has a known fix, without reinstalling the local Newspeak webserver and losing changes.
 
 To describe a concrete (somewhat artificial) situation: Let's say that on Github, there is a bug fix or change in a 'system' class, ~Browsing.ns~, and we want to update this single class locally. We can identify changed files or files with fixes, and compile them in (that is, start using them in) the local version, using the following process:
   
@@ -469,7 +525,111 @@ Apart from the /lastSaved/ and /backup/ in-browser changes management, you can s
 - During development in Newspeak, you will want to save your work. Until source control is integrated into the IDE, the current approach is to `export` ("Save to file") all classes you changed in a directory on your system as *.ns* files, and potentially create a code repository in that directory. If we later want to bring the repository version to Newspeak, we `import` ("Compile File(s)") the *.ns* files back to Newspeak. For how to access the "Save to file" and "Compile File(s)" buttons, see TL;DR in section [[*Saving changes in Newspeak]]
 
 
-** IN-PROGRESS-NOW "Importing" a dependency class in Newspeak
+** IN-PROGRESS-NOW Snippets of wisdom from various sources
+
+Sources (may not be complete)
+- Newspeak user group on Google groups: 
+
+Snippets of wisdom
+
+- StringTest>>#testShout is the Smalltalk way of identifying the testShout method of the StringTest class. When you actually type the code into the browser, you don’t have to type the class name or the >>; instead, you just make sure that the appropriate class is selected. Documentation example in text should show abstract argument names:
+  #+begin_example
+    History>>goBackward
+      self canGoBackward ifFalse: [self error: 'Already on the first element'].
+      stream skip: --2.
+      ^ self next.
+
+    History>>goTo: aPage
+      stream nextPut: aPage.
+  #+end_example
+- In Newspeak, a top level class declaration is always a module declaration. So this is a module:
+  #+begin_src groovy
+    class HelloBraveNewWorld usingPlatform: platform = (
+      platform squeak Transcript open show: ‘Hello, Oh Brave new world’.
+    )
+  #+end_src
+  If we had written
+  #+BEGIN_SRC groovy 
+    class HelloBraveNewWorld = (
+      Transcript open show: ‘Hello, Oh Brave new world’.
+    )
+  #+END_SRC
+  and then created an instance via ~HelloBraveNewWorld new~ (if a class doesn’t specify a message for creating instances, new is the default), we would get a doesNotUnderstand: error, because HelloBraveNewWorld does not understand the message Transcript. There simply is no way to access the standard output stream, or any other system state, without having it passed in via a parameter when a module is instantiated.
+- ~ide namespacing manifest Collections~
+- Workspace: ~collections~
+- If you are learning, make everything public. everything = each method, slot, and inner class. It may not be the right thing, but it helps as the error messages are not the best currently. You will just get "Does not understand" too many times. First time it took me a day to figure out hehe. 
+- so, basically, if I have an HTML string with a <div class='helpButton'>, this code in ClassPresenter>>helpText:  can insert a Hopscotch(?) instance of  HelpButton (assuming HelpButton was implemented) and the HelpButton instance will present itself as Html on that div? Hmm, maybe that org-to-ampleforth just got more exciting - but I have to hold myselt. -- answer: Pretty much. You need to define the mapping from div classes to Newspeak widgets, as ClassPresenter>>helpText: does for the widgets it uses.
+-  Library is an informal term. Any Newspeak module definition (i.e., a top level class) is a library, and to use, it you call its class methods, most likely to instantiate it.
+If you want to deploy a module, well, you need to use it via an app (i.e, define something with #packageUsing: and #main:args:), directly or indirectly. 
+
+
+
+
+
+** IN-PROGRESS-NOW Non-Newspeak Concepts: Packaging and distributing an app in 'mainstream' software
+
+Let me start with my understanding of the current "mainstream" way of software distribution using package repositories. I'd describe such lifecycle as follows:
+
+*** A0) 'configure' : 'developer' 'configures' a 'project', adding 'dependencies' using 'package manager'
+
+The first step developer typically takes is to create a project. Almost no software lives in vaccuum, a need to use other externally created pieces of software. Such pieces of software are ofter called modules, libraries, packages, dependencies and similar. 
+
+This section uses the term 'required package' for such external pieces of software. The term 'required package' hopefully expresses both 
+- that such external software comes in a form of a package, 
+- and  that such external software is 'required' by the project being developed. 
+
+The mainstream name for 'required package' is 'dependency' but I find that confusing (confusing which way the dependency goes).
+
+*** A1) 'develop' : 'developer' 'develops' the 'program' or 'app'. 
+
+*** A2) 'build' :   'developer' 'builds a 'program package' from the 'program' and (potentially) it's 'dependencies', using a 'build tool'. 
+
+Such 'build tool' is generally part of a higher level 'package manager' - the 'package manager' may act in 2 steps, in this build step, and in the 'install' step 4. The build tool may be gradle, rpm builder, docker image builder, snapcraft, flatpak builder etc. The resulting 'program package' may be a war file, a vfuel file, an rpm file, etc. The 'program package' may or may not be 'self-contained' (contain all needed components - dependencies -  to run the program). Either way, 'dependencies' (libraries needed to run the program) must be resolved either at this build step (if the 'program package' is self-contained) or at the 'target system' 'install' step. As an example, the war or snap file would contain all dependencies, while the rpm file would rely on dependencies to be resolved and installed during the 'install' step.
+
+
+*** A3) 'submit':   'developer' 'submits' the 'program package' to a 'package repository'. 
+
+On the web, developer copies the jar or vfuel to a webserver (so the repository is skipped? unless the browser extensions store is used)
+
+
+*** A4) 'install':   'end-user' 'installs' the 'program' on the 'target system' from the 'program package' located in the 'package repository', using a 'package manager'. 
+
+As discussed in A2, the 'package manager' of the 'non-self-contained' program packages must calculate and install 'dependencies'.
+
+
+*** A5) 'run':       'end-user' 'runs' the 'program' installed in step 4.
+
+Notes:
+
+- steps A1, A2 and A3 (develop, build, submit) generally are executed - or at least can be - on the 'source system' (where the software is developed). 
+- step A3 (submit to a repository) copies the 'program package' to a  publicly available repository (available to both developer and end-user).
+- steps A4 and A5 (install, run) are executed on the 'target system' - where the end-user installs and runs the program. Well, unless we are on the web where the 'end-user' points browser to a URL.
+- I tried not to use the verb "to package" here (only "to build"). Unless I am missing something, "to package a program" is pretty much equivalent of "to build a package from a program" - so "to build" == "to package". These actions happen on the 'source system'.
+- The difference between 'self-contained' program packages and the not-self-contained ones, and how they are handled by their 'package manager' programs, is similar to early and late binding, perhaps with somewhat similar pros and cons. 
+
+
+*** B) What are roles of the methods (verbs) 'build' and 'package' in the Newspeak lifecycle of develop/build/submit/install/run an application?
+---------------------------------------
+
+Grepping the Newspeak codebase for:
+
+find . -type f -exec grep  -H  "package.*Using.*:" {} \;
+
+Yields the following methods signatures (on code from like a month ago when I started writing this):
+
+- SomeClass.ns:     #packageUsing: manifest = ..
+- SomeTestsConfiguration.ns: #packageTestsUsing: manifest = .. (or ideNamespace but that's just a name?)
+
+In addition, in the post
+
+https://groups.google.com/g/newspeaklanguage/c/kHAIE_i7gTc/m/2KwHVGIFBQAJ
+
+Gilad defines 
+
+- #packageLibraryUsingManifest: manifest
+
+
+** IN-PROGRESS-NOW "Importing" a dependency class in Newspeak - THIS SHOULD BE PART OF THE CLASS -> MODULE -> LIBRARY MODULE -> APP MODULE HELLOW WORLD TEXT
 
 Hmm, this again ended up a super-long context description. I hope the question section C) is not that long, and we can start with that, and refer back if needed.
 
@@ -639,39 +799,9 @@ class ATranslation = (
     )
 )
 
+
 ** IN-PROGRESS Packaging and distributing a Newspeak app
 
-
-*** IN-PROGRESS A Concrete Newspeak example: Packaging and distributing a concrete app
-
-TL;DR: For a detail description of developing, packaging, running and deploying a Newspeak app, read the section [[Newspeak quickstart: Explore the IDE. Then develop ~CounterApp~, package it and deploy it]]
-
-The text below is a general introduction.
-
-How would I go about building and running a "Hello world" application? I know I can create a class, in the browser IDE .. ok .. but from there, how to I "create and deploy the application" so I end up with something like the ToDo app ... hmm, I should probably do my homework and study it, but any high level notes on that?
-
-*There are two options to build an app*
-
-1) Easy but flakey. There is a 'deploy' option that the IDE displays
-   for apps.  It's buggy and slow, but mostly works if you are
-   prepared to wait a ridiculous amount of time, and tolerate the fact
-   that the app will be too large due to bugs in the serialization
-   code :-(. We need to fix that, but you can deploy apps that way,
-   especially if they are small. You choose the option
-   'asVictoryFuelWithMirrors' if your app uses the GUI (there's some, probably gratuitous, mirror dependency in the UI)  and 'asVictoryFuel' otherwise.
-   - Details:  where is the [deploy] button. Go to 'Newspeak source code". Look at HopscotchWebIDE class (it's the one app pre-loaded in the system). You'll see the deploy link in two places. In the Root namespace itself - if your window is wide enough, it will show on the same line as the link for the class. If you open the class, it will be at the top, to the right of the class name.
-
-2) Slightly more complex, but works better. You use a script that runs the C version of the PSoup VM to do  the deployment. THis is faster, more reliable and produces smaller deployments. 
-
-In either case, .vfuel file is produced.  Assuming you are running Newspeak using option 1 (a local server, [[install-method-1]]), you can then serve that file and run your app.
-
-*Deployment of the app*
-
-This .vfuel can then be deployed into a (locally installed) Newspeak server.
-
-- For instructions on how to install the server see [[install-method-1]]
-- For instructions on how to deploy a sample app, in particular the ~CounterApp~, see [[Deploy ~CounterApp~ as standalone app into local Newspeak server]].
-  
 
 *** IN-PROGRESS-NOW A Concrete Newspeak example: Develop, package, distribute ~AHelloWorldApp~ app
 
@@ -722,124 +852,6 @@ steps, local or web
 AAAAAAAAAAAAAAAAAAAAAA
 ide namespacing manifest Collections
 
-
-
-*** IN-PROGRESS-NOW Snippets of wisdom from various sources
-
-Sources (may not be complete)
-- Newspeak user group on Google groups: 
-
-Snippets of wisdom
-
-- StringTest>>#testShout is the Smalltalk way of identifying the testShout method of the StringTest class. When you actually type the code into the browser, you don’t have to type the class name or the >>; instead, you just make sure that the appropriate class is selected. Documentation example in text should show abstract argument names:
-  #+begin_example
-    History>>goBackward
-      self canGoBackward ifFalse: [self error: 'Already on the first element'].
-      stream skip: --2.
-      ^ self next.
-
-    History>>goTo: aPage
-      stream nextPut: aPage.
-  #+end_example
-- In Newspeak, a top level class declaration is always a module declaration. So this is a module:
-  #+begin_src groovy
-    class HelloBraveNewWorld usingPlatform: platform = (
-      platform squeak Transcript open show: ‘Hello, Oh Brave new world’.
-    )
-  #+end_src
-  If we had written
-  #+BEGIN_SRC groovy 
-    class HelloBraveNewWorld = (
-      Transcript open show: ‘Hello, Oh Brave new world’.
-    )
-  #+END_SRC
-  and then created an instance via ~HelloBraveNewWorld new~ (if a class doesn’t specify a message for creating instances, new is the default), we would get a doesNotUnderstand: error, because HelloBraveNewWorld does not understand the message Transcript. There simply is no way to access the standard output stream, or any other system state, without having it passed in via a parameter when a module is instantiated.
-- ~ide namespacing manifest Collections~
-- Workspace: ~collections~
-- If you are learning, make everything public. everything = each method, slot, and inner class. It may not be the right thing, but it helps as the error messages are not the best currently. You will just get "Does not understand" too many times. First time it took me a day to figure out hehe. 
-- so, basically, if I have an HTML string with a <div class='helpButton'>, this code in ClassPresenter>>helpText:  can insert a Hopscotch(?) instance of  HelpButton (assuming HelpButton was implemented) and the HelpButton instance will present itself as Html on that div? Hmm, maybe that org-to-ampleforth just got more exciting - but I have to hold myselt. -- answer: Pretty much. You need to define the mapping from div classes to Newspeak widgets, as ClassPresenter>>helpText: does for the widgets it uses.
--  Library is an informal term. Any Newspeak module definition (i.e., a top level class) is a library, and to use, it you call its class methods, most likely to instantiate it.
-If you want to deploy a module, well, you need to use it via an app (i.e, define something with #packageUsing: and #main:args:), directly or indirectly. 
-
-
-
-
-*** IN-PROGRESS Concepts: Packaging and distributing an app in 'mainstream' software 
-
-TL;DR: The intent of this section is to describe the "mainstream" lifecycle of developing, building, distributing, installing, and running a program, for the purpose of describing Newspeak builds.
-
-This section is not meant to be a self-contained or axiomatic description of concepts - it will rely on terms and concepts that are not always uniquelly defined or described. Concepts may overlap, and are meta-circular so this section is vague.
-
-We will use the following terms: 
-  - The *program*, *app*, *application* interchangeably, these terms describe the software the /end-user/ interacts with to achieve some desired goal. These terms are overlapping, but generally are similar on the web, iOS, Android, or desktop. In addition, it is hard to define a /program/ simply, as some programs may have multiple components (client, server, database, etc). This section pretends a /program/ is the component the /end-user/ interacts with.
-  - The *package* (noun) is the artifact (usually a file) that contains the /program/ in a form available for distribution in the /repository/. Often, this is called the /program package/ or the /packaged program/.
-  - The *end-user* is the user of the /program/.
-  - The *system* is the software which allows the /end-user/ to use the /program/. 
-    - Examples:
-      - /Web      system/  is the browser. However, a *web server* on which the /program package/ is installed, must be also available, making the whole web the /end-user's system/.
-      - /Newspeak system/  is the browser. All comments from the web apply. 
-        - Note: Newspeak development is development for the Web. Except it does not necessarily use HTML and CSS, and likely would not use Javascript. In addition, any Newspeak program can be /packaged/ as an iOS or an Android app.
-      - /iOS      system/  is the operating system if /end-user/ uses Apple phone or tablet to install and run the /program/.
-      - /Android  system/  is the operating system if /end-user/ uses Android phone or tablet to install and run the /program/.
-      - /Linux    system/  is the operating system if /end-user/ uses Linux to install and run the /program/.
-  - The *developer* is the person, persons, or organization who /create/ the /program/, and make it available to the /end-user/, by submitting it (copying it) to a /repository/ or to a /web server/. 
-  - The *repository* is the location (accessible by a URI) where /package/s of /program/s are stored for public access by the /end-user/. 
-    - The concept of /repository/ is different for the Web and in Newspeak on one end, and iOS, Android or desktop on the other end. 
-      - On the web and Newspeak, there is no /repository/ the /end-user/ need to worry about. 
-        - The developer (or organization) typically controls the webserver into which the /program package/ is /installed/.
-        - The /repository/ and the /web server/ collapse into one. 
-        - The /end-user/ does NOT /install/ any /program/ on their /system/, instead, they navigate their browser to an URL to /run/ or /use/ the /program/ which was placed there as a /package/ by the /developer/. 
-        - The /install/ action is an action of the /developer/ (equivalent to the /submit to repository/ action), not an action by the end user. 
-      - On iOS, Android or desktop, the /repository/ is some publicly provided site from which the /end-user/ can /install/ the /packaged program/.
-    - However, there is a concept of *browser programs repository* as well: the browser authoring organization often maintains a *repository of extensions* to which a /program package/ can be submitted and made available to the end-user. 
-  - To *build* a /program/ is the action of the /developer/, which makes the /program/ available for distribution in the /repository/ by creating a /program package/. Sometimes the verb 'to package' is used instead of 'to build'. We will avoid using 'to package' as a verb.
-  - To *submit* a /program/ to a /repository/ is the action of the /developer/ which makes a /program/ which has been previously /built/, available to the /end-user/. 
-  - To *install*, or *deploy* a /package/:
-    - On the web, and in Newspeak, is an action of the /developer/ who places the program /package/ to a web server, from where the /end-user/ runs the /program/.
-    - On the iOS, Android, or desktop, is an action of the /end-user/, who /install/ s the program from the /repository/ into their /system/. 
- 
-The main point of this section is that *a program may be /developed/ once, but the /system/ on which the program is made available to the /end-user/, dictates how the program is /build/, /submitted/, and /installed/.* (Some of those steps are overlapping or not needed depending on the /end-user/'s /system/.)
-
-We can summarize the lifecycle of allowing the /end-user/ to use a program created by a developer as follows:
-
-- Developer *develops* the *program*.
-  - Examples:
-    - /Web      developer/ *develops* a web program in a combination of HTML, CSS, and Javascript. 
-    - /Newspeak developer/ *develops* a web program in Newspeak. 
-    - /iOS      developer/ *develops* an iOS app.
-    - /Android  developer/ *develops* an Android app.
-    - /Linux    developer/ *develops* a Linux program.
-- From the program, developer *builds* a *program package*.
-  - Examples:
-    - /Web      developer/ *builds* a ~.zip file or a .jar~ file of all the components needed to run his/her program inside the web server. The zip or jar file is the *web program package*
-    - /Newspeak developer/ *builds* a ~.vfuel~ file from their Newspeak program. The ~.vfuel~ file is the *Newspeak program package for the web*. 
-    - /iOS      developer/ *builds* an ~iOS app file~ for distribution in Apple store.
-    - /Android  developer/ *builds* an ~.apk file~ for distribution in Google Playstore.
-    - /Linux    developer/ *builds* an ~.rpm file~ for distribution (for example, in the Opensuse OSS repository).
-    - Note: In the above examples, the *program package* is the .zip file, .vfuel file, .iOSapp file, .apk file, .rpm file. 
-- Developer *submits* the *program package* into a *repository* of packages for *distribution* to end-user. 
-  - /Web      developer/ *submits* (copies) the *web program package* (the zip or jar file) into a running (or to be started) webserver. This step is generally different from iOS, Android, or desktop, in that the /repository/ is not necessarrily publicly available. See discussion in the term /repository/ above.
-  - /Newspeak developer/ *submits* the ~.vfuel~ file to the *Newspeak repository*. Note: there is currently no publicly available repository of Newspeak programs in the form of .vfuel files. The end-user must receive the .vfuel file from the developer by some secure means OR, run the ~.vfuel~ file on the web, where it is installed by the developer into a end-user-trusted website. The Newspeak program lifecycle is the same as the lifecycle for the web. 
-  - /iOS      developer/ *submits* the ~iOS app~ for distribution in Apple store (*repository*).
-  - /Android  programme/ *submits* the ~.apk file~ for distribution in Google Playstore (*repository*).
-  - /Linux    developer/ *submits* the ~.rpm file~ for distribution in the *repository* (for example, OpenSUSE OSS repository)
-- End-user *installs* (or copies) the *program package* from the *repository* into their *system*.
-  - /Web      end-user/ generally does not have to do anything here. The developer /installs/ the program for the /end-user/.
-    - Note: that there is an alternative to this process on the web. The /end-user/ can run their own /web server/, for example locally, and install the developer-provided /web program package/ (a .zip or .jar file) into the server they control.
-  - /Newspeak end-user/ is generally in the same position as the /web end-user/ - he/she does not have to do anything here.
-    - Note: As the Newspeak process generally is the same as the web process, there is an alternative: The /end-user/ can run their own /web server/, for example locally, and install the developer-provided Newspeak ~.vfuel~ file into their local Newspeak server. The ~.vfuel~ file is the *Newspeak program package for the web*. We haved used this process in our ~CounterApp~ local deployment. See section [[Deploy ~CounterApp~ as standalone app into local Newspeak server]].
-  - /iOS      end-user/ *installs* the ~iOS app~ from Apple store (*repository*).
-  - /Android  end-user/ *installs* the ~.apk file~ from Google Playstore (*repository*).
-  - /Linux    end-user/ *installs* the ~.rpm file~ from the *repository* (for example, OpenSUSE OSS repository)
-- End-user *runs* the *program* from the *program package* (which is now installed on their system) on their system.
-  - /Web      end-user/ *navigates their browser* to the URL where the developer /installed/ the /program/. 
-    - Note: If the /end-user/ runs their own (local) server, the URL would point to the local server, as discussed int the /install/ section above.
-  - /Newspeak end-user/ *navigates their browser* to the URL where the developer /installed/ the /program/ (same as on the web) . For example, /end-user/ may navigate to the ~CounterApp~ on the Newspeak website, where it was installed: https://newspeaklanguage.org/samples/primordialsoup.html?snapshot=CounterApp.vfuel.
-    - Note: If the /end-user/ runs their own /web server/ for Newspeak, for example locally, and installed the developer-provided Newspeak ~.vfuel~ file into their local Newspeak server, the URL would be http://localhost:8080/primordialsoup.html?snapshot=CounterApp.vfuel. See section [[Deploy ~CounterApp~ as standalone app into local Newspeak server]].
-  - /iOS      end-user/ *runs* the ~iOS app~ from Apple store (*repository*).
-  - /Android  end-user/ *runs* the ~.apk file~ from Google Playstore (*repository*).
-  - /Linux    end-user/ *runs* the ~.rpm file~ from the *repository* (for example, OpenSUSE OSS repository)
- 
 
 
 *** IN-PROGRESS Newspeak general: Packaging and distributing a Newspeak app - Namespace, Global namespace, manifest
@@ -963,270 +975,34 @@ Only classes that the IDE considers apps (applications) show these links.
 IDE concludes a class is an app based on a convention: presence of certain methods. For details which method(s), see [[Develop, package, distribute ~AHelloWorldApp~ app]]
 
 
-* TODO SECTIONS NOT READY. IGNORE FOR NOW 
+** How would I create and distribute a Newspeak App to run on the web, on mobile, or on desktop?
 
-** TODO Structure of paragraphs
+TL;DR: For a detail description of developing, packaging, running and deploying a concrete Newspeak app, read the section [[Newspeak: A quickstart.  Explore the IDE. Then develop ~CounterApp~, package it and deploy it]]
 
-TL;DR: This section describes 
+The text below is a general introduction of how a Newspeak App can be made ready for deployment.
 
-- 
+How would I go about building and running a "Hello world" application? I know I can create a class, in the browser IDE .. ok .. but from there, how to I "create and deploy the application" so I end up with something like the ToDo app ... any high level notes on that?
 
-Assumptions: 
+*There are two options to build an app*
 
-- 
+1) Easy but flakey. There is a 'deploy' option that the IDE displays
+   for apps.  It's buggy and slow, but mostly works if you are
+   prepared to wait a ridiculous amount of time, and tolerate the fact
+   that the app will be too large due to bugs in the serialization
+   code :-(. We need to fix that, but you can deploy apps that way,
+   especially if they are small. You choose the option
+   'asVictoryFuelWithMirrors' if your app uses the GUI (there's some, probably gratuitous, mirror dependency in the UI)  and 'asVictoryFuel' otherwise.
+   - Details:  where is the [deploy] button. Go to 'Newspeak source code". Look at HopscotchWebIDE class (it's the one app pre-loaded in the system). You'll see the deploy link in two places. In the Root namespace itself - if your window is wide enough, it will show on the same line as the link for the class. If you open the class, it will be at the top, to the right of the class name.
 
-Notes:
+2) Slightly more complex, but works better. You use a script that runs the C version of the PSoup VM to do  the deployment. THis is faster, more reliable and produces smaller deployments. 
 
-- 
+In either case, .vfuel file is produced.  Assuming you are running Newspeak using option 1 (a local server, [[install-method-1]]), you can then serve that file and run your app.
 
-*Steps: To achieve YYYYY, do the following:*
+*Deployment of the app*
 
+This .vfuel can then be deployed into a (locally installed) Newspeak server.
 
-- Action: 
-- Result:  
-- Can contain:
-  - Question: What makes a Newspeak class a "runnable Newspeak application"?. todo 
-  - Note: 
-
-
-Summary: 
-
-- 
-
-Next: 
-
-** TODO Newspeak terms:
-
-- ~.vfuel~ :: Files with this extension are essentially "deployable applications in wasm". They can be deployed by copying them into the running Newspeak web server. todo - this is not quite correct.
-
+- For instructions on how to install the server see [[install-method-1]]
+- For instructions on how to deploy a sample app, in particular the ~CounterApp~, see [[Deploy ~CounterApp~ as standalone app into local Newspeak webserver]].
   
-** TODO Newspeak syntax
-
-*** Comments ~(* comment *)~ 
-
-Code like ~(* comment *)~ is a comment. We use this in our examples, but sometimes, we just say ~( .. code here .. )~ - the latter would not compile.
-
-*** TODO Class definition
-#+begin_src 
-
-#+end_src
-
-*** Definitions in Newspeak have syntax similar to ~someName = ( .. code here ..)~
-
-In any Newspeak code, we will quickly discover syntax segments such as ~someName = ( .. code here ..)~. The text below is somewhat vague, and somewhat incorrect, but should help orienting us in Newspeak code.
-
-Note that the brackets ~(~ and ~)~ can be all inline, on lines by itself, or combined on one line for readability - whitespace is ignored during parsing.
-
-At all places, such syntax is a definition of something: *a library*, *a class*, *a class initializer slots* (members)  *a method* etc.
-
-Note that for example for class definition, there may be multiple sections, such as  ~someName = ( .. code here ..)( .. other code here ..)~
-
-**** Class definition examples:
-
-***** Class definition:
-
-#+begin_src
-class RGBCar = ()()
-#+end_src
-
-From the specs: the above also defines a constructor : Class definitions create a *class factory object* that can produce instances of the class. The factory object *supports at least one message* that produces new instances. This is known as the *primary factory method*. By default, it is called new.
-
-***** A commented class definition:
-
-This code shows the three blocks a class definition can have, with comments what code we define or write in each block:
-
-#+begin_src
-class RGBCar = (
-  (* instance initializer: inits slots and runs initializer code*)
-)(
-  (* class body: defines instance methods or inner classes *)
-):(
-  (* class methods are in a group after : *)
-)
-#+end_src
-
-What is initializer code? It is code that runs first before class instances are "returned" (visible) to context.
-
-***** Class definition with uninitialized slot:
-
-#+begin_src
-class RGBCar = ( |rgbColor. numWheels.| )()
-#+end_src
-
-***** Class definition with initialized slot:
-
-#+begin_src
-class RGBCar = ( |rgbColor = "Blue". numWheels = 4. | )()
-#+end_src
-
-***** Class definition with uninitialized slot followed by some code:
-
-#+begin_src
-class RGBCar = ( |rgbColor.| rgbColor = "Blue". )()
-#+end_src
-
-***** Class definition defining a constructor which allow parameters passing:
-
-#+begin_src
-class RGBCar rgbColoe: aRgbcolor = (
-  |rgbColor ::= aRgbColor.| (* ::= means mutable. immutable would be just = *)
-)(
-)
-#+end_src
-
- 
-**** Instance method definition examples:
-
-#+begin_src
-class RGBCar = (
-  | rgbColor = "Blue".
-    numWheels = 4.
-  |
-)(
-  public color = ^rgbColor.
-  public commentColor: aComment = ( ^ rgbColor, aComment ). (* comma is string concatenator! *)
-)
-
-#+end_src
-**** TODO A somewhat full flegded example of declaring *a library*, *a class*, *a class initializer slots* (members)  *a method* etc.
-
-Note that classes can be nested. Library is just a class with nested classes.
-
-#+begin_src 
-
-class CarLibrary = (
-    (* library initializer would usually be empty*)
-  )
-  (
-    class RGBCar = (
-      (*slots and initializer code*)
-    )(
-      (* instance methods or inner classes *)
-    ):(
-      (* class methods are in a group after : *)
-    )
-  )
-:
-(
-)
-#+end_src
-
-**** TODO Instance Method definition examples:
-
-Note: Method definition is normally called method definition. But let us keep the same term, definition.
-
-Methods are defined in the second code section 
-#+begin_src
-class 
-
-
-#+end_src
-
-*** A rant about ~x:, x::, x::=, x=, x~ etc 
-
-APL (https://aplwiki.com/wiki/Simple_examples) is beautiful (not that I ever learned it, not even close). I appreciate its extreme terseness, and its use of non-ascii characters. I would appreciate it much more if I was a pro in it. But I assume that would take a long time, and I would have to live in it daily.
-
-I do not appreciate extreme terseness in "mainstream" programming languages as much. It can accumulate to the point, even working with a language daily, I scratch my head reading code "what is this sequence of ?, =, +, /" - or what you have it.
-
-A language may start with duplicating some "common" arithmetics operators
-
-~+, *, /, -, %~ (ok, why? math uses "mod". But I digress), then we may have ~++, ~/~ (ok, already I had to look that up) etc..
-
-Then of course there may be the assignment versions of those
-
-~+=, *=, /=, -=, %=~ etc.. not even talking ~|=~ etc..
-
-Then we may have relational operators
-
-~>, <, >=, <=~ - these are obvious as they are mostly borrowed from math .. sort of .. because mainstream keyboards are stuck on ascii, <= is a poor translation of it's math counterpart  
-
-equality operators
-
-~==, !=~ - not always obvious, as languages uses conflict 
-
-Then we may have the bitwise and shift operators
-
-~&, |, ^~ (another one I had to look up), shift left ~<<~, etc ..
-
-and of course the logical operators
-
-~||, &&, !~
-
-and perhaps the "dot" and "dot dot" - the object member access syntactic elements
-
-~., ..~ 
-
-etc
-
-I suppose, most of the curly braces languages do use all of the above the same way - that is why I only do not remember a relatively small subset of them :( , and I do not complain that much :)
-
-But, reading code, many of those operators are still a pain and require some king of mental pause or a mental switch! Code is read much more often than written. When writing code, they are a bit of a pain as well, perhaps not as much, as one uses a relatively small subset (or the obvious subset such as those used in arithmetics).
-
-Ok, fair enough .. well not quite fair, but accepted by years of burning this into our brains.
-
-But later, the language users may start to complain: "I have to write this and that, and it's too much typing", or "oh we need to screen for null so much" and so we get:
-
-~expr ? stmt : stmt2~ - most bracey languages have this, so it should go to the above
-
-and
-
-~?.~ - as in ~myObject.?myProperty~
-
-and
-
-~??~ - as in ~myStr ?? "empty"~
-
-and
-
-~??=~ as in ~value ??= 5~
-
-and maybe
-
-~...?~ as i ~['first', ...?aList]~
-
-
-The mental pause with those, depending on how much you use the language in question, can be significant. To the point, one cannot really read the code fluently unless embedded in the particular language daily.
-
-
-I realize this stuff is todo 
-
-also
-
-
-Operator	Name	Meaning
-()	Function application	Represents a function call
-[]	List access	Refers to the value at the specified index in the list
-.	Member access	Refers to a property of an expression; example: foo.bar selects property bar from expression foo
-?.	Conditional member access	Like ., but the leftmost operand can be null; example: foo?.bar selects property bar from expression foo unless foo is null (in which case the value of foo?.bar is null)
-
-todo
-
-
-All this long story above gets me to my main point of syntax difficulty with Newspeak. When first studying Newspeak, it took me forever to figure out the ~x:, x::, x::=, x=, x~. What I mean:
-
-#+begin_src 
-class RGBCar = (
-  (* instance initializer: inits slots and runs initializer code*)
-  |
-  numWheels = 4.
-  mats ::= 'basic'.
-  |
-)(
-  (* class body: defines instance methods or inner classes *)
-):(
-  (* class methods are in a group after : *)
-)
-
-
-#+end_src
-
-
-
-
-
-
-
-
-
-
 
