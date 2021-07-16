@@ -23,16 +23,36 @@ Much of this document is collected from existing Newspeak sources:
 
 * Changelog
 
-|       Date |   | Author           |   | Change                                                                                                                                               |
-|------------+---+------------------+---+------------------------------------------------------------------------------------------------------------------------------------------------------|
-| 2021-05-02 |   | Gilad Bracha     |   | Important clarifications throughout the document                                                                                                     |
+|       Date |   | Author           |   | Change                                                                                                                        |
+|------------+---+------------------+---+-------------------------------------------------------------------------------------------------------------------------------|
+| 2021-05-02 |   | Gilad Bracha     |   | Important clarifications throughout the document                                                                              |
 | 2021-05-04 |   | Milan Zimmermann |   | Expanded on using the Newspeak IDE, mostly in the section [[Run the online version of the Newspeak IDE. Read docs, watch videos]] |
-| 2021-06-07 |   | Milan Zimmermann |   | Wording changes and clarifications in several sections                                                                                               |
-| 2021-07-05 |   | Milan Zimmermann |   | Clarifications on saving:  "lastSaved" vs "backup" in [[Saving changes in Newspeak]]                                                                               |
-| 2021-07-05 |   | Milan Zimmermann |   |                                                                                                                                                      |
+| 2021-06-07 |   | Milan Zimmermann |   | Wording changes and clarifications in several sections                                                                        |
+| 2021-07-05 |   | Milan Zimmermann |   | Reworked the saving paragraph:  "lastSaved" vs "backup" in [[Saving changes in Newspeak]]                                         |
+| 2021-07-16 |   | Milan Zimmermann |   | Added section [[*Newspeak is different. The first week of a personal journey around the Newspeak platform][Newspeak is different. The first week of a personal journey around the Newspeak platform]]                                                                                                         |
 
   
-* Newspeak: A quickstart.  Explore the IDE. Then develop ~CounterApp~, package it and deploy it
+* Notation
+
+*** Message (function) names notation in text
+
+Newspeak is a message based system. All runtime operations are message sends.
+
+What do we mean by a 'message'? Think of it as a method or function name with parameter names (method signature). 
+What do we mean by 'message send'? Think of it as calling (invoking) the method or function
+
+In fact, we may use 'method name' and 'message name' interchangeably, although it is not quite precise. Same for 'send a message' and 'call (or invoke) a method'
+
+We needed this explanation to introduce a notation used in this document. When you see in text, something like ~Rectangle >> #initWidth: width andHeight: height~, it means: "class /Rectangle/ has a method named /initWith:andHeight/, with first parameter name /width/ and second parameter name /height/". If you see just ~#initWidth: width andHeight: height~ it means the same, but we assume the class name "Rectangle" is clear from context. Depending on context, it could also mean "in some piece of code, we called method  ~#initWidth: width andHeight: height~ on an instance of a Rectangle.
+
+Sometimes the parameter names are not included and we shorten the signature to ~#initWidth:andHeight:~
+
+Examples:
+- ~#main: platform args: args~ 
+- ~#usingPlatform: platform~
+
+
+* Newspeak: A quickstart.  Explore the IDE. Then develop CounterApp, package it and deploy it
 
 TL;DR: This quickstart section attempts to provide an incremental introduction to Newspeak. First, we introduce the Newspeak online IDE, then we build and deploy a sample Newspeak app called ~CounterApp~. A spoiler: we can look ahead and run the app we will be building - the ~CounterApp~ - online at https://newspeaklanguage.org/samples/primordialsoup.html?snapshot=CounterApp.vfuel. 
 
@@ -55,7 +75,7 @@ In more detail, let us try the following:
 - Action: Click the "+" beside the "Root" to add a class.
 - Result: A class editor opens, with a template of a new class definition. At first, let's just create a dummy class by editing the template
   [[file:img/newspeak---a-few-notes.org-newspeak-source-defining-a-new-class.png]]
-- Action: Click the checkbox on the top right [[file:img/newspeak---a-few-notes.org-accept-image.png]] to "Accept" the new class definition. Note: Clicking the "Accept" button is important. If you make any code changes, or workspace code changes, do not forget to click "Accept", otherwise your changes will be lost immediately after moving away from the source editing page. See the discussions in [[*Saving changes in Newspeak]].
+- Action: Click the checkbox on the top right [[file:img/newspeak---a-few-notes.org-accept-image.png]] to "Accept" the new class definition. Note: Clicking the "Accept" button is important. If you make any code changes, or workspace code changes, do not forget to click "Accept", otherwise your changes will be lost immediately after moving away from the source editing page. See the discussions in [[*Saving changes in Newspeak][Chapter Saving changes in Newspeak]].
 
 - Result: The class now appears in the list of classes (may need to scroll down, classes are sorted alphabetically)
   [[file:img/newspeak---a-few-notes.org-my-new-class-now-added.png]]
@@ -83,7 +103,7 @@ Notes:
 
 Saving your changes:
 
-*Any changes we make (for example: we add a class, we change a class, evaluate something in the workspace) are stored in the browser local storage in two entries: "lastSaved" and "backup".* The "Accept" button [[file:img/newspeak---a-few-notes.org-accept-image.png]] saves the changes in local storage under the key "backup", while the "Save" button [[file:img/newspeak---a-few-notes.org-save-button.png]], saves the changes under the key "lastSaved".  See [[*Saving changes in Newspeak]] for details.
+*Any changes we make (for example: we add a class, we change a class, evaluate something in the workspace) are stored in the browser local storage in two entries: "lastSaved" and "backup".* The "Accept" button [[file:img/newspeak---a-few-notes.org-accept-image.png]] saves the changes in local storage under the key "backup", while the "Save" button [[file:img/newspeak---a-few-notes.org-save-button.png]], saves the changes under the key "lastSaved".  See [[*Saving changes in Newspeak][Chapter Saving changes in Newspeak]] for details.
   
 Documentation:
 
@@ -107,10 +127,10 @@ Potential "gotchas":
     
 Next:
 
-In the next section [[Build, run, and debug the ~CounterApp~ in Newspeak (in the online version)]], we show how to create a simple ~CounterApp~ in Newspeak.
+In the next section [[Build, run, and debug the CounterApp in Newspeak (in the online version)]], we show how to create a simple ~CounterApp~ in Newspeak.
 
 
-** Build, run, and debug the ~CounterApp~ in Newspeak (in the online version)
+** Build, run, and debug the CounterApp in Newspeak (in the online version)
 
 TL;DR: This section describes 
 
@@ -158,7 +178,7 @@ Notes:
   - Note 3: The ~CounterApp~ shows links to ~[deploy] [configuration] [run] [debug]~. Why do only the "app" classes such as ~CounterApp~ (and no other classes) show the ~[deploy] [configuration] [run] [debug]~ links in the Newspeak IDE? That is because the "app" classes represent a runnable Newspeak application.
   - *Question: What makes a Newspeak class a "runnable Newspeak application"?. todo*
 - Action: To save the classes we added, (~CounterApp~ or ~CounterUI~) in the browser local storage explicitly "now", click the diskette "Save" button [[file:img/newspeak---a-few-notes.org-save-button.png]]
-- Result: The two classes are stored in the browser local storage. To read more about details of the browser local storage, see [[*Saving changes in Newspeak]].
+- Result: The two classes are stored in the browser local storage. To read more about details of the browser local storage, see [[*Saving changes in Newspeak][Chapter Saving changes in Newspeak]].
 - Action: click the *[run]* link beside the  ~CounterApp~. This runs the code in the app (specifically, the ~CounterUI~ code). 
 - Result: The counter app opens and runs in the same browser tab; it should look like this:  [[file:img/newspeak---a-few-notes.org-counter-app-running.png]] The code presents a counter (integer), and 3 buttons, which actions are to "increment", "decrement" and "reset" the counter. 
 - Action: click "increment"
@@ -169,12 +189,12 @@ Summary:
 
 - We have shown how to build, run, and debug, a Newspeak app ~CounterApp~ in "development mode", inside the online Newspeak IDE. 
 - Newspeak online is similar to (but we dare say superior to) running, in "development mode", a Java, Android or Flutter application in IntelliJ, Eclipse, Visual Studio, Atom, Emacs, vi, or any IDE.
-- Your changes are always stored, as long as you "Accept". See [[*Saving changes in Newspeak]] for saving changes details.
+- Your changes are always stored, as long as you "Accept". See [[*Saving changes in Newspeak][Chapter Saving changes in Newspeak]] for saving changes details.
 
 Next: 
 
 - Let's pretend the CounterApp is useful, useable, and production ready.
-- How do we deploy it for us to use it as a browser app "in production mode"? Read the [[Deploy ~CounterApp~ as standalone app into local Newspeak webserver]] section.
+- How do we deploy it for us to use it as a browser app "in production mode"? Read the [[Deploy CounterApp as standalone app into local Newspeak webserver][Chapter Deploy CounterApp as standalone app into local Newspeak webserver]] section.
 
 
 ** Download, install, and start a local Newspeak webserver
@@ -229,10 +249,10 @@ Summary:
 - In this section we installed the local Newspeak webserver, and started using the served Newspeak IDE.
 - The installation method described here is the [[install-method-2][Installation method 2 (local Newspeak webserver)]]   
 
-Next: [[*Deploy ~CounterApp~ as standalone app into local Newspeak webserver]]
+Next: [[*Deploy CounterApp as standalone app into local Newspeak webserver][Chapter Deploy ~CounterApp~ as standalone app into local Newspeak webserver]]
 
 
-** Deploy ~CounterApp~ as standalone app into local Newspeak webserver
+** Deploy CounterApp as standalone app into local Newspeak webserver
 
 TL;DR: This section describes 
 
@@ -242,11 +262,11 @@ TL;DR: This section describes
 
 Prerequisits: 
 
-1. We have followed the online section [[*Build, run, and debug the ~CounterApp~ in Newspeak (in the online version)]]. In that section, we have downloaded (from Newspeak Github) and compiled two classes ~CounterApp~ and ~CounterUI~ *while attached to the online Newspeak*.
+1. We have followed the online section [[*Build, run, and debug the CounterApp in Newspeak (in the online version)]]. In that section, we have downloaded (from Newspeak Github) and compiled two classes ~CounterApp~ and ~CounterUI~ *while attached to the online Newspeak*.
    - This statement requires a "fine point" explanation. 
-     - In the earlier section  [[*Build, run, and debug the ~CounterApp~ in Newspeak (in the online version)]], the two classes, ~CounterApp~ and ~CounterUI~, were saved to the browser local storage. 
+     - In the earlier section  [[*Build, run, and debug the CounterApp in Newspeak (in the online version)]], the two classes, ~CounterApp~ and ~CounterUI~, were saved to the browser local storage. 
      - In this current section, we re-attach to online Newspeak at https://newspeaklanguage.org/samples/primordialsoup.html?snapshot=HopscotchWebIDE.vfuel. 
-     - As explained in [[*Saving changes in Newspeak]], the changes we made in the online version are still stored locally in the browser local storage. 
+     - As explained in [[*Saving changes in Newspeak][Chapter Saving changes in Newspeak]], the changes we made in the online version are still stored locally in the browser local storage. 
      - So, when we re-attach to online Newspeak in this section, the classes ~CounterApp~ and ~CounterUI~ are still available. We use them to "create the CounterApp" (by saving it "as victory fuels" - that is, as file ~CounterApp.vfuel~) which is the app. 
      - This app - the  file ~CounterApp.vfuel~ - can then be copied to the serving directory of local Newspeak, and can be opened from there.
 2. We have installed the local version of Newspeak by following the section [[*Download, install, and start a local Newspeak webserver]].*
@@ -267,7 +287,7 @@ One more "fine point" note:
 
 - Action: Navigate to the online version of Newspeak at https://newspeaklanguage.org/samples/primordialsoup.html?snapshot=HopscotchWebIDE.vfuel and click the "Newspeak Source"
 - Result: Under "Root" you should see an alphabetically organized list of classes, similar to [[file:img/newspeak---a-few-notes.org-newspeak-source.png]], 
-  - Note: If you followed the online section [[*Build, run, and debug the ~CounterApp~ in Newspeak (in the online version)]], there should be ~CounterApp~ and ~CounterUI~ classes in the alphabetic list.
+  - Note: If you followed the online section [[*Build, run, and debug the CounterApp in Newspeak (in the online version)]], there should be ~CounterApp~ and ~CounterUI~ classes in the alphabetic list.
 - Action: In the class list, find the ~CounterApp~, and click the [deploy] to the right of the "CounterApp"
 - Result: a popup showing deployment options, starting with ~asVictoryFuel~: [[file:img/newspeak---a-few-notes.org-click-deploy-on-counter-app.png]]
 - Action: Select ~asVictoryFuelWithMirrors~. We choose the option 'asVictoryFuelWithMirrors' if our app uses the GUI (there's some mirror dependency in the UI) and 'asVictoryFuel' otherwise.
@@ -289,11 +309,10 @@ Summary:
 Next: This is the end of coding, building and running the ~CounterApp~
 
 
-* IN-PROGRESS-NOW Hello, World, Newspeak is different. The first week of a personal journey around the Newspeak platform.
+* IN-PROGRESS-NOW Newspeak is different. The first week of a personal journey around the Newspeak platform
 
-The final goal of this section is to build a 'Hello, World' App, deploy it as a standalone web app, and run it. But we will take a detour.
-
-On the detour, I would like to walk back and capture my amazement, surprises, and gotchas during a journey of the first week learning Newspeak, but polish those surprises so they can be hopefully followed. Actually "the first week" is now completely correct.  I did first discover Newspeak almost when it started, read available articles back then, and covered the syntax which helped. But I did not have time back then to get hands dirty.
+** Motivation of writing this journey
+On this journey, I would like to walk back and capture my amazement, surprises, and gotchas during a journey of the first week *stretched over 2 months* learning Newspeak, but polish those surprises so they can be hopefully followed. Actually "the first week" is not completely correct.  I did first discover Newspeak long time ago, almost when it started, read available articles back then, and covered the syntax which helped. But I did not have time back then to get my hands dirty.
 
 Most learning, and often "unlearning" for me was the discovery different the Newspeak platform is, compared to most mainstream platforms, such as Java, Python, C++, even Smalltalk (with Smalltalk, Newspeak shares syntax and extreme late boundedness).
 
@@ -307,7 +326,7 @@ At this moment I should give readers some links to jump off here and do this alo
     - [[https://newspeaklanguage.org/samples/Literate/Literate.html][Newspeak by example]]  which is a live document, introduces the syntax of Newspeak, sort of a Jupyter notebook for Newspeak: reader can type and evaluate Newspeak expression in a web page, interleaved with document text.
   - A hands-on Newspeak introduction
     - Either use (still relevant where not Squeak dependent) [[https://newspeaklanguage.org/ns101/ns101.html][Newspeak on Squeak - A Guide for the Perplexed]]
-    - Or follow the hands-on section of this document [[*Newspeak: A quickstart.  Explore the IDE. Then develop ~CounterApp~, package it and deploy it]]
+    - Or follow the hands-on section of this document [[*Newspeak: A quickstart.  Explore the IDE. Then develop CounterApp, package it and deploy it]]
 
 Getting back to my first week journey; it is unfair to hikers, as my journey was at times, that of a wanderer almost lost in a forest; haphazardly reading all I can get my hands on, trying code snippets things in the IDE, re-tracing running and deploying the existing ~CounterApp~, and overall, taking one step forward, then two steps back as the step forward discovered more unknowns.
 
@@ -315,11 +334,12 @@ Some concrete talk please!
 
 Ok. But first one more paragraph of metatalk. Just a heads up, I will start using the word *platform* a lot. Let me try explain what I mean by /platform/ or /computer language platform/. Often we think of learning a "computer language" as learning its syntax. But syntax is only a small part of being able to be productive in the language. There are all those things around the syntex, that are needed to be comfortable and productive with a "computer language": How is it installed, how we create projects to start writing a useful program, the core idioms, how to use programs written by other people in that language (the libraries), how the programs we write are packaged and send to users to use (building, packaging and installing apps), how to secure the resulting program. It is all these things listed in the long sentence that I mean by the "language platform". I believe we should start using the term "learning a (computer) language platform" rather than "learning a (computer) language"   
 
-So first, Newspeak syntax is not a major obstacle. Well, it is quite different too, even for someone knowing Smalltalk, which Newspeak shares syntax with. But one can get syntax basics from the links above. Also, Newspeak syntax is a bit like speaking English. Just different from the mainstream. I will not address syntax too much here.
+Newspeak syntax is not a major obstacle. Well, it is quite different too, even for someone knowing Smalltalk, which Newspeak shares syntax with. But one can get syntax basics from the links above. Also, Newspeak syntax is a bit like speaking English. Just different from the mainstream. I will not address syntax too much here.
 
-Second, Newspeak is a principled language and *platform* (in the sense described). Gilad Bracha and collaborating authors describe several principles (adherence to which removes many mainstream platforms' weaknesses). Those principles are described in the above linked paper [[http://bracha.org/newspeak.pdf][The Newspeak programming platform]] and other documents.
+Newspeak is a principled language and *platform* (in the sense described). Gilad Bracha and collaborating authors describe several principles (adherence to which removes many mainstream platforms' weaknesses). Those principles are described in the above linked paper [[http://bracha.org/newspeak.pdf][The Newspeak programming platform]] and other documents.
 
-Third, as this section title states, Newspeak is different. The being different is not there for fun. It is different to implement those principles:
+As this section title states, Newspeak is different. *Being different is not for fun. Newspeak must be different to implement its core principles*
+
 - Dynamicity
 - Modularity
 - Classes can be nested (nesting provides the core of modularity)
@@ -328,48 +348,64 @@ Third, as this section title states, Newspeak is different. The being different 
 - intentional lack of static state
 - support for both object-oriented and functional styles
 - the only operation is a message send
-- and more
 
-I will pick one item from "and more". Everything, I mean absolutely everything in Newspeak language is an object (instance of a class). Other languages use separate concepts for packages, apps, modules, namespaces, classes. All of these concepts exist in Newspeak, but they are all just object. But, then, given an object, how do we know it is a module, a class, or an app? The distinction between them is two-fold: a) the object's position in the class nesting and b) presence of certail [[*Convention methods]] such as ~#main:platform args:args~  
+  
+I will add one multi-item principle.
+- Everything, I mean absolutely everything in the Newspeak language is an object (instance of a class). 
+  - Other languages use separate concepts for packages, apps, modules, namespaces, classes. They also use the filesystem a lot.
+  - All of these concepts exist in Newspeak, but they are all just objects.
 
-Fourth, the "being different" does came at an initial price (for me at least), often in the form of unlearning. 
+But, given a Newspeak object, how do we know it is a *module, a class, or an app*? The distinction between them is determined by:
+
+1) the object's position in the class nesting and
+2) presence of certain API (convention named methods such as ~#main:platform args:args~ 
+
+I have to admit, the "being different" does came at an initial price (for me at least), often in the form of unlearning. 
 
 More concrete talk please!
 
 To do anything useful with Newspeak, we have to use the IDE. There is no command line per se (there is, but it is inside the IDE. It is called the Workspace). So let us open the Newspeak IDE to look around. Navigate to  https://newspeaklanguage.org/samples/primordialsoup.html?snapshot=CounterApp.vfuel.
 
-You will get something like
+We see something like
 
 file:/img/newspeak---a-few-notes.org-local-ide.png
 
-Then click the "Newspeak source" link.
+Click the "Newspeak source" link.
 
 Each paragraph below is devoted to a feature that was surpising (to me) or unusual in some way. 
 
-** The "no global namespace, true or false?" surprise. Also, Namespaces and Modules discussion.
+
+** Namespaces and Modules
 
 *** Top level classes in the IDE
 
-This section is a bit academic, but I am including it because namespaces matter for modularity.
+This section is a bit academic, but I am including it because namespaces matter for modularity and modules are crucial for Newspeak Apps and Libraries.
 
 So in the IDE -> "Newspeak source", we are greeted with the word *Root* on top left, and below, a list of class names. 
 
 [[file:img/newspeak---a-few-notes.org-ide-full-page-classes-collapsed.png]]
-First: what is the "Root" on the top? According to documentation, this is the IDE's top [[*Namespace]] - /Root/ is just a name of the  namespace.
+First: what is the "Root" on the top? According to documentation, this is the IDE's top [[*Namespace][Chapter Namespace]] - /Root/ is just a name of the  namespace.
+
 
 *** Discussion of Namespaces
 
 /Namespaces/ are similar to package or directory names in other languages; they provide a way to organize and group artifact names used in programs (names of packages, classes, or functions).  One namespace example is "org.mypackage" in Java. All classes in that package belong to the namespace "org.mypackage".  Python concept of a package is similar.
 
-In Newspeak, each class you see in the screenshot above (AccessModifierTesting, etc) is called a [[*Top level class]], and it belongs to the /Root namespace/. Each /top level class/ has an important property of being a [[*Module]]. More on /modules/ later.
+In Newspeak, each class you see in the screenshot above (AccessModifierTesting, etc) is called a [[*Top level class][Chapter Top level class]], and it belongs to the /Root namespace/. Each /top level class/ has an important property of being a [[*Module][Chapter Module]]. More on /modules/ later.
 
-While it is true that a /namespace/ provide grouping of articacts, what is the [[*Global namespace]]? Perhaps a good start of describing a /global namespace/ is this: In a program, we want to use other programs, classes, functions, or what have you, created by other developers.  If our program is in "org.mypackage" and wants to use "org.apache.SomeClass", then at compile time or at runtime, the platform (Java, but e.g. Python is equivalent) has to find "org.apache.SomeClass". How does it do that? By looking through CLASSPATH or PYTHONPATH. The CLASSPATH or PYTHONPATH play the role of the /global namespace/!  All other namespaces, such as "org.apache" belong to the /global namespace/.  Any class definition in a Java or Python program has access to artifacts on the CLASSPATH or PYTHONPATH.
+While it is true that a /namespace/ provide grouping of articacts, what is the [[*Global namespace][Chapter Global namespace]]? Perhaps a good start of describing a /global namespace/ is this: In a program, we want to use other programs, classes, functions, or what have you, created by other developers.  If our program is in "org.mypackage" and wants to use "org.apache.SomeClass", then at compile time or at runtime, the platform (Java, but e.g. Python is equivalent) has to find "org.apache.SomeClass". How does it do that? By looking through CLASSPATH or PYTHONPATH. The CLASSPATH or PYTHONPATH play the role of the /global namespace/!  All other namespaces, such as "org.apache" belong to the /global namespace/.  Any class definition in a Java or Python program has access to artifacts on the CLASSPATH or PYTHONPATH.
 
-*** Discussion of Modules. Module in Newspeak is defined as the top level class, and also behaves as what we expect from a module!
 
-Now, we will briefly mix the concept of a [[*Module]] in the discussion.  /Modules/ are related to namespaces in a way that we cannot precisely define here. But we can say this: In software, modules are meant to be artifacts (libraries) providing some useful non trivial functionality, without needing any help (apart from the help of "imported modules" - that is, help of other modules intended to provide some "subfunctionality").  A /module/ is also generally represented by a /namespace/, but there is an overlap. In Java or Python, if we accept that each module is in a single namespace, and if module1 is in namespace "org1.module1" and module2 is in namespace "org2.module2", and, if both module artifacts are places on the CLASSPATH or PYTHONPATH (global namespace), then org1.module1 can access org2.module2 and vice versa, even though the creators never intended that. This is why the availability of the /global namespace/ harms modularity. Not in Newspeak. *In Newspeak, we define that /top level class/ is a [[*Module][Newspeak module]].*. This is not only an empty new term. It turns out, that /Newspeak modules/ also satisfy what we normally want from software modules: they are self-contained elements of data and functionality. In addition, /Newspeak modules/ cannot cross-access when deployed (as modules in other platforms), unless one module explicitly requests the other during build time. More on that later.
+*** Discussion of Modules
 
-*** Back to namespaces and the suprise of [[*Global namespace]] existence
+Now, we will briefly mix the concept of a [[*Module][Chapter Module]] in the discussion.  /Modules/ are related to namespaces in a way that we cannot precisely define here. But we can say this: In software, modules are meant to be artifacts (libraries) providing some useful non trivial functionality, without needing any help (apart from the help of "imported modules" - that is, help of other modules intended to provide some "subfunctionality").  A /module/ is also generally represented by a /namespace/, but there is an overlap. In Java or Python, if we accept that each module is in a single namespace, and if module1 is in namespace "org1.module1" and module2 is in namespace "org2.module2", and, if both module artifacts are places on the CLASSPATH or PYTHONPATH (global namespace), then org1.module1 can access org2.module2 and vice versa, even though the creators never intended that. This is why the availability of the /global namespace/ harms modularity. Not in Newspeak.
+
+*Definition: In Newspeak, we define /Module/  as a /top level class/*.  The classes shown on the top level in the IDE are all /Modules/. We often use the term /Newspeak Module/ for them.
+
+*/Newspeak Module/ is not only an empty new term. It turns out, that /Newspeak modules/ also satisfy what we normally want from software modules: they are self-contained elements of data and functionality.* In addition, /Newspeak modules/ cannot cross-access each other when deployed (as modules in other platforms do cross-access), unless one module explicitly requests another module during build time. More on that later.
+
+
+*** Back to namespaces and the surprise of [[*Global namespace][Global namespace]] existence
 
 For the better language discussion of what a namespace is, and why a global namespace is not needed in the Newspeak language, see https://gbracha.blogspot.com/2008/12/living-without-global-namespaces.html. 
 
@@ -378,7 +414,7 @@ The existence of the /Root namespace/ describes my first suprise, although I rea
 Next we can ask, why does the IDE need a global namespace (Root), while the language does not have one, in fact very intentionally does not have one?  The reason is, when working in the IDE, we want cross-access between the /modules/ (the /top level classes/). After packaging and deployment of any Newspeak module (outside the IDE), only the modules intended to be used by other modules are available! Modules cannot freely cross-use each other, because there is no global namespace to find each other. If a moduleA needs to use servingModule2, it must explicitly as for it at the packaging stage. More on that later. 
 
 
-** Class structure, /factory constructors/, the mystery of /convention methods/, /platform/, and /manifest/
+** Class structure, factory constructors, app and library API, platform and manifest
 
 *** Top level classes expanded
 
@@ -386,23 +422,27 @@ Next, we go ahead and expand each top level class in the "sources" screenshot ab
 
 [[file:img/newspeak---a-few-notes.org-ide-full-page-classes-expanded.png]]
 
+
 *** Newspeak class structure
 First, we can see, each top level class has 4 sections. Let's take the ActivationMirrorTestingConfiguration as an example
 
 1. A collapsable class name section for the class, ~ActivationMirrorTestingConfiguration~ with two subitems
    - a message to class on top ~#packageTestsUsing: manifest~ in our class. This message is a "core" constructor.  It is called the *Factory constructor*. 
-   - a list of ~Slots~. Slots are like "member variables". They can only be added from the /factory constructor/
+   - a list of ~Slots~. Slots are like "member variables". Slots can only be created in the /factory constructor/!
 2. a list of ~Classes~. Those are nested classes of the class ActivationMirrorTestingConfiguration
 3. a list of ~Instance methods~. Those are instance methods we can call on instances of ActivationMirrorTestingConfiguration
 4. a list of ~Class methods~. Those are class methods we can call on the class ActivationMirrorTestingConfiguration. They are "alternative constructors".
 
 There is a plus ("+ ") symbol  in the header of some of them. The reason there is no plus ("+ ") symbol beside slots, is that slots can only be added in the code of the /factory constructor/. Add a slot from the  /factory constructor/ code, and the added slot name will show in the IDE.
 
-*** The /factory constructors/ names, parameter names, and /convention method names/
 
-Second, we mentioned the messages like ~#packageTestsUsing: manifest~ are the /factory constructors/.
+*** Factory constructors
 
-Their names, on the /top level classes/ have an eerily similar structure. This bothered me on first sight, so I listed more of them. Here is the list of /factory constructors/ on some top level classes:
+We mentioned the messages on top like ~#packageTestsUsing: manifest~ are called the /factory constructors/.
+
+*The core role of a /factory constructor/ is to create slots. No other method can create slots!*
+
+/factory constructor/ names on the /top level classes/ have an eerily similar structure. This bothered me on first sight, so I listed more of them. Here is the list of the /factory constructors/ on some top level classes:
 
 #+BEGIN_EXAMPLE
 class AccessModifierTesting                 usingPlatform:       platform  testFramework: minitest = (| etc
@@ -419,16 +459,16 @@ class RuntimeForV8                          packageUsing:        manifest = ( et
 class Streams                               usingPlatform:       platform = ( etc
 #+END_EXAMPLE
 
-We see that generally, factory methods accept, at first position, one of 2 arguments
+We can see that the factory constructors accept, at first position, one of 2 arguments
 
 - ~platform~
 - ~manifest~
 
-If their first argument is ~platform~, their names always /start with/
+If the constructor first argument is ~platform~, their names always /start with/
 
 - ~#usingPlatform: platform~
 
-If ther first argument is ~manifest~, their names are always *exactly*
+If ther constructor first argument is ~manifest~, their names are always *exactly* one of
 
 - ~#packageUsing: manifest~
 - ~#packageTestsUsing: manifest~ (for tests only)
@@ -437,13 +477,14 @@ Clearly, ~platform~ and ~manifest~, must be significant!
 
 What are those objects? And what do they contain, why are they significant, and what role do they play in Newspeak? 
 
-*** The ~manifest~ object
+
+*** The manifest object
 
 **** What is in the manifest object?
 
 So what is in the manifest, why it is significant, and what role does it play in Newspeak?
 
-We can look at the code, and ask what Newspeak passes into the ~manifest~ parameter. We find that there is only one place that calls ~#packageUsing: manifest~, and it passes for ~manifest~ the value of object ~ide namespacing manifest~. So we can examine what ~ide namespacing manifest~ contains~. In Workspace, let us evaluate it
+We can look at the code, and ask what Newspeak passes into the ~manifest~ parameter. We find that there is only one place that calls ~#packageUsing: manifest~, and it passes for ~manifest~ the value of object ~ide namespacing manifest~. So we can examine what ~ide namespacing manifest~ contains. In Workspace, let us evaluate it:
 
 [[file:img/newspeak---a-few-notes.org-ide-namespacing-manifest.png]]
 
@@ -456,22 +497,22 @@ at: ActivationMirrorTesting
   etc
 #+end_example
 
-We see that the *manifest is a map containing exactly all top-level classes in the IDE - that is, all modules known to the IDE!*
+We see that the *manifest is a map containing exactly all top-level classes in the IDE - that is, all module classes known to the IDE!*
 
-So we have the answer to what does manifest contain.
+So we have the answer to what the manifest object contains.
 
-**** Why is manifest significant, and what role does it play in Newspeak?
 
-Ok, so we know what is in the ~manifest~ that is passed to 
+**** Why is the manifest object significant, and what role does it play in Newspeak?
+
+Ok, so we know what is in the ~manifest~ object that is passed to 
 
 - ~#packageUsing: manifest~
 - ~#packageTestsUsing: manifest~ (for tests only)
 
-but why is it so important to appear again and again in the /top level classes factory parameters/? The answer is somewhat common for ~manifest~ and ~platform~, so we describe them in a common section. See [[*The common role of ~platform~ and ~manifest~]]
+See [[*Common and distinct roles of platform and manifest in modules][Chapter Common and distinct roles of platform and manifest in modules]] for a discussion the significance and role of the /manifest/ object.
 
-The answer is modularity. But what does that mean? Well, we saw that the /top level classes/ ARE /modules/ in Newspeak. And that there is no global namespace. And /modules/, being just objects, need, generally other objects to do useful work. So, in Newspeak, for a module to "get at" ANY object, something MUST supply 
 
-*** The ~platform~ object
+*** The platform object
 
 **** What is in the platform object?
 
@@ -500,84 +541,132 @@ Classes of all of those instances also exist in the ~manifest~ object.
 
 Sp we see that the *platform contains instances of a few classes from the namespace!*
 
-So we have the answer to what does platform contain.
+So we have the answer to what doesthe platform object contain.
 
-**** Why is platform significant, and what role does it play in Newspeak?
 
-Ok, so we know what is in the ~platform~ that is passed to 
+**** Why is the platform object significant, and what role does it play in Newspeak?
+
+Ok, so we know what is in the ~platform~ object that is passed to 
 
 - ~#usingPlatform: platform~
 
-but why is it so important to appear again and again in the /top level classes factory parameters/?
-
-*** The common role of ~platform~ and ~manifest~
-
-Why are  ~platform~ and ~manifest~ so important to appear again and again in the /top level classes factory parameters/? The answer is somewhat common for ~manifest~ and ~platform~, so we describe them here.
-
-The answer is modularity. But what does that mean? Well, we saw that the /top level classes/ ARE /modules/ in Newspeak. And that there is no global namespace. And /modules/, being just objects, need, generally other objects to do useful work. So, in Newspeak, for a module to "get at" ANY object, something MUST supply 
+See [[*Common and distinct roles of platform and manifest in modules][Chapter Common and distinct roles of platform and manifest in modules]] for a discussion the role of the /platform/ object.
 
 
+*** Common and distinct roles of platform and manifest in modules
 
+Why are the ~platform~ and ~manifest~ objects so important to appear again and again in the /top level classes factory parameters/ as seen in [[*Factory constructors][Factory constructors]]
 
-*** 
-** Notation
+The answer is somewhat common for ~manifest~ and ~platform~, so we describe their role in this common section.
 
-*** Message (function) names notation in text
+And, the sommon need for either  ~manifest~ or ~platform~ is modularity. But what does that mean?
 
-Newspeak is a message based system. All runtime operations are message sends.
+We saw that the /modules/ are DEFINED AS /top level classes/ in Newspeak.  So in this text, we will use the term /module/ and /module instance/ for such top level class or its instance.
 
-What do we mean by a 'message'? Think of it as a method or function name with parameter names (method signature). 
-What do we mean by 'message send'? Think of it as calling (invoking) the method or function
+And we saw that there is no global namespace in Newspeak.  Module instances, need other objects (dependencies) to do useful work.  In Newspeak, for a module instance to "contain" ANY dependency, such dependency must be on the module instance slot (slot is like the member variable).  Also, at the point of the module construction we MUST supply such dependecy. Because only the /factory constructor/ can define slots, the *module factory constructor must be passed everything the module needs from outside*.  
 
-In fact, we may use 'method name' and 'message name' interchangeably, although it is not quite precise. Same for 'send a message' and 'call (or invoke) a method'
+This is where  ~platform~ and ~manifest~ come in. They are "special" in the sense that they supply objects and classes needed by the module.  But each happens at a special point of the module lifecycle. This is summarized in 
 
-We needed this explanation to introduce a notation used in this document. When you see in text, something like ~Rectangle >> #initWidth: width andHeight: height~, it means: "class /Rectangle/ has a method named /initWith:andHeight/, with first parameter name /width/ and second parameter name /height/". If you see just ~#initWidth: width andHeight: height~ it means the same, but we assume the class name "Rectangle" is clear from context. Depending on context, it could also mean "in some piece of code, we called method  ~#initWidth: width andHeight: height~ on an instance of a Rectangle.
+We know any Newspeak object can have only one "slot defining" factory object. So any module can *only have one of*
 
-Sometimes the parameter names are not included and we shorten the signature to ~#initWidth:andHeight:~
-
-Examples:
-- ~#main: platform args: args~ 
+- ~#packageUsing: manifest~
 - ~#usingPlatform: platform~
 
-
-** Terms
-
-- Description of what term means in Newspeak     
-- Definition of term
-- Equivalents and examples in other languages and platforms 
+Which method is used on which module type? Follow the [[*Modules: Application, library, other][Modules: Application, library, other]]
 
 
-*** Namespace
+** Modules: Application, library, other
 
-- Description of what term means in Newspeak     
-- Definition of term
-- Equivalents and examples in other languages and platforms 
+This chapter is in a way the core why I started writing this whole big chapter [[Newspeak is different. The first week of a personal journey around the Newspeak platform]]
 
-**** Global namespace
+*** Application and library in computing
 
-- Description of what term means in Newspeak     
-- Definition of term
-- Equivalents and examples in other languages and platforms 
+In computing, a program may be an Application (App) or a Library. This looks arbitrary, but not without merit. On a high level, the we require from an App, and from a Library:
+
+1. An App must be able to *start execution* on the platform to which it is targetted (here, platform in the sense of "Linux platform", "Android platform", "Windows platform", and in our situation, the "Newspeak platform). 
+2. A Library must be able to be *instantiated, loaded or linked, then used*, at least in principle, by the caller App or Library on that platform. The /used/ library is often called a dependency. The term /used/ implies that the Library is *found* and *connected* to the App or Library which is using it.
+3. In addition, we should be able to *package* both the App and the Library for distribution.
+
+From the generic requirements above, App and Library need some way to perform the requirements.  Methods perform requirements, so we need the following methods - the names are arbitrary, but they must be known to the whole platform. They represent an API.
 
 
-*** Module
+*** Application and library API in computing
 
-- Description of what term means in Newspeak     
-- Definition of term
-- Module Equivalents and examples in other languages and platforms 
+So in mainstream computing, we need:
 
-*** Top level class
+- For an App:
+  - To perform requirement 1, /start execution/, let's call the method ~#main~
+  - To perform requirement 3, /packaging/, let's call the method ~#package~
+- For a Library:
+  - To perform requirement 2, /instantiate, load and use by the caller app/, let's call the method ~#build~
+  - To perform requirement 3, /packaging/, let's call the method ~#packageLibrary~
 
-- Description of what term means in Newspeak     
-- Definition of term
-- Equivalents and examples in other languages and platforms 
+Something like the above must exist on every "mainstream" system.  The /convention method names/ are the API.  
+
+The mainstream system has the advantage of access to a global namespace - generally a filesystem via a PATH, CLASSPATH, PYTHONPATH or similar. We discussed that earlier as well. Inside any of these methods, during execution, the program can look and find various artifacts in needs on the platform. If we start "#main" in Python, inside #main there may be a line of code such as ~from graphics import Rectangle~. So we need the Rectangle class. No problem, we go to the classpath, find the namespace /graphics/, there lives the module /graphics/, and the class /Rectangle/ is there. We load it and continue. 
+
+
+*** Application and library modules in Newspeak
+
+In Newspeak, everything is done via objects. So App and Library must be an object. Further, Newspeak must start all operations on the top - on a /Module/ level. Modules are /top level classes/, see [[*Discussion of Modules][Discussion of Modules]]   
+
+So in Newspeak, App is a module, and Library is a module.
+
+But Newspeak cannot load anything globally. If the API for the App and library was as defined above, it would not work. If the App's #main were to run, and Newspeak would discovers the equivalent of "import", it would not be able to find the "imported" dependency module. It does not have the global namespace or access to the  PATH, CLASSPATH, PYTHONPATH or similar. 
+
+*The solution is, in Newspeak, all the runtime dependencies must be passed to the /factory constructors/*  
+
+But, how is that done? Well, we simply add some objects to the Module factory constructors. Which objects? 
+
+- *To instantiate a Library or execute and App*, we need to supply the capabilities of the Newspeak platform. This IS provided by the /platform object/ analyzed in [[*The platform object][The platform object]]. So we will pass the /platform/ object to the execution or instantiation methods.
+- *To package     a Library or an App*, we need to supply all classes the Library or App needs to "carry along" in it's package. Such "carried along" classes become slots on the module object (they play the role of "imported classes" in mainstream). When we were developing the module we are packaging, we may have been adding our own top level classes (and their nested classes obviously) needed by the module we are packaging. Those classes do not exist on the end-user system where we will send the package for instantiation.  So all those classes have to be "carried along" in the package.  We have seen all available classes in the IDE, including those we may have added, are supplied by [[*The manifest object][The manifest object]].  So we will pass the /manifest/ object to the packaging methods.
+
+*This is sort of inversion of control: The platform capabilities (objects that represent the system), and the available top level classes (classes that are "imported") are passed to every module in it's factory constructor or class method. From there, they are available to all nested classes and nested objects of the module instance!*
+
+
+*** Application, library, and test modules API in Newspeak: The crown pinnacle summary
+
+So, here is the sort of the crown pinnacle of all this stuff about Apps and Libraries. 
+
+*For Newspeak, we have to change the API signatures described in [[*Application and library API in computing][Application and library API in computing]] by passing the /platform/ and the /manifest/ object. We also change the names slightly to match what Newspeak actually does. Here are the APIs which define whether a module is an App or a Library*.
+
+- *Newspeak App module* is defined by the presence of:
+  - To perform requirement 1, /start execution/, method ~#main: platform args: args~
+  - To perform requirement 3, /packaging/, method ~#packageUsing: manifest~
+- *Newspeak Library module* is defined by the presence of:
+  - To perform requirement 2, /instantiate, load and use by the caller app/, method ~#buildUsing: platform~ should return the module instance
+  - To perform requirement 3, /packaging/, let's call the method ~#packageLibraryUsing: manifest~
+- *Newspeak Test module* by convention ends with "Configuration", and is defined by the presence of:
+  - To perform requirement 2, /instantiate/, method ~#testModulesUsingPlatform: platform minitest: m~
+  - To perform requirement 3, /packaging/, let's call the method ~#packageTestsUsing: manifest~
+- *Newspeak Other modules* are modules that do not have any of the above API.
+
+Note that the methods which *do the packaging*, are /factory constructors/, while the methods which do *execution or instantiation* are /class methods/. The reason is, a /factory constructor/ is the only method which can store stuff in slots! So any classes to "carry along" (imports from manifest) must be put to slots during a factory constructor call.
+
+Note that the IDE uses some of those methods to show appropriate action links. For example,
+
+- The presence of method ~#packageUsing: manifest~ in the module, IDE shows links to *[deploy] [configurations] [run] [debug]*
+- The presence of method ~#packageTestsUsing: manifest~ in the module, IDE shows links to *[run tests] [show tests]*
+
+
+*** Newspeak core modules API in a nutshell 
+
+In a nutshell, 
+- We need /manifest/ classes for packaging. Manifest provides the classes needed to "bring along" in the package. Those "bring along" or "import" classes may not exist on the end-user system, so they need to be added to the package!
+- We need /platform/ for execution. Platform provides instances of "system classes". Those "system classes instannces" are assumed to exist on the end-user system, so we do not need to bring them along!
+
+
+** Hello World in Newspeak: As an App, and as an App with a dependency (App using a Library)
+
+By now, we know that an both an App and a Library are module instances, and that modules are top level classes, see [[*Discussion of Modules][Discussion of Modules]] and 
+
 
 * Newspeak: Using it and installing it.  Online vs. local installation
 
 TL;DR There are several ways of using Newspeak:
 - Using the online web version (no installation required, see [[install-method-1][Installation method 1 (online, no local installation)]]
 - Using Newspeak locally in browser after installing your local Newspeak webserver, see [[install-method-2][Installation method 2 (local Newspeak webserver)]]
-- Using Newspeak locally or as a mobile App, after installing it by other methods, see [[*System specific methods to install and run Newspeak]] (this includes installing and using an Electron-based version in [[install-method-4][Installation method 3]].
+- Using Newspeak locally or as a mobile App, after installing it by other methods, see [[*System specific methods to install and run Newspeak][Chapter System specific methods to install and run Newspeak]] (this includes installing and using an Electron-based version in [[install-method-4][Installation method 3]].
 
 This section is describing all usage ways and installation methods. Initially, users should consider [[install-method-1][Installation method 1 (online, no local installation)]] or [[install-method-2][Installation method 2 (local Newspeak webserver)]].
 
@@ -766,7 +855,7 @@ Apart from the /lastSaved/ and /backup/ in-browser changes management, you can s
 
 - If you do clear your browser local storage, your changes will be lost, so saving outside the browser is valuable.
     
-- During development in Newspeak, you will want to save your work. Until source control is integrated into the IDE, the current approach is to `export` ("Save to file") all classes you changed in a directory on your system as *.ns* files, and potentially create a code repository in that directory. If we later want to bring the repository version to Newspeak, we `import` ("Compile File(s)") the *.ns* files back to Newspeak. For how to access the "Save to file" and "Compile File(s)" buttons, see TL;DR in section [[*Saving changes in Newspeak]]
+- During development in Newspeak, you will want to save your work. Until source control is integrated into the IDE, the current approach is to `export` ("Save to file") all classes you changed in a directory on your system as *.ns* files, and potentially create a code repository in that directory. If we later want to bring the repository version to Newspeak, we `import` ("Compile File(s)") the *.ns* files back to Newspeak. For how to access the "Save to file" and "Compile File(s)" buttons, see TL;DR in section [[*Saving changes in Newspeak][Chapter Saving changes in Newspeak]]
 
 
 ** IN-PROGRESS-NOW Snippets of wisdom from various sources
@@ -1198,7 +1287,7 @@ Changes in Newspeak are always saved locally, as long as you click the "Accept" 
 
 It won't save your state, but it will save your code. Bear in mind that the web-based system is young and will crash occasionally, but also that *the system saves your changes as backup regardless of whether you saved explicitly*. 
 
-For a complete discussion, see [[*Saving changes in Newspeak]].
+For a complete discussion, see [[*Saving changes in Newspeak][Chapter Saving changes in Newspeak]].
  
 
 *** How would I build and deploy a ~AHelloWorldApp~ or a more complex ~CounterApp~ application?
@@ -1221,7 +1310,7 @@ IDE concludes a class is an app based on a convention: presence of certain metho
 
 ** How would I create and distribute a Newspeak App to run on the web, on mobile, or on desktop?
 
-TL;DR: For a detail description of developing, packaging, running and deploying a concrete Newspeak app, read the section [[Newspeak: A quickstart.  Explore the IDE. Then develop ~CounterApp~, package it and deploy it]]
+TL;DR: For a detail description of developing, packaging, running and deploying a concrete Newspeak app, read the section [[Newspeak: A quickstart.  Explore the IDE. Then develop CounterApp, package it and deploy it]]
 
 The text below is a general introduction of how a Newspeak App can be made ready for deployment.
 
@@ -1247,6 +1336,9 @@ In either case, .vfuel file is produced.  Assuming you are running Newspeak usin
 This .vfuel can then be deployed into a (locally installed) Newspeak server.
 
 - For instructions on how to install the server see [[install-method-1]]
-- For instructions on how to deploy a sample app, in particular the ~CounterApp~, see [[Deploy ~CounterApp~ as standalone app into local Newspeak webserver]].
+- For instructions on how to deploy a sample app, in particular the ~CounterApp~, see [[Deploy CounterApp as standalone app into local Newspeak webserver]].
   
+* Useful editing hints
+
+\[\[\*\([A-z 0-9()_\.\?~]+\)\]\] → [[*\1][Chapter \1] ] <<=== remove space
 
