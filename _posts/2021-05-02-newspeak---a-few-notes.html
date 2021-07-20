@@ -35,85 +35,87 @@ categories:
 <li><a href="#orgaadf932">4.4. Deploy CounterApp as standalone app into local Newspeak webserver</a></li>
 </ul>
 </li>
-<li><a href="#orgc3a50ac">5. Newspeak is different.  The first week of a personal journey around the Newspeak platform</a>
+<li><a href="#org427a0ce">5. Newspeak is different.  An ide-driven journey around the Newspeak platform</a>
 <ul>
 <li><a href="#org6d24e33">5.1. Motivation of writing this journey</a></li>
-<li><a href="#org9c92a01">5.2. Starting the journey</a></li>
-<li><a href="#orgb541611">5.3. Namespaces and Modules</a>
+<li><a href="#orgb4743ce">5.2. Dependencies and modularity: Perhaps the hardest part of Newspeak difference</a></li>
+<li><a href="#org9c92a01">5.3. Starting the journey</a></li>
+<li><a href="#orgb541611">5.4. Namespaces and Modules</a>
 <ul>
-<li><a href="#org3923d4e">5.3.1. Top level classes in the IDE</a></li>
-<li><a href="#org982e2bc">5.3.2. Discussion of Namespaces</a></li>
-<li><a href="#org6e890f7">5.3.3. Discussion of Modules</a></li>
-<li><a href="#orgf56c5f8">5.3.4. Back to namespaces and the surprise of the global namespace existence</a></li>
+<li><a href="#org3923d4e">5.4.1. Top level classes in the IDE</a></li>
+<li><a href="#org982e2bc">5.4.2. Discussion of Namespaces</a></li>
+<li><a href="#org6e890f7">5.4.3. Discussion of Modules</a></li>
+<li><a href="#orgf56c5f8">5.4.4. Back to namespaces and the surprise of the global namespace existence</a></li>
 </ul>
 </li>
-<li><a href="#org4b7067e">5.4. Class structure, factory constructors, app and library API, platform and manifest</a>
+<li><a href="#orgcfab820">5.5. Class structure, factory constructors, platform and manifest, modules API</a>
 <ul>
-<li><a href="#org061e3a5">5.4.1. Section TL;DR:</a></li>
-<li><a href="#org36553ab">5.4.2. Top level classes in the IDE - expanded</a></li>
-<li><a href="#orge6745be">5.4.3. Newspeak class structure</a></li>
-<li><a href="#org7c19284">5.4.4. Factory constructors</a></li>
-<li><a href="#org853369e">5.4.5. The manifest object</a>
+<li><a href="#org061e3a5">5.5.1. Section TL;DR:</a></li>
+<li><a href="#org36553ab">5.5.2. Top level classes in the IDE - expanded</a></li>
+<li><a href="#orge6745be">5.5.3. Newspeak class structure</a></li>
+<li><a href="#org7c19284">5.5.4. Factory constructors</a></li>
+<li><a href="#org853369e">5.5.5. The manifest object</a>
 <ul>
-<li><a href="#org5c57cbf">5.4.5.1. What is in the manifest object?</a></li>
-<li><a href="#org66a7ed8">5.4.5.2. Why is the manifest object significant, and what role does it play in Newspeak?</a></li>
+<li><a href="#org5c57cbf">5.5.5.1. What is in the manifest object?</a></li>
+<li><a href="#org66a7ed8">5.5.5.2. Why is the manifest object significant, and what role does it play in Newspeak?</a></li>
 </ul>
 </li>
-<li><a href="#org953587a">5.4.6. The platform object</a>
+<li><a href="#org953587a">5.5.6. The platform object</a>
 <ul>
-<li><a href="#org1594af0">5.4.6.1. What is in the platform object?</a></li>
-<li><a href="#orge5a7812">5.4.6.2. Why is the platform object significant, and what role does it play in Newspeak?</a></li>
+<li><a href="#org1594af0">5.5.6.1. What is in the platform object?</a></li>
+<li><a href="#orge5a7812">5.5.6.2. Why is the platform object significant, and what role does it play in Newspeak?</a></li>
 </ul>
 </li>
-<li><a href="#orgd13d91d">5.4.7. Common and distinct roles of platform and manifest in modules</a></li>
+<li><a href="#orgd13d91d">5.5.7. Common and distinct roles of platform and manifest in modules</a></li>
 </ul>
 </li>
-<li><a href="#org4633bc8">5.5. Modules: Application, library, test, general</a>
+<li><a href="#org4633bc8">5.6. Modules: Application, library, test, general</a>
 <ul>
-<li><a href="#org8a546aa">5.5.1. Application and library in computing</a></li>
-<li><a href="#orgdefd475">5.5.2. Application and library API in computing</a></li>
-<li><a href="#org4ee700c">5.5.3. Application and library modules in Newspeak</a></li>
-<li><a href="#org98fdcd0">5.5.4. Newspeak modules API summary</a></li>
-<li><a href="#org29bc453">5.5.5. Newspeak modules API zoo</a></li>
-<li><a href="#org608a145">5.5.6. Newspeak platform and manifest objects summary</a></li>
+<li><a href="#org8a546aa">5.6.1. Application and library in computing</a></li>
+<li><a href="#orgdefd475">5.6.2. Application and library API in computing</a></li>
+<li><a href="#org4ee700c">5.6.3. Application and library modules in Newspeak</a></li>
+<li><a href="#org98fdcd0">5.6.4. Newspeak modules API summary</a></li>
+<li><a href="#org29bc453">5.6.5. Newspeak modules API zoo</a></li>
+<li><a href="#org608a145">5.6.6. Newspeak platform and manifest objects summary</a></li>
 </ul>
 </li>
-<li><a href="#org465e425">5.6. Newspeak recipy for writing modules API</a>
+<li><a href="#org465e425">5.7. Newspeak recipy for writing modules API</a>
 <ul>
 <li>
 <ul>
-<li><a href="#orgd9476b0">5.6.0.1. 1. General module with NO dependencies: API of module with no dependencies</a>
+<li><a href="#orgd9476b0">5.7.0.1. 1. General module with NO dependencies: API of module with no dependencies</a>
 <ul>
-<li><a href="#orgedaa9b0">5.6.0.1.1. Example:</a></li>
+<li><a href="#org732b317">5.7.0.1.1. Example:</a></li>
 </ul>
 </li>
-<li><a href="#org7062cfa">5.6.0.2. 2. General module with dependencies: API of module with dependencies</a>
+<li><a href="#org7062cfa">5.7.0.2. 2. General module with dependencies: API of module with dependencies</a>
 <ul>
-<li><a href="#org670f52f">5.6.0.2.1. Example:</a></li>
+<li><a href="#orgf660122">5.7.0.2.1. Example:</a></li>
 </ul>
 </li>
-<li><a href="#org938a58a">5.6.0.3. 3. Library module: API of module that needs to be used as a packageble and distributable Newspeak library module</a>
+<li><a href="#org938a58a">5.7.0.3. 3. Library module: API of module that needs to be used as a packageble and distributable Newspeak library module</a>
 <ul>
-<li><a href="#orgd2b778f">5.6.0.3.1. Example:</a></li>
+<li><a href="#orgd023aaf">5.7.0.3.1. Example:</a></li>
 </ul>
 </li>
-<li><a href="#orgbc7867f">5.6.0.4. 4. App module: API of module that needs to be used as a packageble and distributable Newspeak App</a>
+<li><a href="#orgbc7867f">5.7.0.4. 4. App module: API of module that needs to be used as a packageble and distributable Newspeak App</a>
 <ul>
-<li><a href="#org26c5763">5.6.0.4.1. Example:</a></li>
+<li><a href="#org06975da">5.7.0.4.1. Example:</a></li>
 </ul>
 </li>
-<li><a href="#orgb451316">5.6.0.5. <span class="todo TODO">TODO</span> 5. Test module: TODO</a></li>
-<li><a href="#orgbc1116c">5.6.0.6. <span class="todo TODO">TODO</span> 6. Test module configuration: TODO</a></li>
+<li><a href="#orgb451316">5.7.0.5. <span class="todo TODO">TODO</span> 5. Test module: TODO</a></li>
+<li><a href="#orgbc1116c">5.7.0.6. <span class="todo TODO">TODO</span> 6. Test module configuration: TODO</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li><a href="#org3f7b274">5.7. Hello World in Newspeak</a>
+<li><a href="#org3f7b274">5.8. Hello World in Newspeak</a>
 <ul>
-<li><a href="#org9128238">5.7.1. 1.  Hello World from Workspace</a></li>
-<li><a href="#orgf5b8d03">5.7.2. 2.  Hello World from general module</a></li>
-<li><a href="#orgc4a4799">5.7.3. 3.  Hello World App</a></li>
-<li><a href="#org7bffa18">5.7.4. 4.  Hello World App using 3rd party dependency</a></li>
+<li><a href="#org8047503">5.8.1. Section Summary</a></li>
+<li><a href="#org9128238">5.8.2. 1. Hello World from Workspace</a></li>
+<li><a href="#orgf5b8d03">5.8.3. 2. Hello World from general module</a></li>
+<li><a href="#orgc4a4799">5.8.4. 3. Hello World App</a></li>
+<li><a href="#org7bffa18">5.8.5. 4. Hello World App using 3rd party dependency</a></li>
 </ul>
 </li>
 </ul>
@@ -171,6 +173,7 @@ categories:
 <li><a href="#org87db60b">8.5. How would I create and distribute a Newspeak App to run on the web, on mobile, or on desktop?</a></li>
 </ul>
 </li>
+<li><a href="#orga2fa99f">9. Example of bringing dependencies into an application and publishing an application</a></li>
 </ul>
 </div>
 </div>
@@ -259,7 +262,7 @@ Much of this document is collected from existing Newspeak sources:
 <td class="org-left">&#xa0;</td>
 <td class="org-left">Milan Zimmermann</td>
 <td class="org-left">&#xa0;</td>
-<td class="org-left">Added section <a href="#orgc3a50ac">Newspeak is different.  The first week of a personal journey around the Newspeak platform</a></td>
+<td class="org-left">Added section <a href="#org427a0ce">Newspeak is different.  An ide-driven journey around the Newspeak platform</a></td>
 </tr>
 </tbody>
 </table>
@@ -729,15 +732,15 @@ Next: This is the end of coding, building and running the <code>CounterApp</code
 </div>
 
 
-<div id="outline-container-orgc3a50ac" class="outline-2">
-<h2 id="orgc3a50ac"><span class="section-number-2">5</span> Newspeak is different.  The first week of a personal journey around the Newspeak platform</h2>
+<div id="outline-container-org427a0ce" class="outline-2">
+<h2 id="org427a0ce"><span class="section-number-2">5</span> Newspeak is different.  An ide-driven journey around the Newspeak platform</h2>
 <div class="outline-text-2" id="text-5">
 </div>
 <div id="outline-container-org6d24e33" class="outline-3">
 <h3 id="org6d24e33"><span class="section-number-3">5.1</span> Motivation of writing this journey</h3>
 <div class="outline-text-3" id="text-5-1">
 <p>
-On this journey, I would like to walk back and capture some of my surprises, gotchas, but also amazement of simplicity during a journey of the first week <b>stretched over 2 months</b> starting with Newspeak.  But hopefully I manage to organize this journey into a somewhat streamlined story.  Actually "the first week" is not completely correct.  I did first discover Newspeak long time ago, almost when it started, read available articles back then, and covered the syntax which helped.  But I did not have time back then to get my hands on it properly.
+On this journey, I would like to walk back and capture some of my surprises, gotchas, but also amazement of simplicity during a journey of my first week (stretched over 2 months) starting with Newspeak.  But hopefully I manage to organize this journey into a somewhat streamlined story.  Actually "the first week" is not completely correct.  I did first discover Newspeak long time ago, almost when it started, read available articles back then, and covered the syntax which helped.  But I did not have time back then to get my hands on it properly.
 </p>
 
 <p>
@@ -792,7 +795,7 @@ As this section title states, Newspeak is different. <b>Being different is not f
 
 <ul class="org-ul">
 <li>Dynamicity</li>
-<li>Modularity</li>
+<li>Modularity (including how dependencies are provided)</li>
 <li>Classes can be nested (nesting provides the core of modularity)</li>
 <li>Security</li>
 <li>Reflectivity</li>
@@ -806,10 +809,10 @@ As this section title states, Newspeak is different. <b>Being different is not f
 I will add one multi-item principle.
 </p>
 <ul class="org-ul">
-<li>Everything, I mean absolutely everything in the Newspeak language is an object (instance of a class). 
+<li>Everything in the Newspeak language is an object (instance of a class). 
 <ul class="org-ul">
-<li>Other languages use separate concepts for packages, apps, modules, namespaces, classes.  They also use the filesystem a lot.</li>
-<li>All of these concepts exist in Newspeak, but they are all implemented by objects.</li>
+<li>Most(?) mainstream languages use separate concepts for packages, apps, modules, namespaces, classes.  They also use the filesystem a lot.</li>
+<li>All concepts in the item above exist in Newspeak, but they are all implemented by objects.</li>
 </ul></li>
 </ul>
 
@@ -823,7 +826,11 @@ But, given a Newspeak object, how do we know it is a <b>module, a class, or an a
 </ol>
 
 <p>
-I have to admit, the "being different" does came at an initial price (for me at least), often in the form of unlearning. 
+Given a Newspeak object, how does it acquire it's dependencies? This is one core point discussed a lot. See <a href="#orgb4743ce">Dependencies and modularity: Perhaps the hardest part of Newspeak difference</a>.
+</p>
+
+<p>
+"Being different" does came at a steep initial learning curve (for me at least), often in the form of unlearning. 
 </p>
 
 <p>
@@ -833,9 +840,35 @@ More concrete talk please!
 </div>
 
 
-<div id="outline-container-org9c92a01" class="outline-3">
-<h3 id="org9c92a01"><span class="section-number-3">5.2</span> Starting the journey</h3>
+<div id="outline-container-orgb4743ce" class="outline-3">
+<h3 id="orgb4743ce"><span class="section-number-3">5.2</span> Dependencies and modularity: Perhaps the hardest part of Newspeak difference</h3>
 <div class="outline-text-3" id="text-5-2">
+<p>
+This is only a quick "look ahead summary" to provide more motivation and contex for the rest of the parent chapter.
+</p>
+
+<p>
+Due to Newspeak's modularity, the process of bringing dependencies into a Newspeak program - be it a module (top level class), a nested class, an app, a library, a test - is different from mainstream language platforms. 
+</p>
+
+<p>
+Because transfering dependencies into objects is so different in Newspeak, large part of this text deals with the topic of dependencies. 
+</p>
+
+<p>
+The <code>manifest</code> and <code>platform</code> objects are the vehicles of bringing dependencies to objects packages and at runtime. 
+</p>
+
+<p>
+The module APIs sections <a href="#org4633bc8">Modules: Application, library, test, general</a>, the recipy section <a href="#org465e425">Newspeak recipy for writing modules API</a>, and the <a href="#org3f7b274">Hello World in Newspeak</a> are largely about bringing dependencies into modules (objects).
+</p>
+</div>
+</div>
+
+
+<div id="outline-container-org9c92a01" class="outline-3">
+<h3 id="org9c92a01"><span class="section-number-3">5.3</span> Starting the journey</h3>
+<div class="outline-text-3" id="text-5-3">
 <p>
 To do anything useful with Newspeak, we have to use the IDE.  There is no command line per se (there is, but it is inside the IDE.  It is called the Workspace).  So let us open the Newspeak IDE to look around.  Navigate to  <a href="https://newspeaklanguage.org/samples/primordialsoup.html?snapshot=CounterApp.vfuel">https://newspeaklanguage.org/samples/primordialsoup.html?snapshot=CounterApp.vfuel</a>.
 </p>
@@ -845,7 +878,7 @@ We see something like
 </p>
 
 
-<div id="orgb90bdaa" class="figure">
+<div id="org0ae1a73" class="figure">
 <p><img src="/img/newspeak---a-few-notes.org-local-ide.png" alt="nil"/>
 </p>
 </div>
@@ -862,12 +895,12 @@ Each paragraph below is devoted to a feature that was surprising (to me) or unus
 
 
 <div id="outline-container-orgb541611" class="outline-3">
-<h3 id="orgb541611"><span class="section-number-3">5.3</span> Namespaces and Modules</h3>
-<div class="outline-text-3" id="text-5-3">
+<h3 id="orgb541611"><span class="section-number-3">5.4</span> Namespaces and Modules</h3>
+<div class="outline-text-3" id="text-5-4">
 </div>
 <div id="outline-container-org3923d4e" class="outline-4">
-<h4 id="org3923d4e"><span class="section-number-4">5.3.1</span> Top level classes in the IDE</h4>
-<div class="outline-text-4" id="text-5-3-1">
+<h4 id="org3923d4e"><span class="section-number-4">5.4.1</span> Top level classes in the IDE</h4>
+<div class="outline-text-4" id="text-5-4-1">
 <p>
 This section is a bit academic, but I am including it because namespaces matter for modularity and modules are crucial for Newspeak Apps and Libraries.
 </p>
@@ -877,7 +910,7 @@ So in the IDE -&gt; "Newspeak Source", we are greeted with the word <b>Root</b> 
 </p>
 
 
-<div id="orga915b0a" class="figure">
+<div id="org13e875e" class="figure">
 <p><img src="/img/newspeak---a-few-notes.org-ide-full-page-classes-collapsed.png" alt="nil"/>
 </p>
 </div>
@@ -890,8 +923,8 @@ First: what is the "Root" on the top? According to documentation, this is the ID
 
 
 <div id="outline-container-org982e2bc" class="outline-4">
-<h4 id="org982e2bc"><span class="section-number-4">5.3.2</span> Discussion of Namespaces</h4>
-<div class="outline-text-4" id="text-5-3-2">
+<h4 id="org982e2bc"><span class="section-number-4">5.4.2</span> Discussion of Namespaces</h4>
+<div class="outline-text-4" id="text-5-4-2">
 <p>
 <i>Namespaces</i> are similar to package or directory names in other languages; they provide a way to organize and group artifact names used in programs (names of packages, classes, or functions).  One namespace example is "org.mypackage" in Java.  All classes in that package belong to the namespace "org.mypackage".  Python concept of a package is similar.
 </p>
@@ -908,8 +941,8 @@ While it is true that a <i>namespace</i> provide grouping of artifacts, what is 
 
 
 <div id="outline-container-org6e890f7" class="outline-4">
-<h4 id="org6e890f7"><span class="section-number-4">5.3.3</span> Discussion of Modules</h4>
-<div class="outline-text-4" id="text-5-3-3">
+<h4 id="org6e890f7"><span class="section-number-4">5.4.3</span> Discussion of Modules</h4>
+<div class="outline-text-4" id="text-5-4-3">
 <p>
 Now, we will briefly mix the concept of a <b>modules</b> into the discussion.  <i>Modules</i> are related to namespaces in a way that we cannot precisely define here.  But we can say this: In software, modules are meant to be artifacts (libraries) providing some useful non trivial functionality, without needing any help (apart from the help of "dependencies" - that is, help of other modules intended to provide some "sub functionality").  There must be a way to package and distribute modules.
 </p>
@@ -934,8 +967,8 @@ In Java or Python, if we accept that each module is in a single namespace, and i
 
 
 <div id="outline-container-orgf56c5f8" class="outline-4">
-<h4 id="orgf56c5f8"><span class="section-number-4">5.3.4</span> Back to namespaces and the surprise of the global namespace existence</h4>
-<div class="outline-text-4" id="text-5-3-4">
+<h4 id="orgf56c5f8"><span class="section-number-4">5.4.4</span> Back to namespaces and the surprise of the global namespace existence</h4>
+<div class="outline-text-4" id="text-5-4-4">
 <p>
 For the better language discussion of what a namespace is, and why a global namespace is not needed in the Newspeak language, see <a href="https://gbracha.blogspot.com/2008/12/living-without-global-namespaces.html">https://gbracha.blogspot.com/2008/12/living-without-global-namespaces.html</a>. 
 </p>
@@ -952,13 +985,13 @@ Next we can ask, why does the IDE need a global namespace (Root), while the lang
 </div>
 
 
-<div id="outline-container-org4b7067e" class="outline-3">
-<h3 id="org4b7067e"><span class="section-number-3">5.4</span> Class structure, factory constructors, app and library API, platform and manifest</h3>
-<div class="outline-text-3" id="text-5-4">
+<div id="outline-container-orgcfab820" class="outline-3">
+<h3 id="orgcfab820"><span class="section-number-3">5.5</span> Class structure, factory constructors, platform and manifest, modules API</h3>
+<div class="outline-text-3" id="text-5-5">
 </div>
 <div id="outline-container-org061e3a5" class="outline-4">
-<h4 id="org061e3a5"><span class="section-number-4">5.4.1</span> Section TL;DR:</h4>
-<div class="outline-text-4" id="text-5-4-1">
+<h4 id="org061e3a5"><span class="section-number-4">5.5.1</span> Section TL;DR:</h4>
+<div class="outline-text-4" id="text-5-5-1">
 <p>
 This section starts an IDE-lead step by step discovery of some core aspects we encounter when we first dig into the IDE and the classes on top: Newspeak class structure, app and library API, platform and manifest.
 </p>
@@ -967,14 +1000,14 @@ This section starts an IDE-lead step by step discovery of some core aspects we e
 
 
 <div id="outline-container-org36553ab" class="outline-4">
-<h4 id="org36553ab"><span class="section-number-4">5.4.2</span> Top level classes in the IDE - expanded</h4>
-<div class="outline-text-4" id="text-5-4-2">
+<h4 id="org36553ab"><span class="section-number-4">5.5.2</span> Top level classes in the IDE - expanded</h4>
+<div class="outline-text-4" id="text-5-5-2">
 <p>
 Let us expand each top level class in the "sources" screenshot above.  Well, maybe not all.  I expanded two in the screenshot below:
 </p>
 
 
-<div id="orgbf1f608" class="figure">
+<div id="org1c66ad1" class="figure">
 <p><img src="/img/newspeak---a-few-notes.org-ide-full-page-classes-expanded.png" alt="nil"/>
 </p>
 </div>
@@ -985,9 +1018,10 @@ Continue reading what we can learn from looking at the expanded classes.
 </div>
 </div>
 
+
 <div id="outline-container-orge6745be" class="outline-4">
-<h4 id="orge6745be"><span class="section-number-4">5.4.3</span> Newspeak class structure</h4>
-<div class="outline-text-4" id="text-5-4-3">
+<h4 id="orge6745be"><span class="section-number-4">5.5.3</span> Newspeak class structure</h4>
+<div class="outline-text-4" id="text-5-5-3">
 <p>
 First, we can see, each top level class has 4 sections.  Let's take the ActivationMirrorTestingConfiguration as an example
 </p>
@@ -1011,8 +1045,8 @@ There is a plus ("+ ") symbol  in the header of some of them.  The reason there 
 
 
 <div id="outline-container-org7c19284" class="outline-4">
-<h4 id="org7c19284"><span class="section-number-4">5.4.4</span> Factory constructors</h4>
-<div class="outline-text-4" id="text-5-4-4">
+<h4 id="org7c19284"><span class="section-number-4">5.5.4</span> Factory constructors</h4>
+<div class="outline-text-4" id="text-5-5-4">
 <p>
 We mentioned the messages on top like <code>#packageTestsUsing: manifest</code> are called the <i>factory constructors</i>.
 </p>
@@ -1029,7 +1063,7 @@ We mentioned the messages on top like <code>#packageTestsUsing: manifest</code> 
 <i>factory constructor</i> names on the <i>top level classes</i> have an eerily similar structure.  I was asking myself why, what do they have in common.  So I listed more of the factory constructor names.  Here is the list of the <i>factory constructors</i> on some top level classes:
 </p>
 
-<pre class="example" id="org09928f0">
+<pre class="example" id="org1b85924">
 class AccessModifierTesting                 usingPlatform:       platform  testFramework: minitest = (| etc
 class AccessModifierTestingConfiguration    packageTestsUsing:   manifest = (| etc
 class ActivationMirrorTesting               usingPlatform:       platform minitest: m = (| etc
@@ -1082,12 +1116,12 @@ What are those objects? And what do they contain, why are they significant, and 
 
 
 <div id="outline-container-org853369e" class="outline-4">
-<h4 id="org853369e"><span class="section-number-4">5.4.5</span> The manifest object</h4>
-<div class="outline-text-4" id="text-5-4-5">
+<h4 id="org853369e"><span class="section-number-4">5.5.5</span> The manifest object</h4>
+<div class="outline-text-4" id="text-5-5-5">
 </div>
 <div id="outline-container-org5c57cbf" class="outline-5">
-<h5 id="org5c57cbf"><span class="section-number-5">5.4.5.1</span> What is in the manifest object?</h5>
-<div class="outline-text-5" id="text-5-4-5-1">
+<h5 id="org5c57cbf"><span class="section-number-5">5.5.5.1</span> What is in the manifest object?</h5>
+<div class="outline-text-5" id="text-5-5-5-1">
 <p>
 So what is in the manifest, why it is significant, and what role does it play in Newspeak?
 </p>
@@ -1096,8 +1130,12 @@ So what is in the manifest, why it is significant, and what role does it play in
 We can look at the code, and ask what Newspeak passes into the <code>manifest</code> parameter.  We find that there is only one place that calls <code>#packageUsing: manifest</code>, and it passes for <code>manifest</code> the value of object <code>ide namespacing manifest</code>.  So we can examine what <code>ide namespacing manifest</code> contains.  In Workspace, let us evaluate it:
 </p>
 
+<pre class="example">
+ide namespacing manifest
+</pre>
 
-<div id="orgac78963" class="figure">
+
+<div id="org49214d2" class="figure">
 <p><img src="/img/newspeak---a-few-notes.org-ide-namespacing-manifest.png" alt="nil"/>
 </p>
 </div>
@@ -1106,7 +1144,7 @@ We can look at the code, and ask what Newspeak passes into the <code>manifest</c
 Drilling into the instance, we can see it is a map, and sorting by the key, we get
 </p>
 
-<pre class="example" id="org361e1d0">
+<pre class="example" id="org67608f8">
 at: AccessModifierTesting   AccessModifierTesting
 at: AccessModifierTestingConfiguration   AccessModifierTestingConfiguration
 at: ActivationMirrorTesting
@@ -1118,15 +1156,15 @@ We see that the <b>manifest is a map containing exactly all top-level classes in
 </p>
 
 <p>
-So we have the answer to what the manifest object contains.
+So we have a experiment based answer to what the manifest object contains.
 </p>
 </div>
 </div>
 
 
 <div id="outline-container-org66a7ed8" class="outline-5">
-<h5 id="org66a7ed8"><span class="section-number-5">5.4.5.2</span> Why is the manifest object significant, and what role does it play in Newspeak?</h5>
-<div class="outline-text-5" id="text-5-4-5-2">
+<h5 id="org66a7ed8"><span class="section-number-5">5.5.5.2</span> Why is the manifest object significant, and what role does it play in Newspeak?</h5>
+<div class="outline-text-5" id="text-5-5-5-2">
 <p>
 OK, so we know what is in the <code>manifest</code> object that is passed to 
 </p>
@@ -1145,12 +1183,12 @@ See <a href="#orgd13d91d">Chapter Common and distinct roles of platform and mani
 
 
 <div id="outline-container-org953587a" class="outline-4">
-<h4 id="org953587a"><span class="section-number-4">5.4.6</span> The platform object</h4>
-<div class="outline-text-4" id="text-5-4-6">
+<h4 id="org953587a"><span class="section-number-4">5.5.6</span> The platform object</h4>
+<div class="outline-text-4" id="text-5-5-6">
 </div>
 <div id="outline-container-org1594af0" class="outline-5">
-<h5 id="org1594af0"><span class="section-number-5">5.4.6.1</span> What is in the platform object?</h5>
-<div class="outline-text-5" id="text-5-4-6-1">
+<h5 id="org1594af0"><span class="section-number-5">5.5.6.1</span> What is in the platform object?</h5>
+<div class="outline-text-5" id="text-5-5-6-1">
 <p>
 As in manifest, we can ask: what is in the platform, why it is significant, and what role does it play in Newspeak?
 </p>
@@ -1165,7 +1203,7 @@ This is little harder than with manifest, so let's cheat a bit.  In Workspace, l
 Drilling into the link "instance of PlatformWithHopscotch`number", we see a list of instances. Sorting the list, we can see it contains <code>instances</code> of a few classes that look like system classes:
 </p>
 
-<pre class="example" id="orgb747737">
+<pre class="example" id="orgba55662">
 instance of ActorsForPrimordialSoup
 instance of CollectionsForPrimordialSoup
 instance of FontsForHTML5
@@ -1191,8 +1229,8 @@ From the above, we have a good indication as to what does the platform object co
 
 
 <div id="outline-container-orge5a7812" class="outline-5">
-<h5 id="orge5a7812"><span class="section-number-5">5.4.6.2</span> Why is the platform object significant, and what role does it play in Newspeak?</h5>
-<div class="outline-text-5" id="text-5-4-6-2">
+<h5 id="orge5a7812"><span class="section-number-5">5.5.6.2</span> Why is the platform object significant, and what role does it play in Newspeak?</h5>
+<div class="outline-text-5" id="text-5-5-6-2">
 <p>
 OK, so we know what is in the <code>platform</code> object that is passed to 
 </p>
@@ -1210,8 +1248,8 @@ See <a href="#orgd13d91d">Chapter Common and distinct roles of platform and mani
 
 
 <div id="outline-container-orgd13d91d" class="outline-4">
-<h4 id="orgd13d91d"><span class="section-number-4">5.4.7</span> Common and distinct roles of platform and manifest in modules</h4>
-<div class="outline-text-4" id="text-5-4-7">
+<h4 id="orgd13d91d"><span class="section-number-4">5.5.7</span> Common and distinct roles of platform and manifest in modules</h4>
+<div class="outline-text-4" id="text-5-5-7">
 <p>
 Why are the <code>platform</code> and <code>manifest</code> objects so important to appear again and again in the <i>top level classes factory parameters</i> as seen in <a href="#org7c19284">Factory constructors</a>
 </p>
@@ -1233,20 +1271,20 @@ And we saw that there is no global namespace in Newspeak.  Module instances, nee
 </p>
 
 <p>
-This is where  <code>platform</code> and <code>manifest</code> come in.  They are "special" in the sense that they supply objects and classes needed by the module.  But each happens at a special point of the module lifecycle.  This is summarized in 
+This is where  <code>platform</code> and <code>manifest</code> come in.  They are "special" in the sense that they supply objects and classes needed by the module.  But each happens at a special point of the module lifecycle.  This is summarized in <a href="#org4633bc8">Modules: Application, library, test, general</a>
 </p>
 
 <p>
-We know any Newspeak object can have only one "slot defining" factory object.  So any module can <b>only have one of</b>
+We know any Newspeak object can have only one "slot defining" constructor (called <i>factory constructor</i>.  So any module can <b>only have one of the following factory constructors</b>
 </p>
 
 <ul class="org-ul">
-<li><code>#packageUsing: manifest</code></li>
-<li><code>#usingPlatform: platform</code></li>
+<li>Factory method passing manifest, named similar to <code>#package(Something)Using: manifest</code>  - manifest is needed during packaging (imports). Only App, Library, and Test configuration modules use this factory constructor.</li>
+<li>Factory method passing platform, named similar to <code>#(doSomething)usingPlatform: platform</code> - platform is needed at runtime. For  App, Library, and Test configuration modules, method passing platform in an instance method.</li>
 </ul>
 
 <p>
-Which method is used on which module type? Follow the <a href="#org4633bc8">Modules: Application, library, test, general</a>
+Which method is used on which module type? Follow the next section <a href="#org4633bc8">Modules: Application, library, test, general</a>
 </p>
 </div>
 </div>
@@ -1254,16 +1292,16 @@ Which method is used on which module type? Follow the <a href="#org4633bc8">Modu
 
 
 <div id="outline-container-org4633bc8" class="outline-3">
-<h3 id="org4633bc8"><span class="section-number-3">5.5</span> Modules: Application, library, test, general</h3>
-<div class="outline-text-3" id="text-5-5">
+<h3 id="org4633bc8"><span class="section-number-3">5.6</span> Modules: Application, library, test, general</h3>
+<div class="outline-text-3" id="text-5-6">
 <p>
-This chapter is in a way the core why I started writing this whole big chapter <a href="#orgc3a50ac">5</a>
+This chapter is in a way the core why I started writing this whole big chapter <a href="#org427a0ce">5</a>
 </p>
 </div>
 
 <div id="outline-container-org8a546aa" class="outline-4">
-<h4 id="org8a546aa"><span class="section-number-4">5.5.1</span> Application and library in computing</h4>
-<div class="outline-text-4" id="text-5-5-1">
+<h4 id="org8a546aa"><span class="section-number-4">5.6.1</span> Application and library in computing</h4>
+<div class="outline-text-4" id="text-5-6-1">
 <p>
 In computing, a program may be an Application (App) or a Library.  This looks arbitrary, but not without merit.  On a high level, we have the following general requirements from an App, and from a Library:
 </p>
@@ -1282,10 +1320,10 @@ From the generic requirements above, App and Library need some way to perform th
 
 
 <div id="outline-container-orgdefd475" class="outline-4">
-<h4 id="orgdefd475"><span class="section-number-4">5.5.2</span> Application and library API in computing</h4>
-<div class="outline-text-4" id="text-5-5-2">
+<h4 id="orgdefd475"><span class="section-number-4">5.6.2</span> Application and library API in computing</h4>
+<div class="outline-text-4" id="text-5-6-2">
 <p>
-Following the basic requirements from the previous section <a href="#org8a546aa">5.5.1</a> in mainstream computing, we need methods such as those below.  The names are arbitrary, but conventional, and represent the APIs understood on the platform:
+Following the basic requirements from the previous section <a href="#org8a546aa">5.6.1</a> in mainstream computing, we need methods such as those below.  The names are arbitrary, but conventional, and represent the APIs understood on the platform:
 </p>
 
 <ul class="org-ul">
@@ -1309,8 +1347,8 @@ A mainstream system has the advantage of access to a global namespace - generall
 
 
 <div id="outline-container-org4ee700c" class="outline-4">
-<h4 id="org4ee700c"><span class="section-number-4">5.5.3</span> Application and library modules in Newspeak</h4>
-<div class="outline-text-4" id="text-5-5-3">
+<h4 id="org4ee700c"><span class="section-number-4">5.6.3</span> Application and library modules in Newspeak</h4>
+<div class="outline-text-4" id="text-5-6-3">
 <p>
 In Newspeak, everything is done via objects.  So App and Library must be an object.  Further, Newspeak starts all operations on the top level classes, that is on modules. (Modules are <i>top level classes</i>, see <a href="#org6e890f7">Discussion of Modules</a>)
 </p>
@@ -1341,8 +1379,8 @@ But, how is the solution implemented, in more details? Well, we simply add some 
 
 
 <div id="outline-container-org98fdcd0" class="outline-4">
-<h4 id="org98fdcd0"><span class="section-number-4">5.5.4</span> Newspeak modules API summary</h4>
-<div class="outline-text-4" id="text-5-5-4">
+<h4 id="org98fdcd0"><span class="section-number-4">5.6.4</span> Newspeak modules API summary</h4>
+<div class="outline-text-4" id="text-5-6-4">
 <p>
 This section is a summary and reference of Application, library, and test modules API in Newspeak.  It is sort of the pinnacle of the parent section about Apps and Libraries. 
 </p>
@@ -1429,14 +1467,14 @@ Note that the IDE uses some of those methods to show appropriate action links.  
 
 
 <div id="outline-container-org29bc453" class="outline-4">
-<h4 id="org29bc453"><span class="section-number-4">5.5.5</span> Newspeak modules API zoo</h4>
-<div class="outline-text-4" id="text-5-5-5">
+<h4 id="org29bc453"><span class="section-number-4">5.6.5</span> Newspeak modules API zoo</h4>
+<div class="outline-text-4" id="text-5-6-5">
 <p>
 This section shows a terse list of "convention" API for various module types, with the role of the API. 
 </p>
 
 <p>
-See <a href="#org98fdcd0">Newspeak modules API summary</a> for roles of the API methods. For motivation of the APIs, see earlier sections such as <a href="#org4633bc8">Modules: Application, library, test, general</a> and the whole section <a href="#orgc3a50ac">5</a>.
+See <a href="#org98fdcd0">Newspeak modules API summary</a> for roles of the API methods. For motivation of the APIs, see earlier sections such as <a href="#org4633bc8">Modules: Application, library, test, general</a> and the whole section <a href="#org427a0ce">5</a>.
 </p>
 
 <p>
@@ -1452,31 +1490,49 @@ The table below summarizes APIs of all type of modules
 <col  class="org-left" />
 
 <col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
 </colgroup>
 <thead>
 <tr>
 <th scope="col" class="org-left">Module type</th>
-<th scope="col" class="org-left">Constructor. Role=package</th>
+<th scope="col" class="org-left">Factory Constructor. Role=package</th>
+<th scope="col" class="org-left">Note</th>
+<th scope="col" class="org-left">Sep</th>
 <th scope="col" class="org-left">Instance method. Role=build or execute</th>
+<th scope="col" class="org-left">Note</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td class="org-left">Library</td>
 <td class="org-left">#packageLibraryUsing: manifest</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">-</td>
 <td class="org-left">#buildUsing: platform</td>
+<td class="org-left">&#xa0;</td>
 </tr>
 
 <tr>
 <td class="org-left">App</td>
 <td class="org-left">#packageUsing: manifest</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">-</td>
 <td class="org-left">#main: platform args: args</td>
+<td class="org-left">calls General modules Factory constructors, and/or Library module instance method, then appropriate methods to run</td>
 </tr>
 
 <tr>
 <td class="org-left">Test Configuration</td>
 <td class="org-left">#packageTestsUsing: manifest</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">-</td>
 <td class="org-left">#testModulesUsingPlatform: platform minitest: m</td>
+<td class="org-left">calls Test module Factory constructor which runs tests</td>
 </tr>
 </tbody>
 <tbody>
@@ -1484,30 +1540,45 @@ The table below summarizes APIs of all type of modules
 <td class="org-left">&#xa0;</td>
 <td class="org-left">Factory Constructor.</td>
 <td class="org-left">&#xa0;</td>
+<td class="org-left">-</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
 </tr>
 </tbody>
 <tbody>
 <tr>
-<td class="org-left">General module needing platform</td>
+<td class="org-left">General, needs platform + other module</td>
 <td class="org-left">#usingPlatform: platform [andModule: m1]</td>
 <td class="org-left">&#xa0;</td>
-</tr>
-
-<tr>
-<td class="org-left">General module dependent on other module</td>
-<td class="org-left">#withOtherModule: m1</td>
-<td class="org-left">Note: name is completely free</td>
-</tr>
-
-<tr>
-<td class="org-left">General module with no dependencies</td>
-<td class="org-left">#new</td>
+<td class="org-left">-</td>
+<td class="org-left">&#xa0;</td>
 <td class="org-left">&#xa0;</td>
 </tr>
 
 <tr>
-<td class="org-left">Test module</td>
+<td class="org-left">General, needs other module</td>
+<td class="org-left">#withOtherModule: m1</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">-</td>
+<td class="org-left">Note: name is completely free</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="org-left">General, with no dependencies</td>
+<td class="org-left">#new</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">-</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="org-left">Test</td>
 <td class="org-left">#usingPlatform: platform testFramework: minitest</td>
+<td class="org-left">runs tests</td>
+<td class="org-left">-</td>
+<td class="org-left">&#xa0;</td>
 <td class="org-left">&#xa0;</td>
 </tr>
 </tbody>
@@ -1519,8 +1590,24 @@ Notes:
 
 <ul class="org-ul">
 <li>The <code>#usingPlatform: platform [andModule: m1]</code> is an example of a factory constructor which is passed the platform and a dependency which is module m1. The point is the the start of the method name <code>#usingPlatform:</code> is fixed, other parameters can be added for dependencies, in any free form.</li>
+<li>A summary of an App module would be as follows:
+<ul class="org-ul">
+<li>In Factory Constructor 
+<ul class="org-ul">
+<li><code>#packageUsing: manifest</code>, store any "carry along" (import) classes on slots</li>
+</ul></li>
+<li>In Instance method <code>#main: platform args: args</code>,  call
+<ul class="org-ul">
+<li>On general modules classes their Factory constructors  <code>#usingPlatform: platform [andModule: m1]</code> to build instances of modules (dependencies)</li>
+<li>and/or on Library modules classes build instance methods, <code>#buildLibraryUsingPlatform: platform</code> to build instances of 3rd party modules (dependencies)</li>
+<li>then, on the created instances, call appropriate methods to run the app</li>
+</ul></li>
+<li>IDE, when running the App, calls on the App class:
+<ul class="org-ul">
+<li>Factory constructor <code>#packageUsing: manifest</code>, then the Instance method (run)</li>
+</ul></li>
+</ul></li>
 </ul>
-
 <p>
 wishing renames to : 
 </p>
@@ -1547,7 +1634,7 @@ wishing renames to :
 <tr>
 <td class="org-left">Library</td>
 <td class="org-left"><b>#packageLibraryUsingManifest: manifest</b></td>
-<td class="org-left"><b>#buildUsingPlatform: platform</b></td>
+<td class="org-left"><b>#buildLibraryUsingPlatform: platform</b></td>
 </tr>
 
 <tr>
@@ -1601,13 +1688,13 @@ wishing renames to :
 
 
 <div id="outline-container-org608a145" class="outline-4">
-<h4 id="org608a145"><span class="section-number-4">5.5.6</span> Newspeak platform and manifest objects summary</h4>
-<div class="outline-text-4" id="text-5-5-6">
+<h4 id="org608a145"><span class="section-number-4">5.6.6</span> Newspeak platform and manifest objects summary</h4>
+<div class="outline-text-4" id="text-5-6-6">
 <p>
 In a nutshell, 
 </p>
 <ul class="org-ul">
-<li>We need <i>manifest</i> classes for packaging.  Manifest provides the classes needed to "bring along" in the package.  Those "bring along" or "import" classes may not exist on the end-user system, so they need to be added to the package!</li>
+<li>We need <i>manifest</i> classes for packaging.  Manifest provides the classes needed to "bring along" (import) in the package.  Those "bring along" or "import" classes may not exist on the end-user system, so they need to be added to the package!</li>
 <li>We need <i>platform</i> for execution.  Platform provides instances of "system classes".  Those "system classes instances" are assumed to exist on the end-user system, so we do not need to bring them along!</li>
 </ul>
 </div>
@@ -1616,16 +1703,16 @@ In a nutshell,
 
 
 <div id="outline-container-org465e425" class="outline-3">
-<h3 id="org465e425"><span class="section-number-3">5.6</span> Newspeak recipy for writing modules API</h3>
-<div class="outline-text-3" id="text-5-6">
+<h3 id="org465e425"><span class="section-number-3">5.7</span> Newspeak recipy for writing modules API</h3>
+<div class="outline-text-3" id="text-5-7">
 <p>
 Sections above attempted to discover and describe modules API, see <a href="#org98fdcd0">Newspeak modules API summary</a>. This section will attempt to give a "recipy" about method signatures each module type requires.
 </p>
 </div>
 
 <div id="outline-container-orgd9476b0" class="outline-5">
-<h5 id="orgd9476b0"><span class="section-number-5">5.6.0.1</span> 1. General module with NO dependencies: API of module with no dependencies</h5>
-<div class="outline-text-5" id="text-5-6-0-1">
+<h5 id="orgd9476b0"><span class="section-number-5">5.7.0.1</span> 1. General module with NO dependencies: API of module with no dependencies</h5>
+<div class="outline-text-5" id="text-5-7-0-1">
 <p>
 While perhaps rare, this is the simplest case. If our module does not need any dependencies, not even from common classes such as collection:
 </p>
@@ -1635,9 +1722,9 @@ While perhaps rare, this is the simplest case. If our module does not need any d
 </ul>
 </div>
 
-<div id="outline-container-orgedaa9b0" class="outline-6">
-<h6 id="orgedaa9b0"><span class="section-number-6">5.6.0.1.1</span> Example:</h6>
-<div class="outline-text-6" id="text-5-6-0-1-1">
+<div id="outline-container-org732b317" class="outline-6">
+<h6 id="org732b317"><span class="section-number-6">5.7.0.1.1</span> Example:</h6>
+<div class="outline-text-6" id="text-5-7-0-1-1">
 <pre class="example">
 class RecipyNoDep new = ()
 (
@@ -1669,8 +1756,8 @@ class RecipyNoDep = ()
 
 
 <div id="outline-container-org7062cfa" class="outline-5">
-<h5 id="org7062cfa"><span class="section-number-5">5.6.0.2</span> 2. General module with dependencies: API of module with dependencies</h5>
-<div class="outline-text-5" id="text-5-6-0-2">
+<h5 id="org7062cfa"><span class="section-number-5">5.7.0.2</span> 2. General module with dependencies: API of module with dependencies</h5>
+<div class="outline-text-5" id="text-5-7-0-2">
 <p>
 If our module need some other module from IDE, such as collections, you have to pass it the <code>platform</code> object, and potentially other objects or classes our module depends on
 </p>
@@ -1681,9 +1768,9 @@ If our module need some other module from IDE, such as collections, you have to 
 </ul>
 </div>
 
-<div id="outline-container-org670f52f" class="outline-6">
-<h6 id="org670f52f"><span class="section-number-6">5.6.0.2.1</span> Example:</h6>
-<div class="outline-text-6" id="text-5-6-0-2-1">
+<div id="outline-container-orgf660122" class="outline-6">
+<h6 id="orgf660122"><span class="section-number-6">5.7.0.2.1</span> Example:</h6>
+<div class="outline-text-6" id="text-5-7-0-2-1">
 <pre class="example">
 class RecipyWithDep usingPlatform: platform andModule: translator = (
   |
@@ -1722,8 +1809,8 @@ Note that the RecipyNoDep class could be passed instead of the instance; obvious
 
 
 <div id="outline-container-org938a58a" class="outline-5">
-<h5 id="org938a58a"><span class="section-number-5">5.6.0.3</span> 3. Library module: API of module that needs to be used as a packageble and distributable Newspeak library module</h5>
-<div class="outline-text-5" id="text-5-6-0-3">
+<h5 id="org938a58a"><span class="section-number-5">5.7.0.3</span> 3. Library module: API of module that needs to be used as a packageble and distributable Newspeak library module</h5>
+<div class="outline-text-5" id="text-5-7-0-3">
 <p>
 In the previous section, we introduced a general module <code>RecipyWithDep</code>. If we needed this module to be packagable as a library, add the following:
 </p>
@@ -1742,9 +1829,9 @@ Note that in this case, <i>#buildUsing: platform</i> must not be added any other
 </p>
 </div>
 
-<div id="outline-container-orgd2b778f" class="outline-6">
-<h6 id="orgd2b778f"><span class="section-number-6">5.6.0.3.1</span> Example:</h6>
-<div class="outline-text-6" id="text-5-6-0-3-1">
+<div id="outline-container-orgd023aaf" class="outline-6">
+<h6 id="orgd023aaf"><span class="section-number-6">5.7.0.3.1</span> Example:</h6>
+<div class="outline-text-6" id="text-5-7-0-3-1">
 <p>
 To create a packageble and distributable library module for the above <code>RecipyWithDep</code>, create this library module 
 </p>
@@ -1776,7 +1863,7 @@ Also note how the passing of <code>platform</code> moves from the constructor in
 </p>
 <ul class="org-ul">
 <li>In the module <code>RecipyWithDep</code> , it is on the <i>factory constructor</i> <i>#usingPlatform: platform:</i></li>
-<li>To the distribution library <code>RecipyWithDepLib</code>, it is on thr <i>instance method</i> <i>#buildUsing: platform</i>.</li>
+<li>To the distribution library <code>RecipyWithDepLib</code>, it is on the <i>instance method</i> <i>#buildUsing: platform</i>.</li>
 </ul>
 
 <p>
@@ -1792,6 +1879,7 @@ sortListTranslatorLib:: RecipyWithDepLib packageLibraryUsing: ide namespacing ma
 sortListTranslator:: sortListTranslatorLib buildUsing: platform.
 
 sortListTranslator translate: {' World'. 'Hello'}.
+(* Expected result: 'Hallo Welt' output string just below the Workspace line *)
 </pre>
 </div>
 </div>
@@ -1799,8 +1887,8 @@ sortListTranslator translate: {' World'. 'Hello'}.
 
 
 <div id="outline-container-orgbc7867f" class="outline-5">
-<h5 id="orgbc7867f"><span class="section-number-5">5.6.0.4</span> 4. App module: API of module that needs to be used as a packageble and distributable Newspeak App</h5>
-<div class="outline-text-5" id="text-5-6-0-4">
+<h5 id="orgbc7867f"><span class="section-number-5">5.7.0.4</span> 4. App module: API of module that needs to be used as a packageble and distributable Newspeak App</h5>
+<div class="outline-text-5" id="text-5-7-0-4">
 <p>
 If we need our module <code>RecipyWithDep</code> to be packagable as an App:
 </p>
@@ -1838,22 +1926,22 @@ Note the parallel role between the following methods
 <tbody>
 <tr>
 <td class="org-left">#packageLibraryUsing: manifest</td>
-<td class="org-left">has role of</td>
+<td class="org-left">- has role of -</td>
 <td class="org-left">#packageUsing: manifest</td>
 </tr>
 
 <tr>
 <td class="org-left">#buildUsing: platform</td>
-<td class="org-left">has role of</td>
+<td class="org-left">- has role of -</td>
 <td class="org-left">#main: platform args: args</td>
 </tr>
 </tbody>
 </table>
 </div>
 
-<div id="outline-container-org26c5763" class="outline-6">
-<h6 id="org26c5763"><span class="section-number-6">5.6.0.4.1</span> Example:</h6>
-<div class="outline-text-6" id="text-5-6-0-4-1">
+<div id="outline-container-org06975da" class="outline-6">
+<h6 id="org06975da"><span class="section-number-6">5.7.0.4.1</span> Example:</h6>
+<div class="outline-text-6" id="text-5-7-0-4-1">
 <p>
 To create a packageble and distributable App module for the above <code>RecipyWithDep</code>, create this App module 
 </p>
@@ -1898,34 +1986,36 @@ Also note, as you add the App class <code>RecipyWithDepApp</code> (using the "+ 
 
 
 <div id="outline-container-orgb451316" class="outline-5">
-<h5 id="orgb451316"><span class="section-number-5">5.6.0.5</span> <span class="todo TODO">TODO</span> 5. Test module: TODO</h5>
+<h5 id="orgb451316"><span class="section-number-5">5.7.0.5</span> <span class="todo TODO">TODO</span> 5. Test module: TODO</h5>
 </div>
 
 <div id="outline-container-orgbc1116c" class="outline-5">
-<h5 id="orgbc1116c"><span class="section-number-5">5.6.0.6</span> <span class="todo TODO">TODO</span> 6. Test module configuration: TODO</h5>
+<h5 id="orgbc1116c"><span class="section-number-5">5.7.0.6</span> <span class="todo TODO">TODO</span> 6. Test module configuration: TODO</h5>
 </div>
 </div>
 
 
 <div id="outline-container-org3f7b274" class="outline-3">
-<h3 id="org3f7b274"><span class="section-number-3">5.7</span> Hello World in Newspeak</h3>
-<div class="outline-text-3" id="text-5-7">
+<h3 id="org3f7b274"><span class="section-number-3">5.8</span> Hello World in Newspeak</h3>
+<div class="outline-text-3" id="text-5-8">
+</div>
+<div id="outline-container-org8047503" class="outline-4">
+<h4 id="org8047503"><span class="section-number-4">5.8.1</span> Section Summary</h4>
+<div class="outline-text-4" id="text-5-8-1">
 <p>
 This section will show several ways to create a 'Hello World' program in Newspeak, using different methods in increasing complexity.  The initial versions are due to Gilad Bracha's answer on the Newspeak group <a href="https://groups.google.com/g/newspeaklanguage/c/Cq2Ej0_THew">https://groups.google.com/g/newspeaklanguage/c/Cq2Ej0_THew</a>
-</p>
-
-<p>
-We are not adding any screenshots at the moment, will add it later.
 </p>
 
 <p>
 All Hello Worlds are created by starting the Newspeak online IDE at <a href="https://newspeaklanguage.org/samples/primordialsoup.html?snapshot=HopscotchWebIDE.vfuel">https://newspeaklanguage.org/samples/primordialsoup.html?snapshot=HopscotchWebIDE.vfuel</a>, then following the steps.
 </p>
 </div>
+</div>
+
 
 <div id="outline-container-org9128238" class="outline-4">
-<h4 id="org9128238"><span class="section-number-4">5.7.1</span> 1.  Hello World from Workspace</h4>
-<div class="outline-text-4" id="text-5-7-1">
+<h4 id="org9128238"><span class="section-number-4">5.8.2</span> 1. Hello World from Workspace</h4>
+<div class="outline-text-4" id="text-5-8-2">
 <p>
 Workspace is like the command line or REPL in Newspeak.
 </p>
@@ -1943,7 +2033,7 @@ Steps to run Hello World from Workspace
 </ul>
 
 
-<div id="orgc5fda56" class="figure">
+<div id="org487006d" class="figure">
 <p><img src="/img/newspeak---a-few-notes.org-hello-world-workspace.png" alt="nil"/> 
 </p>
 </div>
@@ -1952,8 +2042,8 @@ Steps to run Hello World from Workspace
 
 
 <div id="outline-container-orgf5b8d03" class="outline-4">
-<h4 id="orgf5b8d03"><span class="section-number-4">5.7.2</span> 2.  Hello World from general module</h4>
-<div class="outline-text-4" id="text-5-7-2">
+<h4 id="orgf5b8d03"><span class="section-number-4">5.8.3</span> 2. Hello World from general module</h4>
+<div class="outline-text-4" id="text-5-8-3">
 <p>
 In this section, we will build a Hello World which is a <i>module</i> (a <i>top level class</i> as we know already).  The <a href="#org98fdcd0">Newspeak modules API summary</a> section would classify this as "General" module, because it does not have any of the special convention methods in it's API.  The only method of this class is it's default <i>factory constructor</i> <code>#new</code>.
 </p>
@@ -2000,8 +2090,8 @@ This concludes the section on General Module class.  Before the next step, pleas
 
 
 <div id="outline-container-orgc4a4799" class="outline-4">
-<h4 id="orgc4a4799"><span class="section-number-4">5.7.3</span> 3.  Hello World App</h4>
-<div class="outline-text-4" id="text-5-7-3">
+<h4 id="orgc4a4799"><span class="section-number-4">5.8.4</span> 3. Hello World App</h4>
+<div class="outline-text-4" id="text-5-8-4">
 <p>
 By now, we know that <i>modules</i> are <i>top level classes</i>, see <a href="#org6e890f7">Discussion of Modules</a>.  In <a href="#org98fdcd0">Newspeak modules API summary</a> we have shown that providing modules with convention API methods understood by tools such as the IDE, modules can behave as Apps, Libraries, or Tests.
 </p>
@@ -2057,8 +2147,8 @@ This concludes the section on App Module class.  We have shown how to create an 
 
 
 <div id="outline-container-org7bffa18" class="outline-4">
-<h4 id="org7bffa18"><span class="section-number-4">5.7.4</span> 4.  Hello World App using 3rd party dependency</h4>
-<div class="outline-text-4" id="text-5-7-4">
+<h4 id="org7bffa18"><span class="section-number-4">5.8.5</span> 4. Hello World App using 3rd party dependency</h4>
+<div class="outline-text-4" id="text-5-8-5">
 <p>
 This section builds on previous sections to create an App, <code>HelloWorldAppUsingLib</code>  which depend on a 3rd party library module. 
 </p>
@@ -2116,6 +2206,10 @@ Then, the <i>TranslatorCorp</i> would work in their helper module and the <i>Lan
 </p>
 
 <pre class="example">
+(* This version of HelloTranslatorLib is not ready yet due to missing
+   HelloTranslatorHelper and LanguageSelectorLib.
+   Use the above version in your IDE experiments
+*)
 class HelloTranslatorLib packageLibraryUsing: manifest = (
   | 
   HelloTranslator = manifest HelloTranslator.
@@ -2144,6 +2238,9 @@ class HelloTranslatorLib packageLibraryUsing: manifest = (
 Either way, we would develop our App by packaging the 3rd party dependency and storing it on slot as <code>helloTranslatorLib</code>, then at runtime, build instance of the <code>helloTranslator</code> using the packaged <code>helloTranslatorLib</code>, and last, calling the method on <code>helloTranslator</code> which performs the translation:
 </p>
 
+<p>
+This is how the App <code>HelloWorldAppUsingLib</code> would look. 
+</p>
 
 <pre class="example">
 class HelloWorldAppUsingLib packageUsing: manifest = (
@@ -2160,6 +2257,14 @@ class HelloWorldAppUsingLib packageUsing: manifest = (
   )
 )
 </pre>
+
+<p>
+As shown in the previous section <a href="#orgc4a4799">3. Hello World App</a>, we can both run the App from the IDE, or package it a ".vfuel" file, and distribute to run as a standalone App from a local Newspeak webserver (or as an Electon based on Android, iOS, or desktop, but this is not shown yet).
+</p>
+
+<p>
+This concludes the 'Hello World' section, as well as the broader section <a href="#org427a0ce">Newspeak is different.  An ide-driven journey around the Newspeak platform</a>.
+</p>
 </div>
 </div>
 </div>
@@ -2204,7 +2309,7 @@ TL;DR: This section describes the simplest setup - in fact, this is a "no setup,
 </ul>
 
 
-<div id="org2296fe3" class="figure">
+<div id="org77deb53" class="figure">
 <p><img src="/img/newspeak---a-few-notes.org-newspeak-ide-start.png" alt="nil"/>
 </p>
 </div>
@@ -2513,7 +2618,7 @@ Snippets of wisdom
 <li><p>
 StringTest&gt;&gt;#testShout is the Smalltalk way of identifying the testShout method of the StringTest class.  When you actually type the code into the browser, you don’t have to type the class name or the &gt;&gt;; instead, you just make sure that the appropriate class is selected.  Documentation example in text should show abstract argument names:
 </p>
-<pre class="example" id="orgb060130">
+<pre class="example" id="org28724c3">
 History&gt;&gt;goBackward
   self canGoBackward ifFalse: [self error: 'Already on the first element'].
   stream skip: --2.
@@ -2708,5 +2813,112 @@ This .vfuel can then be deployed into a (locally installed) Newspeak server.
 <li>For instructions on how to deploy a sample app, in particular the <code>CounterApp</code>, see <a href="#orgaadf932">4.4</a>.</li>
 </ul>
 </div>
+</div>
+</div>
+
+
+
+<div id="outline-container-orga2fa99f" class="outline-2">
+<h2 id="orga2fa99f"><span class="section-number-2">9</span> Example of bringing dependencies into an application and publishing an application</h2>
+<div class="outline-text-2" id="text-9">
+<p>
+As discussed in <a href="#orgb4743ce">Dependencies and modularity: Perhaps the hardest part of Newspeak difference</a>:
+</p>
+
+<ul class="org-ul">
+<li>Due to Newspeak's modularity, the process of bringing dependencies into a Newspeak program is different from mainstream language platforms. See the above linked section for an introduction and more links regarding dependencies in Newspeak.</li>
+<li>The <code>manifest</code> and <code>platform</code> objects, and the module APIs where they are used, are the mechanism to bring dependencies into modules (objects)</li>
+</ul>
+
+<p>
+Folow the above link and also the <a href="#org3f7b274">Hello World in Newspeak</a> section for concrete examples.
+</p>
+
+<p>
+This section provides an additional example introduced by Gilad Bracha on the Newspeak Google groups list.
+</p>
+
+<p>
+Imagine a convention whereby <b>every library intended for distribution is sent out as a class which:</b>
+</p>
+
+<ul class="org-ul">
+<li>has a factory (or in general, class method) method <code>#packageLibraryUsingManifest: manifest</code> -</li>
+<li>has a <code>#buildUsing: platform</code> method - this method, given a platform object, produces a working instance of the module we actually want to distribute</li>
+</ul>
+
+<p>
+Now developer A (Alice) intends to distribute a module MyMod1.
+It depends on some other code she developed, say, MyMod2, which in turn depends on a 3rd party library from developer B (Bob).
+The module Alice distributes is below.
+</p>
+
+<pre class="example">
+class MyMod1DistributionLib packageLibraryUsingManifest: manifest = ( 
+ (* packageManager: ...  metadata describing the expected dependencies *)
+  |
+  MyMod1 = manifest MyMod1.
+  MyMod2 = manifest MyMod2.
+  My3rdPartyDep = manifest My3rdPartyDep packageLibraryUsingManifest: manifest.
+  |
+) (
+   public buildUsing: platform = (
+      |
+      my3rdPartDependency = My3rdPartyDep buildUsing: platform.
+      myMod2 = MyMod2 usingPlatform: platform and: my3rdPartDependency.
+      myMod1 = MyMod1 usingPlatform: platform mod2: myMod2.
+      |
+     ^myMod1
+   )
+)
+</pre>
+
+<p>
+The <code>#build: platform</code> method encapsulates the knowledge of how to build Alice's code, using an internal library she wrote (MyMod2) and Bob's library.  
+</p>
+
+<p>
+Note that Alice is using the same convention as Bob, and builds Bob's code with no knowledge of its internal dependencies.
+Developer C (Carol) uses these same conventions to build Alice's code.  She can do so regardless of whether
+</p>
+<ul class="org-ul">
+<li>she is <b>building an app</b> (where she'd call <code>#packageLibraryUsing: manifest</code> from the app's factory, and <code>#build: platform</code> from <code>#main: platform args: args</code></li>
+<li>or she is <b>building another library</b> (where she'd call <code>#packageLibraryUsing:</code> from the library factory).</li>
+</ul>
+
+<p>
+If Alice decides to replace Bob's code with code from developer D (David), she changes MyModules, but Carol's code does not change.  Likewise, if Bob or David change their dependencies, neither Alice nor Carol change their code.
+</p>
+
+<p>
+It isn't necessary for everyone to follow the exact same convention - what's critical is that a given module maintains its convention so its build API is stable.  Of course, a common convention is good, especially for tools. 
+</p>
+
+<p>
+Alice could just distribute an instance of MyModules, but this hard-wires the versions of all the dependencies.  Assuming she doesn't do that, it is true that Carol needs to download all the pieces and their sub-pieces from Bob and Alice etc.  She loads them into the IDE (or the IDE does so by reading the metadata) and the IDE's namespace is used to produce the manifest object passed in when anyone builds an app.
+</p>
+
+<p>
+Note that <code>platform</code> and <code>manifest</code> need are quite different.  Manifests are a development thing.  Platforms are a deployment thing.
+</p>
+
+<ul class="org-ul">
+<li><code>Platforms</code> are for runtime capabilities and are security critical.  The platform is something that gives you the only connections to the world outside Newspeak.</li>
+<li><code>Manifest</code> are for code construction (see <code>#packageUsing: manifest</code>).  The Newspeak IDE provides a global namespace, which is a real object that you can pass around.  That object is a manifest.</li>
+</ul>
+
+
+<p>
+Anyway, hopefully this helps to answer the question. 
+</p>
+
+<p>
+&#x2013;
+Cheers, Gilad
+Gilad Bracha
+29 Apr 2021, 19:32:52
+to newspeak&#x2026;@googlegroups.com
+(slightly edited and merged from other posts by Milan Zimmermann)
+</p>
 </div>
 </div>

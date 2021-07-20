@@ -29,7 +29,7 @@ Much of this document is collected from existing Newspeak sources:
 | 2021-05-04 |   | Milan Zimmermann |   | Expanded on using the Newspeak IDE, mostly in the section [[Run the online version of the Newspeak IDE.  Read docs, watch videos]] |
 | 2021-06-07 |   | Milan Zimmermann |   | Wording changes and clarifications in several sections                                                                        |
 | 2021-07-05 |   | Milan Zimmermann |   | Reworked the saving paragraph:  "lastSaved" vs "backup" in [[Saving changes in Newspeak]]                                         |
-| 2021-07-16 |   | Milan Zimmermann |   | Added section [[*Newspeak is different.  The first week of a personal journey around the Newspeak platform][Newspeak is different.  The first week of a personal journey around the Newspeak platform]]                                                                                                         |
+| 2021-07-16 |   | Milan Zimmermann |   | Added section [[*Newspeak is different.  An ide-driven journey around the Newspeak platform][Newspeak is different.  An ide-driven journey around the Newspeak platform]]                                                                                                         |
 
   
 * Notation
@@ -308,11 +308,11 @@ Summary:
 Next: This is the end of coding, building and running the ~CounterApp~
 
 
-* Newspeak is different.  The first week of a personal journey around the Newspeak platform
+* Newspeak is different.  An ide-driven journey around the Newspeak platform
 
 ** Motivation of writing this journey
 
-On this journey, I would like to walk back and capture some of my surprises, gotchas, but also amazement of simplicity during a journey of the first week *stretched over 2 months* starting with Newspeak.  But hopefully I manage to organize this journey into a somewhat streamlined story.  Actually "the first week" is not completely correct.  I did first discover Newspeak long time ago, almost when it started, read available articles back then, and covered the syntax which helped.  But I did not have time back then to get my hands on it properly.
+On this journey, I would like to walk back and capture some of my surprises, gotchas, but also amazement of simplicity during a journey of my first week (stretched over 2 months) starting with Newspeak.  But hopefully I manage to organize this journey into a somewhat streamlined story.  Actually "the first week" is not completely correct.  I did first discover Newspeak long time ago, almost when it started, read available articles back then, and covered the syntax which helped.  But I did not have time back then to get my hands on it properly.
 
 Most learning, and often "unlearning" for me was the discovery different the Newspeak platform is, compared to most mainstream platforms, such as Java, Python, C++, even Smalltalk (with Smalltalk, Newspeak shares syntax and extreme late boundedness).
 
@@ -341,7 +341,7 @@ Newspeak is a principled language and *platform* (in the sense described).  Gila
 As this section title states, Newspeak is different. *Being different is not for fun.  Newspeak must be different to implement its core principles*
 
 - Dynamicity
-- Modularity
+- Modularity (including how dependencies are provided)
 - Classes can be nested (nesting provides the core of modularity)
 - Security
 - Reflectivity
@@ -351,18 +351,33 @@ As this section title states, Newspeak is different. *Being different is not for
 
   
 I will add one multi-item principle.
-- Everything, I mean absolutely everything in the Newspeak language is an object (instance of a class). 
-  - Other languages use separate concepts for packages, apps, modules, namespaces, classes.  They also use the filesystem a lot.
-  - All of these concepts exist in Newspeak, but they are all implemented by objects.
+- Everything in the Newspeak language is an object (instance of a class). 
+  - Most(?) mainstream languages use separate concepts for packages, apps, modules, namespaces, classes.  They also use the filesystem a lot.
+  - All concepts in the item above exist in Newspeak, but they are all implemented by objects.
 
 But, given a Newspeak object, how do we know it is a *module, a class, or an app*? The distinction between them is determined by:
 
 1) the object's position in the class nesting and
 2) presence of certain API (convention named methods such as ~#main:platform args:args~ 
 
-I have to admit, the "being different" does came at an initial price (for me at least), often in the form of unlearning. 
+Given a Newspeak object, how does it acquire it's dependencies? This is one core point discussed a lot. See [[*Dependencies and modularity: Perhaps the hardest part of Newspeak difference][Dependencies and modularity: Perhaps the hardest part of Newspeak difference]].
+
+"Being different" does came at a steep initial learning curve (for me at least), often in the form of unlearning. 
 
 More concrete talk please!
+
+
+** Dependencies and modularity: Perhaps the hardest part of Newspeak difference
+
+This is only a quick "look ahead summary" to provide more motivation and contex for the rest of the parent chapter.
+
+Due to Newspeak's modularity, the process of bringing dependencies into a Newspeak program - be it a module (top level class), a nested class, an app, a library, a test - is different from mainstream language platforms. 
+
+Because transfering dependencies into objects is so different in Newspeak, large part of this text deals with the topic of dependencies. 
+
+The ~manifest~ and ~platform~ objects are the vehicles of bringing dependencies to objects packages and at runtime. 
+
+The module APIs sections [[*Modules: Application, library, test, general][Modules: Application, library, test, general]], the recipy section [[*Newspeak recipy for writing modules API][Newspeak recipy for writing modules API]], and the [[*Hello World in Newspeak][Hello World in Newspeak]] are largely about bringing dependencies into modules (objects).
 
 
 ** Starting the journey
@@ -422,7 +437,7 @@ The existence of the /Root namespace/ describes one of my surprises - although I
 Next we can ask, why does the IDE need a global namespace (Root), while the language does not have one, in fact very intentionally does not have one?  The reason is, when working in the IDE, we want cross-access between the /modules/ (the /top level classes/).  After packaging and deployment of any Newspeak module (outside the IDE), only the modules intended to be used by other modules are available! Modules cannot freely cross-use each other, because there is no global namespace to find each other.  If a moduleA needs to use moduleB, moduleA must explicitly ask to include moduleB at the packaging stage.  More on that later. 
 
 
-** Class structure, factory constructors, app and library API, platform and manifest
+** Class structure, factory constructors, platform and manifest, modules API
 
 *** Section TL;DR:
 
@@ -436,6 +451,7 @@ Let us expand each top level class in the "sources" screenshot above.  Well, may
 [[file:img/newspeak---a-few-notes.org-ide-full-page-classes-expanded.png]]
 
 Continue reading what we can learn from looking at the expanded classes.
+
 
 *** Newspeak class structure
 
@@ -503,6 +519,10 @@ So what is in the manifest, why it is significant, and what role does it play in
 
 We can look at the code, and ask what Newspeak passes into the ~manifest~ parameter.  We find that there is only one place that calls ~#packageUsing: manifest~, and it passes for ~manifest~ the value of object ~ide namespacing manifest~.  So we can examine what ~ide namespacing manifest~ contains.  In Workspace, let us evaluate it:
 
+#+begin_src 
+ide namespacing manifest
+#+end_src
+
 [[file:img/newspeak---a-few-notes.org-ide-namespacing-manifest.png]]
 
 Drilling into the instance, we can see it is a map, and sorting by the key, we get
@@ -516,7 +536,7 @@ at: ActivationMirrorTesting
 
 We see that the *manifest is a map containing exactly all top-level classes in the IDE - that is, all module classes known to the IDE!*
 
-So we have the answer to what the manifest object contains.
+So we have a experiment based answer to what the manifest object contains.
 
 
 **** Why is the manifest object significant, and what role does it play in Newspeak?
@@ -581,19 +601,19 @@ We saw that the /modules/ are DEFINED AS /top level classes/ in Newspeak.  So in
 
 And we saw that there is no global namespace in Newspeak.  Module instances, need other objects (dependencies) to do useful work.  In Newspeak, for a module instance to "contain" ANY dependency, such dependency must be on the module instance slot (slot is like the member variable).  Also, at the point of the module construction we MUST supply such dependency.  Because only the /factory constructor/ can define slots, the *module factory constructor must be passed everything the module needs from outside*.  
 
-This is where  ~platform~ and ~manifest~ come in.  They are "special" in the sense that they supply objects and classes needed by the module.  But each happens at a special point of the module lifecycle.  This is summarized in 
+This is where  ~platform~ and ~manifest~ come in.  They are "special" in the sense that they supply objects and classes needed by the module.  But each happens at a special point of the module lifecycle.  This is summarized in [[*Modules: Application, library, test, general][Modules: Application, library, test, general]]
 
-We know any Newspeak object can have only one "slot defining" factory object.  So any module can *only have one of*
+We know any Newspeak object can have only one "slot defining" constructor (called /factory constructor/.  So any module can *only have one of the following factory constructors*
 
-- ~#packageUsing: manifest~
-- ~#usingPlatform: platform~
+- Factory method passing manifest, named similar to ~#package(Something)Using: manifest~  - manifest is needed during packaging (imports). Only App, Library, and Test configuration modules use this factory constructor.
+- Factory method passing platform, named similar to ~#(doSomething)usingPlatform: platform~ - platform is needed at runtime. For  App, Library, and Test configuration modules, method passing platform in an instance method.
 
-Which method is used on which module type? Follow the [[*Modules: Application, library, test, general][Modules: Application, library, test, general]]
+Which method is used on which module type? Follow the next section [[*Modules: Application, library, test, general][Modules: Application, library, test, general]]
 
 
 ** Modules: Application, library, test, general
 
-This chapter is in a way the core why I started writing this whole big chapter [[Newspeak is different.  The first week of a personal journey around the Newspeak platform]]
+This chapter is in a way the core why I started writing this whole big chapter [[Newspeak is different.  An ide-driven journey around the Newspeak platform]]
 
 *** Application and library in computing
 
@@ -686,34 +706,42 @@ Note that the IDE uses some of those methods to show appropriate action links.  
 
 This section shows a terse list of "convention" API for various module types, with the role of the API. 
 
-See [[*Newspeak modules API summary][Newspeak modules API summary]] for roles of the API methods. For motivation of the APIs, see earlier sections such as [[*Modules: Application, library, test, general][Modules: Application, library, test, general]] and the whole section [[Newspeak is different.  The first week of a personal journey around the Newspeak platform]].
+See [[*Newspeak modules API summary][Newspeak modules API summary]] for roles of the API methods. For motivation of the APIs, see earlier sections such as [[*Modules: Application, library, test, general][Modules: Application, library, test, general]] and the whole section [[Newspeak is different.  An ide-driven journey around the Newspeak platform]].
 
 The table below summarizes APIs of all type of modules 
 
-| Module type                              | Constructor. Role=package                        | Instance method. Role=build or execute          |
-|------------------------------------------+--------------------------------------------------+-------------------------------------------------|
-| Library                                  | #packageLibraryUsing: manifest                   | #buildUsing: platform                           |
-| App                                      | #packageUsing: manifest                          | #main: platform args: args                      |
-| Test Configuration                       | #packageTestsUsing: manifest                     | #testModulesUsingPlatform: platform minitest: m |
-|------------------------------------------+--------------------------------------------------+-------------------------------------------------|
-|------------------------------------------+--------------------------------------------------+-------------------------------------------------|
-|                                          | Factory Constructor.                             |                                                 |
-|------------------------------------------+--------------------------------------------------+-------------------------------------------------|
-| General module needing platform          | #usingPlatform: platform [andModule: m1]         |                                                 |
-| General module dependent on other module | #withOtherModule: m1                             | Note: name is completely free                   |
-| General module with no dependencies      | #new                                             |                                                 |
-| Test module                              | #usingPlatform: platform testFramework: minitest |                                                 |
+| Module type                            | Factory Constructor. Role=package                | Note       | Sep | Instance method. Role=build or execute          | Note                                                                                                               |
+|----------------------------------------+--------------------------------------------------+------------+-----+-------------------------------------------------+--------------------------------------------------------------------------------------------------------------------|
+| Library                                | #packageLibraryUsing: manifest                   |            | -   | #buildUsing: platform                           |                                                                                                                    |
+| App                                    | #packageUsing: manifest                          |            | -   | #main: platform args: args                      | calls General modules Factory constructors, and/or Library module instance method, then appropriate methods to run |
+| Test Configuration                     | #packageTestsUsing: manifest                     |            | -   | #testModulesUsingPlatform: platform minitest: m | calls Test module Factory constructor which runs tests                                                             |
+|----------------------------------------+--------------------------------------------------+------------+-----+-------------------------------------------------+--------------------------------------------------------------------------------------------------------------------|
+|----------------------------------------+--------------------------------------------------+------------+-----+-------------------------------------------------+--------------------------------------------------------------------------------------------------------------------|
+|                                        | Factory Constructor.                             |            | -   |                                                 |                                                                                                                    |
+|----------------------------------------+--------------------------------------------------+------------+-----+-------------------------------------------------+--------------------------------------------------------------------------------------------------------------------|
+| General, needs platform + other module | #usingPlatform: platform [andModule: m1]         |            | -   |                                                 |                                                                                                                    |
+| General, needs other module            | #withOtherModule: m1                             |            | -   | Note: name is completely free                   |                                                                                                                    |
+| General, with no dependencies          | #new                                             |            | -   |                                                 |                                                                                                                    |
+| Test                                   | #usingPlatform: platform testFramework: minitest | runs tests | -   |                                                 |                                                                                                                    |
 
 Notes:
 
 - The ~#usingPlatform: platform [andModule: m1]~ is an example of a factory constructor which is passed the platform and a dependency which is module m1. The point is the the start of the method name ~#usingPlatform:~ is fixed, other parameters can be added for dependencies, in any free form.
-
+- A summary of an App module would be as follows:
+  - In Factory Constructor 
+    - ~#packageUsing: manifest~, store any "carry along" (import) classes on slots
+  - In Instance method ~#main: platform args: args~,  call
+    - On general modules classes their Factory constructors  ~#usingPlatform: platform [andModule: m1]~ to build instances of modules (dependencies)
+    - and/or on Library modules classes build instance methods, ~#buildLibraryUsingPlatform: platform~ to build instances of 3rd party modules (dependencies) 
+    - then, on the created instances, call appropriate methods to run the app
+  - IDE, when running the App, calls on the App class:
+    - Factory constructor ~#packageUsing: manifest~, then the Instance method (run)
 wishing renames to : 
 
 
 | Module type                              | Constructor. Role=package                        | Instance method. Role=build or execute          |
 |------------------------------------------+--------------------------------------------------+-------------------------------------------------|
-| Library                                  | *#packageLibraryUsingManifest: manifest*         | *#buildUsingPlatform: platform*                 |
+| Library                                  | *#packageLibraryUsingManifest: manifest*         | *#buildLibraryUsingPlatform: platform*          |
 | App                                      | *#packageUsingManifest: manifest*                | *#runUsingPlatform: platform args: args*        |
 | Test Configuration                       | *#packageTestsUsingManifest: manifest*           | #testModulesUsingPlatform: platform minitest: m |
 |------------------------------------------+--------------------------------------------------+-------------------------------------------------|
@@ -730,7 +758,7 @@ wishing renames to :
 *** Newspeak platform and manifest objects summary
 
 In a nutshell, 
-- We need /manifest/ classes for packaging.  Manifest provides the classes needed to "bring along" in the package.  Those "bring along" or "import" classes may not exist on the end-user system, so they need to be added to the package!
+- We need /manifest/ classes for packaging.  Manifest provides the classes needed to "bring along" (import) in the package.  Those "bring along" or "import" classes may not exist on the end-user system, so they need to be added to the package!
 - We need /platform/ for execution.  Platform provides instances of "system classes".  Those "system classes instances" are assumed to exist on the end-user system, so we do not need to bring them along!
 
 
@@ -847,7 +875,7 @@ Note how the library must store any "carry along" (imported) classes on slots du
 
 Also note how the passing of ~platform~ moves from the constructor in the module, to the instance method in the library:
   - In the module ~RecipyWithDep~ , it is on the /factory constructor/ /#usingPlatform: platform:/ 
-  - To the distribution library ~RecipyWithDepLib~, it is on thr /instance method/ /#buildUsing: platform/.
+  - To the distribution library ~RecipyWithDepLib~, it is on the /instance method/ /#buildUsing: platform/.
 
 Although intended for distribution, for testing this process, the library can be used in workspace as 
 
@@ -860,6 +888,7 @@ sortListTranslatorLib:: RecipyWithDepLib packageLibraryUsing: ide namespacing ma
 sortListTranslator:: sortListTranslatorLib buildUsing: platform.
 
 sortListTranslator translate: {' World'. 'Hello'}.
+(* Expected result: 'Hallo Welt' output string just below the Workspace line *)
 #+end_src
 
 
@@ -874,10 +903,10 @@ If we need our module ~RecipyWithDep~ to be packagable as an App:
 
 Note the parallel role between the following methods
 
-| Library                        |             | App                        |
-|--------------------------------+-------------+----------------------------|
-| #packageLibraryUsing: manifest | has role of | #packageUsing: manifest    |
-| #buildUsing: platform          | has role of | #main: platform args: args |
+| Library                        |                 | App                        |
+|--------------------------------+-----------------+----------------------------|
+| #packageLibraryUsing: manifest | - has role of - | #packageUsing: manifest    |
+| #buildUsing: platform          | - has role of - | #main: platform args: args |
 
 ***** Example:
 
@@ -918,13 +947,14 @@ Also note, as you add the App class ~RecipyWithDepApp~ (using the "+ " button ),
 
 ** Hello World in Newspeak
 
-This section will show several ways to create a 'Hello World' program in Newspeak, using different methods in increasing complexity.  The initial versions are due to Gilad Bracha's answer on the Newspeak group https://groups.google.com/g/newspeaklanguage/c/Cq2Ej0_THew
+*** Section Summary 
 
-We are not adding any screenshots at the moment, will add it later.
+This section will show several ways to create a 'Hello World' program in Newspeak, using different methods in increasing complexity.  The initial versions are due to Gilad Bracha's answer on the Newspeak group https://groups.google.com/g/newspeaklanguage/c/Cq2Ej0_THew
 
 All Hello Worlds are created by starting the Newspeak online IDE at https://newspeaklanguage.org/samples/primordialsoup.html?snapshot=HopscotchWebIDE.vfuel, then following the steps.
 
-*** 1.  Hello World from Workspace 
+
+*** 1. Hello World from Workspace 
 
 Workspace is like the command line or REPL in Newspeak.
 
@@ -939,7 +969,7 @@ Steps to run Hello World from Workspace
 [[file:img/newspeak---a-few-notes.org-hello-world-workspace.png]] 
 
 
-*** 2.  Hello World from general module 
+*** 2. Hello World from general module 
 
 In this section, we will build a Hello World which is a /module/ (a /top level class/ as we know already).  The [[*Newspeak modules API summary][Newspeak modules API summary]] section would classify this as "General" module, because it does not have any of the special convention methods in it's API.  The only method of this class is it's default /factory constructor/ ~#new~.
 
@@ -970,7 +1000,7 @@ This concludes the section on General Module class.  Before the next step, pleas
 
 
 
-*** 3.  Hello World App 
+*** 3. Hello World App 
 
 By now, we know that /modules/ are /top level classes/, see [[*Discussion of Modules][Discussion of Modules]].  In [[*Newspeak modules API summary][Newspeak modules API summary]] we have shown that providing modules with convention API methods understood by tools such as the IDE, modules can behave as Apps, Libraries, or Tests.
 
@@ -1008,7 +1038,7 @@ Next, we will show how to deploy our ~HelloWorldApp~ as a standalone App.  From 
 This concludes the section on App Module class.  We have shown how to create an App, run it in IDE, create a deployable .vfuel file, then deploy the App standalone in local Newspeak webserver.
 
 
-*** 4.  Hello World App using 3rd party dependency
+*** 4. Hello World App using 3rd party dependency
 
 This section builds on previous sections to create an App, ~HelloWorldAppUsingLib~  which depend on a 3rd party library module. 
 
@@ -1053,6 +1083,10 @@ The ~HelloTranslator~, hence the ~HelloTranslatorLib~
 Then, the /TranslatorCorp/ would work in their helper module and the /LanguageCorp's/ module as follows:
 
 #+begin_src
+(* This version of HelloTranslatorLib is not ready yet due to missing
+   HelloTranslatorHelper and LanguageSelectorLib.
+   Use the above version in your IDE experiments
+*)
 class HelloTranslatorLib packageLibraryUsing: manifest = (
   | 
   HelloTranslator = manifest HelloTranslator.
@@ -1079,6 +1113,7 @@ class HelloTranslatorLib packageLibraryUsing: manifest = (
 
 Either way, we would develop our App by packaging the 3rd party dependency and storing it on slot as ~helloTranslatorLib~, then at runtime, build instance of the ~helloTranslator~ using the packaged ~helloTranslatorLib~, and last, calling the method on ~helloTranslator~ which performs the translation:
 
+This is how the App ~HelloWorldAppUsingLib~ would look. 
 
 #+begin_src 
 class HelloWorldAppUsingLib packageUsing: manifest = (
@@ -1095,6 +1130,10 @@ class HelloWorldAppUsingLib packageUsing: manifest = (
   )
 )
 #+end_src
+
+As shown in the previous section [[*3. Hello World App][3. Hello World App]], we can both run the App from the IDE, or package it a ".vfuel" file, and distribute to run as a standalone App from a local Newspeak webserver (or as an Electon based on Android, iOS, or desktop, but this is not shown yet).
+
+This concludes the 'Hello World' section, as well as the broader section [[*Newspeak is different.  An ide-driven journey around the Newspeak platform][Newspeak is different.  An ide-driven journey around the Newspeak platform]].
 
 
 * Newspeak: Using it and installing it.  Online vs.  local installation
@@ -1416,3 +1455,74 @@ This .vfuel can then be deployed into a (locally installed) Newspeak server.
 - For instructions on how to install the server see [[install-method-1]]
 - For instructions on how to deploy a sample app, in particular the ~CounterApp~, see [[Deploy CounterApp as standalone app into local Newspeak webserver]].
   
+
+
+* Example of bringing dependencies into an application and publishing an application
+
+As discussed in [[*Dependencies and modularity: Perhaps the hardest part of Newspeak difference][Dependencies and modularity: Perhaps the hardest part of Newspeak difference]]:
+
+- Due to Newspeak's modularity, the process of bringing dependencies into a Newspeak program is different from mainstream language platforms. See the above linked section for an introduction and more links regarding dependencies in Newspeak.
+- The ~manifest~ and ~platform~ objects, and the module APIs where they are used, are the mechanism to bring dependencies into modules (objects)
+
+Folow the above link and also the [[*Hello World in Newspeak][Hello World in Newspeak]] section for concrete examples.
+
+This section provides an additional example introduced by Gilad Bracha on the Newspeak Google groups list.
+
+Imagine a convention whereby *every library intended for distribution is sent out as a class which:*
+
+ - has a factory (or in general, class method) method ~#packageLibraryUsingManifest: manifest~ - 
+ - has a ~#buildUsing: platform~ method - this method, given a platform object, produces a working instance of the module we actually want to distribute
+
+Now developer A (Alice) intends to distribute a module MyMod1.
+It depends on some other code she developed, say, MyMod2, which in turn depends on a 3rd party library from developer B (Bob).
+The module Alice distributes is below.
+
+#+BEGIN_SRC
+class MyMod1DistributionLib packageLibraryUsingManifest: manifest = ( 
+ (* packageManager: ...  metadata describing the expected dependencies *)
+  |
+  MyMod1 = manifest MyMod1.
+  MyMod2 = manifest MyMod2.
+  My3rdPartyDep = manifest My3rdPartyDep packageLibraryUsingManifest: manifest.
+  |
+) (
+   public buildUsing: platform = (
+      |
+      my3rdPartDependency = My3rdPartyDep buildUsing: platform.
+      myMod2 = MyMod2 usingPlatform: platform and: my3rdPartDependency.
+      myMod1 = MyMod1 usingPlatform: platform mod2: myMod2.
+      |
+     ^myMod1
+   )
+)
+#+END_SRC
+
+The ~#build: platform~ method encapsulates the knowledge of how to build Alice's code, using an internal library she wrote (MyMod2) and Bob's library.  
+
+Note that Alice is using the same convention as Bob, and builds Bob's code with no knowledge of its internal dependencies.
+Developer C (Carol) uses these same conventions to build Alice's code.  She can do so regardless of whether
+- she is *building an app* (where she'd call ~#packageLibraryUsing: manifest~ from the app's factory, and ~#build: platform~ from ~#main: platform args: args~
+- or she is *building another library* (where she'd call ~#packageLibraryUsing:~ from the library factory).
+
+If Alice decides to replace Bob's code with code from developer D (David), she changes MyModules, but Carol's code does not change.  Likewise, if Bob or David change their dependencies, neither Alice nor Carol change their code.
+
+It isn't necessary for everyone to follow the exact same convention - what's critical is that a given module maintains its convention so its build API is stable.  Of course, a common convention is good, especially for tools. 
+
+Alice could just distribute an instance of MyModules, but this hard-wires the versions of all the dependencies.  Assuming she doesn't do that, it is true that Carol needs to download all the pieces and their sub-pieces from Bob and Alice etc.  She loads them into the IDE (or the IDE does so by reading the metadata) and the IDE's namespace is used to produce the manifest object passed in when anyone builds an app.
+
+Note that ~platform~ and ~manifest~ need are quite different.  Manifests are a development thing.  Platforms are a deployment thing.
+
+- ~Platforms~ are for runtime capabilities and are security critical.  The platform is something that gives you the only connections to the world outside Newspeak. 
+- ~Manifest~ are for code construction (see ~#packageUsing: manifest~).  The Newspeak IDE provides a global namespace, which is a real object that you can pass around.  That object is a manifest.
+
+
+Anyway, hopefully this helps to answer the question. 
+
+--
+Cheers, Gilad
+Gilad Bracha
+29 Apr 2021, 19:32:52
+to newspeak...@googlegroups.com
+(slightly edited and merged from other posts by Milan Zimmermann)
+
+ 
