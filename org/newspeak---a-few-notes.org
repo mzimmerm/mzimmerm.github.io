@@ -1338,10 +1338,6 @@ Snippets of wisdom
 If you want to deploy a module, well, you need to use it via an app (i.e, define something with #packageUsing: and #main:args:), directly or indirectly. 
 
 
-
-
-
-
 * IN-PROGRESS Q&A - answers should be either here directly, or link to an earlier section
 
 Much of this Q&A is sourced and expanded, or simply pasted from the Newspeak google group posts at https://groups.google.com/g/newspeaklanguage
@@ -1361,9 +1357,11 @@ It won't save your state, but it will save your code.  Bear in mind that the web
 For a complete discussion, see [[*Saving changes in Newspeak][Chapter Saving changes in Newspeak]].
  
 
-*** How would I build and deploy a ~AHelloWorldApp~ or a more complex ~CounterApp~ application?
+*** How would I build and deploy a Newspeak application? 
 
-For the ~CounterApp~ example, see section [[A Concrete Newspeak example: Packaging and distributing a concrete app]]
+For ~HelloWorldApp~, see [[*Hello World in Newspeak][Hello World in Newspeak]].
+
+For the ~CounterApp~ example, see section [[A Concrete Newspeak example: Packaging and distributing a concrete app]].
 
 
 
@@ -1378,7 +1376,7 @@ Only classes that the IDE considers apps (applications) show these links.
 
 IDE concludes a class is an app based on a convention: presence of method ~#packageUsing: manifest~.
 
-For details see  [[*Newspeak modules API summary][Newspeak modules API summary]] and [[Develop, package, distribute ~AHelloWorldApp~ app]] for an example.
+For details see  [[*Newspeak modules API summary][Newspeak modules API summary]] and [[*Hello World in Newspeak][Hello World in Newspeak]].
 
 ** Why do some test classes show the [run tests] [show tests] links?
 
