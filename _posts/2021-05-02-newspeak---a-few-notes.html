@@ -17,68 +17,158 @@ categories:
 <div id="text-table-of-contents">
 <ul>
 <li><a href="#org3d484da">1. This document: Introduction to Newspeak on Webassembly (Wasm)</a></li>
-<li><a href="#orgef290a7">2. Notation</a>
+<li><a href="#orgb24b0d8">2. Changelog</a></li>
+<li><a href="#orgef290a7">3. Notation</a>
 <ul>
 <li>
 <ul>
-<li><a href="#org19e5dd7">2.0.1. Message (function) names notation in text</a></li>
+<li><a href="#org19e5dd7">3.0.1. Message (function) names notation in text</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li><a href="#org8b291c4">3. Newspeak: A quickstart.  Explore the IDE.  Then develop CounterApp, package it and deploy it</a>
+<li><a href="#org8b291c4">4. Newspeak: A quickstart.  Explore the IDE.  Then develop CounterApp, package it and deploy it</a>
 <ul>
-<li><a href="#org17c8680">3.1. Run the online version of the Newspeak IDE.  Read docs, watch videos</a></li>
-<li><a href="#orgba53dc6">3.2. Build, run, and debug the CounterApp in Newspeak (in the online version)</a></li>
-<li><a href="#org5383775">3.3. Download, install, and start a local Newspeak webserver</a></li>
-<li><a href="#orgaadf932">3.4. Deploy CounterApp as standalone app into local Newspeak webserver</a></li>
+<li><a href="#org17c8680">4.1. Run the online version of the Newspeak IDE.  Read docs, watch videos</a></li>
+<li><a href="#orgba53dc6">4.2. Build, run, and debug the CounterApp in Newspeak (in the online version)</a></li>
+<li><a href="#org5383775">4.3. Download, install, and start a local Newspeak webserver</a></li>
+<li><a href="#orgaadf932">4.4. Deploy CounterApp as standalone app into local Newspeak webserver</a></li>
 </ul>
 </li>
-<li><a href="#orgc577a6a">4. Newspeak: Using it and installing it.  Online vs.  local installation</a>
+<li><a href="#orgc3a50ac">5. Newspeak is different.  The first week of a personal journey around the Newspeak platform</a>
 <ul>
-<li><a href="#orge001de9">4.1. Simple methods to install and run Newspeak</a>
+<li><a href="#org6d24e33">5.1. Motivation of writing this journey</a></li>
+<li><a href="#org9c92a01">5.2. Starting the journey</a></li>
+<li><a href="#orgb541611">5.3. Namespaces and Modules</a>
 <ul>
-<li><a href="#org362edd2">4.1.1. Installation method 1: No installation or setup, run Newspeak online</a></li>
-<li><a href="#org8609b11">4.1.2. Installation method 2: Download and start a local Newspeak webserver</a></li>
-<li><a href="#org3c90d9c">4.1.3. Installation method 3: Download or setup a local Electron version of Newspeak on MacOS or Windows</a></li>
+<li><a href="#org3923d4e">5.3.1. Top level classes in the IDE</a></li>
+<li><a href="#org982e2bc">5.3.2. Discussion of Namespaces</a></li>
+<li><a href="#org6e890f7">5.3.3. Discussion of Modules</a></li>
+<li><a href="#orgf56c5f8">5.3.4. Back to namespaces and the surprise of the global namespace existence</a></li>
+</ul>
+</li>
+<li><a href="#org4b7067e">5.4. Class structure, factory constructors, app and library API, platform and manifest</a>
+<ul>
+<li><a href="#org061e3a5">5.4.1. Section TL;DR:</a></li>
+<li><a href="#org36553ab">5.4.2. Top level classes in the IDE - expanded</a></li>
+<li><a href="#orge6745be">5.4.3. Newspeak class structure</a></li>
+<li><a href="#org7c19284">5.4.4. Factory constructors</a></li>
+<li><a href="#org853369e">5.4.5. The manifest object</a>
+<ul>
+<li><a href="#org5c57cbf">5.4.5.1. What is in the manifest object?</a></li>
+<li><a href="#org66a7ed8">5.4.5.2. Why is the manifest object significant, and what role does it play in Newspeak?</a></li>
+</ul>
+</li>
+<li><a href="#org953587a">5.4.6. The platform object</a>
+<ul>
+<li><a href="#org1594af0">5.4.6.1. What is in the platform object?</a></li>
+<li><a href="#orge5a7812">5.4.6.2. Why is the platform object significant, and what role does it play in Newspeak?</a></li>
+</ul>
+</li>
+<li><a href="#orgd13d91d">5.4.7. Common and distinct roles of platform and manifest in modules</a></li>
+</ul>
+</li>
+<li><a href="#org4633bc8">5.5. Modules: Application, library, test, general</a>
+<ul>
+<li><a href="#org8a546aa">5.5.1. Application and library in computing</a></li>
+<li><a href="#orgdefd475">5.5.2. Application and library API in computing</a></li>
+<li><a href="#org4ee700c">5.5.3. Application and library modules in Newspeak</a></li>
+<li><a href="#org98fdcd0">5.5.4. Newspeak modules API summary</a></li>
+<li><a href="#org29bc453">5.5.5. Newspeak modules API zoo</a></li>
+<li><a href="#org608a145">5.5.6. Newspeak platform and manifest objects summary</a></li>
+</ul>
+</li>
+<li><a href="#org465e425">5.6. Newspeak recipy for writing modules API</a>
+<ul>
+<li>
+<ul>
+<li><a href="#orgd9476b0">5.6.0.1. 1. General module with NO dependencies: API of module with no dependencies</a>
+<ul>
+<li><a href="#orgedaa9b0">5.6.0.1.1. Example:</a></li>
+</ul>
+</li>
+<li><a href="#org7062cfa">5.6.0.2. 2. General module with dependencies: API of module with dependencies</a>
+<ul>
+<li><a href="#org670f52f">5.6.0.2.1. Example:</a></li>
+</ul>
+</li>
+<li><a href="#org938a58a">5.6.0.3. 3. Library module: API of module that needs to be used as a packageble and distributable Newspeak library module</a>
+<ul>
+<li><a href="#orgd2b778f">5.6.0.3.1. Example:</a></li>
+</ul>
+</li>
+<li><a href="#orgbc7867f">5.6.0.4. 4. App module: API of module that needs to be used as a packageble and distributable Newspeak App</a>
+<ul>
+<li><a href="#org26c5763">5.6.0.4.1. Example:</a></li>
+</ul>
+</li>
+<li><a href="#orgb451316">5.6.0.5. <span class="todo TODO">TODO</span> 5. Test module: TODO</a></li>
+<li><a href="#orgbc1116c">5.6.0.6. <span class="todo TODO">TODO</span> 6. Test module configuration: TODO</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li><a href="#org2cdf4f7">5. <span class="todo IN_PROGRESS">IN-PROGRESS</span> Programming in Newspeak</a>
+<li><a href="#org3f7b274">5.7. Hello World in Newspeak</a>
 <ul>
-<li><a href="#orgcd8c075">5.1. The Newspeak IDE</a>
-<ul>
-<li><a href="#org899c43c">5.1.1. Updating the IDE</a>
-<ul>
-<li><a href="#org2d7d91c">5.1.1.1. Updating the online version</a></li>
-<li><a href="#org900cae1">5.1.1.2. Updating your local Newspeak webserver, installed as in Installation method 2 (local Newspeak webserver).</a></li>
-</ul>
-</li>
-<li><a href="#org2853966">5.1.2. Updading a single class that was fixed on Github source into local Newspeak webserver (thus IDE)</a></li>
-</ul>
-</li>
-<li><a href="#orgafd7607">5.2. Saving changes in Newspeak</a>
-<ul>
-<li><a href="#org1aa0e14">5.2.1. Saving changes inside the browser</a></li>
-<li><a href="#orga7e210e">5.2.2. Saving changes outside the browser:</a></li>
+<li><a href="#org9128238">5.7.1. 1.  Hello World from Workspace</a></li>
+<li><a href="#orgf5b8d03">5.7.2. 2.  Hello World from general module</a></li>
+<li><a href="#orgc4a4799">5.7.3. 3.  Hello World App</a></li>
+<li><a href="#org7bffa18">5.7.4. 4.  Hello World App using 3rd party dependency</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li><a href="#orge701dcb">6. <span class="todo IN_PROGRESS">IN-PROGRESS</span> Q&amp;A - answers should be either here directly, or link to an earlier section</a>
+<li><a href="#orgc577a6a">6. Newspeak: Using it and installing it.  Online vs.  local installation</a>
 <ul>
-<li><a href="#org88e254f">6.1. <span class="todo IN_PROGRESS">IN-PROGRESS</span> Working with code</a>
+<li><a href="#orge001de9">6.1. Simple methods to install and run Newspeak</a>
 <ul>
-<li><a href="#org3c1c3d3">6.1.1. How do I save my changes?</a></li>
-<li><a href="#org088d07d">6.1.2. How would I build and deploy a <code>AHelloWorldApp</code> or a more complex <code>CounterApp</code> application?</a></li>
-<li><a href="#org98fdcd0">6.1.3. Newspeak modules API summary</a></li>
+<li><a href="#org362edd2">6.1.1. Installation method 1: No installation or setup, run Newspeak online</a></li>
+<li><a href="#org8609b11">6.1.2. Installation method 2: Download and start a local Newspeak webserver</a></li>
+<li><a href="#org3c90d9c">6.1.3. Installation method 3: Download or setup a local Electron version of Newspeak on MacOS or Windows</a></li>
 </ul>
 </li>
-<li><a href="#org15a4f6c">6.2. When or why to refresh the online IDE?</a></li>
-<li><a href="#org2400758">6.3. Why do some classes show the [deploy] [run] [debug[ links?</a></li>
-<li><a href="#org9bf4124">6.4. Why do some test classes show the [run tests] [show tests] links?</a></li>
-<li><a href="#org87db60b">6.5. How would I create and distribute a Newspeak App to run on the web, on mobile, or on desktop?</a></li>
+<li><a href="#org28ccd5c">6.2. System specific methods to install and run Newspeak</a>
+<ul>
+<li><a href="#org68de2cb">6.2.1. Installation method 4: Setup a local Newspeak webserver from code on Github.</a></li>
+<li><a href="#orgfde56e0">6.2.2. Installation method 5: Manual setup which will produce an equivalent of Installation method 2 (local Newspeak webserver)</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#org2cdf4f7">7. <span class="todo IN_PROGRESS">IN-PROGRESS</span> Programming in Newspeak</a>
+<ul>
+<li><a href="#orgcd8c075">7.1. The Newspeak IDE</a>
+<ul>
+<li><a href="#org899c43c">7.1.1. Updating the IDE</a>
+<ul>
+<li><a href="#org2d7d91c">7.1.1.1. Updating the online version</a></li>
+<li><a href="#org900cae1">7.1.1.2. Updating your local Newspeak webserver, installed as in Installation method 2 (local Newspeak webserver).</a></li>
+</ul>
+</li>
+<li><a href="#org2853966">7.1.2. Updading a single class that was fixed on Github source into local Newspeak webserver (thus IDE)</a></li>
+</ul>
+</li>
+<li><a href="#orgafd7607">7.2. Saving changes in Newspeak</a>
+<ul>
+<li><a href="#org1aa0e14">7.2.1. Saving changes inside the browser</a></li>
+<li><a href="#orga7e210e">7.2.2. Saving changes outside the browser:</a></li>
+</ul>
+</li>
+<li><a href="#orga43a173">7.3. <span class="todo IN_PROGRESS_NOW">IN-PROGRESS-NOW</span> Snippets of wisdom from various sources</a></li>
+</ul>
+</li>
+<li><a href="#orge701dcb">8. <span class="todo IN_PROGRESS">IN-PROGRESS</span> Q&amp;A - answers should be either here directly, or link to an earlier section</a>
+<ul>
+<li><a href="#org88e254f">8.1. <span class="todo IN_PROGRESS">IN-PROGRESS</span> Working with code</a>
+<ul>
+<li><a href="#org3c1c3d3">8.1.1. How do I save my changes?</a></li>
+<li><a href="#org35d76b7">8.1.2. How would I build and deploy a Newspeak application?</a></li>
+</ul>
+</li>
+<li><a href="#org15a4f6c">8.2. When or why to refresh the online IDE?</a></li>
+<li><a href="#org2400758">8.3. Why do some classes show the [deploy] [run] [debug[ links?</a></li>
+<li><a href="#org9bf4124">8.4. Why do some test classes show the [run tests] [show tests] links?</a></li>
+<li><a href="#org87db60b">8.5. How would I create and distribute a Newspeak App to run on the web, on mobile, or on desktop?</a></li>
 </ul>
 </li>
 </ul>
@@ -105,14 +195,85 @@ Much of this document is collected from existing Newspeak sources:
 </div>
 
 
+<div id="outline-container-orgb24b0d8" class="outline-2">
+<h2 id="orgb24b0d8"><span class="section-number-2">2</span> Changelog</h2>
+<div class="outline-text-2" id="text-2">
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-right" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-right">Date</th>
+<th scope="col" class="org-left">&#xa0;</th>
+<th scope="col" class="org-left">Author</th>
+<th scope="col" class="org-left">&#xa0;</th>
+<th scope="col" class="org-left">Change</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-right">2021-05-02</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">Gilad Bracha</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">Important clarifications throughout the document</td>
+</tr>
+
+<tr>
+<td class="org-right">2021-05-04</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">Milan Zimmermann</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">Expanded on using the Newspeak IDE, mostly in the section <a href="#org17c8680">4.1</a></td>
+</tr>
+
+<tr>
+<td class="org-right">2021-06-07</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">Milan Zimmermann</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">Wording changes and clarifications in several sections</td>
+</tr>
+
+<tr>
+<td class="org-right">2021-07-05</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">Milan Zimmermann</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">Reworked the saving paragraph:  "lastSaved" vs "backup" in <a href="#orgafd7607">7.2</a></td>
+</tr>
+
+<tr>
+<td class="org-right">2021-07-16</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">Milan Zimmermann</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">Added section <a href="#orgc3a50ac">Newspeak is different.  The first week of a personal journey around the Newspeak platform</a></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+
 
 <div id="outline-container-orgef290a7" class="outline-2">
-<h2 id="orgef290a7"><span class="section-number-2">2</span> Notation</h2>
-<div class="outline-text-2" id="text-2">
+<h2 id="orgef290a7"><span class="section-number-2">3</span> Notation</h2>
+<div class="outline-text-2" id="text-3">
 </div>
 <div id="outline-container-org19e5dd7" class="outline-4">
-<h4 id="org19e5dd7"><span class="section-number-4">2.0.1</span> Message (function) names notation in text</h4>
-<div class="outline-text-4" id="text-2-0-1">
+<h4 id="org19e5dd7"><span class="section-number-4">3.0.1</span> Message (function) names notation in text</h4>
+<div class="outline-text-4" id="text-3-0-1">
 <p>
 Newspeak is a message based system.  All runtime operations are message sends.
 </p>
@@ -147,16 +308,16 @@ Examples:
 
 
 <div id="outline-container-org8b291c4" class="outline-2">
-<h2 id="org8b291c4"><span class="section-number-2">3</span> Newspeak: A quickstart.  Explore the IDE.  Then develop CounterApp, package it and deploy it</h2>
-<div class="outline-text-2" id="text-3">
+<h2 id="org8b291c4"><span class="section-number-2">4</span> Newspeak: A quickstart.  Explore the IDE.  Then develop CounterApp, package it and deploy it</h2>
+<div class="outline-text-2" id="text-4">
 <p>
 TL;DR: This quickstart section attempts to provide an incremental introduction to Newspeak.  First, we introduce the Newspeak online IDE, then we build and deploy a sample Newspeak app called <code>CounterApp</code>.  A spoiler: we can look ahead and run the app we will be building - the <code>CounterApp</code> - online at <a href="https://newspeaklanguage.org/samples/primordialsoup.html?snapshot=CounterApp.vfuel">https://newspeaklanguage.org/samples/primordialsoup.html?snapshot=CounterApp.vfuel</a>. 
 </p>
 </div>
 
 <div id="outline-container-org17c8680" class="outline-3">
-<h3 id="org17c8680"><span class="section-number-3">3.1</span> Run the online version of the Newspeak IDE.  Read docs, watch videos</h3>
-<div class="outline-text-3" id="text-3-1">
+<h3 id="org17c8680"><span class="section-number-3">4.1</span> Run the online version of the Newspeak IDE.  Read docs, watch videos</h3>
+<div class="outline-text-3" id="text-4-1">
 <p>
 TL;DR: This section introduces the online version of Newspeak IDE, and how to use it.
 </p>
@@ -271,15 +432,15 @@ Next:
 </p>
 
 <p>
-In the next section <a href="#orgba53dc6">3.2</a>, we show how to create a simple <code>CounterApp</code> in Newspeak.
+In the next section <a href="#orgba53dc6">4.2</a>, we show how to create a simple <code>CounterApp</code> in Newspeak.
 </p>
 </div>
 </div>
 
 
 <div id="outline-container-orgba53dc6" class="outline-3">
-<h3 id="orgba53dc6"><span class="section-number-3">3.2</span> Build, run, and debug the CounterApp in Newspeak (in the online version)</h3>
-<div class="outline-text-3" id="text-3-2">
+<h3 id="orgba53dc6"><span class="section-number-3">4.2</span> Build, run, and debug the CounterApp in Newspeak (in the online version)</h3>
+<div class="outline-text-3" id="text-4-2">
 <p>
 TL;DR: This section describes 
 </p>
@@ -311,7 +472,7 @@ Notes:
 <li>However, a local Newspeak webserver could be used instead.
 <ul class="org-ul">
 <li>If we wanted to deploy the <code>CounterApp</code> in "production", we would need a local Newspeak - because there is no way to deploy the app to the online Newspeak site.</li>
-<li>Deployment of the  <code>CounterApp</code> to "production" requires our "own" Newspeak, such as the local Newspeak webserver.  See <a href="#org5383775">3.3</a> for how to install Newspeak locally.</li>
+<li>Deployment of the  <code>CounterApp</code> to "production" requires our "own" Newspeak, such as the local Newspeak webserver.  See <a href="#org5383775">4.3</a> for how to install Newspeak locally.</li>
 </ul></li>
 <li>We may ask, "what is an app in Newspeak"? In a nutshell, an "app" is an instance of a class - obviously.  But which class, and what does the class need, to be able to "live" or "run" inside a Newspeak IDE or Newspeak runtime? Read on for details (actually, the coding details are todo).</li>
 </ul>
@@ -347,7 +508,7 @@ clicking the "+" button
 <img src="/img/newspeak---a-few-notes.org-root-plus-button.png" alt="nil"/> and typing or pasting the code in.
 Instead, we choose to load pre-existing files at the moment to concentrate on the process, not the code.</li>
 <li>Note 2: click the <code>CounterApp</code> or <code>CounterUI</code> link.  This shows the corresponding class.</li>
-<li>Note 3: The <code>CounterApp</code> shows links to <code>[deploy] [configuration] [run] [debug]</code>.  Why do only the "app" classes such as <code>CounterApp</code> (and no other classes) show the <code>[deploy] [configuration] [run] [debug]</code> links in the Newspeak IDE? The IDE decides to show those links based on the presence of a convention method <code>#packageUsing: manifest</code>  for what makes a class an App, a Library, or a Test Configuration, and how the IDE handles the API.</li>
+<li>Note 3: The <code>CounterApp</code> shows links to <code>[deploy] [configuration] [run] [debug]</code>.  Why do only the "app" classes such as <code>CounterApp</code> (and no other classes) show the <code>[deploy] [configuration] [run] [debug]</code> links in the Newspeak IDE? The IDE decides to show those links based on the presence of a convention method <code>#packageUsing: manifest</code>.  See <a href="#org98fdcd0">Newspeak modules API summary</a> for what makes a class an App, a Library, or a Test Configuration, and how the IDE handles the API.</li>
 </ul></li>
 <li>Action: To save the classes we added, (<code>CounterApp</code> or <code>CounterUI</code>) in the browser local storage explicitly "now", click the diskette "Save" button <img src="/img/newspeak---a-few-notes.org-save-button.png" alt="nil"/></li>
 <li>Result: The two classes are stored in the browser local storage.  To read more about details of the browser local storage, see <a href="#orgafd7607">Chapter Saving changes in Newspeak</a>.</li>
@@ -381,8 +542,8 @@ Next:
 
 
 <div id="outline-container-org5383775" class="outline-3">
-<h3 id="org5383775"><span class="section-number-3">3.3</span> Download, install, and start a local Newspeak webserver</h3>
-<div class="outline-text-3" id="text-3-3">
+<h3 id="org5383775"><span class="section-number-3">4.3</span> Download, install, and start a local Newspeak webserver</h3>
+<div class="outline-text-3" id="text-4-3">
 <p>
 TL;DR: This section describes:
 </p>
@@ -472,8 +633,8 @@ Next: <a href="#orgaadf932">Chapter Deploy <code>CounterApp</code> as standalone
 
 
 <div id="outline-container-orgaadf932" class="outline-3">
-<h3 id="orgaadf932"><span class="section-number-3">3.4</span> Deploy CounterApp as standalone app into local Newspeak webserver</h3>
-<div class="outline-text-3" id="text-3-4">
+<h3 id="orgaadf932"><span class="section-number-3">4.4</span> Deploy CounterApp as standalone app into local Newspeak webserver</h3>
+<div class="outline-text-3" id="text-4-4">
 <p>
 TL;DR: This section describes 
 </p>
@@ -489,18 +650,18 @@ Prerequisites:
 </p>
 
 <ol class="org-ol">
-<li>We have followed the online section <a href="#orgba53dc6">3.2</a>.  In that section, we have downloaded (from Newspeak Github) and compiled two classes <code>CounterApp</code> and <code>CounterUI</code> <b>while attached to the online Newspeak</b>.
+<li>We have followed the online section <a href="#orgba53dc6">4.2</a>.  In that section, we have downloaded (from Newspeak Github) and compiled two classes <code>CounterApp</code> and <code>CounterUI</code> <b>while attached to the online Newspeak</b>.
 <ul class="org-ul">
 <li>This statement requires a "fine point" explanation. 
 <ul class="org-ul">
-<li>In the earlier section  <a href="#orgba53dc6">3.2</a>, the two classes, <code>CounterApp</code> and <code>CounterUI</code>, were saved to the browser local storage.</li>
+<li>In the earlier section  <a href="#orgba53dc6">4.2</a>, the two classes, <code>CounterApp</code> and <code>CounterUI</code>, were saved to the browser local storage.</li>
 <li>In this current section, we re-attach to online Newspeak at <a href="https://newspeaklanguage.org/samples/primordialsoup.html?snapshot=HopscotchWebIDE.vfuel">https://newspeaklanguage.org/samples/primordialsoup.html?snapshot=HopscotchWebIDE.vfuel</a>.</li>
 <li>As explained in <a href="#orgafd7607">Chapter Saving changes in Newspeak</a>, the changes we made in the online version are still stored locally in the browser local storage.</li>
 <li>So, when we re-attach to online Newspeak in this section, the classes <code>CounterApp</code> and <code>CounterUI</code> are still available.  We use them to "create the CounterApp" (by saving it "as victory fuels" - that is, as file <code>CounterApp.vfuel</code>) which is the app.</li>
 <li>This app - the  file <code>CounterApp.vfuel</code> - can then be copied to the serving directory of local Newspeak, and can be opened from there.</li>
 </ul></li>
 </ul></li>
-<li>We have installed the local version of Newspeak by following the section <a href="#org5383775">3.3</a>.*</li>
+<li>We have installed the local version of Newspeak by following the section <a href="#org5383775">4.3</a>.*</li>
 </ol>
 
 
@@ -531,7 +692,7 @@ One more "fine point" note:
 <li>Action: Navigate to the online version of Newspeak at <a href="https://newspeaklanguage.org/samples/primordialsoup.html?snapshot=HopscotchWebIDE.vfuel">https://newspeaklanguage.org/samples/primordialsoup.html?snapshot=HopscotchWebIDE.vfuel</a> and click the "Newspeak Source"</li>
 <li>Result: Under "Root" you should see an alphabetically organized list of classes, similar to <img src="/img/newspeak---a-few-notes.org-newspeak-source.png" alt="nil"/>, 
 <ul class="org-ul">
-<li>Note: If you followed the online section <a href="#orgba53dc6">3.2</a>, there should be <code>CounterApp</code> and <code>CounterUI</code> classes in the alphabetic list.</li>
+<li>Note: If you followed the online section <a href="#orgba53dc6">4.2</a>, there should be <code>CounterApp</code> and <code>CounterUI</code> classes in the alphabetic list.</li>
 </ul></li>
 <li>Action: In the class list, find the <code>CounterApp</code>, and click the [deploy] to the right of the "CounterApp"</li>
 <li>Result: a popup showing deployment options, starting with <code>asVictoryFuel</code>: <img src="/img/newspeak---a-few-notes.org-click-deploy-on-counter-app.png" alt="nil"/></li>
@@ -568,16 +729,1453 @@ Next: This is the end of coding, building and running the <code>CounterApp</code
 </div>
 
 
+<div id="outline-container-orgc3a50ac" class="outline-2">
+<h2 id="orgc3a50ac"><span class="section-number-2">5</span> Newspeak is different.  The first week of a personal journey around the Newspeak platform</h2>
+<div class="outline-text-2" id="text-5">
+</div>
+<div id="outline-container-org6d24e33" class="outline-3">
+<h3 id="org6d24e33"><span class="section-number-3">5.1</span> Motivation of writing this journey</h3>
+<div class="outline-text-3" id="text-5-1">
+<p>
+On this journey, I would like to walk back and capture some of my surprises, gotchas, but also amazement of simplicity during a journey of the first week <b>stretched over 2 months</b> starting with Newspeak.  But hopefully I manage to organize this journey into a somewhat streamlined story.  Actually "the first week" is not completely correct.  I did first discover Newspeak long time ago, almost when it started, read available articles back then, and covered the syntax which helped.  But I did not have time back then to get my hands on it properly.
+</p>
+
+<p>
+Most learning, and often "unlearning" for me was the discovery different the Newspeak platform is, compared to most mainstream platforms, such as Java, Python, C++, even Smalltalk (with Smalltalk, Newspeak shares syntax and extreme late boundedness).
+</p>
+
+<p>
+At this moment I should give readers some links to jump off here and do this alone.  If you found this, you probably already searched to learn about Newspeak.  But I hope, if you get back here after googling and reading the links, the rest of this text may still be helpful :) ..  so, some selected links:
+</p>
+
+<ul class="org-ul">
+<li>First of all, the home of the Newspeak language <a href="https://newspeaklanguage.org/">https://newspeaklanguage.org/</a> has links to all documentation, videos, installers and more.</li>
+<li>Second, to run Newspeak online, navigate to  <a href="https://newspeaklanguage.org/samples/primordialsoup.html?snapshot=CounterApp.vfuel">https://newspeaklanguage.org/samples/primordialsoup.html?snapshot=CounterApp.vfuel</a>.</li>
+<li>Next, if I was to recommend
+<ul class="org-ul">
+<li>Selected few documents, it would be
+<ul class="org-ul">
+<li><a href="http://bracha.org/newspeak.pdf">The Newspeak programming platform</a>, an older document, briefly introduces both the syntax, and the core principles of Newspeak.</li>
+<li><a href="https://newspeaklanguage.org/samples/Literate/Literate.html">Newspeak by example</a>  which is a live document, introduces the syntax of Newspeak, sort of a Jupyter notebook for Newspeak: reader can type and evaluate Newspeak expression in a web page, interleaved with document text.</li>
+</ul></li>
+<li>A hands-on Newspeak introduction
+<ul class="org-ul">
+<li>Either use (still relevant where not Squeak dependent) <a href="https://newspeaklanguage.org/ns101/ns101.html">Newspeak on Squeak - A Guide for the Perplexed</a></li>
+<li>Or follow the hands-on section of this document <a href="#org8b291c4">4</a></li>
+</ul></li>
+</ul></li>
+</ul>
+
+<p>
+Getting back to my first week journey; it is unfair to hikers, as my journey was at times, that of a wanderer almost lost in a forest; haphazardly reading all I can get my hands on, trying code snippets things in the IDE, re-tracing running and deploying the existing <code>CounterApp</code>, and overall, taking one step forward, then two steps back as the step forward discovered more unknowns.
+</p>
+
+<p>
+Some concrete talk please!
+</p>
+
+<p>
+OK.  But first one more paragraph of meta-talk.  Just a heads up, I will start using the word <b>platform</b> a lot.  Let me try explain what I mean by <i>platform</i> or <i>language platform</i>.  Often we think of learning a "computer language" as learning its syntax.  But syntax is only a small part of being able to be productive in the language.  There are all those things around the syntax, that are needed to be comfortable and productive with a "computer language": How is it installed, how we create projects to start writing a useful program, the core idioms, how to use programs written by other people in that language (the libraries), how the programs we write are packaged and send to users to use (building, packaging and installing apps), how to secure the resulting program.  It is all these things listed in the long sentence that I mean by the "language platform" or "platform". 
+</p>
+
+<p>
+Newspeak syntax is not a major obstacle.  Well, it is quite different too, even for someone knowing Smalltalk, which Newspeak shares syntax with.  But one can get syntax basics from the links above.  Also, Newspeak syntax is a bit like speaking English.  Just different from the mainstream.  I will not address syntax too much here.
+</p>
+
+<p>
+Newspeak is a principled language and <b>platform</b> (in the sense described).  Gilad Bracha and collaborating authors describe several principles (adherence to which removes many mainstream platforms' weaknesses).  Those principles are described in the above linked paper <a href="http://bracha.org/newspeak.pdf">The Newspeak programming platform</a> and other documents.
+</p>
+
+<p>
+As this section title states, Newspeak is different. <b>Being different is not for fun.  Newspeak must be different to implement its core principles</b>
+</p>
+
+<ul class="org-ul">
+<li>Dynamicity</li>
+<li>Modularity</li>
+<li>Classes can be nested (nesting provides the core of modularity)</li>
+<li>Security</li>
+<li>Reflectivity</li>
+<li>intentional lack of static state</li>
+<li>support for both object-oriented and functional styles</li>
+<li>the only operation is a message send</li>
+</ul>
+
+
+<p>
+I will add one multi-item principle.
+</p>
+<ul class="org-ul">
+<li>Everything, I mean absolutely everything in the Newspeak language is an object (instance of a class). 
+<ul class="org-ul">
+<li>Other languages use separate concepts for packages, apps, modules, namespaces, classes.  They also use the filesystem a lot.</li>
+<li>All of these concepts exist in Newspeak, but they are all implemented by objects.</li>
+</ul></li>
+</ul>
+
+<p>
+But, given a Newspeak object, how do we know it is a <b>module, a class, or an app</b>? The distinction between them is determined by:
+</p>
+
+<ol class="org-ol">
+<li>the object's position in the class nesting and</li>
+<li>presence of certain API (convention named methods such as <code>#main:platform args:args</code></li>
+</ol>
+
+<p>
+I have to admit, the "being different" does came at an initial price (for me at least), often in the form of unlearning. 
+</p>
+
+<p>
+More concrete talk please!
+</p>
+</div>
+</div>
+
+
+<div id="outline-container-org9c92a01" class="outline-3">
+<h3 id="org9c92a01"><span class="section-number-3">5.2</span> Starting the journey</h3>
+<div class="outline-text-3" id="text-5-2">
+<p>
+To do anything useful with Newspeak, we have to use the IDE.  There is no command line per se (there is, but it is inside the IDE.  It is called the Workspace).  So let us open the Newspeak IDE to look around.  Navigate to  <a href="https://newspeaklanguage.org/samples/primordialsoup.html?snapshot=CounterApp.vfuel">https://newspeaklanguage.org/samples/primordialsoup.html?snapshot=CounterApp.vfuel</a>.
+</p>
+
+<p>
+We see something like
+</p>
+
+
+<div id="orgb90bdaa" class="figure">
+<p><img src="/img/newspeak---a-few-notes.org-local-ide.png" alt="nil"/>
+</p>
+</div>
+
+<p>
+Click the "Newspeak Source" link.
+</p>
+
+<p>
+Each paragraph below is devoted to a feature that was surprising (to me) or unusual in some way. 
+</p>
+</div>
+</div>
+
+
+<div id="outline-container-orgb541611" class="outline-3">
+<h3 id="orgb541611"><span class="section-number-3">5.3</span> Namespaces and Modules</h3>
+<div class="outline-text-3" id="text-5-3">
+</div>
+<div id="outline-container-org3923d4e" class="outline-4">
+<h4 id="org3923d4e"><span class="section-number-4">5.3.1</span> Top level classes in the IDE</h4>
+<div class="outline-text-4" id="text-5-3-1">
+<p>
+This section is a bit academic, but I am including it because namespaces matter for modularity and modules are crucial for Newspeak Apps and Libraries.
+</p>
+
+<p>
+So in the IDE -&gt; "Newspeak Source", we are greeted with the word <b>Root</b> on top left, and below, a list of class names. 
+</p>
+
+
+<div id="orga915b0a" class="figure">
+<p><img src="/img/newspeak---a-few-notes.org-ide-full-page-classes-collapsed.png" alt="nil"/>
+</p>
+</div>
+
+<p>
+First: what is the "Root" on the top? According to documentation, this is the IDE's top namespace - <i>Root</i> is just a name of the  namespace.
+</p>
+</div>
+</div>
+
+
+<div id="outline-container-org982e2bc" class="outline-4">
+<h4 id="org982e2bc"><span class="section-number-4">5.3.2</span> Discussion of Namespaces</h4>
+<div class="outline-text-4" id="text-5-3-2">
+<p>
+<i>Namespaces</i> are similar to package or directory names in other languages; they provide a way to organize and group artifact names used in programs (names of packages, classes, or functions).  One namespace example is "org.mypackage" in Java.  All classes in that package belong to the namespace "org.mypackage".  Python concept of a package is similar.
+</p>
+
+<p>
+In Newspeak, each class you see in the screenshot above (AccessModifierTesting, and below) is called a <b>top level class</b>, and it belongs to the <i>Root namespace</i>.  Each <i>top level class</i> is also referred to as a <b>module</b>, see <a href="#org6e890f7">Discussion of Modules</a>.  More on <i>modules</i> later.
+</p>
+
+<p>
+While it is true that a <i>namespace</i> provide grouping of artifacts, what is the <b>global namespace</b>? Perhaps a high level description of a <i>global namespace</i> would go like this: In a program, we want to use other programs, classes, functions, or what have you, created by other developers.  If our program is in "org.mypackage" and wants to use "org.apache.SomeClass", then at compile time or at runtime, the platform (Java, but e.g.  Python is equivalent) has to find "org.apache.SomeClass".  How does it do that? By looking through CLASSPATH or PYTHONPATH.  The CLASSPATH or PYTHONPATH play the role of the <i>global namespace</i>!  All other namespaces, such as "org.apache" belong to the <i>global namespace</i>.  Any class definition in a Java or Python program has access to artifacts on the CLASSPATH or PYTHONPATH.
+</p>
+</div>
+</div>
+
+
+<div id="outline-container-org6e890f7" class="outline-4">
+<h4 id="org6e890f7"><span class="section-number-4">5.3.3</span> Discussion of Modules</h4>
+<div class="outline-text-4" id="text-5-3-3">
+<p>
+Now, we will briefly mix the concept of a <b>modules</b> into the discussion.  <i>Modules</i> are related to namespaces in a way that we cannot precisely define here.  But we can say this: In software, modules are meant to be artifacts (libraries) providing some useful non trivial functionality, without needing any help (apart from the help of "dependencies" - that is, help of other modules intended to provide some "sub functionality").  There must be a way to package and distribute modules.
+</p>
+
+<p>
+A <i>module</i> is also generally addressed by a <i>namespace</i>, but there is an overlap. 
+</p>
+
+<p>
+In Java or Python, if we accept that each module is in a single namespace, and if module1 is in namespace "org1.module1" and module2 is in namespace "org2.module2", and, if both module artifacts are places on the CLASSPATH or PYTHONPATH (global namespace), then org1.module1 can access org2.module2 and vice versa, even though the creators never intended that.  This is why the availability of the <i>global namespace</i> harms modularity.  Not in Newspeak.
+</p>
+
+<p>
+<b>Definition: In Newspeak, <i>Module</i> is defined as a <i>top level class</i></b>.  The classes shown on the top level in the IDE are all <i>Modules</i>.  We often use the term <i>Newspeak Module</i> for them.
+</p>
+
+<p>
+<b><i>Newspeak Module</i> is not only an empty new term.  It turns out, that <i>Newspeak modules</i> also satisfy what we normally want from software modules: they are self-contained elements of data and functionality which can be distributed or executed, given expected API.</b>  See <a href="#org98fdcd0">Newspeak modules API summary</a> In addition, <i>Newspeak modules</i> cannot cross-access each other when deployed (as modules in other platforms do cross-access), unless one module explicitly requests another module during packaging and building.  More on that later.
+</p>
+</div>
+</div>
+
+
+<div id="outline-container-orgf56c5f8" class="outline-4">
+<h4 id="orgf56c5f8"><span class="section-number-4">5.3.4</span> Back to namespaces and the surprise of the global namespace existence</h4>
+<div class="outline-text-4" id="text-5-3-4">
+<p>
+For the better language discussion of what a namespace is, and why a global namespace is not needed in the Newspeak language, see <a href="https://gbracha.blogspot.com/2008/12/living-without-global-namespaces.html">https://gbracha.blogspot.com/2008/12/living-without-global-namespaces.html</a>. 
+</p>
+
+<p>
+The existence of the <i>Root namespace</i> describes one of my surprises - although I realized only later that I should be surprised.  I should have been surprised because there are many places in the Newspeak documentation describing that "Newspeak has no global namespace".  So I was wondering why this "Root", is not a global namespace? Turns out that it is! But there is an important distinction, <i>the Newspeak <b>language</b> does not have a global namespace while the Newspeak <b>IDE</b> does - it's name is "Root"</i>.
+</p>
+
+<p>
+Next we can ask, why does the IDE need a global namespace (Root), while the language does not have one, in fact very intentionally does not have one?  The reason is, when working in the IDE, we want cross-access between the <i>modules</i> (the <i>top level classes</i>).  After packaging and deployment of any Newspeak module (outside the IDE), only the modules intended to be used by other modules are available! Modules cannot freely cross-use each other, because there is no global namespace to find each other.  If a moduleA needs to use moduleB, moduleA must explicitly ask to include moduleB at the packaging stage.  More on that later. 
+</p>
+</div>
+</div>
+</div>
+
+
+<div id="outline-container-org4b7067e" class="outline-3">
+<h3 id="org4b7067e"><span class="section-number-3">5.4</span> Class structure, factory constructors, app and library API, platform and manifest</h3>
+<div class="outline-text-3" id="text-5-4">
+</div>
+<div id="outline-container-org061e3a5" class="outline-4">
+<h4 id="org061e3a5"><span class="section-number-4">5.4.1</span> Section TL;DR:</h4>
+<div class="outline-text-4" id="text-5-4-1">
+<p>
+This section starts an IDE-lead step by step discovery of some core aspects we encounter when we first dig into the IDE and the classes on top: Newspeak class structure, app and library API, platform and manifest.
+</p>
+</div>
+</div>
+
+
+<div id="outline-container-org36553ab" class="outline-4">
+<h4 id="org36553ab"><span class="section-number-4">5.4.2</span> Top level classes in the IDE - expanded</h4>
+<div class="outline-text-4" id="text-5-4-2">
+<p>
+Let us expand each top level class in the "sources" screenshot above.  Well, maybe not all.  I expanded two in the screenshot below:
+</p>
+
+
+<div id="orgbf1f608" class="figure">
+<p><img src="/img/newspeak---a-few-notes.org-ide-full-page-classes-expanded.png" alt="nil"/>
+</p>
+</div>
+
+<p>
+Continue reading what we can learn from looking at the expanded classes.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orge6745be" class="outline-4">
+<h4 id="orge6745be"><span class="section-number-4">5.4.3</span> Newspeak class structure</h4>
+<div class="outline-text-4" id="text-5-4-3">
+<p>
+First, we can see, each top level class has 4 sections.  Let's take the ActivationMirrorTestingConfiguration as an example
+</p>
+
+<ol class="org-ol">
+<li>A collapsible class name section for the class, <code>ActivationMirrorTestingConfiguration</code> with two sub items
+<ul class="org-ul">
+<li>a message to class on top <code>#packageTestsUsing: manifest</code> in our class.  This message is a "core" constructor.  It is called the <b>Factory constructor</b>.</li>
+<li>a list of <code>Slots</code>.  Slots are like "member variables".  Slots can only be created in the <i>factory constructor</i>!</li>
+</ul></li>
+<li>a list of <code>Classes</code>.  Those are nested classes of the class ActivationMirrorTestingConfiguration</li>
+<li>a list of <code>Instance methods</code>.  Those are instance methods we can call on instances of ActivationMirrorTestingConfiguration</li>
+<li>a list of <code>Class methods</code>.  Those are class methods we can call on the class ActivationMirrorTestingConfiguration.  They are "alternative constructors".</li>
+</ol>
+
+<p>
+There is a plus ("+ ") symbol  in the header of some of them.  The reason there is no plus ("+ ") symbol beside slots, is that slots can only be added in the code of the <i>factory constructor</i>.  Add a slot from the  <i>factory constructor</i> code, and the added slot name will show in the IDE.
+</p>
+</div>
+</div>
+
+
+<div id="outline-container-org7c19284" class="outline-4">
+<h4 id="org7c19284"><span class="section-number-4">5.4.4</span> Factory constructors</h4>
+<div class="outline-text-4" id="text-5-4-4">
+<p>
+We mentioned the messages on top like <code>#packageTestsUsing: manifest</code> are called the <i>factory constructors</i>.
+</p>
+
+<p>
+<b>The core role of a <i>factory constructor</i> is to create slots.  No other method can create slots!</b>
+</p>
+
+<p>
+<b>The platform objects (objects that represent the Newspeak system), and / or the dependencies objects or classes (classes that need to be "imported" from the manifest) are passed to the factory constructor and held on slots.  From there, they are available to all nested classes and nested objects of the top level instance!</b>
+</p>
+
+<p>
+<i>factory constructor</i> names on the <i>top level classes</i> have an eerily similar structure.  I was asking myself why, what do they have in common.  So I listed more of the factory constructor names.  Here is the list of the <i>factory constructors</i> on some top level classes:
+</p>
+
+<pre class="example" id="org09928f0">
+class AccessModifierTesting                 usingPlatform:       platform  testFramework: minitest = (| etc
+class AccessModifierTestingConfiguration    packageTestsUsing:   manifest = (| etc
+class ActivationMirrorTesting               usingPlatform:       platform minitest: m = (| etc
+class ActivationMirrorTestingConfiguration  packageTestsUsing:   manifest = (| etc
+class ActorsForPrimordialSoup               usingPlatform:       platform = (| etc
+class AliensForV8                           usingPlatform:       platform = ( etc
+class Browsing                              usingPlatform:       platform ide: webIde = ( etc
+class Collections                           usingPlatform:       platform = ( etc
+class CollectionsForPrimordialSoup          usingInternalKernel: ik = ( etc
+class CombinatorialParsing                  usingPlatform:       platform = ( etc
+class RuntimeForV8                          packageUsing:        manifest = ( etc
+class Streams                               usingPlatform:       platform = ( etc
+</pre>
+
+<p>
+We can see that the factory constructors accept, at first position, one of 2 arguments
+</p>
+
+<ul class="org-ul">
+<li><code>platform</code></li>
+<li><code>manifest</code></li>
+</ul>
+
+<p>
+If the constructor first argument is <code>platform</code>, the constructor name always <i>starts with</i>
+</p>
+
+<ul class="org-ul">
+<li><code>#usingPlatform: platform</code></li>
+</ul>
+
+<p>
+If the constructor first argument is <code>manifest</code>, the constructor name is always <b>exactly</b> one of
+</p>
+
+<ul class="org-ul">
+<li><code>#packageUsing: manifest</code></li>
+<li><code>#packageTestsUsing: manifest</code> (for tests only)</li>
+</ul>
+
+<p>
+Clearly, <code>platform</code> and <code>manifest</code>, must be significant!
+</p>
+
+<p>
+What are those objects? And what do they contain, why are they significant, and what role do they play in Newspeak? 
+</p>
+</div>
+</div>
+
+
+<div id="outline-container-org853369e" class="outline-4">
+<h4 id="org853369e"><span class="section-number-4">5.4.5</span> The manifest object</h4>
+<div class="outline-text-4" id="text-5-4-5">
+</div>
+<div id="outline-container-org5c57cbf" class="outline-5">
+<h5 id="org5c57cbf"><span class="section-number-5">5.4.5.1</span> What is in the manifest object?</h5>
+<div class="outline-text-5" id="text-5-4-5-1">
+<p>
+So what is in the manifest, why it is significant, and what role does it play in Newspeak?
+</p>
+
+<p>
+We can look at the code, and ask what Newspeak passes into the <code>manifest</code> parameter.  We find that there is only one place that calls <code>#packageUsing: manifest</code>, and it passes for <code>manifest</code> the value of object <code>ide namespacing manifest</code>.  So we can examine what <code>ide namespacing manifest</code> contains.  In Workspace, let us evaluate it:
+</p>
+
+
+<div id="orgac78963" class="figure">
+<p><img src="/img/newspeak---a-few-notes.org-ide-namespacing-manifest.png" alt="nil"/>
+</p>
+</div>
+
+<p>
+Drilling into the instance, we can see it is a map, and sorting by the key, we get
+</p>
+
+<pre class="example" id="org361e1d0">
+at: AccessModifierTesting   AccessModifierTesting
+at: AccessModifierTestingConfiguration   AccessModifierTestingConfiguration
+at: ActivationMirrorTesting
+  etc
+</pre>
+
+<p>
+We see that the <b>manifest is a map containing exactly all top-level classes in the IDE - that is, all module classes known to the IDE!</b>
+</p>
+
+<p>
+So we have the answer to what the manifest object contains.
+</p>
+</div>
+</div>
+
+
+<div id="outline-container-org66a7ed8" class="outline-5">
+<h5 id="org66a7ed8"><span class="section-number-5">5.4.5.2</span> Why is the manifest object significant, and what role does it play in Newspeak?</h5>
+<div class="outline-text-5" id="text-5-4-5-2">
+<p>
+OK, so we know what is in the <code>manifest</code> object that is passed to 
+</p>
+
+<ul class="org-ul">
+<li><code>#packageUsing: manifest</code></li>
+<li><code>#packageTestsUsing: manifest</code> (for tests only)</li>
+</ul>
+
+<p>
+See <a href="#orgd13d91d">Chapter Common and distinct roles of platform and manifest in modules</a> for a discussion the significance and role of the <i>manifest</i> object.
+</p>
+</div>
+</div>
+</div>
+
+
+<div id="outline-container-org953587a" class="outline-4">
+<h4 id="org953587a"><span class="section-number-4">5.4.6</span> The platform object</h4>
+<div class="outline-text-4" id="text-5-4-6">
+</div>
+<div id="outline-container-org1594af0" class="outline-5">
+<h5 id="org1594af0"><span class="section-number-5">5.4.6.1</span> What is in the platform object?</h5>
+<div class="outline-text-5" id="text-5-4-6-1">
+<p>
+As in manifest, we can ask: what is in the platform, why it is significant, and what role does it play in Newspeak?
+</p>
+
+<p>
+We can look at the code, and ask what Newspeak passes into the <code>platform</code> parameter when calling, for example, <code>#usingPlatform: platform</code>.
+</p>
+
+<p>
+This is little harder than with manifest, so let's cheat a bit.  In Workspace, let us evaluate <code>platform</code>
+<img src="/img/newspeak---a-few-notes.org-workspace-eval-platform.png" alt="nil"/>
+Drilling into the link "instance of PlatformWithHopscotch`number", we see a list of instances. Sorting the list, we can see it contains <code>instances</code> of a few classes that look like system classes:
+</p>
+
+<pre class="example" id="orgb747737">
+instance of ActorsForPrimordialSoup
+instance of CollectionsForPrimordialSoup
+instance of FontsForHTML5
+instance of GraphicsForHTML5
+instance of HopscotchForHTML5
+instance of JSForPrimordialSoup
+instance of Kernel
+instance of MirrorsForPrimordialSoup
+instance of PrimordialFuel
+instance of TextModule
+</pre>
+
+<p>
+Classes of all of those instances also exist in the <code>manifest</code> object. 
+</p>
+
+<p>
+From the above, we have a good indication as to what does the platform object contain: <b>the platform object contains instances of system classes from the manifest!</b>
+</p>
+</div>
+</div>
+
+
+
+<div id="outline-container-orge5a7812" class="outline-5">
+<h5 id="orge5a7812"><span class="section-number-5">5.4.6.2</span> Why is the platform object significant, and what role does it play in Newspeak?</h5>
+<div class="outline-text-5" id="text-5-4-6-2">
+<p>
+OK, so we know what is in the <code>platform</code> object that is passed to 
+</p>
+
+<ul class="org-ul">
+<li><code>#usingPlatform: platform</code></li>
+</ul>
+
+<p>
+See <a href="#orgd13d91d">Chapter Common and distinct roles of platform and manifest in modules</a> for a discussion the role of the <i>platform</i> object.
+</p>
+</div>
+</div>
+</div>
+
+
+<div id="outline-container-orgd13d91d" class="outline-4">
+<h4 id="orgd13d91d"><span class="section-number-4">5.4.7</span> Common and distinct roles of platform and manifest in modules</h4>
+<div class="outline-text-4" id="text-5-4-7">
+<p>
+Why are the <code>platform</code> and <code>manifest</code> objects so important to appear again and again in the <i>top level classes factory parameters</i> as seen in <a href="#org7c19284">Factory constructors</a>
+</p>
+
+<p>
+The answer is somewhat common for <code>manifest</code> and <code>platform</code>, so we describe their role in this common section.
+</p>
+
+<p>
+And, the common need for either  <code>manifest</code> or <code>platform</code> is modularity.  But what does that mean?
+</p>
+
+<p>
+We saw that the <i>modules</i> are DEFINED AS <i>top level classes</i> in Newspeak.  So in this text, we will use the term <i>module</i> and <i>module instance</i> for such top level class or its instance.
+</p>
+
+<p>
+And we saw that there is no global namespace in Newspeak.  Module instances, need other objects (dependencies) to do useful work.  In Newspeak, for a module instance to "contain" ANY dependency, such dependency must be on the module instance slot (slot is like the member variable).  Also, at the point of the module construction we MUST supply such dependency.  Because only the <i>factory constructor</i> can define slots, the <b>module factory constructor must be passed everything the module needs from outside</b>.  
+</p>
+
+<p>
+This is where  <code>platform</code> and <code>manifest</code> come in.  They are "special" in the sense that they supply objects and classes needed by the module.  But each happens at a special point of the module lifecycle.  This is summarized in 
+</p>
+
+<p>
+We know any Newspeak object can have only one "slot defining" factory object.  So any module can <b>only have one of</b>
+</p>
+
+<ul class="org-ul">
+<li><code>#packageUsing: manifest</code></li>
+<li><code>#usingPlatform: platform</code></li>
+</ul>
+
+<p>
+Which method is used on which module type? Follow the <a href="#org4633bc8">Modules: Application, library, test, general</a>
+</p>
+</div>
+</div>
+</div>
+
+
+<div id="outline-container-org4633bc8" class="outline-3">
+<h3 id="org4633bc8"><span class="section-number-3">5.5</span> Modules: Application, library, test, general</h3>
+<div class="outline-text-3" id="text-5-5">
+<p>
+This chapter is in a way the core why I started writing this whole big chapter <a href="#orgc3a50ac">5</a>
+</p>
+</div>
+
+<div id="outline-container-org8a546aa" class="outline-4">
+<h4 id="org8a546aa"><span class="section-number-4">5.5.1</span> Application and library in computing</h4>
+<div class="outline-text-4" id="text-5-5-1">
+<p>
+In computing, a program may be an Application (App) or a Library.  This looks arbitrary, but not without merit.  On a high level, we have the following general requirements from an App, and from a Library:
+</p>
+
+<ol class="org-ol">
+<li>An App must be able to <b>start execution</b> on the platform to which it is targeted (here, platform in the sense of "Linux platform", "Android platform", "Windows platform", and in our situation, the "Newspeak platform).</li>
+<li>A Library must be able to be <b>instantiated, loaded or linked, then used</b>, at least in principle, by the caller App or Library on that platform.  The <i>used</i> library is often called a dependency.  The term <i>used</i> implies that the Library is <b>found</b> and <b>connected</b> to the App or Library which is using it.</li>
+<li>In addition, we should be able to <b>package</b> both the App and the Library for distribution.</li>
+</ol>
+
+<p>
+From the generic requirements above, App and Library need some way to perform the requirements.  Methods perform requirements, so we need some "convention" methods to perform the requirements 1, 2, 3.  Such convention methods represent an API, are are described in the following section.
+</p>
+</div>
+</div>
+
+
+<div id="outline-container-orgdefd475" class="outline-4">
+<h4 id="orgdefd475"><span class="section-number-4">5.5.2</span> Application and library API in computing</h4>
+<div class="outline-text-4" id="text-5-5-2">
+<p>
+Following the basic requirements from the previous section <a href="#org8a546aa">5.5.1</a> in mainstream computing, we need methods such as those below.  The names are arbitrary, but conventional, and represent the APIs understood on the platform:
+</p>
+
+<ul class="org-ul">
+<li>For an App:
+<ul class="org-ul">
+<li>To perform requirement 3, <i>packaging</i>, let's call the method <code>#package</code></li>
+<li>To perform requirement 1, <i>start execution</i>, let's call the method <code>#main</code></li>
+</ul></li>
+<li>For a Library:
+<ul class="org-ul">
+<li>To perform requirement 3, <i>packaging</i>, let's call the method <code>#packageLibrary</code></li>
+<li>To perform requirement 2, <i>instantiate, load and use by the caller app</i>, let's call the method <code>#build</code></li>
+</ul></li>
+</ul>
+
+<p>
+A mainstream system has the advantage of access to a global namespace - generally a filesystem via a PATH, CLASSPATH, PYTHONPATH or similar.  We discussed that earlier as well.  Inside any of these methods, during execution, the program can look and find various artifacts in needs on the platform.  If we start the method equivalent to "#main" in Python, inside #main there may be a line of code such as <code>from graphics import Rectangle</code>.  So we need the Rectangle class.  No problem, we go to the classpath, find the namespace <i>graphics</i>, there lives the module <i>graphics</i>, and the class <i>Rectangle</i> is there.  We load it and continue. 
+</p>
+</div>
+</div>
+
+
+<div id="outline-container-org4ee700c" class="outline-4">
+<h4 id="org4ee700c"><span class="section-number-4">5.5.3</span> Application and library modules in Newspeak</h4>
+<div class="outline-text-4" id="text-5-5-3">
+<p>
+In Newspeak, everything is done via objects.  So App and Library must be an object.  Further, Newspeak starts all operations on the top level classes, that is on modules. (Modules are <i>top level classes</i>, see <a href="#org6e890f7">Discussion of Modules</a>)
+</p>
+
+<p>
+So in Newspeak, any App is a module, and any Library is a module.
+</p>
+
+<p>
+But Newspeak cannot load anything globally.  If the API for the App and library was as defined above, it would not work.  If the App's #main were to run, and Newspeak would discover the equivalent of "import" (which is slot creation in factory constructors), it would not be able to find the "imported" dependency module.  It does not have the global namespace or access to the  PATH, CLASSPATH, PYTHONPATH or similar. 
+</p>
+
+<p>
+<b>The solution is, in Newspeak, all the runtime dependencies must be passed to the <i>factory constructors</i></b>  
+</p>
+
+<p>
+But, how is the solution implemented, in more details? Well, we simply add some objects to the Module factory constructors.  But which objects? 
+</p>
+
+<ul class="org-ul">
+<li><b>To build (instantiate) a Library or execute and App</b>, we need to supply the capabilities of the Newspeak platform.  This IS provided by the <i>platform object</i> analyzed in <a href="#org953587a">The platform object</a>.  So <span class="underline">we will pass the <i>platform</i> object to the execution or instantiating methods</span>.</li>
+<li><b>To package     a Library or an App</b>, we need to supply all classes the Library or App needs to "carry along" in it's package.  Such "carried along" classes become slots on the module object (the "carried along" classes play the role of "imported classes" in mainstream).  In the IDE, during development of the module we are packaging, we may have been creating our own top level classes (and their nested classes obviously) needed by the module we are packaging.  Those classes do not exist on the end-user system where we will send the package for building or execution.  So all those added classes have to be "carried along" in the package.  We have seen all available classes in the IDE, including those we may have added, are supplied by <a href="#org853369e">The manifest object</a>.  So <span class="underline">we will pass the <i>manifest</i> object to the packaging methods</span>.</li>
+</ul>
+</div>
+</div>
+
+
+
+<div id="outline-container-org98fdcd0" class="outline-4">
+<h4 id="org98fdcd0"><span class="section-number-4">5.5.4</span> Newspeak modules API summary</h4>
+<div class="outline-text-4" id="text-5-5-4">
+<p>
+This section is a summary and reference of Application, library, and test modules API in Newspeak.  It is sort of the pinnacle of the parent section about Apps and Libraries. 
+</p>
+
+<p>
+<b>As explained in the previous section, in Newspeak, compared to a mainstream platform which has access to global namespace, we have to change the API signatures described in <a href="#orgdefd475">Application and library API in computing</a> by passing the <i>platform</i> and the <i>manifest</i> object.  We also change the names slightly to match what Newspeak actually does.  Here are the APIs which define whether a module is an App or a Library</b>.  The requirements 1, 2, 3 refer to the requirements (roles) in the link.
+</p>
+
+<ul class="org-ul">
+<li><b>Newspeak App module</b> is defined by the presence of:
+<ul class="org-ul">
+<li>Factory constructor <code>#packageUsing: manifest</code>        which performs requirement 3, <i>packaging</i>. 
+<ul class="org-ul">
+<li>Implementations should set slots by pulling needed classes from the manifest</li>
+</ul></li>
+<li>Instance method     <code>#main: platform args: args</code>     which performs requirement 1, <i>start execution</i>.
+<ul class="org-ul">
+<li>Implementations should instantiate, from slot classes and platform objects, all object needed to run the app, then call methods on them as needed.  Examples of needed objects instantiating:
+<ul class="org-ul">
+<li><i>Slot1 usingPlatform: platform [and: otherObjects]</i> if Slot1 is Other module</li>
+<li><i>Slot2 buildUsing: platform</i> if Slot1 is a Library module</li>
+</ul></li>
+</ul></li>
+</ul></li>
+
+<li><b>Newspeak Library module</b> is defined by the presence of:
+<ul class="org-ul">
+<li>Factory constructor <code>#packageLibraryUsing: manifest</code> which performs requirement 3, <i>packaging</i>.
+<ul class="org-ul">
+<li>Implementations should put all classes needed to build the distributed module to slots, from manifest.  Needed classes not on manifest should be created by calling A3RdPartyDependdency&gt;&gt;#packageLibraryUsing: manifest</li>
+</ul></li>
+<li>Instance method     <code>#buildUsing: platform</code>          which performs requirement 2, <i>instantiate, load and use by the caller app</i>.
+<ul class="org-ul">
+<li>Implementations should build, then return a working instance of the module we want to distribute, NOT the instance on which this #buildUsing is defined!! Building the distributed instance will possibly call other needed dependencies #buildUsing: or #usingPlatform" methods.  Examples of how needed dependencies :
+<ul class="org-ul">
+<li><i>Slot1 usingPlatform: platform [and: otherObjects]</i> if Slot1 is a General module</li>
+<li><i>Slot2 buildUsing: platform</i> if Slot1 is a Library module</li>
+</ul></li>
+<li>Important note:  <b>If we want to distribute a module MyModule1 (this may or may not be a library module!), we have to create a separate top level Library Module, MyModule1Library for the purpose of distributing MyModule1</b>! The #buildUsing: implementation we are talking about here, is the  "MyModule1Lib&gt;&gt;#buildUsing:" method! -  NOT the  "MyModule1&gt;&gt;#buildUsing:" method, as this may not even exist on MyModule1!</li>
+</ul></li>
+</ul></li>
+
+<li><b>Newspeak Test Configuration module</b> by convention ends with "Configuration", and is defined by the presence of:
+<ul class="org-ul">
+<li>Factory constructor <code>#packageTestsUsing: manifest</code>              which performs requirement 3, <i>packaging</i>
+<ul class="org-ul">
+<li>Implementations should put on slot the class of the Module being tested.</li>
+</ul></li>
+<li>Instance method     <code>#testModulesUsingPlatform: p minitest: m</code>  which performs requirement 2, <i>instantiate</i>, 
+<ul class="org-ul">
+<li>Implementations should call return instance of the tested class.  Example: ^{AccessModifierTesting usingPlatform: platform testFramework: minitest}</li>
+<li>Note: If class MyTestModule has the test methods, MyTestModuleConfiguration must be created.  This is the class we are talking about</li>
+</ul></li>
+</ul></li>
+
+<li><b>Newspeak General module</b> is <i>any other module</i> - any module that does not have any of the above API.  General modules do not have any convention API; However, often we find they have a <i>factory constructor</i> named like this:
+
+<ul class="org-ul">
+<li>Factory constructor <code>#usingPlatform: platform [and: otherObjects]</code> which create a working instance 
+<ul class="org-ul">
+<li>These modules can for example be 
+<ul class="org-ul">
+<li>modules we distribute using the <i>Library Distribution module</i></li>
+<li>tests we run using the <i>Test Configuration module</i></li>
+</ul></li>
+</ul></li>
+</ul></li>
+</ul>
+
+<p>
+Note that the methods which <b>perform the packaging</b>, are <i>factory constructors</i>, while the methods which perform <b>execution or build</b> are <i>instance methods</i>.  The reason is, a <i>factory constructor</i> is the only method which can store stuff in slots! So any classes modules need to "carry along" (imports from manifest) must be put to slots during a factory constructor call.
+</p>
+
+<p>
+Note that the IDE uses some of those methods to show appropriate action links.  For example,
+</p>
+
+<ul class="org-ul">
+<li>The presence of method <code>#packageUsing: manifest</code> in the module, IDE shows links to <b>[deploy] [configurations] [run] [debug]</b></li>
+<li>The presence of method <code>#packageTestsUsing: manifest</code> in the module, IDE shows links to <b>[run tests] [show tests]</b></li>
+</ul>
+</div>
+</div>
+
+
+<div id="outline-container-org29bc453" class="outline-4">
+<h4 id="org29bc453"><span class="section-number-4">5.5.5</span> Newspeak modules API zoo</h4>
+<div class="outline-text-4" id="text-5-5-5">
+<p>
+This section shows a terse list of "convention" API for various module types, with the role of the API. 
+</p>
+
+<p>
+See <a href="#org98fdcd0">Newspeak modules API summary</a> for roles of the API methods. For motivation of the APIs, see earlier sections such as <a href="#org4633bc8">Modules: Application, library, test, general</a> and the whole section <a href="#orgc3a50ac">5</a>.
+</p>
+
+<p>
+The table below summarizes APIs of all type of modules 
+</p>
+
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">Module type</th>
+<th scope="col" class="org-left">Constructor. Role=package</th>
+<th scope="col" class="org-left">Instance method. Role=build or execute</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left">Library</td>
+<td class="org-left">#packageLibraryUsing: manifest</td>
+<td class="org-left">#buildUsing: platform</td>
+</tr>
+
+<tr>
+<td class="org-left">App</td>
+<td class="org-left">#packageUsing: manifest</td>
+<td class="org-left">#main: platform args: args</td>
+</tr>
+
+<tr>
+<td class="org-left">Test Configuration</td>
+<td class="org-left">#packageTestsUsing: manifest</td>
+<td class="org-left">#testModulesUsingPlatform: platform minitest: m</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">Factory Constructor.</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td class="org-left">General module needing platform</td>
+<td class="org-left">#usingPlatform: platform [andModule: m1]</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="org-left">General module dependent on other module</td>
+<td class="org-left">#withOtherModule: m1</td>
+<td class="org-left">Note: name is completely free</td>
+</tr>
+
+<tr>
+<td class="org-left">General module with no dependencies</td>
+<td class="org-left">#new</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="org-left">Test module</td>
+<td class="org-left">#usingPlatform: platform testFramework: minitest</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+</tbody>
+</table>
+
+<p>
+Notes:
+</p>
+
+<ul class="org-ul">
+<li>The <code>#usingPlatform: platform [andModule: m1]</code> is an example of a factory constructor which is passed the platform and a dependency which is module m1. The point is the the start of the method name <code>#usingPlatform:</code> is fixed, other parameters can be added for dependencies, in any free form.</li>
+</ul>
+
+<p>
+wishing renames to : 
+</p>
+
+
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">Module type</th>
+<th scope="col" class="org-left">Constructor. Role=package</th>
+<th scope="col" class="org-left">Instance method. Role=build or execute</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left">Library</td>
+<td class="org-left"><b>#packageLibraryUsingManifest: manifest</b></td>
+<td class="org-left"><b>#buildUsingPlatform: platform</b></td>
+</tr>
+
+<tr>
+<td class="org-left">App</td>
+<td class="org-left"><b>#packageUsingManifest: manifest</b></td>
+<td class="org-left"><b>#runUsingPlatform: platform args: args</b></td>
+</tr>
+
+<tr>
+<td class="org-left">Test Configuration</td>
+<td class="org-left"><b>#packageTestsUsingManifest: manifest</b></td>
+<td class="org-left">#testModulesUsingPlatform: platform minitest: m</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">Factory Constructor.</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td class="org-left">General module needing platform</td>
+<td class="org-left">#usingPlatform: platform [andModule: m1]</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="org-left">General module dependent on other module</td>
+<td class="org-left">#withOtherModule: m1</td>
+<td class="org-left">Note: name is completely free</td>
+</tr>
+
+<tr>
+<td class="org-left">General module with no dependencies</td>
+<td class="org-left">#new</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="org-left">Test module</td>
+<td class="org-left">#usingPlatform: platform testFramework: minitest</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+
+
+
+<div id="outline-container-org608a145" class="outline-4">
+<h4 id="org608a145"><span class="section-number-4">5.5.6</span> Newspeak platform and manifest objects summary</h4>
+<div class="outline-text-4" id="text-5-5-6">
+<p>
+In a nutshell, 
+</p>
+<ul class="org-ul">
+<li>We need <i>manifest</i> classes for packaging.  Manifest provides the classes needed to "bring along" in the package.  Those "bring along" or "import" classes may not exist on the end-user system, so they need to be added to the package!</li>
+<li>We need <i>platform</i> for execution.  Platform provides instances of "system classes".  Those "system classes instances" are assumed to exist on the end-user system, so we do not need to bring them along!</li>
+</ul>
+</div>
+</div>
+</div>
+
+
+<div id="outline-container-org465e425" class="outline-3">
+<h3 id="org465e425"><span class="section-number-3">5.6</span> Newspeak recipy for writing modules API</h3>
+<div class="outline-text-3" id="text-5-6">
+<p>
+Sections above attempted to discover and describe modules API, see <a href="#org98fdcd0">Newspeak modules API summary</a>. This section will attempt to give a "recipy" about method signatures each module type requires.
+</p>
+</div>
+
+<div id="outline-container-orgd9476b0" class="outline-5">
+<h5 id="orgd9476b0"><span class="section-number-5">5.6.0.1</span> 1. General module with NO dependencies: API of module with no dependencies</h5>
+<div class="outline-text-5" id="text-5-6-0-1">
+<p>
+While perhaps rare, this is the simplest case. If our module does not need any dependencies, not even from common classes such as collection:
+</p>
+
+<ul class="org-ul">
+<li>provide a <i>factory constructor</i> <code>#new</code></li>
+</ul>
+</div>
+
+<div id="outline-container-orgedaa9b0" class="outline-6">
+<h6 id="orgedaa9b0"><span class="section-number-6">5.6.0.1.1</span> Example:</h6>
+<div class="outline-text-6" id="text-5-6-0-1-1">
+<pre class="example">
+class RecipyNoDep new = ()
+(
+    public translate: text = (
+      text = 'Hello World' ifTrue: [^ 'Hallo Welt'.].
+
+      ^ 'unable to translate'.
+    )  
+)
+</pre>
+
+<p>
+Note: Because <code>#new</code> is default, no need to name it. An equivalent would be 
+</p>
+
+<pre class="example">
+class RecipyNoDep = ()
+(
+    public translate: text = (
+      text = 'Hello World' ifTrue: [^ 'Hallo Welt'.].
+
+      ^ 'unable to translate'.
+    )  
+)
+</pre>
+</div>
+</div>
+</div>
+
+
+<div id="outline-container-org7062cfa" class="outline-5">
+<h5 id="org7062cfa"><span class="section-number-5">5.6.0.2</span> 2. General module with dependencies: API of module with dependencies</h5>
+<div class="outline-text-5" id="text-5-6-0-2">
+<p>
+If our module need some other module from IDE, such as collections, you have to pass it the <code>platform</code> object, and potentially other objects or classes our module depends on
+</p>
+
+<ul class="org-ul">
+<li>provide a <i>factory constructor</i> <code>#usingPlatform: platform</code></li>
+<li>OR if another module is needed, provide a <i>factory constructor</i> such as <code>#usingPlatform: platform andModule: translator</code></li>
+</ul>
+</div>
+
+<div id="outline-container-org670f52f" class="outline-6">
+<h6 id="org670f52f"><span class="section-number-6">5.6.0.2.1</span> Example:</h6>
+<div class="outline-text-6" id="text-5-6-0-2-1">
+<pre class="example">
+class RecipyWithDep usingPlatform: platform andModule: translator = (
+  |
+  List = platform collections List.
+  translator = translator.
+  |
+)
+(
+    public translate: fromRevertedList = (
+      |sortedList|
+      sortedList:: List new.
+      sortedList add: (fromRevertedList at: 2).
+      sortedList add: (fromRevertedList at: 1).
+
+      ^ translator translate: ((sortedList at: 1), (sortedList at: 2)).
+    )
+)
+</pre>
+
+<p>
+and we can use this in workspace as:
+</p>
+
+<pre class="example">
+|sortListTranslator|
+sortListTranslator:: RecipyWithDep  usingPlatform: platform andModule: (RecipyNoDep new).
+sortListTranslator translate: {' World'. 'Hello'}.
+</pre>
+
+<p>
+Note that the RecipyNoDep class could be passed instead of the instance; obviously the slot translator in RecipyWithDep would have to be a class, instantiated in #translate:
+</p>
+</div>
+</div>
+</div>
+
+
+<div id="outline-container-org938a58a" class="outline-5">
+<h5 id="org938a58a"><span class="section-number-5">5.6.0.3</span> 3. Library module: API of module that needs to be used as a packageble and distributable Newspeak library module</h5>
+<div class="outline-text-5" id="text-5-6-0-3">
+<p>
+In the previous section, we introduced a general module <code>RecipyWithDep</code>. If we needed this module to be packagable as a library, add the following:
+</p>
+
+<ol class="org-ol">
+<li>Add a <b>separate module</b> with a descriptive name (to make clear it is a library)</li>
+<li>In this <b>separate module</b>, provide the following API:
+<ul class="org-ul">
+<li>Factory constructor <code>#packageLibraryUsing: manifest</code></li>
+<li>Instance method     <code>#buildUsing: platform</code></li>
+</ul></li>
+</ol>
+
+<p>
+Note that in this case, <i>#buildUsing: platform</i> must not be added any other arguments. Any "carry along" (imported) classes that may be needed at build time, must be saved on slots in the <i>#packageLibraryUsing: manifest</i> factory constructor.
+</p>
+</div>
+
+<div id="outline-container-orgd2b778f" class="outline-6">
+<h6 id="orgd2b778f"><span class="section-number-6">5.6.0.3.1</span> Example:</h6>
+<div class="outline-text-6" id="text-5-6-0-3-1">
+<p>
+To create a packageble and distributable library module for the above <code>RecipyWithDep</code>, create this library module 
+</p>
+
+<pre class="example">
+class RecipyWithDepLib packageLibraryUsing: manifest = (
+  |
+  RecipyWithDep = manifest RecipyWithDep.
+  RecipyNoDep   = manifest RecipyNoDep.
+  |
+) 
+(
+  public buildUsing: platform = (
+     |revertedTranslator|
+     revertedTranslator:: RecipyWithDep 
+                    usingPlatform: platform 
+                    andModule: (RecipyNoDep new).
+     ^revertedTranslator.
+  )
+)
+</pre>
+
+<p>
+Note how the library must store any "carry along" (imported) classes on slots during packaging, then instantiate them during building. 
+</p>
+
+<p>
+Also note how the passing of <code>platform</code> moves from the constructor in the module, to the instance method in the library:
+</p>
+<ul class="org-ul">
+<li>In the module <code>RecipyWithDep</code> , it is on the <i>factory constructor</i> <i>#usingPlatform: platform:</i></li>
+<li>To the distribution library <code>RecipyWithDepLib</code>, it is on thr <i>instance method</i> <i>#buildUsing: platform</i>.</li>
+</ul>
+
+<p>
+Although intended for distribution, for testing this process, the library can be used in workspace as 
+</p>
+
+<pre class="example">
+|sortListTranslatorLib sortListTranslator |
+(* this would run on the developer's packaging system *)
+sortListTranslatorLib:: RecipyWithDepLib packageLibraryUsing: ide namespacing manifest.
+
+(* this would run on end-user runtime system *)
+sortListTranslator:: sortListTranslatorLib buildUsing: platform.
+
+sortListTranslator translate: {' World'. 'Hello'}.
+</pre>
+</div>
+</div>
+</div>
+
+
+<div id="outline-container-orgbc7867f" class="outline-5">
+<h5 id="orgbc7867f"><span class="section-number-5">5.6.0.4</span> 4. App module: API of module that needs to be used as a packageble and distributable Newspeak App</h5>
+<div class="outline-text-5" id="text-5-6-0-4">
+<p>
+If we need our module <code>RecipyWithDep</code> to be packagable as an App:
+</p>
+
+<ol class="org-ol">
+<li>Add a <b>separate module</b> with a descriptive name (to make clear it is a App)</li>
+<li>In this <b>separate module</b>, provide the following API:
+<ul class="org-ul">
+<li>Factory constructor <code>#packageUsing: manifest</code></li>
+<li>Instance method     <code>#main: platform args: args</code></li>
+</ul></li>
+</ol>
+
+<p>
+Note the parallel role between the following methods
+</p>
+
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">Library</th>
+<th scope="col" class="org-left">&#xa0;</th>
+<th scope="col" class="org-left">App</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left">#packageLibraryUsing: manifest</td>
+<td class="org-left">has role of</td>
+<td class="org-left">#packageUsing: manifest</td>
+</tr>
+
+<tr>
+<td class="org-left">#buildUsing: platform</td>
+<td class="org-left">has role of</td>
+<td class="org-left">#main: platform args: args</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+<div id="outline-container-org26c5763" class="outline-6">
+<h6 id="org26c5763"><span class="section-number-6">5.6.0.4.1</span> Example:</h6>
+<div class="outline-text-6" id="text-5-6-0-4-1">
+<p>
+To create a packageble and distributable App module for the above <code>RecipyWithDep</code>, create this App module 
+</p>
+
+<pre class="example">
+class RecipyWithDepApp packageUsing: manifest = (
+  |
+  RecipyWithDep = manifest RecipyWithDep.
+  RecipyNoDep   = manifest RecipyNoDep.
+  |
+) 
+(
+  public main: platform args: args = (
+     |revertedTranslator|
+     revertedTranslator::  RecipyWithDep 
+                    usingPlatform: platform 
+                    andModule: (RecipyNoDep new).
+
+    (revertedTranslator translate: {' World'. 'Hello'}) out.
+  )
+)
+</pre>
+
+<p>
+Note how the App (same as the library) must store any "carry along" (imported) classes on slots during packaging, then instantiate them in #main#args: at runtime (for library, at build time). 
+</p>
+
+<p>
+Also note how the passing of <code>platform</code> moves from the constructor in the module to the instance method in the App:
+</p>
+<ul class="org-ul">
+<li>In the module <code>RecipyWithDep</code> , it is on the <i>factory constructor</i> <i>#usingPlatform: platform:</i></li>
+<li>To the App <code>RecipyWithDepApp</code>, it is on thr <i>instance method</i> <i>#main: platform args: args</i>.</li>
+</ul>
+
+<p>
+Also note, as you add the App class <code>RecipyWithDepApp</code> (using the "+ " button ), the IDE adds the <b>[deploy] [configurations] [run] [debug]</b> links beside it, recognizing it as an App. 
+</p>
+</div>
+</div>
+</div>
+
+
+<div id="outline-container-orgb451316" class="outline-5">
+<h5 id="orgb451316"><span class="section-number-5">5.6.0.5</span> <span class="todo TODO">TODO</span> 5. Test module: TODO</h5>
+</div>
+
+<div id="outline-container-orgbc1116c" class="outline-5">
+<h5 id="orgbc1116c"><span class="section-number-5">5.6.0.6</span> <span class="todo TODO">TODO</span> 6. Test module configuration: TODO</h5>
+</div>
+</div>
+
+
+<div id="outline-container-org3f7b274" class="outline-3">
+<h3 id="org3f7b274"><span class="section-number-3">5.7</span> Hello World in Newspeak</h3>
+<div class="outline-text-3" id="text-5-7">
+<p>
+This section will show several ways to create a 'Hello World' program in Newspeak, using different methods in increasing complexity.  The initial versions are due to Gilad Bracha's answer on the Newspeak group <a href="https://groups.google.com/g/newspeaklanguage/c/Cq2Ej0_THew">https://groups.google.com/g/newspeaklanguage/c/Cq2Ej0_THew</a>
+</p>
+
+<p>
+We are not adding any screenshots at the moment, will add it later.
+</p>
+
+<p>
+All Hello Worlds are created by starting the Newspeak online IDE at <a href="https://newspeaklanguage.org/samples/primordialsoup.html?snapshot=HopscotchWebIDE.vfuel">https://newspeaklanguage.org/samples/primordialsoup.html?snapshot=HopscotchWebIDE.vfuel</a>, then following the steps.
+</p>
+</div>
+
+<div id="outline-container-org9128238" class="outline-4">
+<h4 id="org9128238"><span class="section-number-4">5.7.1</span> 1.  Hello World from Workspace</h4>
+<div class="outline-text-4" id="text-5-7-1">
+<p>
+Workspace is like the command line or REPL in Newspeak.
+</p>
+
+<p>
+Steps to run Hello World from Workspace 
+</p>
+
+<ul class="org-ul">
+<li>Open Workspace</li>
+<li>Type there (including quotes) <code>'Hello World from Workspace' out</code></li>
+<li>Select the text</li>
+<li>Press "Shift+Enter" - this takes the selected text and evaluates it's expressions.  The single expression is the message "#out" send to the text object.</li>
+<li>Notice that 'Hello World from Workspace' appears both right below the line, and also at the bottom of the page.  The text at the bottom of the page was appended at the end of the DOM.  We will see text showing at the bottom of the page again in all examples.</li>
+</ul>
+
+
+<div id="orgc5fda56" class="figure">
+<p><img src="/img/newspeak---a-few-notes.org-hello-world-workspace.png" alt="nil"/> 
+</p>
+</div>
+</div>
+</div>
+
+
+<div id="outline-container-orgf5b8d03" class="outline-4">
+<h4 id="orgf5b8d03"><span class="section-number-4">5.7.2</span> 2.  Hello World from general module</h4>
+<div class="outline-text-4" id="text-5-7-2">
+<p>
+In this section, we will build a Hello World which is a <i>module</i> (a <i>top level class</i> as we know already).  The <a href="#org98fdcd0">Newspeak modules API summary</a> section would classify this as "General" module, because it does not have any of the special convention methods in it's API.  The only method of this class is it's default <i>factory constructor</i> <code>#new</code>.
+</p>
+
+<p>
+Steps to create the Hello World general module in the Newspeak IDE's
+</p>
+
+<ul class="org-ul">
+<li>In "Newspeak Source", on the top left, click the "+ " button next to the link "Root"</li>
+<li>In the popup, select "Add Class"</li>
+<li><p>
+Replace the text under "Defining a new class" with
+</p>
+<pre class="example">
+class HelloWorldGeneralModule = ('Hello World ' out)()
+</pre></li>
+
+<li>It should now look like
+<img src="/img/newspeak---a-few-notes.org-hello-world-general-module.png" alt="nil"/></li>
+<li>Click the "Accept" <img src="/img/newspeak---a-few-notes.org-accept-image.png" alt="nil"/></li>
+<li>Now the class link "HelloWorldGeneralModule" will appear in the list of classes</li>
+<li>Click on the class link, and the class presented appears
+<img src="/img/newspeak---a-few-notes.org-hello-world-general-module-class-viewer.png" alt="nil"/></li>
+<li>What happened?
+<ul class="org-ul">
+<li>First of all the "Hello World" shows on the bottom again.</li>
+<li>How did it get there?
+<ul class="org-ul">
+<li>Clicking the class link, prepares to present the class.  In the IDE, the class is presented inside an instance of itself.  So, an instance of <code>HelloWorldGeneralModule</code> is created, by calling the implicit "#new" factory constructor.  The code of the factory constructor is <code>'Hello World ' out</code>.  This code, when running, appends the text to the end of the body.</li>
+<li>Similarly, every time we just click on the &gt; in the class list beside the class, a new instance is created (to serve the presented, and one more 'Hello World' appears
+<img src="/img/newspeak---a-few-notes.org-hello-world-3-times-after-body.png" alt="nil"/></li>
+</ul></li>
+</ul></li>
+</ul>
+
+<p>
+This concludes the section on General Module class.  Before the next step, please reload the page, and select the third option to start fresh.  Alternatively, remove the class HelloWorldGeneralModule.  Presence would repeatedly output "Hello World" at the end of the page body.  Class deletion can be done by clicking on the three dot popup menu  beside the classname, and selecting "Remove HelloWorldGeneralModule"
+<img src="/img/newspeak---a-few-notes.org-remove-class-from-3-dot-menu.png" alt="nil"/>
+</p>
+</div>
+</div>
+
+
+
+<div id="outline-container-orgc4a4799" class="outline-4">
+<h4 id="orgc4a4799"><span class="section-number-4">5.7.3</span> 3.  Hello World App</h4>
+<div class="outline-text-4" id="text-5-7-3">
+<p>
+By now, we know that <i>modules</i> are <i>top level classes</i>, see <a href="#org6e890f7">Discussion of Modules</a>.  In <a href="#org98fdcd0">Newspeak modules API summary</a> we have shown that providing modules with convention API methods understood by tools such as the IDE, modules can behave as Apps, Libraries, or Tests.
+</p>
+
+<p>
+The <a href="#org98fdcd0">Newspeak modules API summary</a> describes the API for a module to be able to behave as an App on the Newspeak platform. 
+</p>
+
+<p>
+Steps to create the <code>HelloWorldApp</code> in the Newspeak IDE's
+</p>
+
+<ul class="org-ul">
+<li><p>
+As shown in the previous section, click the "+ " to add the following class from the IDE, and click the "Accept" button.
+</p>
+<pre class="example">
+class HelloWorldApp packageUsing: manifest = ()
+(
+  public main: platform args: args = (
+    'Hello World from HelloWorldApp' out.
+  )
+)
+</pre></li>
+<li>You should see the class in the top classes list.  However, (as opposed to previous section <code>HelloWorldGeneralModule</code>), our class has the links <b>[deploy] [configurations] [run] [debug]</b> beside it.  This is because the presence of <code>#packageUsing: manifest</code> makes it an App.  The tools (the IDE) understand this message and use it to show actions that can be done with an App: run, debug, deploy, show available configurations.  Presence of <code>#main: platform args: args</code> makes the module runnable as a standalone App.</li>
+<li>Click the <b>[run]</b> link to run the app inside the IDE.  The IDE calls first the <code>#packageUsing: manifest</code>, then the <code>#main: platform args: args</code> which runs, and the text 'Hello World from HelloWorldApp' will be appended after the page body.
+<img src="/img/newspeak---a-few-notes.org-hello-world-app-output.png" alt="nil"/></li>
+</ul>
+
+
+<p>
+Next, we will show how to deploy our <code>HelloWorldApp</code> as a standalone App.  From the section <a href="#orgaadf932">4.4</a> we know an App can be packaged and deployed standalone into a local Newspeak webserver. 
+</p>
+
+
+<ul class="org-ul">
+<li>Action: In the class list, find the <code>HelloWorldApp</code> again, and click the [deploy] to the right.</li>
+<li>Result: a popup showing deployment options, starting with <code>asVictoryFuel</code>: <img src="/img/newspeak---a-few-notes.org-click-deploy-on-counter-app.png" alt="nil"/></li>
+<li>Action: Select <code>asVictoryFuel</code>.  We choose the faster option 'asVictoryFuel' because our App does not have GUI.  Otherwise, we would select 'asVictoryFuelWithMirrors'</li>
+<li>Result: After a long wait, a file named <code>HelloWorldApp.vfuel</code> is created, and asked to be saved.</li>
+<li>Action: Save the file <code>HelloWorldApp.vfuel</code> on our disk to the directory where local Newspeak was deployed - for example <code>$HOME/software/newspeak/my-serve-http/servable</code></li>
+<li>Result: <b>Assuming you installed you local Newspeak webserver as in e <a href="#org5383775">4.3</a>, the app is now deployed to the local Newspeak webserver!</b></li>
+<li>Action: Navigate to <a href="http://localhost:8080/primordialsoup.html?snapshot=HelloWorldApp.vfuel">http://localhost:8080/primordialsoup.html?snapshot=HelloWorldApp.vfuel</a></li>
+<li>Result: We see the output of the standalone-running app
+<img src="/img/newspeak---a-few-notes.org-hello-world-app-standalone-output.png" alt="nil"/></li>
+</ul>
+
+<p>
+This concludes the section on App Module class.  We have shown how to create an App, run it in IDE, create a deployable .vfuel file, then deploy the App standalone in local Newspeak webserver.
+</p>
+</div>
+</div>
+
+
+<div id="outline-container-org7bffa18" class="outline-4">
+<h4 id="org7bffa18"><span class="section-number-4">5.7.4</span> 4.  Hello World App using 3rd party dependency</h4>
+<div class="outline-text-4" id="text-5-7-4">
+<p>
+This section builds on previous sections to create an App, <code>HelloWorldAppUsingLib</code>  which depend on a 3rd party library module. 
+</p>
+
+<p>
+Let's pretend our App can use a Newspeak module produced by a 3rd party (3rd party to us). Call the 3rd party the <i>TranslatorCorp</i>. Let's pretend <i>TranslatorCorp</i> provides the module <code>HelloTranslator</code>, packaged as <code>HelloTranslatorLib</code>.
+</p>
+
+<p>
+<i>TranslatorCorp</i> would implement and package their modules as follows:
+</p>
+
+<pre class="example">
+class HelloTranslator = ()
+(
+    public translate: text = (
+      text = 'Hello World from HelloWorldApp' ifTrue: [^ 'Hallo Welt von HelloWorldApp'.].
+
+      ^ 'unable to translate'.
+    )  
+)
+</pre>
+
+<pre class="example">
+(* Library (distribution) class provides packaging and building of the HelloTranslator module *) 
+class HelloTranslatorLib packageLibraryUsing: manifest = (
+    | 
+    HelloTranslator = manifest HelloTranslator. 
+    |
+)
+(
+   public buildUsing: platform = (
+     |helloTranslator|
+     helloTranslator:: HelloTranslator new.
+
+     ^helloTranslator.
+   )
+)
+</pre>
+
+<p>
+Note that for every module the <i>TranslatorCorp</i> wants to distribute (such as <code>HelloTranslator</code>), they need to create a library module for packaging and disctribution(such as <code>HelloTranslatorLib</code>)
+</p>
+
+<p>
+The <code>HelloTranslator</code>, hence the <code>HelloTranslatorLib</code> 
+</p>
+<ul class="org-ul">
+<li>could have used (depended on) other module <code>HelloTRanslatorHelper</code>  developed by the <i>TranslatorCorp</i></li>
+<li>and also depend on a module <code>LanguageSelectorLib</code> developed by another entity <i>LanguageCorp</i> (so <i>LanguageCorp</i> is "3rd party to <i>TranslatorCorp</i>).</li>
+</ul>
+
+<p>
+Then, the <i>TranslatorCorp</i> would work in their helper module and the <i>LanguageCorp's</i> module as follows:
+</p>
+
+<pre class="example">
+class HelloTranslatorLib packageLibraryUsing: manifest = (
+  | 
+  HelloTranslator = manifest HelloTranslator.
+  HelloTranslatorHelper = manifest HelloTranslatorHelper.
+  LanguageSelectorLib = manifest LanguageSelectorLib packageLibraryUsingManifest: manifest.
+  |
+)
+(
+  public buildUsing: platform = (
+    |defaultlanguageSelector helloTranslator|
+
+    defaultlanguageSelector = LanguageSelectorLib buildUsing: platform.
+
+    helloTranslator = HelloTranslator
+                        helpedBy: (HelloTranslatorHelper new)
+                        with3rdPartyLanguageSelector: defaultlanguageSelector.
+    (* or #usingPlatform:helpedBy:with3rdPartyLanguageSelector: if platform was needed *)
+
+    ^helloTranslator.
+  )
+)
+</pre>
+
+
+<p>
+Either way, we would develop our App by packaging the 3rd party dependency and storing it on slot as <code>helloTranslatorLib</code>, then at runtime, build instance of the <code>helloTranslator</code> using the packaged <code>helloTranslatorLib</code>, and last, calling the method on <code>helloTranslator</code> which performs the translation:
+</p>
+
+
+<pre class="example">
+class HelloWorldAppUsingLib packageUsing: manifest = (
+  |
+  helloTranslatorLib = manifest HelloTranslatorLib packageLibraryUsing: manifest.
+  |
+)
+(
+  public main: platform args: args = (
+    |helloTranslator|
+    helloTranslator:: helloTranslatorLib buildUsing: platform.
+
+    (helloTranslator translate: 'Hello World from HelloWorldApp') out.
+  )
+)
+</pre>
+</div>
+</div>
+</div>
+</div>
+
 
 <div id="outline-container-orgc577a6a" class="outline-2">
-<h2 id="orgc577a6a"><span class="section-number-2">4</span> Newspeak: Using it and installing it.  Online vs.  local installation</h2>
-<div class="outline-text-2" id="text-4">
+<h2 id="orgc577a6a"><span class="section-number-2">6</span> Newspeak: Using it and installing it.  Online vs.  local installation</h2>
+<div class="outline-text-2" id="text-6">
 <p>
 TL;DR There are several ways of using Newspeak:
 </p>
 <ul class="org-ul">
 <li>Using Newspeak online web version from browser.  No installation required, see <a href="#org8825ff5">Installation method 1 (online, no local installation)</a></li>
 <li>Using Newspeak locally from browser, after installing your local Newspeak webserver, see <a href="#org541fe06">Installation method 2 (local Newspeak webserver)</a></li>
+<li>Using Newspeak on desktop or as a mobile App, see <a href="#org28ccd5c">Chapter System specific methods to install and run Newspeak</a>.  This includes installing and using an Electron-based version in <a href="#org5579420">Installation method 3</a>.</li>
 </ul>
 
 <p>
@@ -590,12 +2188,12 @@ In this hands-on document we use the Newspeak online version for most chapters; 
 </div>
 
 <div id="outline-container-orge001de9" class="outline-3">
-<h3 id="orge001de9"><span class="section-number-3">4.1</span> Simple methods to install and run Newspeak</h3>
-<div class="outline-text-3" id="text-4-1">
+<h3 id="orge001de9"><span class="section-number-3">6.1</span> Simple methods to install and run Newspeak</h3>
+<div class="outline-text-3" id="text-6-1">
 </div>
 <div id="outline-container-org362edd2" class="outline-4">
-<h4 id="org362edd2"><span class="section-number-4">4.1.1</span> <a id="org8825ff5"></a> Installation method 1: No installation or setup, run Newspeak online</h4>
-<div class="outline-text-4" id="text-4-1-1">
+<h4 id="org362edd2"><span class="section-number-4">6.1.1</span> <a id="org8825ff5"></a> Installation method 1: No installation or setup, run Newspeak online</h4>
+<div class="outline-text-4" id="text-6-1-1">
 <p>
 TL;DR: This section describes the simplest setup - in fact, this is a "no setup, no installation" method.  We only need a browser and internet access.  This is the recommended method to start with Newspeak.
 </p>
@@ -606,7 +2204,7 @@ TL;DR: This section describes the simplest setup - in fact, this is a "no setup,
 </ul>
 
 
-<div id="orgbffcb41" class="figure">
+<div id="org2296fe3" class="figure">
 <p><img src="/img/newspeak---a-few-notes.org-newspeak-ide-start.png" alt="nil"/>
 </p>
 </div>
@@ -620,17 +2218,17 @@ Notes:
 <li>By using this page, you are now using the Newspeak IDE</li>
 <li>click the "Newspeak Source" link to view code, edit edit code and manipulate code.</li>
 <li>Your changes will be stored in the browser local storage.</li>
-<li>A more detailed description of what we can do with Newspeak is in the introduction section <a href="#org17c8680">3.1</a></li>
+<li>A more detailed description of what we can do with Newspeak is in the introduction section <a href="#org17c8680">4.1</a></li>
 </ul>
 </div>
 </div>
 
 
 <div id="outline-container-org8609b11" class="outline-4">
-<h4 id="org8609b11"><span class="section-number-4">4.1.2</span> <a id="org541fe06"></a> Installation method 2: Download and start a local Newspeak webserver</h4>
-<div class="outline-text-4" id="text-4-1-2">
+<h4 id="org8609b11"><span class="section-number-4">6.1.2</span> <a id="org541fe06"></a> Installation method 2: Download and start a local Newspeak webserver</h4>
+<div class="outline-text-4" id="text-6-1-2">
 <p>
-This method downloads a pre-packaged Newspeak, and allows you to start your local Newspeak webserver, which starts the pre-packaged Newspeak.  This method is described in detail in the "hands on" section <a href="#org5383775">3.3</a>.  Follow the steps there.
+This method downloads a pre-packaged Newspeak, and allows you to start your local Newspeak webserver, which starts the pre-packaged Newspeak.  This method is described in detail in the "hands on" section <a href="#org5383775">4.3</a>.  Follow the steps there.
 </p>
 
 <p>
@@ -653,8 +2251,8 @@ Differences of this installation from using Newspeak online described in <a href
 
 
 <div id="outline-container-org3c90d9c" class="outline-4">
-<h4 id="org3c90d9c"><span class="section-number-4">4.1.3</span> <a id="org1e17444"></a> Installation method 3: Download or setup a local Electron version of Newspeak on MacOS or Windows</h4>
-<div class="outline-text-4" id="text-4-1-3">
+<h4 id="org3c90d9c"><span class="section-number-4">6.1.3</span> <a id="org1e17444"></a> Installation method 3: Download or setup a local Electron version of Newspeak on MacOS or Windows</h4>
+<div class="outline-text-4" id="text-6-1-3">
 <p>
 To install using this method, download the available versions for Windows and Mac, see <a href="https://newspeaklanguage.org/downloads.html">https://newspeaklanguage.org/downloads.html</a>, section "Downloadable IDE App". 
 </p>
@@ -669,82 +2267,317 @@ An advantage of Electron that I have seen is a better integration with OS File a
 </div>
 </div>
 </div>
+
+
+<div id="outline-container-org28ccd5c" class="outline-3">
+<h3 id="org28ccd5c"><span class="section-number-3">6.2</span> System specific methods to install and run Newspeak</h3>
+<div class="outline-text-3" id="text-6-2">
+</div>
+<div id="outline-container-org68de2cb" class="outline-4">
+<h4 id="org68de2cb"><span class="section-number-4">6.2.1</span> <a id="org5579420"></a> Installation method 4: Setup a local Newspeak webserver from code on Github.</h4>
+<div class="outline-text-4" id="text-6-2-1">
+<p>
+This method is described in the "Just in Case" section in <a href="https://github.com/newspeaklanguage/newspeak">https://github.com/newspeaklanguage/newspeak</a>.
+</p>
+</div>
+</div>
+
+
+<div id="outline-container-orgfde56e0" class="outline-4">
+<h4 id="orgfde56e0"><span class="section-number-4">6.2.2</span> <a id="org5a0f105"></a> Installation method 5: Manual setup which will produce an equivalent of <a href="#org541fe06">Installation method 2 (local Newspeak webserver)</a></h4>
+<div class="outline-text-4" id="text-6-2-2">
+<p>
+As this method produces an equivalent that is already downloadable, this is only if we want to dig in more details, but not going all the way to doing all the steps in <a href="#org5579420">Installation method 4</a>.
+</p>
+
+<p>
+If the build isn't working for you there is one option that hasn't been discussed, which is relevant to Linux folk who don't have an Electron app.  You can get the web IDE vfuel file at:
+</p>
+
+<p>
+<a href="https://newspeaklanguage.org/samples/HopscotchWebIDE.vfuel">https://newspeaklanguage.org/samples/HopscotchWebIDE.vfuel</a> 
+</p>
+
+<p>
+BUT &#x2026;  this isn't enough because you need a bunch more stuff, such as primordialsoup.html, primordialsoup.js, primordialsoup.wasm.
+If you run that, you'll find that you also need a longish list of .png files for the various images used by the IDE.  Here they are (probably a few that are no longer used too).
+</p>
+
+<p>
+accept16px.png				hsHistoryDownImage.png
+accept16pxDown.png			hsHistoryImage.png
+accept16pxOver.png			hsHistoryOutImage.png
+arrowGreenLeft.png			hsHistoryOverImage.png
+arrowGreenRight.png			hsHomeDownImage.png
+arrowOrangeLeft.png			hsHomeImage.png
+cancel16px.png				hsHomeOutImage.png
+cancel16pxDown.png			hsHomeOverImage.png
+cancel16pxOver.png			hsNewDownImage.png
+classPresenterImage.png			hsNewImage.png
+classUnknownImage.png			hsNewOutImage.png
+clearImage.png				hsNewOverImage.png
+conflictRed.png				hsRefreshDownImage.png
+disclosureClosedImage.png		hsRefreshImage.png
+disclosureMinusImage.png		hsRefreshOutImage.png
+disclosureOpenImage.png			hsRefreshOverImage.png
+disclosurePlusImage.png			hsReorderDownImage.png
+disclosureTransitionImage.png		hsReorderImage.png
+downloadImage.png			hsReorderOutImage.png
+editImage.png				hsReorderOverImage.png
+findImage.png				hsToolsDownImage.png
+findSquareLeftDownImage.png		hsToolsImage.png
+findSquareLeftImage.png			hsToolsOutImage.png
+findSquareLeftOutImage.png		hsToolsOverImage.png
+findSquareLeftOverImage.png		itemBothOverride.png
+helpImage.png				itemDeleteImage.png
+hsAddDownImage.png			itemMenuImage.png
+hsAddImage.png				itemReferencesImage.png
+hsAddOutImage.png			itemSubOverride.png
+hsAddOverImage.png			itemSuperOverride.png
+hsBackDownImage.png			languageJS.png
+hsBackImage.png				languageM.png
+hsBackOutImage.png			languageNewspeak3.png
+hsBackOverImage.png			languageSmalltalk.png
+hsCollapseDownImage.png			menu16px.png
+hsCollapseImage.png			menu16pxDown.png
+hsCollapseOutImage.png			menu16pxOver.png
+hsCollapseOverImage.png			menuButtonImage.png
+hsDropdownDownImage.png			metaMenuDownImage.png
+hsDropdownImage.png			metaMenuImage.png
+hsDropdownOutImage.png			metaMenuOutImage.png
+hsDropdownOverImage.png			metaMenuOverImage.png
+hsExpandDownImage.png			operateMenuDownImage.png
+hsExpandImage.png			operateMenuImage.png
+hsExpandOutImage.png			operateMenuOutImage.png
+hsExpandOverImage.png			operateMenuOverImage.png
+hsFindDownImage.png			peekingeye1610.png
+hsFindImage.png				privateImage.png
+hsFindOutImage.png			protectedImage.png
+hsFindOverImage.png			publicImage.png
+hsForwardDownImage.png			repositoryGit.png
+hsForwardImage.png			repositoryMercurial.png
+hsForwardOutImage.png			saveImage.png
+hsForwardOverImage.png			tinySubclassResponsibilityImage.png
+</p>
+
+<p>
+You can place it all in the directory of your choice and serve from there (the serve.sh script wants it in the repo, in the out directory).
+It seems easier to build, but I'm putting it out there.
+</p>
+</div>
+</div>
+</div>
 </div>
 
 
 
 <div id="outline-container-org2cdf4f7" class="outline-2">
-<h2 id="org2cdf4f7"><span class="section-number-2">5</span> <span class="todo IN_PROGRESS">IN-PROGRESS</span> Programming in Newspeak</h2>
-<div class="outline-text-2" id="text-5">
+<h2 id="org2cdf4f7"><span class="section-number-2">7</span> <span class="todo IN_PROGRESS">IN-PROGRESS</span> Programming in Newspeak</h2>
+<div class="outline-text-2" id="text-7">
 </div>
 <div id="outline-container-orgcd8c075" class="outline-3">
-<h3 id="orgcd8c075"><span class="section-number-3">5.1</span> The Newspeak IDE</h3>
-<div class="outline-text-3" id="text-5-1">
+<h3 id="orgcd8c075"><span class="section-number-3">7.1</span> The Newspeak IDE</h3>
+<div class="outline-text-3" id="text-7-1">
 </div>
 <div id="outline-container-org899c43c" class="outline-4">
-<h4 id="org899c43c"><span class="section-number-4">5.1.1</span> Updating the IDE</h4>
-<div class="outline-text-4" id="text-5-1-1">
+<h4 id="org899c43c"><span class="section-number-4">7.1.1</span> Updating the IDE</h4>
+<div class="outline-text-4" id="text-7-1-1">
 <p>
 How to update the IDE? The answer differs depending on what version you are using.
 </p>
 </div>
 
 <div id="outline-container-org2d7d91c" class="outline-5">
-<h5 id="org2d7d91c"><span class="section-number-5">5.1.1.1</span> Updating the online version</h5>
-</div>
+<h5 id="org2d7d91c"><span class="section-number-5">7.1.1.1</span> Updating the online version</h5>
+<div class="outline-text-5" id="text-7-1-1-1">
+<p>
+If you use Newspeak as online from <a href="https://newspeaklanguage.org/samples/primordialsoup.html?snapshot=HopscotchWebIDE.vfuel">https://newspeaklanguage.org/samples/primordialsoup.html?snapshot=HopscotchWebIDE.vfuel</a>, no updating is necessary.  If a newer version is installed online, a reload will update.
+</p>
 
+<p>
+After the update, the system will ask user if to re-apply your browser-local storage changes from the <i>backup</i> and <i>lastSaved</i>.  For details of the local changes re-application, see <a href="#orgafd7607">Saving changes in Newspeak</a>.
+</p>
+</div>
+</div>
 
 <div id="outline-container-org900cae1" class="outline-5">
-<h5 id="org900cae1"><span class="section-number-5">5.1.1.2</span> Updating your local Newspeak webserver, installed as in <a href="#org541fe06">Installation method 2 (local Newspeak webserver)</a>.</h5>
+<h5 id="org900cae1"><span class="section-number-5">7.1.1.2</span> Updating your local Newspeak webserver, installed as in <a href="#org541fe06">Installation method 2 (local Newspeak webserver)</a>.</h5>
+<div class="outline-text-5" id="text-7-1-1-2">
+<p>
+To update your local Newspeak webserver to the latest (thus getting fixes done since the last deployment), re-download and unzip as described in <a href="#org5383775">4.3</a>
+</p>
 </div>
 </div>
-
+</div>
 
 
 <div id="outline-container-org2853966" class="outline-4">
-<h4 id="org2853966"><span class="section-number-4">5.1.2</span> Updading a single class that was fixed on Github source into local Newspeak webserver (thus IDE)</h4>
+<h4 id="org2853966"><span class="section-number-4">7.1.2</span> Updading a single class that was fixed on Github source into local Newspeak webserver (thus IDE)</h4>
+<div class="outline-text-4" id="text-7-1-2">
+<p>
+Could there be situations we do not want to simply reinstall the local Newspeak webserver? Perhaps one example of such situation is that we run our local Newspeak webserver with changed files, and we want to patch a class that has a known fix, without reinstalling the local Newspeak webserver and losing changes.
+</p>
+
+<p>
+To describe a concrete (somewhat artificial) situation: Let's say that on Github, there is a bug fix or change in a 'system' class, <code>Browsing.ns</code>, and we want to update this single class locally.  We can identify changed files or files with fixes, and compile them in (that is, start using them in) the local version, using the following process:
+</p>
+
+<ul class="org-ul">
+<li>Look for files committed on Github.</li>
+<li>Find files changed since your last local install - let's say file <code>Browsing.ns</code> changed today to fix a bug.  As your local server uses the servable.zip file, <code>Browser.ns</code> is already compiled in your local vfuel.</li>
+<li>So from the browser IDE, <a href="http://localhost:8080/primordialsoup.html?snapshot=HopscotchWebIDE.vfuel">http://localhost:8080/primordialsoup.html?snapshot=HopscotchWebIDE.vfuel</a> from the 3-dot I "compile" the new version of Browsing.ns</li>
+<li>Save the changes from IDE (clicking the save diskette image)</li>
+<li>You can confirm that your changes were "Compile"d, by exporting of Browsing.ns (click the "Save to file" button to export the code).</li>
+<li>The result of the above process is your local server are now using the github-fixed <code>Browsing.ns</code>.</li>
+</ul>
+</div>
 </div>
 </div>
 
 
 
 <div id="outline-container-orgafd7607" class="outline-3">
-<h3 id="orgafd7607"><span class="section-number-3">5.2</span> Saving changes in Newspeak</h3>
-<div class="outline-text-3" id="text-5-2">
-</div>
-<div id="outline-container-org1aa0e14" class="outline-4">
-<h4 id="org1aa0e14"><span class="section-number-4">5.2.1</span> Saving changes inside the browser</h4>
+<h3 id="orgafd7607"><span class="section-number-3">7.2</span> Saving changes in Newspeak</h3>
+<div class="outline-text-3" id="text-7-2">
+<p>
+TL;DR: Changes can be saved either <i>inside the browser</i> in the browser's local storage, or, <i>outside the browser</i> on the filesystem.  Any changes you make (for example: you add a class, change a class, evaluate something in the workspace) are stored in the browser local storage in two entries: <b>lastSaved</b> and <b>backup</b>.  Clicking the "Accept" button  <img src="/img/newspeak---a-few-notes.org-accept-image.png" alt="nil"/> saves the changes in local storage under the key <i>backup</i>, while clicking the "Save" button <img src="/img/newspeak---a-few-notes.org-save-button.png" alt="nil"/>, at any time after "Accept", saves the changes under the key <i>lastSaved</i>.  Alternatively, you can `export` code by clicking the "three dot menu" button to the right of the class, then clicking the "Save to file" item in the popup menu.  You can `import` code by clicking the "three dot menu" on the top, to the right of "Root +", then selecting the "Compile File(s)" in the popup menu.
+</p>
 </div>
 
+<div id="outline-container-org1aa0e14" class="outline-4">
+<h4 id="org1aa0e14"><span class="section-number-4">7.2.1</span> Saving changes inside the browser</h4>
+<div class="outline-text-4" id="text-7-2-1">
+<p>
+How is the browser local storage handled, and how is <i>lastSaved</i> different from <i>backup</i>? Here is a detail description of how changes are saved and restored:
+</p>
+
+<ul class="org-ul">
+<li>After making any code change or addition, to keep your changes, you have to click the "Accept" button <img src="/img/newspeak---a-few-notes.org-accept-image.png" alt="nil"/>.  Clicking "Accept" saves the changes in local storage under the key <i>backup</i>.</li>
+<li>while</li>
+<li>Clicking the "Save" button <img src="/img/newspeak---a-few-notes.org-save-button.png" alt="nil"/>, at any time after "Accept", saves the changes under the key <i>lastSaved</i> (the changes under <i>backup</i> are added and merged in to the changes under <i>lastSaved</i>).  Once saved using the "Save" button, changes are stored "forever", unless you reset browser local storage for the site.  We need to clarify, that making a change, followed by just clicking "Save" without a previous "Accept", nothing is saved.  So "Accept" and "Save" are sort of like two phase commit.</li>
+<li>You can view the changes made, in the browser debugger.  For example, in Chrome or Chromium:
+<ul class="org-ul">
+<li>Press F12 to open Chrome debuger.</li>
+<li>Then click the "Application" tab.</li>
+<li>In the "Storage" section expand "Local Storage".</li>
+<li>You can see our changes in the appropriate URL, both under the key <i>lastSaved</i> and the key <i>backup</i>.</li>
+</ul></li>
+
+<li>How does the/lastSaved/ and <i>backup</i> system work on browser restart? On restart, the Newspeak system checks to see if there are any changes under the key <i>backup</i> and/or under the key <i>lastSaved</i>.  If <i>lastSaved</i> changes exists, we check if there are any subsequent changes under <i>backup</i>.  If not, we use the <i>lastSaved</i> version.  If there are unsaved changes (<i>backup</i> entry exists), a dialog will come up asking you how to proceed:  <img src="/img/newspeak---a-few-notes.org-message-restore-from-backup.png" alt="nil"/>
+<ul class="org-ul">
+<li>This message tells us, we did make code changes, then clicked "Accept" <img src="/img/newspeak---a-few-notes.org-accept-image.png" alt="nil"/>, without pressing "Save" <img src="/img/newspeak---a-few-notes.org-save-button.png" alt="nil"/>, and reloaded the page.  In other words, changes are stored under the key <i>backup</i> but not(yet) under <i>lastSaved</i>.  In most situations, pressing <b>Restore from backup</b> is the best choice.  Your code will load the changes from the <i>backup</i> key, and contain all your changes.  At any time, you can click "Save" and merge the <i>backup</i> changes to <i>lastSaved</i>.</li>
+<li>For search purposes, here is the text of the message: "You have backup changes that are newer than your last save.  Do you want to restore these changes, or load from the last save?"</li>
+</ul></li>
+
+<li>Note: There is a fine point we should make.  Crudely, we can say that "the Newspeak IDE is the file <code>HopscotchWebIDE.vfuel</code> interpreted by the browser when pointing to the URL <a href="https://newspeaklanguage.org/samples/primordialsoup.html?snapshot=HopscotchWebIDE.vfuel">https://newspeaklanguage.org/samples/primordialsoup.html?snapshot=HopscotchWebIDE.vfuel</a>.  However, we need to realize that the browser immediately downloads and caches this file.  Changing anything in Newspeak (adding a class, typing to the Workspace), causes the changes to be saved locally.  If we close the browser, and visit the same online URL again, we will see the site as we left it - with the local changes "added" to the vanilla Newspeak IDE! Which local changes are "added" (<i>backup</i> or <i>lastSaved</i> or both), is determined by your answer to the dialog above.</li>
+
+<li>Caveats: There are a few caveats - a few classes are exempt from this "backup" and "lastSaved" method, due to bootstrap issues (things like KernelForPrimordialSoup and HopscotchWebIDE).  If you tamper with these - save the class explicitly! Also, web storage can surprise you on mobile platforms, where things can be thrown out after a certain amount of time (7 days on iOS?) and the system as a whole may exhibit bugs.</li>
+</ul>
+</div>
+</div>
 
 <div id="outline-container-orga7e210e" class="outline-4">
-<h4 id="orga7e210e"><span class="section-number-4">5.2.2</span> Saving changes outside the browser:</h4>
+<h4 id="orga7e210e"><span class="section-number-4">7.2.2</span> Saving changes outside the browser:</h4>
+<div class="outline-text-4" id="text-7-2-2">
+<p>
+Apart from the <i>lastSaved</i> and <i>backup</i> in-browser changes management, you can save changes outside the browser.  This is typically needed for development.
+</p>
+
+
+<ul class="org-ul">
+<li>If you do clear your browser local storage, your changes will be lost, so saving outside the browser is valuable.</li>
+
+<li>During development in Newspeak, you will want to save your work.  Until source control is integrated into the IDE, the current approach is to `export` ("Save to file") all classes you changed in a directory on your system as <b>.ns</b> files, and potentially create a code repository in that directory.  If we later want to bring the repository version to Newspeak, we `import` ("Compile File(s)") the <b>.ns</b> files back to Newspeak.  For how to access the "Save to file" and "Compile File(s)" buttons, see TL;DR in section <a href="#orgafd7607">Chapter Saving changes in Newspeak</a></li>
+</ul>
 </div>
 </div>
 </div>
 
 
+
+<div id="outline-container-orga43a173" class="outline-3">
+<h3 id="orga43a173"><span class="section-number-3">7.3</span> <span class="todo IN_PROGRESS_NOW">IN-PROGRESS-NOW</span> Snippets of wisdom from various sources</h3>
+<div class="outline-text-3" id="text-7-3">
+<p>
+Sources (may not be complete)
+</p>
+<ul class="org-ul">
+<li>Newspeak user group on Google groups:</li>
+</ul>
+
+<p>
+Snippets of wisdom
+</p>
+
+<ul class="org-ul">
+<li><p>
+StringTest&gt;&gt;#testShout is the Smalltalk way of identifying the testShout method of the StringTest class.  When you actually type the code into the browser, you don’t have to type the class name or the &gt;&gt;; instead, you just make sure that the appropriate class is selected.  Documentation example in text should show abstract argument names:
+</p>
+<pre class="example" id="orgb060130">
+History&gt;&gt;goBackward
+  self canGoBackward ifFalse: [self error: 'Already on the first element'].
+  stream skip: --2.
+  ^ self next.
+
+History&gt;&gt;goTo: aPage
+  stream nextPut: aPage.
+</pre></li>
+<li><p>
+In Newspeak, a top level class declaration is always a module declaration.  So this is a module:
+</p>
+<pre class="example">
+class HelloBraveNewWorld usingPlatform: platform = (
+  platform squeak Transcript open show: ‘Hello, Oh Brave new world’.
+)
+</pre>
+<p>
+If we had written
+</p>
+<pre class="example">
+      class HelloBraveNewWorld = (
+        Transcript open show: ‘Hello, Oh Brave new world’.
+      )
+</pre>
+<p>
+and then created an instance via <code>HelloBraveNewWorld new</code> (if a class doesn’t specify a message for creating instances, new is the default), we would get a doesNotUnderstand: error, because HelloBraveNewWorld does not understand the message Transcript.  There simply is no way to access the standard output stream, or any other system state, without having it passed in via a parameter when a module is instantiated.
+</p></li>
+<li>Workspace evaluation
+<ul class="org-ul">
+<li><code>ide namespacing manifest Collections</code> (* Collections class *)</li>
+<li><code>collections</code>  (* instance of CollectionForPrimodialSoup *)</li>
+<li><code>(ide namespacing manifest ATranslation) new translate: 'aaa'</code> (* 'cannot translate', good *)</li>
+</ul></li>
+<li>If you are learning, make everything public.  everything = each method, slot, and inner class.  It may not be the right thing, but it helps as the error messages are not the best currently.  You will just get "Does not understand" too many times.  First time it took me a day to figure out hehe.</li>
+<li>so, basically, if I have an HTML string with a &lt;div class='helpButton'&gt;, this code in ClassPresenter&gt;&gt;helpText:  can insert a Hopscotch(?) instance of  HelpButton (assuming HelpButton was implemented) and the HelpButton instance will present itself as Html on that div? Hmm, maybe that org-to-ampleforth just got more exciting - but I have to hold myselt. &#x2013; answer: Pretty much.  You need to define the mapping from div classes to Newspeak widgets, as ClassPresenter&gt;&gt;helpText: does for the widgets it uses.</li>
+<li>Library is an informal term.  Any Newspeak module definition (i.e., a top level class) is a library, and to use, it you call its class methods, most likely to instantiate it.</li>
+</ul>
+<p>
+If you want to deploy a module, well, you need to use it via an app (i.e, define something with #packageUsing: and #main:args:), directly or indirectly. 
+</p>
+</div>
+</div>
+</div>
 
 
 <div id="outline-container-orge701dcb" class="outline-2">
-<h2 id="orge701dcb"><span class="section-number-2">6</span> <span class="todo IN_PROGRESS">IN-PROGRESS</span> Q&amp;A - answers should be either here directly, or link to an earlier section</h2>
-<div class="outline-text-2" id="text-6">
+<h2 id="orge701dcb"><span class="section-number-2">8</span> <span class="todo IN_PROGRESS">IN-PROGRESS</span> Q&amp;A - answers should be either here directly, or link to an earlier section</h2>
+<div class="outline-text-2" id="text-8">
 <p>
 Much of this Q&amp;A is sourced and expanded, or simply pasted from the Newspeak google group posts at <a href="https://groups.google.com/g/newspeaklanguage">https://groups.google.com/g/newspeaklanguage</a>
 </p>
 </div>
 
 <div id="outline-container-org88e254f" class="outline-3">
-<h3 id="org88e254f"><span class="section-number-3">6.1</span> <span class="todo IN_PROGRESS">IN-PROGRESS</span> Working with code</h3>
-<div class="outline-text-3" id="text-6-1">
+<h3 id="org88e254f"><span class="section-number-3">8.1</span> <span class="todo IN_PROGRESS">IN-PROGRESS</span> Working with code</h3>
+<div class="outline-text-3" id="text-8-1">
 <p>
 todo
 </p>
 </div>
 
 <div id="outline-container-org3c1c3d3" class="outline-4">
-<h4 id="org3c1c3d3"><span class="section-number-4">6.1.1</span> How do I save my changes?</h4>
-<div class="outline-text-4" id="text-6-1-1">
+<h4 id="org3c1c3d3"><span class="section-number-4">8.1.1</span> How do I save my changes?</h4>
+<div class="outline-text-4" id="text-8-1-1">
 <p>
 Newspeak doesn't have an image.  So what do I actually do to develop software? I mean, I presume I run a copy of Newspeak somehow, and start adding classes to it.  But then where / how do my additions get saved if there isn't an image? When I've added a couple of classes to a running Newspeak environment, I presume they don't just disappear when I switch my computer off? So where do they go? Or where do I put them?
 </p>
@@ -764,19 +2597,25 @@ For a complete discussion, see <a href="#orgafd7607">Chapter Saving changes in N
 </div>
 
 
-<div id="outline-container-org088d07d" class="outline-4">
-<h4 id="org088d07d"><span class="section-number-4">6.1.2</span> How would I build and deploy a <code>AHelloWorldApp</code> or a more complex <code>CounterApp</code> application?</h4>
+<div id="outline-container-org35d76b7" class="outline-4">
+<h4 id="org35d76b7"><span class="section-number-4">8.1.2</span> How would I build and deploy a Newspeak application?</h4>
+<div class="outline-text-4" id="text-8-1-2">
+<p>
+For <code>HelloWorldApp</code>, see <a href="#org3f7b274">Hello World in Newspeak</a>.
+</p>
+
+<p>
+For the <code>CounterApp</code> example, see section <a href="#orgba53dc6">4.2</a>
+</p>
+</div>
+</div>
 </div>
 
-<div id="outline-container-org98fdcd0" class="outline-4">
-<h4 id="org98fdcd0"><span class="section-number-4">6.1.3</span> Newspeak modules API summary</h4>
-</div>
-</div>
 
 
 <div id="outline-container-org15a4f6c" class="outline-3">
-<h3 id="org15a4f6c"><span class="section-number-3">6.2</span> When or why to refresh the online IDE?</h3>
-<div class="outline-text-3" id="text-6-2">
+<h3 id="org15a4f6c"><span class="section-number-3">8.2</span> When or why to refresh the online IDE?</h3>
+<div class="outline-text-3" id="text-8-2">
 <p>
 Why will you refresh? Apart from the odd crash, the more common problem is the performance issues that have been discussed in this forum in December/January.  Basically, we have an unresolved problem that the system slows down painfully under prolonged/heavy use.  Refreshing and loading from backup works fairly well.  This is obviously unacceptable as you lose IDE state (debuggers, workspace/inspector contents, unsaved editors, presenter state such as what method presenters are expanded or collapsed) but it's better than an unresponsive (sluggish to dead) system.
 </p>
@@ -785,8 +2624,8 @@ Why will you refresh? Apart from the odd crash, the more common problem is the p
 
 
 <div id="outline-container-org2400758" class="outline-3">
-<h3 id="org2400758"><span class="section-number-3">6.3</span> Why do some classes show the [deploy] [run] [debug[ links?</h3>
-<div class="outline-text-3" id="text-6-3">
+<h3 id="org2400758"><span class="section-number-3">8.3</span> Why do some classes show the [deploy] [run] [debug[ links?</h3>
+<div class="outline-text-3" id="text-8-3">
 <p>
 Only classes that the IDE considers apps (applications) show these links.
 </p>
@@ -794,13 +2633,16 @@ Only classes that the IDE considers apps (applications) show these links.
 <p>
 IDE concludes a class is an app based on a convention: presence of method <code>#packageUsing: manifest</code>.
 </p>
-</div>
-</div>
 
+<p>
+For details see  <a href="#org98fdcd0">Newspeak modules API summary</a> and <a href="#org3f7b274">Hello World in Newspeak</a>.
+</p>
+</div>
+</div>
 
 <div id="outline-container-org9bf4124" class="outline-3">
-<h3 id="org9bf4124"><span class="section-number-3">6.4</span> Why do some test classes show the [run tests] [show tests] links?</h3>
-<div class="outline-text-3" id="text-6-4">
+<h3 id="org9bf4124"><span class="section-number-3">8.4</span> Why do some test classes show the [run tests] [show tests] links?</h3>
+<div class="outline-text-3" id="text-8-4">
 <p>
 Only classes that the IDE considers a test configuration show these links.
 </p>
@@ -816,10 +2658,10 @@ For details see <a href="#org98fdcd0">Newspeak modules API summary</a>.
 </div>
 
 <div id="outline-container-org87db60b" class="outline-3">
-<h3 id="org87db60b"><span class="section-number-3">6.5</span> How would I create and distribute a Newspeak App to run on the web, on mobile, or on desktop?</h3>
-<div class="outline-text-3" id="text-6-5">
+<h3 id="org87db60b"><span class="section-number-3">8.5</span> How would I create and distribute a Newspeak App to run on the web, on mobile, or on desktop?</h3>
+<div class="outline-text-3" id="text-8-5">
 <p>
-TL;DR: For a detail description of developing, packaging, running and deploying a concrete Newspeak app, read the section <a href="#org8b291c4">3</a>
+TL;DR: For a detail description of developing, packaging, running and deploying a concrete Newspeak app, read the section <a href="#org8b291c4">4</a>
 </p>
 
 <p>
@@ -850,7 +2692,7 @@ especially if they are small.  You choose the option
 </ol>
 
 <p>
-In either case, .vfuel file is produced.  Assuming you are running Newspeak using option 1 (a local server, <a href="#org8825ff5">4.1.1</a>), you can then serve that file and run your app.
+In either case, .vfuel file is produced.  Assuming you are running Newspeak using option 1 (a local server, <a href="#org8825ff5">6.1.1</a>), you can then serve that file and run your app.
 </p>
 
 <p>
@@ -862,8 +2704,8 @@ This .vfuel can then be deployed into a (locally installed) Newspeak server.
 </p>
 
 <ul class="org-ul">
-<li>For instructions on how to install the server see <a href="#org8825ff5">4.1.1</a></li>
-<li>For instructions on how to deploy a sample app, in particular the <code>CounterApp</code>, see <a href="#orgaadf932">3.4</a>.</li>
+<li>For instructions on how to install the server see <a href="#org8825ff5">6.1.1</a></li>
+<li>For instructions on how to deploy a sample app, in particular the <code>CounterApp</code>, see <a href="#orgaadf932">4.4</a>.</li>
 </ul>
 </div>
 </div>

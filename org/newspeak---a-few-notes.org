@@ -1316,13 +1316,13 @@ Snippets of wisdom
       stream nextPut: aPage.
   #+end_example
 - In Newspeak, a top level class declaration is always a module declaration.  So this is a module:
-  #+begin_src groovy
+  #+begin_src
     class HelloBraveNewWorld usingPlatform: platform = (
       platform squeak Transcript open show: ‘Hello, Oh Brave new world’.
     )
   #+end_src
   If we had written
-  #+BEGIN_SRC groovy 
+  #+BEGIN_SRC
     class HelloBraveNewWorld = (
       Transcript open show: ‘Hello, Oh Brave new world’.
     )
@@ -1361,7 +1361,7 @@ For a complete discussion, see [[*Saving changes in Newspeak][Chapter Saving cha
 
 For ~HelloWorldApp~, see [[*Hello World in Newspeak][Hello World in Newspeak]].
 
-For the ~CounterApp~ example, see section [[A Concrete Newspeak example: Packaging and distributing a concrete app]].
+For the ~CounterApp~ example, see section [[*Build, run, and debug the CounterApp in Newspeak (in the online version)]]
 
 
 
