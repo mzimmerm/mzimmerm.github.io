@@ -402,3 +402,86 @@ We can summarize the lifecycle of allowing the /end-user/ to use a program creat
 - Equivalents and examples in other languages and platforms 
 
 
+
+* Non-Newspeak Concepts: Packaging and distributing an app in 'mainstream' software
+:PROPERTIES:
+:ARCHIVE_TIME: 2021-07-19 Mon 23:29
+:ARCHIVE_FILE: ~/dev/my-projects-source/public-on-github/mzimmerm.github.io/org/newspeak---a-few-notes.org
+:ARCHIVE_CATEGORY: newspeak---a-few-notes
+:END:
+
+Let me start with my understanding of the current "mainstream" way of software distribution using package repositories.  I'd describe such lifecycle as follows:
+
+** A0) 'configure' : 'developer' 'configures' a 'project', adding 'dependencies' using 'package manager'
+
+The first step developer typically takes is to create a project.  Almost no software lives in vaccuum, a need to use other externally created pieces of software.  Such pieces of software are often called modules, libraries, packages, dependencies and similar. 
+
+This section uses the term 'required package' for such external pieces of software.  The term 'required package' hopefully expresses both 
+- that such external software comes in a form of a package, 
+- and  that such external software is 'required' by the project being developed. 
+
+The mainstream name for 'required package' is 'dependency' but I find that confusing (confusing which way the dependency goes).
+
+** A1) 'develop' : 'developer' 'develops' the 'program' or 'app'. 
+
+** A2) 'build' :   'developer' 'builds a 'program package' from the 'program' and (potentially) it's 'dependencies', using a 'build tool'. 
+
+Such 'build tool' is generally part of a higher level 'package manager' - the 'package manager' may act in 2 steps, in this build step, and in the 'install' step 4.  The build tool may be gradle, rpm builder, docker image builder, snapcraft, flatpak builder etc.  The resulting 'program package' may be a war file, a vfuel file, an rpm file, etc.  The 'program package' may or may not be 'self-contained' (contain all needed components - dependencies -  to run the program).  Either way, 'dependencies' (libraries needed to run the program) must be resolved either at this build step (if the 'program package' is self-contained) or at the 'target system' 'install' step.  As an example, the war or snap file would contain all dependencies, while the rpm file would rely on dependencies to be resolved and installed during the 'install' step.
+
+
+** A3) 'submit':   'developer' 'submits' the 'program package' to a 'package repository'. 
+
+On the web, developer copies the jar or vfuel to a webserver (so the repository is skipped? unless the browser extensions store is used)
+
+
+** A4) 'install':   'end-user' 'installs' the 'program' on the 'target system' from the 'program package' located in the 'package repository', using a 'package manager'. 
+
+As discussed in A2, the 'package manager' of the 'non-self-contained' program packages must calculate and install 'dependencies'.
+
+
+** A5) 'run':       'end-user' 'runs' the 'program' installed in step 4.
+
+Notes:
+
+- steps A1, A2 and A3 (develop, build, submit) generally are executed - or at least can be - on the 'source system' (where the software is developed). 
+- step A3 (submit to a repository) copies the 'program package' to a  publicly available repository (available to both developer and end-user).
+- steps A4 and A5 (install, run) are executed on the 'target system' - where the end-user installs and runs the program.  Well, unless we are on the web where the 'end-user' points browser to a URL.
+- I tried not to use the verb "to package" here (only "to build").  Unless I am missing something, "to package a program" is pretty much equivalent of "to build a package from a program" - so "to build" <==> "to package".  These actions happen on the 'source system'.
+- The difference between 'self-contained' program packages and the not-self-contained ones, and how they are handled by their 'package manager' programs, is similar to early and late binding, perhaps with somewhat similar pros and cons. 
+
+
+** B) What are roles of the methods (verbs) 'build' and 'package' in the Newspeak lifecycle of develop/build/submit/install/run an application?
+---------------------------------------
+
+Grepping the Newspeak codebase for:
+
+find . -type f -exec grep  -H  "package.*Using.*:" {} \;
+
+Yields the following methods signatures (on code from like a month ago when I started writing this):
+
+- SomeClass.ns:     #packageUsing: manifest = ..
+- SomeTestsConfiguration.ns: #packageTestsUsing: manifest = .. (or ideNamespace but that's just a name?)
+
+In addition, in the post
+
+https://groups.google.com/g/newspeaklanguage/c/kHAIE_i7gTc/m/2KwHVGIFBQAJ
+
+Gilad defines 
+
+- #packageLibraryUsingManifest: manifest
+
+
+
+
+
+* Useful editing hints
+:PROPERTIES:
+:ARCHIVE_TIME: 2021-07-19 Mon 23:44
+:ARCHIVE_FILE: ~/dev/my-projects-source/public-on-github/mzimmerm.github.io/org/newspeak---a-few-notes.org
+:ARCHIVE_CATEGORY: newspeak---a-few-notes
+:END:
+
+\[\[\*\([A-z 0-9()_\.\?~]+\)\]\] → [[*\1][Chapter \1] ] <<=== remove space
+
+visible-mode shows links expanded!!
+
