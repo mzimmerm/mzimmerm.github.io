@@ -485,3 +485,31 @@ Gilad defines
 
 visible-mode shows links expanded!!
 
+
+* Newspeak modules API zoo renames
+:PROPERTIES:
+:ARCHIVE_TIME: 2021-07-21 Wed 21:49
+:ARCHIVE_FILE: ~/dev/my-projects-source/public-on-github/mzimmerm.github.io/org/newspeak---a-few-notes.org
+:ARCHIVE_OLPATH: Newspeak is different.  An ide-driven journey around the Newspeak platform/Modules: Application, library, test, general
+:ARCHIVE_CATEGORY: newspeak---a-few-notes
+:END:
+
+wishing renames to : 
+
+
+| Module type                              | Constructor. Role=package                        | Instance method. Role=build or execute          |
+|------------------------------------------+--------------------------------------------------+-------------------------------------------------|
+| Library                                  | *#packageLibraryUsingManifest: manifest*         | *#buildLibraryUsingPlatform: platform*          |
+| App                                      | *#packageUsingManifest: manifest*                | *#runUsingPlatform: platform args: args*        |
+| Test Configuration                       | *#packageTestsUsingManifest: manifest*           | #testModulesUsingPlatform: platform minitest: m |
+|------------------------------------------+--------------------------------------------------+-------------------------------------------------|
+|------------------------------------------+--------------------------------------------------+-------------------------------------------------|
+|                                          | Factory Constructor.                             |                                                 |
+|------------------------------------------+--------------------------------------------------+-------------------------------------------------|
+| General module needing platform          | #usingPlatform: platform [andModule: m1]         | Note: name is completely free                   |
+| General module dependent on other module | #andModule: m1                                   | Note: name is completely free                   |
+| General module with no dependencies      | #new                                             |                                                 |
+| Test module                              | #usingPlatform: platform testFramework: minitest |                                                 |
+
+
+

@@ -1,0 +1,49 @@
+#+STARTUP: showall
+#+STARTUP: hidestars
+#+OPTIONS: H:2 num:nil tags:t toc:nil timestamps:t
+#+LAYOUT: post
+#+AUTHOR: mzimmerm
+#+DATE: 2021-07-20 Tue 16:05
+#+TITLE: Calculator, language, syntax, parser, interpreter - computing steps personal recap
+#+DESCRIPTION: Walk musings
+#+TAGS: language parser interpreter
+#+CATEGORIES: language parser interpreter
+
+* DONE Calculator, language, syntax, parser, interpreter - computing steps personal recap
+
+Chapter 1: Simple Calculator:
+
+Language processed: a string which represents aruithmetic expression
+
+Valid examples:
+
+1 2 +
+1 2 + 3 *
+1 2 + 3 4 *
+
+Invalid examples
+
++ 1
+1 + 2
+(1 2 +)
+
+Basically valid syntax  is a string of numbeers and arithmetic operations + - / * processed left to right . 
+
+Processing
+
+Definitions:
+
+Token = Number_token or Openraror_token : class with either a numberrt or + * / - 
+ch1_language = String the represents valid arithm expression 
+
+Ch1_tokenized_program - todo 
+
+Ch1_parser
+
+input - valid arithmetic string - this is our 'program'
+output - Ch1_tokenized_program (ast)
+
+Ch1_interpreter
+
+input -  Ch1_tokenized_program
+output - Number_token which is also result of the arithmetic expression string
