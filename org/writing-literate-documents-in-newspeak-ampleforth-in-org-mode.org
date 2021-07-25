@@ -1,0 +1,40 @@
+#+STARTUP: showall
+#+STARTUP: hidestars
+#+OPTIONS: H:2 num:nil tags:t toc:nil timestamps:t
+#+LAYOUT: post
+#+AUTHOR: mzimmerm
+#+DATE: 2021-07-25 Sun 01:45
+#+TITLE: Writing literate documents in Newspeak Ampleforth in Org Mode
+#+DESCRIPTION: Writing literate documents in Newspeak Ampleforth in Org Mode
+#+TAGS: newspeak org emacs ampleforth
+#+CATEGORIES: newspeak org emacs ampleforth
+#+OPTIONS: html-postamble:nil
+
+#+html_head: <style>
+#+html_head:   img {
+#+html_head:     width: 25px;
+#+html_head:     height: 25px;
+#+html_head:   }
+#+html_head: </style>
+#+html_head: 
+#+html_head: <style>
+#+html_head:   .evaluator + pre {
+#+html_head:     display: none; 
+#+html_head:   }
+#+html_head:   .preview .evaluator + pre {
+#+html_head:     display: block;
+#+html_head:   }
+#+html_head: </style>
+
+Space for Newspeak here!  A man who wants to see!
+
+#+begin_src
+11+22
+#+end_src
+
+This is all.
+
+#+begin_export html
+<script type="text/javascript" class="preview" src="/js/Ampleforth.sources.js"></script>
+<script type="text/javascript" class="preview" src="/js/Ampleforth.js"></script>
+#+end_export
