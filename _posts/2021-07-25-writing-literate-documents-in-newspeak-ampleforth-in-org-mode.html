@@ -26,5 +26,64 @@ Space for Newspeak here!
 This is all.
 </p>
 
+<div id="outline-container-orgbc8bb07" class="outline-2">
+<h2 id="orgbc8bb07">Changes I did to make it work</h2>
+<div class="outline-text-2" id="text-orgbc8bb07">
+<ol class="org-ol">
+<li>In init.el, for org config: Overrode handling of function <code>org-html-src-block</code> in ox-html.el.</li>
+<li><p>
+In the org file: Added BEGIN_EXPORT html with 2 sections. First section adds styling on elements with class="evaluator", the second section adds the script with Ampleforth.js. NOTE: This must be at the end, for the script to be at the end of body or after the body.
+</p>
+<pre class="example" id="org6ed2636">
+ #+begin_export html
+    &lt;style&gt; img {width: 25px; height: 25px;} &lt;/style&gt; &lt;style&gt; .evaluator + pre {display: none;} .preview .evaluator + pre {display: block;} &lt;/style&gt;
+   &lt;script type="text/javascript" class="preview" src="/js/Ampleforth.sources.js"&gt;&lt;/script&gt;
+   &lt;script type="text/javascript" class="preview" src="/js/Ampleforth.js"&gt;&lt;/script&gt;
+#+end_export
+</pre></li>
+<li>In Ampleforth.js: replaced <code>i.src = "</code> with <code>i.src = "/img/</code></li>
+<li>In the blog directory: Added the following images to blog img directory:
+     ,#+begin_example
+       "/accept16px.png"
+       "/cancel16px.png"
+       "/disclosureClosedImage.png"
+       "/disclosureTransitionImage.png"
+       "/disclosureOpenImage.png"
+       "/hsDropdownImage.png"
+       "/hsDropdownOutImage.png"
+       "/hsDropdownOverImage.png"
+       "/publicImage.png"
+       "/protectedImage.png"
+       "/privateImage.png"
+       "/hsAddImage.png"
+       "/hsAddOutImage.png"
+       "/hsAddOverImage.png"
+       "/hsDropdownImage.png"
+       "/hsDropdownOutImage.png"
+       "/hsDropdownOverImage.png"
+       "/hsExpandImage.png"
+       "/hsExpandOverImage.png"
+       "/hsExpandDownImage.png"
+       "/hsCollapseImage.png"
+       "/hsCollapseOverImage.png"
+       "/hsCollapseDownImage.png"
+       "/hsHomeImage.png"
+       "/hsHomeOverImage.png"
+       "/hsHomeOutImage.png"
+       "/hsHomeDownImage.png"
+       "/classPresenterImage.png"
+       "/classUnknownImage.png"
+       "/languageNewspeak3.png"
+#+end_example</li>
+</ol>
+</div>
+</div>
+
+<div id="outline-container-org09532f1" class="outline-2">
+<h2 id="org09532f1">This must be at the end</h2>
+<div class="outline-text-2" id="text-org09532f1">
+ <style> img {width: 25px; height: 25px;} </style> <style> .evaluator + pre {display: none;} .preview .evaluator + pre {display: block;} </style>
 <script type="text/javascript" class="preview" src="/js/Ampleforth.sources.js"></script>
 <script type="text/javascript" class="preview" src="/js/Ampleforth.js"></script>
+</div>
+</div>

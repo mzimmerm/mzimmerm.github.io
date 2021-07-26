@@ -10,21 +10,6 @@
 #+CATEGORIES: newspeak org emacs ampleforth
 #+OPTIONS: html-postamble:nil
 
-#+html_head: <style>
-#+html_head:   img {
-#+html_head:     width: 25px;
-#+html_head:     height: 25px;
-#+html_head:   }
-#+html_head: </style>
-#+html_head: 
-#+html_head: <style>
-#+html_head:   .evaluator + pre {
-#+html_head:     display: none; 
-#+html_head:   }
-#+html_head:   .preview .evaluator + pre {
-#+html_head:     display: block;
-#+html_head:   }
-#+html_head: </style>
 
 Space for Newspeak here!
 
@@ -34,7 +19,56 @@ Space for Newspeak here!
 
 This is all.
 
+* Changes I did to make it work
+
+1. In init.el, for org config: Overrode handling of function ~org-html-src-block~ in ox-html.el.
+2. In the org file: Added BEGIN_EXPORT html with 2 sections. First section adds styling on elements with class="evaluator", the second section adds the script with Ampleforth.js. NOTE: This must be at the end, for the script to be at the end of body or after the body.
+     #+BEGIN_EXAMPLE
+        ,#+begin_export html
+           <style> img {width: 25px; height: 25px;} </style> <style> .evaluator + pre {display: none;} .preview .evaluator + pre {display: block;} </style>
+          <script type="text/javascript" class="preview" src="/js/Ampleforth.sources.js"></script>
+          <script type="text/javascript" class="preview" src="/js/Ampleforth.js"></script>
+       ,#+end_export
+     #+END_EXAMPLE
+3. In Ampleforth.js: replaced ~i.src = "~ with ~i.src = "/img/~
+4. In the blog directory: Added the following images to blog img directory:
+         ,#+begin_example
+           "/accept16px.png"
+           "/cancel16px.png"
+           "/disclosureClosedImage.png"
+           "/disclosureTransitionImage.png"
+           "/disclosureOpenImage.png"
+           "/hsDropdownImage.png"
+           "/hsDropdownOutImage.png"
+           "/hsDropdownOverImage.png"
+           "/publicImage.png"
+           "/protectedImage.png"
+           "/privateImage.png"
+           "/hsAddImage.png"
+           "/hsAddOutImage.png"
+           "/hsAddOverImage.png"
+           "/hsDropdownImage.png"
+           "/hsDropdownOutImage.png"
+           "/hsDropdownOverImage.png"
+           "/hsExpandImage.png"
+           "/hsExpandOverImage.png"
+           "/hsExpandDownImage.png"
+           "/hsCollapseImage.png"
+           "/hsCollapseOverImage.png"
+           "/hsCollapseDownImage.png"
+           "/hsHomeImage.png"
+           "/hsHomeOverImage.png"
+           "/hsHomeOutImage.png"
+           "/hsHomeDownImage.png"
+           "/classPresenterImage.png"
+           "/classUnknownImage.png"
+           "/languageNewspeak3.png"
+    #+end_example
+
+* This must be at the end   
+
 #+begin_export html
+ <style> img {width: 25px; height: 25px;} </style> <style> .evaluator + pre {display: none;} .preview .evaluator + pre {display: block;} </style>
 <script type="text/javascript" class="preview" src="/js/Ampleforth.sources.js"></script>
 <script type="text/javascript" class="preview" src="/js/Ampleforth.js"></script>
 #+end_export

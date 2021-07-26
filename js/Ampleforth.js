@@ -84676,152 +84676,152 @@ var ns = new function () {
  this.$accept16px = function () {
   return vmmirror.kernel.$Future().$computing$(
 		function(){return vmmirror.platform.$aliens().$yourself()._$alienate$(
-			function(){ var i = new Image(); i.src ="accept16px.png"; return i;}() );});
+			function(){ var i = new Image(); i.src = "/img/accept16px.png"; return i;}() );});
  };
  this.$cancel16px = function () {
   return vmmirror.kernel.$Future().$computing$(
 		function(){return vmmirror.platform.$aliens().$yourself()._$alienate$(
-			function(){ var i = new Image(); i.src ="cancel16px.png"; return i;}() );});
+			function(){ var i = new Image(); i.src = "/img/cancel16px.png"; return i;}() );});
  };
  this.$disclosureClosedImage = function () {
   return vmmirror.kernel.$Future().$computing$(
 		function(){return vmmirror.platform.$aliens().$yourself()._$alienate$(
-			function(){ var i = new Image(); i.src ="disclosureClosedImage.png"; return i;}() );});
+			function(){ var i = new Image(); i.src = "/img/disclosureClosedImage.png"; return i;}() );});
  };
  this.$disclosureTransitionImage = function () {
   return vmmirror.kernel.$Future().$computing$(
 		function(){return vmmirror.platform.$aliens().$yourself()._$alienate$(
-			function(){ var i = new Image(); i.src ="disclosureTransitionImage.png"; return i;}() );});
+			function(){ var i = new Image(); i.src = "/img/disclosureTransitionImage.png"; return i;}() );});
  };
  this.$disclosureOpenImage = function () {
   return vmmirror.kernel.$Future().$computing$(
 		function(){return vmmirror.platform.$aliens().$yourself()._$alienate$(
-			function(){ var i = new Image(); i.src ="disclosureOpenImage.png"; return i;}() );});
+			function(){ var i = new Image(); i.src = "/img/disclosureOpenImage.png"; return i;}() );});
  };
  this.$hsDropdownImage = function () {
   return vmmirror.kernel.$Future().$computing$(
 		function(){return vmmirror.platform.$aliens().$yourself()._$alienate$(
-			function(){ var i = new Image(); i.src ="hsDropdownImage.png"; return i;}() );});
+			function(){ var i = new Image(); i.src = "/img/hsDropdownImage.png"; return i;}() );});
  };
  this.$hsDropdownOutImage = function () {
   return vmmirror.kernel.$Future().$computing$(
 		function(){return vmmirror.platform.$aliens().$yourself()._$alienate$(
-			function(){ var i = new Image(); i.src ="hsDropdownOutImage.png"; return i;}() );});
+			function(){ var i = new Image(); i.src = "/img/hsDropdownOutImage.png"; return i;}() );});
  };
  this.$hsDropdownOverImage = function () {
   return vmmirror.kernel.$Future().$computing$(
 		function(){return vmmirror.platform.$aliens().$yourself()._$alienate$(
-			function(){ var i = new Image(); i.src ="hsDropdownOverImage.png"; return i;}() );});
+			function(){ var i = new Image(); i.src = "/img/hsDropdownOverImage.png"; return i;}() );});
  };
  this.$publicImage = function () {
   return vmmirror.kernel.$Future().$computing$(
 		function(){return vmmirror.platform.$aliens().$yourself()._$alienate$(
-			function(){ var i = new Image(); i.src ="publicImage.png"; return i;}() );});
+			function(){ var i = new Image(); i.src = "/img/publicImage.png"; return i;}() );});
  };
  this.$protectedImage = function () {
   return vmmirror.kernel.$Future().$computing$(
 		function(){return vmmirror.platform.$aliens().$yourself()._$alienate$(
-			function(){ var i = new Image(); i.src ="protectedImage.png"; return i;}() );});
+			function(){ var i = new Image(); i.src = "/img/protectedImage.png"; return i;}() );});
  };
  this.$privateImage = function () {
   return vmmirror.kernel.$Future().$computing$(
 		function(){return vmmirror.platform.$aliens().$yourself()._$alienate$(
-			function(){ var i = new Image(); i.src ="privateImage.png"; return i;}() );});
+			function(){ var i = new Image(); i.src = "/img/privateImage.png"; return i;}() );});
  };
  this.$hsAddImage = function () {
   return vmmirror.kernel.$Future().$computing$(
 		function(){return vmmirror.platform.$aliens().$yourself()._$alienate$(
-			function(){ var i = new Image(); i.src ="hsAddImage.png"; return i;}() );});
+			function(){ var i = new Image(); i.src = "/img/hsAddImage.png"; return i;}() );});
  };
  this.$hsAddOutImage = function () {
   return vmmirror.kernel.$Future().$computing$(
 		function(){return vmmirror.platform.$aliens().$yourself()._$alienate$(
-			function(){ var i = new Image(); i.src ="hsAddOutImage.png"; return i;}() );});
+			function(){ var i = new Image(); i.src = "/img/hsAddOutImage.png"; return i;}() );});
  };
  this.$hsAddOverImage = function () {
   return vmmirror.kernel.$Future().$computing$(
 		function(){return vmmirror.platform.$aliens().$yourself()._$alienate$(
-			function(){ var i = new Image(); i.src ="hsAddOverImage.png"; return i;}() );});
+			function(){ var i = new Image(); i.src = "/img/hsAddOverImage.png"; return i;}() );});
  };
  this.$hsDropdownImage = function () {
   return vmmirror.kernel.$Future().$computing$(
 		function(){return vmmirror.platform.$aliens().$yourself()._$alienate$(
-			function(){ var i = new Image(); i.src ="hsDropdownImage.png"; return i;}() );});
+			function(){ var i = new Image(); i.src = "/img/hsDropdownImage.png"; return i;}() );});
  };
  this.$hsDropdownOutImage = function () {
   return vmmirror.kernel.$Future().$computing$(
 		function(){return vmmirror.platform.$aliens().$yourself()._$alienate$(
-			function(){ var i = new Image(); i.src ="hsDropdownOutImage.png"; return i;}() );});
+			function(){ var i = new Image(); i.src = "/img/hsDropdownOutImage.png"; return i;}() );});
  };
  this.$hsDropdownOverImage = function () {
   return vmmirror.kernel.$Future().$computing$(
 		function(){return vmmirror.platform.$aliens().$yourself()._$alienate$(
-			function(){ var i = new Image(); i.src ="hsDropdownOverImage.png"; return i;}() );});
+			function(){ var i = new Image(); i.src = "/img/hsDropdownOverImage.png"; return i;}() );});
  };
  this.$hsExpandImage = function () {
   return vmmirror.kernel.$Future().$computing$(
 		function(){return vmmirror.platform.$aliens().$yourself()._$alienate$(
-			function(){ var i = new Image(); i.src ="hsExpandImage.png"; return i;}() );});
+			function(){ var i = new Image(); i.src = "/img/hsExpandImage.png"; return i;}() );});
  };
  this.$hsExpandOverImage = function () {
   return vmmirror.kernel.$Future().$computing$(
 		function(){return vmmirror.platform.$aliens().$yourself()._$alienate$(
-			function(){ var i = new Image(); i.src ="hsExpandOverImage.png"; return i;}() );});
+			function(){ var i = new Image(); i.src = "/img/hsExpandOverImage.png"; return i;}() );});
  };
  this.$hsExpandDownImage = function () {
   return vmmirror.kernel.$Future().$computing$(
 		function(){return vmmirror.platform.$aliens().$yourself()._$alienate$(
-			function(){ var i = new Image(); i.src ="hsExpandDownImage.png"; return i;}() );});
+			function(){ var i = new Image(); i.src = "/img/hsExpandDownImage.png"; return i;}() );});
  };
  this.$hsCollapseImage = function () {
   return vmmirror.kernel.$Future().$computing$(
 		function(){return vmmirror.platform.$aliens().$yourself()._$alienate$(
-			function(){ var i = new Image(); i.src ="hsCollapseImage.png"; return i;}() );});
+			function(){ var i = new Image(); i.src = "/img/hsCollapseImage.png"; return i;}() );});
  };
  this.$hsCollapseOverImage = function () {
   return vmmirror.kernel.$Future().$computing$(
 		function(){return vmmirror.platform.$aliens().$yourself()._$alienate$(
-			function(){ var i = new Image(); i.src ="hsCollapseOverImage.png"; return i;}() );});
+			function(){ var i = new Image(); i.src = "/img/hsCollapseOverImage.png"; return i;}() );});
  };
  this.$hsCollapseDownImage = function () {
   return vmmirror.kernel.$Future().$computing$(
 		function(){return vmmirror.platform.$aliens().$yourself()._$alienate$(
-			function(){ var i = new Image(); i.src ="hsCollapseDownImage.png"; return i;}() );});
+			function(){ var i = new Image(); i.src = "/img/hsCollapseDownImage.png"; return i;}() );});
  };
  this.$hsHomeImage = function () {
   return vmmirror.kernel.$Future().$computing$(
 		function(){return vmmirror.platform.$aliens().$yourself()._$alienate$(
-			function(){ var i = new Image(); i.src ="hsHomeImage.png"; return i;}() );});
+			function(){ var i = new Image(); i.src = "/img/hsHomeImage.png"; return i;}() );});
  };
  this.$hsHomeOverImage = function () {
   return vmmirror.kernel.$Future().$computing$(
 		function(){return vmmirror.platform.$aliens().$yourself()._$alienate$(
-			function(){ var i = new Image(); i.src ="hsHomeOverImage.png"; return i;}() );});
+			function(){ var i = new Image(); i.src = "/img/hsHomeOverImage.png"; return i;}() );});
  };
  this.$hsHomeOutImage = function () {
   return vmmirror.kernel.$Future().$computing$(
 		function(){return vmmirror.platform.$aliens().$yourself()._$alienate$(
-			function(){ var i = new Image(); i.src ="hsHomeOutImage.png"; return i;}() );});
+			function(){ var i = new Image(); i.src = "/img/hsHomeOutImage.png"; return i;}() );});
  };
  this.$hsHomeDownImage = function () {
   return vmmirror.kernel.$Future().$computing$(
 		function(){return vmmirror.platform.$aliens().$yourself()._$alienate$(
-			function(){ var i = new Image(); i.src ="hsHomeDownImage.png"; return i;}() );});
+			function(){ var i = new Image(); i.src = "/img/hsHomeDownImage.png"; return i;}() );});
  };
  this.$classPresenterImage = function () {
   return vmmirror.kernel.$Future().$computing$(
 		function(){return vmmirror.platform.$aliens().$yourself()._$alienate$(
-			function(){ var i = new Image(); i.src ="classPresenterImage.png"; return i;}() );});
+			function(){ var i = new Image(); i.src = "/img/classPresenterImage.png"; return i;}() );});
  };
  this.$classUnknownImage = function () {
   return vmmirror.kernel.$Future().$computing$(
 		function(){return vmmirror.platform.$aliens().$yourself()._$alienate$(
-			function(){ var i = new Image(); i.src ="classUnknownImage.png"; return i;}() );});
+			function(){ var i = new Image(); i.src = "/img/classUnknownImage.png"; return i;}() );});
  };
  this.$languageNewspeak3 = function () {
   return vmmirror.kernel.$Future().$computing$(
 		function(){return vmmirror.platform.$aliens().$yourself()._$alienate$(
-			function(){ var i = new Image(); i.src ="languageNewspeak3.png"; return i;}() );});
+			function(){ var i = new Image(); i.src = "/img/languageNewspeak3.png"; return i;}() );});
  };
 }();
 
