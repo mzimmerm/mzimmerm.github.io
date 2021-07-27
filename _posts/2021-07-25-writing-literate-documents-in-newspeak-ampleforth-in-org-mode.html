@@ -30,51 +30,70 @@ This is all.
 <h2 id="orgbc8bb07">Changes I did to make it work</h2>
 <div class="outline-text-2" id="text-orgbc8bb07">
 <ol class="org-ol">
-<li>In init.el, for org config: Overrode handling of function <code>org-html-src-block</code> in ox-html.el.</li>
+<li><p>
+In init.el, overrode (using ":before-until" advice) handling of function <code>org-html-src-block</code> from ox-html.el. The change, upon encountering a src_block with language newspeak, exports a div with a class <code>evaluator</code> used by Ampleforth.js. Place the following advice to the init.el
+</p>
+<div class="org-src-container">
+<pre class="src src-elisp">(advice-remove 'org-html-src-block #'org-html-src-block-newspeak)
+
+<span style="color: #73d216;">;; </span><span style="color: #73d216;">Advice to handle newspeak begin_src end_src.</span>
+(<span style="color: #b4fa70;">defun</span> <span style="color: #fce94f;">org-html-src-block-newspeak</span>  (src-block _contents info)
+  (<span style="color: #b4fa70;">let*</span> ((code (org-html-format-code src-block info))
+         (lang (org-element-property <span style="color: #e090d7;">:language</span> src-block))
+         )
+    (<span style="color: #b4fa70;">if</span> (string-equal <span style="color: #e9b96e;">"newspeak"</span> lang)
+        (format <span style="color: #e9b96e;">"&lt;div class=\"evaluator\" expression = \"%s\"&gt; &lt;/div&gt;"</span> code))))
+
+(advice-add 'org-html-src-block <span style="color: #e090d7;">:before-until</span> #'org-html-src-block-newspeak)
+
+</pre>
+</div></li>
 <li><p>
 In the org file: Added BEGIN_EXPORT html with 2 sections. First section adds styling on elements with class="evaluator", the second section adds the script with Ampleforth.js. NOTE: This must be at the end, for the script to be at the end of body or after the body.
 </p>
-<pre class="example" id="org6ed2636">
- #+begin_export html
-    &lt;style&gt; img {width: 25px; height: 25px;} &lt;/style&gt; &lt;style&gt; .evaluator + pre {display: none;} .preview .evaluator + pre {display: block;} &lt;/style&gt;
+<pre class="example" id="org1f72fc2">
+#+begin_export html
+   &lt;style&gt; img {width: 25px; height: 25px;} &lt;/style&gt; &lt;style&gt; .evaluator + pre {display: none;} .preview .evaluator + pre {display: block;} &lt;/style&gt;
    &lt;script type="text/javascript" class="preview" src="/js/Ampleforth.sources.js"&gt;&lt;/script&gt;
    &lt;script type="text/javascript" class="preview" src="/js/Ampleforth.js"&gt;&lt;/script&gt;
 #+end_export
 </pre></li>
 <li>In Ampleforth.js: replaced <code>i.src = "</code> with <code>i.src = "/img/</code></li>
-<li>In the blog directory: Added the following images to blog img directory:
-     ,#+begin_example
-       "/accept16px.png"
-       "/cancel16px.png"
-       "/disclosureClosedImage.png"
-       "/disclosureTransitionImage.png"
-       "/disclosureOpenImage.png"
-       "/hsDropdownImage.png"
-       "/hsDropdownOutImage.png"
-       "/hsDropdownOverImage.png"
-       "/publicImage.png"
-       "/protectedImage.png"
-       "/privateImage.png"
-       "/hsAddImage.png"
-       "/hsAddOutImage.png"
-       "/hsAddOverImage.png"
-       "/hsDropdownImage.png"
-       "/hsDropdownOutImage.png"
-       "/hsDropdownOverImage.png"
-       "/hsExpandImage.png"
-       "/hsExpandOverImage.png"
-       "/hsExpandDownImage.png"
-       "/hsCollapseImage.png"
-       "/hsCollapseOverImage.png"
-       "/hsCollapseDownImage.png"
-       "/hsHomeImage.png"
-       "/hsHomeOverImage.png"
-       "/hsHomeOutImage.png"
-       "/hsHomeDownImage.png"
-       "/classPresenterImage.png"
-       "/classUnknownImage.png"
-       "/languageNewspeak3.png"
-#+end_example</li>
+<li><p>
+In the blog directory: Added the following images to blog img directory:
+</p>
+<pre class="example" id="org3034024">
+"/accept16px.png"
+"/cancel16px.png"
+"/disclosureClosedImage.png"
+"/disclosureTransitionImage.png"
+"/disclosureOpenImage.png"
+"/hsDropdownImage.png"
+"/hsDropdownOutImage.png"
+"/hsDropdownOverImage.png"
+"/publicImage.png"
+"/protectedImage.png"
+"/privateImage.png"
+"/hsAddImage.png"
+"/hsAddOutImage.png"
+"/hsAddOverImage.png"
+"/hsDropdownImage.png"
+"/hsDropdownOutImage.png"
+"/hsDropdownOverImage.png"
+"/hsExpandImage.png"
+"/hsExpandOverImage.png"
+"/hsExpandDownImage.png"
+"/hsCollapseImage.png"
+"/hsCollapseOverImage.png"
+"/hsCollapseDownImage.png"
+"/hsHomeImage.png"
+"/hsHomeOverImage.png"
+"/hsHomeOutImage.png"
+"/hsHomeDownImage.png"
+"/classPresenterImage.png"
+"/classUnknownImage.png"
+"/languageNewspeak3.png"
+</pre></li>
 </ol>
 </div>
 </div>

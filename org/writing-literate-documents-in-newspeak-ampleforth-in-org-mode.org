@@ -21,18 +21,32 @@ This is all.
 
 * Changes I did to make it work
 
-1. In init.el, for org config: Overrode handling of function ~org-html-src-block~ in ox-html.el.
+1. In init.el, overrode (using ":before-until" advice) handling of function ~org-html-src-block~ from ox-html.el. The change, upon encountering a src_block with language newspeak, exports a div with a class ~evaluator~ used by Ampleforth.js. Place the following advice to the init.el
+   #+begin_src elisp
+     (advice-remove 'org-html-src-block #'org-html-src-block-newspeak)
+
+     ;; Advice to handle newspeak begin_src end_src.
+     (defun org-html-src-block-newspeak  (src-block _contents info)
+       (let* ((code (org-html-format-code src-block info))
+              (lang (org-element-property :language src-block))
+              )
+         (if (string-equal "newspeak" lang)
+             (format "<div class=\"evaluator\" expression = \"%s\"> </div>" code))))
+
+     (advice-add 'org-html-src-block :before-until #'org-html-src-block-newspeak)
+
+   #+end_src
 2. In the org file: Added BEGIN_EXPORT html with 2 sections. First section adds styling on elements with class="evaluator", the second section adds the script with Ampleforth.js. NOTE: This must be at the end, for the script to be at the end of body or after the body.
-     #+BEGIN_EXAMPLE
-        ,#+begin_export html
-           <style> img {width: 25px; height: 25px;} </style> <style> .evaluator + pre {display: none;} .preview .evaluator + pre {display: block;} </style>
-          <script type="text/javascript" class="preview" src="/js/Ampleforth.sources.js"></script>
-          <script type="text/javascript" class="preview" src="/js/Ampleforth.js"></script>
-       ,#+end_export
-     #+END_EXAMPLE
+  #+BEGIN_EXAMPLE
+    ,#+begin_export html
+       <style> img {width: 25px; height: 25px;} </style> <style> .evaluator + pre {display: none;} .preview .evaluator + pre {display: block;} </style>
+       <script type="text/javascript" class="preview" src="/js/Ampleforth.sources.js"></script>
+       <script type="text/javascript" class="preview" src="/js/Ampleforth.js"></script>
+    ,#+end_export
+  #+END_EXAMPLE
 3. In Ampleforth.js: replaced ~i.src = "~ with ~i.src = "/img/~
 4. In the blog directory: Added the following images to blog img directory:
-         ,#+begin_example
+  #+begin_example
            "/accept16px.png"
            "/cancel16px.png"
            "/disclosureClosedImage.png"
@@ -63,7 +77,7 @@ This is all.
            "/classPresenterImage.png"
            "/classUnknownImage.png"
            "/languageNewspeak3.png"
-    #+end_example
+  #+end_example
 
 * This must be at the end   
 
