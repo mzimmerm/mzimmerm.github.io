@@ -86,22 +86,22 @@ categories:
 <ul>
 <li><a href="#orgd9476b0">6.7.0.1. 1. General module with NO dependencies: API of module with no dependencies</a>
 <ul>
-<li><a href="#orgd80bc02">6.7.0.1.1. Example:</a></li>
+<li><a href="#orga627382">6.7.0.1.1. Example:</a></li>
 </ul>
 </li>
 <li><a href="#org7062cfa">6.7.0.2. 2. General module with dependencies: API of module with dependencies</a>
 <ul>
-<li><a href="#orgfb9c65e">6.7.0.2.1. Example:</a></li>
+<li><a href="#org02a2796">6.7.0.2.1. Example:</a></li>
 </ul>
 </li>
 <li><a href="#org0efa847">6.7.0.3. 3. Library module: API of module that needs to be distributed for use in other modules</a>
 <ul>
-<li><a href="#org1a45c76">6.7.0.3.1. Example:</a></li>
+<li><a href="#org3dfb63b">6.7.0.3.1. Example:</a></li>
 </ul>
 </li>
 <li><a href="#org818d945">6.7.0.4. 4. App module: API of module that needs to be distributed as an App</a>
 <ul>
-<li><a href="#org68b0781">6.7.0.4.1. Example:</a></li>
+<li><a href="#org51e2b1c">6.7.0.4.1. Example:</a></li>
 </ul>
 </li>
 <li><a href="#orgb451316">6.7.0.5. <span class="todo TODO">TODO</span> 5. Test module: TODO</a></li>
@@ -145,7 +145,7 @@ categories:
 <li><a href="#org899c43c">8.1.1. Updating the IDE</a>
 <ul>
 <li><a href="#org2d7d91c">8.1.1.1. Updating the online version</a></li>
-<li><a href="#org900cae1">8.1.1.2. Updating your local Newspeak webserver, installed as in Installation method 2 (local Newspeak webserver).</a></li>
+<li><a href="#org67c8205">8.1.1.2. Updating your local Newspeak webserver, installed for all platforms as shown in Installation method 2 (local Newspeak webserver).</a></li>
 </ul>
 </li>
 <li><a href="#org2853966">8.1.2. Updading a single class that was fixed on Github source into local Newspeak webserver (thus IDE)</a></li>
@@ -162,17 +162,15 @@ categories:
 </li>
 <li><a href="#orge701dcb">9. <span class="todo IN_PROGRESS">IN-PROGRESS</span> Q&amp;A - answers should be either here directly, or link to an earlier section</a>
 <ul>
-<li><a href="#org88e254f">9.1. <span class="todo IN_PROGRESS">IN-PROGRESS</span> Working with code</a>
-<ul>
-<li><a href="#org3c1c3d3">9.1.1. How do I save my changes?</a></li>
-<li><a href="#org35d76b7">9.1.2. How would I build and deploy a Newspeak application?</a></li>
-<li><a href="#orgd61b4a2">9.1.3. How do I bring dependencies into modules to be distributed?</a></li>
-</ul>
-</li>
-<li><a href="#org15a4f6c">9.2. When or why to refresh the online IDE?</a></li>
-<li><a href="#org2400758">9.3. Why do some classes show the [deploy] [run] [debug[ links?</a></li>
-<li><a href="#org9bf4124">9.4. Why do some test classes show the [run tests] [show tests] links?</a></li>
-<li><a href="#org87db60b">9.5. How would I create and distribute a Newspeak App to run on the web, on mobile, or on desktop?</a></li>
+<li><a href="#org3c1c3d3">9.1. How do I save my changes?</a></li>
+<li><a href="#org35d76b7">9.2. How would I build and deploy a Newspeak application?</a></li>
+<li><a href="#orgd61b4a2">9.3. How do I bring dependencies into modules to be distributed?</a></li>
+<li><a href="#org15a4f6c">9.4. When or why to refresh the online IDE?</a></li>
+<li><a href="#org2400758">9.5. Why do some classes show the [deploy] [run] [debug[ links?</a></li>
+<li><a href="#org9bf4124">9.6. Why do some test classes show the [run tests] [show tests] links?</a></li>
+<li><a href="#org87db60b">9.7. How would I create and distribute a Newspeak App to run on the web, on mobile, or on desktop?</a></li>
+<li><a href="#org080cbe2">9.8. How does Ampleforth work to create live literate Newspeak demos such as http://bracha.org/Literate/literate.html?</a></li>
+<li><a href="#org66700fd">9.9. How does Newspeak displays itself in DOM and HTML?</a></li>
 </ul>
 </li>
 </ul>
@@ -231,7 +229,7 @@ Much of this document is collected from existing Newspeak sources:
 <td class="org-left">&#xa0;</td>
 <td class="org-left">Gilad Bracha</td>
 <td class="org-left">&#xa0;</td>
-<td class="org-left">Important clarifications throughout the document</td>
+<td class="org-left">Important clarifications and help throughout the document</td>
 </tr>
 
 <tr>
@@ -264,6 +262,22 @@ Much of this document is collected from existing Newspeak sources:
 <td class="org-left">Milan Zimmermann</td>
 <td class="org-left">&#xa0;</td>
 <td class="org-left">Added section <a href="#org427a0ce">Newspeak is different.  An ide-driven journey around the Newspeak platform</a></td>
+</tr>
+
+<tr>
+<td class="org-right">2021-07-28</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">Milan Zimmermann</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">Added sections <a href="#org080cbe2">How does Ampleforth work to create live literate Newspeak demos such as http://bracha.org/Literate/literate.html?</a> and <a href="#org66700fd">How does Newspeak displays itself in DOM and HTML?</a></td>
+</tr>
+
+<tr>
+<td class="org-right">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
 </tr>
 </tbody>
 </table>
@@ -906,7 +920,7 @@ We see something like
 </p>
 
 
-<div id="org86c3bd7" class="figure">
+<div id="org7728c0b" class="figure">
 <p><img src="/img/newspeak---a-few-notes.org-local-ide.png" alt="nil"/>
 </p>
 </div>
@@ -938,7 +952,7 @@ I the IDE, click on the "Newspeak Source" button. We see the word <b>Root</b> on
 </p>
 
 
-<div id="orgaaa96e7" class="figure">
+<div id="orgc726c50" class="figure">
 <p><img src="/img/newspeak---a-few-notes.org-ide-full-page-classes-collapsed.png" alt="nil"/>
 </p>
 </div>
@@ -1070,7 +1084,7 @@ Let us expand each top level class in the "sources" screenshot above.  Well, may
 </p>
 
 
-<div id="orgc01ae0e" class="figure">
+<div id="orgba17a8a" class="figure">
 <p><img src="/img/newspeak---a-few-notes.org-ide-full-page-classes-expanded.png" alt="nil"/>
 </p>
 </div>
@@ -1126,7 +1140,7 @@ We mentioned the messages on top like <code>#packageTestsUsing: manifest</code> 
 <i>factory constructor</i> names on the <i>top level classes</i> have an eerily similar structure.  I was asking myself why, what do they have in common.  So I listed more of the factory constructor names.  Here is the list of the <i>factory constructors</i> on some top level classes:
 </p>
 
-<pre class="example" id="orgb400813">
+<pre class="example" id="org68027a7">
 class AccessModifierTesting                 usingPlatform:       platform  testFramework: minitest = (| etc
 class AccessModifierTestingConfiguration    packageTestsUsing:   manifest = (| etc
 class ActivationMirrorTesting               usingPlatform:       platform minitest: m = (| etc
@@ -1198,7 +1212,7 @@ ide namespacing manifest
 </pre>
 
 
-<div id="org6548d5d" class="figure">
+<div id="org8a09658" class="figure">
 <p><img src="/img/newspeak---a-few-notes.org-ide-namespacing-manifest.png" alt="nil"/>
 </p>
 </div>
@@ -1207,7 +1221,7 @@ ide namespacing manifest
 Drilling into the instance, we can see it is a map, and sorting by the key, we get
 </p>
 
-<pre class="example" id="org48a5499">
+<pre class="example" id="orgacb1ae3">
 at: AccessModifierTesting   AccessModifierTesting
 at: AccessModifierTestingConfiguration   AccessModifierTestingConfiguration
 at: ActivationMirrorTesting
@@ -1266,7 +1280,7 @@ This is little harder than with manifest, so let's cheat a bit.  In Workspace, l
 Drilling into the link "instance of PlatformWithHopscotch`number", we see a list of instances. Sorting the list, we can see it contains <code>instances</code> of a few classes that look like system classes:
 </p>
 
-<pre class="example" id="org831155d">
+<pre class="example" id="org6d7f165">
 instance of ActorsForPrimordialSoup
 instance of CollectionsForPrimordialSoup
 instance of FontsForHTML5
@@ -1715,8 +1729,8 @@ While perhaps rare, this is the simplest case. If our module does not need any d
 </ul>
 </div>
 
-<div id="outline-container-orgd80bc02" class="outline-6">
-<h6 id="orgd80bc02"><span class="section-number-6">6.7.0.1.1</span> Example:</h6>
+<div id="outline-container-orga627382" class="outline-6">
+<h6 id="orga627382"><span class="section-number-6">6.7.0.1.1</span> Example:</h6>
 <div class="outline-text-6" id="text-6-7-0-1-1">
 <pre class="example">
 class RecipyNoDep new = ()
@@ -1761,8 +1775,8 @@ If our module need some other module from IDE, such as collections, you have to 
 </ul>
 </div>
 
-<div id="outline-container-orgfb9c65e" class="outline-6">
-<h6 id="orgfb9c65e"><span class="section-number-6">6.7.0.2.1</span> Example:</h6>
+<div id="outline-container-org02a2796" class="outline-6">
+<h6 id="org02a2796"><span class="section-number-6">6.7.0.2.1</span> Example:</h6>
 <div class="outline-text-6" id="text-6-7-0-2-1">
 <pre class="example">
 class RecipyWithDep usingPlatform: platform andModule: translator = (
@@ -1826,8 +1840,8 @@ Note that in this case, <i>#buildUsing: platform</i> must not be added any other
 </p>
 </div>
 
-<div id="outline-container-org1a45c76" class="outline-6">
-<h6 id="org1a45c76"><span class="section-number-6">6.7.0.3.1</span> Example:</h6>
+<div id="outline-container-org3dfb63b" class="outline-6">
+<h6 id="org3dfb63b"><span class="section-number-6">6.7.0.3.1</span> Example:</h6>
 <div class="outline-text-6" id="text-6-7-0-3-1">
 <p>
 To create a packageble and distributable library module for the above <code>RecipyWithDep</code>, create this library module 
@@ -1940,8 +1954,8 @@ Note the parallel role between the following methods
 </table>
 </div>
 
-<div id="outline-container-org68b0781" class="outline-6">
-<h6 id="org68b0781"><span class="section-number-6">6.7.0.4.1</span> Example:</h6>
+<div id="outline-container-org51e2b1c" class="outline-6">
+<h6 id="org51e2b1c"><span class="section-number-6">6.7.0.4.1</span> Example:</h6>
 <div class="outline-text-6" id="text-6-7-0-4-1">
 <p>
 To create a packageble and distributable App module for the library module defined in <a href="#org0efa847">3. Library module: API of module that needs to be distributed for use in other modules</a> , the <code>RecipyWithDep</code>, create this App module 
@@ -2034,7 +2048,7 @@ Steps to run Hello World from Workspace
 </ul>
 
 
-<div id="orge2974e0" class="figure">
+<div id="org417baa0" class="figure">
 <p><img src="/img/newspeak---a-few-notes.org-hello-world-workspace.png" alt="nil"/> 
 </p>
 </div>
@@ -2316,7 +2330,7 @@ TL;DR: This section describes the simplest setup - in fact, this is a "no setup,
 </ul>
 
 
-<div id="orgec57bb6" class="figure">
+<div id="orgaa936b1" class="figure">
 <p><img src="/img/newspeak---a-few-notes.org-newspeak-ide-start.png" alt="nil"/>
 </p>
 </div>
@@ -2512,8 +2526,8 @@ After the update, the system will ask user if to re-apply your browser-local sto
 </div>
 </div>
 
-<div id="outline-container-org900cae1" class="outline-5">
-<h5 id="org900cae1"><span class="section-number-5">8.1.1.2</span> Updating your local Newspeak webserver, installed as in <a href="#org541fe06">Installation method 2 (local Newspeak webserver)</a>.</h5>
+<div id="outline-container-org67c8205" class="outline-5">
+<h5 id="org67c8205"><span class="section-number-5">8.1.1.2</span> Updating your local Newspeak webserver, installed for all platforms as shown in <a href="#org541fe06">Installation method 2 (local Newspeak webserver)</a>.</h5>
 <div class="outline-text-5" id="text-8-1-1-2">
 <p>
 To update your local Newspeak webserver to the latest (thus getting fixes done since the last deployment), re-download and unzip as described in <a href="#org5383775">5.3</a>
@@ -2625,7 +2639,7 @@ Snippets of wisdom
 <li><p>
 StringTest&gt;&gt;#testShout is the Smalltalk way of identifying the testShout method of the StringTest class.  When you actually type the code into the browser, you don’t have to type the class name or the &gt;&gt;; instead, you just make sure that the appropriate class is selected.  Documentation example in text should show abstract argument names:
 </p>
-<pre class="example" id="org01493c4">
+<pre class="example" id="orgd67a9de">
 History&gt;&gt;goBackward
   self canGoBackward ifFalse: [self error: 'Already on the first element'].
   stream skip: --2.
@@ -2678,17 +2692,10 @@ Much of this Q&amp;A is sourced and expanded, or simply pasted from the Newspeak
 </p>
 </div>
 
-<div id="outline-container-org88e254f" class="outline-3">
-<h3 id="org88e254f"><span class="section-number-3">9.1</span> <span class="todo IN_PROGRESS">IN-PROGRESS</span> Working with code</h3>
-<div class="outline-text-3" id="text-9-1">
-<p>
-todo
-</p>
-</div>
 
-<div id="outline-container-org3c1c3d3" class="outline-4">
-<h4 id="org3c1c3d3"><span class="section-number-4">9.1.1</span> How do I save my changes?</h4>
-<div class="outline-text-4" id="text-9-1-1">
+<div id="outline-container-org3c1c3d3" class="outline-3">
+<h3 id="org3c1c3d3"><span class="section-number-3">9.1</span> How do I save my changes?</h3>
+<div class="outline-text-3" id="text-9-1">
 <p>
 Newspeak doesn't have an image.  So what do I actually do to develop software? I mean, I presume I run a copy of Newspeak somehow, and start adding classes to it.  But then where / how do my additions get saved if there isn't an image? When I've added a couple of classes to a running Newspeak environment, I presume they don't just disappear when I switch my computer off? So where do they go? Or where do I put them?
 </p>
@@ -2708,9 +2715,9 @@ For a complete discussion, see <a href="#orgafd7607">Chapter Saving changes in N
 </div>
 
 
-<div id="outline-container-org35d76b7" class="outline-4">
-<h4 id="org35d76b7"><span class="section-number-4">9.1.2</span> How would I build and deploy a Newspeak application?</h4>
-<div class="outline-text-4" id="text-9-1-2">
+<div id="outline-container-org35d76b7" class="outline-3">
+<h3 id="org35d76b7"><span class="section-number-3">9.2</span> How would I build and deploy a Newspeak application?</h3>
+<div class="outline-text-3" id="text-9-2">
 <p>
 For <code>HelloWorldApp</code>, see <a href="#org3f7b274">Hello World in Newspeak</a>.
 </p>
@@ -2723,9 +2730,9 @@ For the <code>CounterApp</code> example, see section <a href="#orgba53dc6">5.2</
 
 
 
-<div id="outline-container-orgd61b4a2" class="outline-4">
-<h4 id="orgd61b4a2"><span class="section-number-4">9.1.3</span> How do I bring dependencies into modules to be distributed?</h4>
-<div class="outline-text-4" id="text-9-1-3">
+<div id="outline-container-orgd61b4a2" class="outline-3">
+<h3 id="orgd61b4a2"><span class="section-number-3">9.3</span> How do I bring dependencies into modules to be distributed?</h3>
+<div class="outline-text-3" id="text-9-3">
 <p>
 As discussed in <a href="#orgb4743ce">Dependencies and modularity: Perhaps the hardest part of Newspeak difference</a>:
 </p>
@@ -2827,12 +2834,11 @@ to newspeak&#x2026;@googlegroups.com
 </p>
 </div>
 </div>
-</div>
 
 
 <div id="outline-container-org15a4f6c" class="outline-3">
-<h3 id="org15a4f6c"><span class="section-number-3">9.2</span> When or why to refresh the online IDE?</h3>
-<div class="outline-text-3" id="text-9-2">
+<h3 id="org15a4f6c"><span class="section-number-3">9.4</span> When or why to refresh the online IDE?</h3>
+<div class="outline-text-3" id="text-9-4">
 <p>
 Why will you refresh? Apart from the odd crash, the more common problem is the performance issues that have been discussed in this forum in December/January.  Basically, we have an unresolved problem that the system slows down painfully under prolonged/heavy use.  Refreshing and loading from backup works fairly well.  This is obviously unacceptable as you lose IDE state (debuggers, workspace/inspector contents, unsaved editors, presenter state such as what method presenters are expanded or collapsed) but it's better than an unresponsive (sluggish to dead) system.
 </p>
@@ -2841,8 +2847,8 @@ Why will you refresh? Apart from the odd crash, the more common problem is the p
 
 
 <div id="outline-container-org2400758" class="outline-3">
-<h3 id="org2400758"><span class="section-number-3">9.3</span> Why do some classes show the [deploy] [run] [debug[ links?</h3>
-<div class="outline-text-3" id="text-9-3">
+<h3 id="org2400758"><span class="section-number-3">9.5</span> Why do some classes show the [deploy] [run] [debug[ links?</h3>
+<div class="outline-text-3" id="text-9-5">
 <p>
 Only classes that the IDE considers apps (applications) show these links.
 </p>
@@ -2859,8 +2865,8 @@ For details see  <a href="#org98fdcd0">Newspeak modules API summary</a> and <a h
 
 
 <div id="outline-container-org9bf4124" class="outline-3">
-<h3 id="org9bf4124"><span class="section-number-3">9.4</span> Why do some test classes show the [run tests] [show tests] links?</h3>
-<div class="outline-text-3" id="text-9-4">
+<h3 id="org9bf4124"><span class="section-number-3">9.6</span> Why do some test classes show the [run tests] [show tests] links?</h3>
+<div class="outline-text-3" id="text-9-6">
 <p>
 Only classes that the IDE considers a test configuration show these links.
 </p>
@@ -2877,8 +2883,8 @@ For details see <a href="#org98fdcd0">Newspeak modules API summary</a>.
 
 
 <div id="outline-container-org87db60b" class="outline-3">
-<h3 id="org87db60b"><span class="section-number-3">9.5</span> How would I create and distribute a Newspeak App to run on the web, on mobile, or on desktop?</h3>
-<div class="outline-text-3" id="text-9-5">
+<h3 id="org87db60b"><span class="section-number-3">9.7</span> How would I create and distribute a Newspeak App to run on the web, on mobile, or on desktop?</h3>
+<div class="outline-text-3" id="text-9-7">
 <p>
 TL;DR: For a detail description of developing, packaging, running and deploying a concrete Newspeak app, read the section <a href="#org8b291c4">5</a>. This process is also described more succintly in the 'Hello World' programs section <a href="#orgc4a4799">3. Hello World App</a>.
 </p>
@@ -2926,6 +2932,409 @@ This .vfuel can then be deployed into a (locally installed) Newspeak server.
 <li>For instructions on how to install the server see <a href="#org8825ff5">7.1.1</a></li>
 <li>For instructions on how to deploy a sample app, in particular the <code>CounterApp</code>, see <a href="#orgaadf932">5.4</a>.</li>
 </ul>
+</div>
+</div>
+
+
+
+<div id="outline-container-org080cbe2" class="outline-3">
+<h3 id="org080cbe2"><span class="section-number-3">9.8</span> How does Ampleforth work to create live literate Newspeak demos such as <a href="http://bracha.org/Literate/literate.html">http://bracha.org/Literate/literate.html</a>?</h3>
+<div class="outline-text-3" id="text-9-8">
+<p>
+TL;DR: Newspeak has a module which allows to present the Newspeak objects (the IDE, classes, instances, workspaces etc) live in any suitably marked up HTML page. This results in an experience of a live document and a literate program - a document containing multiple program snippets or whole programs. The program(s) snippet(s) inside the document can be changed, changing the results right inside the document. The program can also be explored (introspected), drilled into, etc. Everything described in this section can be played with in any of the above links:
+</p>
+
+<ul class="org-ul">
+<li><a href="http://bracha.org/Literate/literate.html">http://bracha.org/Literate/literate.html</a></li>
+<li><a href="https://blog.bracha.org/illiterateProgramming/out/illiterateProgramming.html">https://blog.bracha.org/illiterateProgramming/out/illiterateProgramming.html</a></li>
+<li><a href="https://mzimmerm.github.io/2021/07/writing-live-documents-in-newspeak-ampleforth-in-org-mode">https://mzimmerm.github.io/2021/07/writing-live-documents-in-newspeak-ampleforth-in-org-mode</a></li>
+</ul>
+
+<p>
+The last link also shows instructions on how to create an emacs org mode document which, after export to HTML (C-c C-e), supports such lively HTML interaction.
+</p>
+
+<p>
+<b>Having provided a TL;DR:, let's describe this in more details.</b>
+</p>
+
+<p>
+The module providing the experience a live document and a literate Newspeak program is called <code>Ampleforth</code>.
+</p>
+
+<p>
+Ampleforth is already described in <a href="https://blog.bracha.org/illiterateProgramming/out/illiterateProgramming.html">https://blog.bracha.org/illiterateProgramming/out/illiterateProgramming.html</a> by it's author Gilad Bracha. That is definitely the reference description!
+</p>
+
+<p>
+This section starts from a slightly different angle.
+</p>
+
+<p>
+The Newspeak module <code>AmpleforthEmbedder</code> (source in AmpleforthEmbedder.ns) is responsible for "presenting" Newspeak objects to HTML, and user interaction with the objects. The module, <code>Ampleforth</code> is simply a wrapper, wrapping <code>AmpleforthEmbedder</code> as a Newspeak application.
+</p>
+
+<p>
+The liveliness in HTML pages is provided by <code>Ampleforth.js</code>, which is converted from <code>Ampleforth.ns</code> to Javascript.
+</p>
+
+<p>
+When <code>Ampleforth.js</code> is placed at the end of any HTML page, it works as follows:
+</p>
+
+<p>
+After the HTML is opened in a browser, the included script with  <code>Ampleforth.js</code> looks for &lt;div&gt; elements with specific class names, and inserts Newspeak objects converted to HTML in thos places.
+</p>
+
+<p>
+For example, if the HTML contains a div with <code>class="evaluator"</code>, such as
+</p>
+
+<div class="org-src-container">
+<pre class="src src-html">&lt;<span style="color: #fce94f;">div</span> <span style="color: #fcaf3e;">class</span>=<span style="color: #e9b96e;">"evaluator"</span> expression = <span style="color: #e9b96e;">"11+22"</span>&gt; &lt;/<span style="color: #fce94f;">div</span>&gt;
+</pre>
+</div>
+
+<p>
+<code>Ampleforth.js</code> evaluates the expression, then inserts Newspeak result objects converted to HTML to the page (before, after, or instead of such specific elements). The 
+</p>
+
+<p>
+The HTML is processed in the following call sequence: <code>AmplefortEmbeddor&gt;&gt;#start</code> -&gt; <code>AmplefortEmbeddor&gt;&gt;#processEvaluators</code> and the methods that follow.
+</p>
+
+<p>
+Here is the relevant code:
+</p>
+
+<pre class="example" id="org8912ff5">
+(* AmplefortEmbeddor&gt;&gt;#start *)
+public start = (
+  processEvaluators.
+  processMinibrowsers.
+  processClassPresenters.
+)
+
+(* AmplefortEmbeddor&gt;&gt;#processEvaluators *)
+public processEvaluators = (
+  domElementsWithClass: 'evaluator' do:
+    [:element |
+    | 
+    expression = element getAttribute: 'expression'. 
+    om &lt;ObjectMirror&gt; = platformMirror. 
+    es = EvaluatorSubject onModel: (EvaluationViewState onModel: om).
+    |
+    es initialSource: expression.
+    es evaluateLive: expression.
+    EmbeddedHopscotchWindow
+      into: element
+      openSubject: es].
+)
+</pre>
+
+<p>
+In the above code we see that for each <code>domElementsWithClass:</code> 'evaluator' found in the HTML, the code will look for contents of attribute named <code>expression</code>. The <code>expression</code> contents is evaluated, then the result of evaluation is passed to EmbeddedHopscotchWindow which is inserted to the DOM after the &lt;div&gt; with class 'evaluator'.
+</p>
+
+<p>
+So, as long as the HTML contains a div with class <code>evaluator</code>, such as
+</p>
+
+<div class="org-src-container">
+<pre class="src src-html">&lt;<span style="color: #fce94f;">div</span> <span style="color: #fcaf3e;">class</span>=<span style="color: #e9b96e;">"evaluator"</span> expression = <span style="color: #e9b96e;">"11+22"</span>&gt; &lt;/<span style="color: #fce94f;">div</span>&gt;
+</pre>
+</div>
+
+<p>
+the above code (or rather it's converted Javascript equivalent <code>Ampleforth.js</code>) evaluates the expression <code>11+22</code>, creates a <code>EmbeddedHopscotchWindow</code> from the evaluated result. The <code>EmbeddedHopscotchWindow</code> then embeds the result (instance of Number 33 presented as a div) in the DOM inside the original div.
+</p>
+
+<p>
+We can look in the browser debugger how the result looks after the result div is inserted. After evaluating 11+22, the result 33 is inserted in it's own &lt;a href&gt; link:
+</p>
+
+
+<div id="org86ba414" class="figure">
+<p><img src="/img/newspeak---a-few-notes.org-ampleforth-evaluator-expression-in-debuger.png" alt="nil"/>
+</p>
+</div>
+
+
+<p>
+Not only that, clicking on the 33 link leads to Newspeak class presenting the instance of 33! See TL;DR for links.
+</p>
+</div>
+</div>
+
+
+<div id="outline-container-org66700fd" class="outline-3">
+<h3 id="org66700fd"><span class="section-number-3">9.9</span> How does Newspeak displays itself in DOM and HTML?</h3>
+<div class="outline-text-3" id="text-9-9">
+<p>
+In addition to the <code>Ampleforth</code> class which can "insert" Newspeak elements live in any HTML page, there is a method that does a similar work for the purpose of presenting Newspeak IDE elements in the browser (when we run the IDE).
+</p>
+
+<p>
+This method that does this work is <code>HopscotchForHTML5&gt;&gt;Presenter#:ampleforth: h &lt;String&gt; mapping: m &lt;Map[String, Fragment]&gt;</code>. It is responsible for presenting the whole Newspeak IDE as HTML.
+</p>
+
+<p>
+Let us look at this method first, before we look at an example of it's application: 
+</p>
+
+<pre class="example" id="org7952973">
+ampleforth: h &lt;String&gt; mapping: m &lt;Map[String, Fragment]&gt; = (
+  ^AmpleforthFragment html: h mapping: m
+  )
+</pre>
+
+<p>
+<b>To investigate how <code>HopscotchForHTML5&gt;&gt;Presenter&gt;&gt;#:ampleforth:mapping:</code> results in presenting something in the IDE (that is, in the DOM) on an example, let us look at the <code>Browsing&gt;&gt;ObjectPresenter</code> class in the <code>Browsing.ns</code> module.</b>
+</p>
+
+<p>
+We will show how clicking on the "Help" button <img src="/img/newspeak---a-few-notes.org-help-button.png" alt="nil"/> on an object will call a method of <code>Browsing&gt;&gt;ObjectPresenter&gt;&gt;helpText</code>, and how this results in presenting the help text in the IDE.
+</p>
+
+<p>
+The <code>ObjectPresenter</code> class provides a viewer for objects in the IDE. An example of <code>Browsing&gt;&gt;ObjectPresenter</code>'s work is result of clicking on the "Help" button <img src="/img/newspeak---a-few-notes.org-help-button.png" alt="nil"/> on an object.
+</p>
+
+<p>
+For the <code>Browsing&gt;&gt;ObjectPresenter</code> to be used, we need a place in the IDE where we see a blue link which presents an object (rather than for example class, which would use Browsing&gt;&gt;ClassPresenter). Go to "Workspaces" where we see a situation similar to
+</p>
+
+
+<div id="orgb4273bd" class="figure">
+<p><img src="/img/newspeak---a-few-notes.org-workspaces.png" alt="nil"/>
+</p>
+</div>
+
+<p>
+This shows instance of an object. To activate <code>Browsing&gt;&gt;ObjectPresenter&gt;&gt;helpText</code>, click on the <img src="/img/newspeak---a-few-notes.org-help-button.png" alt="nil"/> beside Workspace1. The help coming from the ObjectPresenter shows:
+</p>
+
+<p>
+<img src="/img/newspeak---a-few-notes.org-help-from-object-presenter.png" alt="nil"/>
+(we cut the text here)
+</p>
+
+<p>
+Let us investigate how the Newspeak IDE arrives at presenting the above shown help in the IDE's DOM. As mentioned above, the core of this functionality is the method <code>HopscotchForHTML5&gt;&gt;Presenter&gt;&gt;#:ampleforth: h &lt;String&gt; mapping: m &lt;Map[String, Fragment]&gt;</code> .
+</p>
+
+<p>
+But we need to start one level above to explore this step by step:
+</p>
+
+<ol class="org-ol">
+<li>Open code for <code>Browsing&gt;&gt;ObjectPresenter&gt;&gt;#helpText</code>.</li>
+
+<li><p>
+It shows clearly the text is the same as the one displayed in the help text above:
+</p>
+<pre class="example" id="org01073a4">
+  helpText ^ &lt;Fragment&gt; = (
+  | mapping = Map new. |
+  mapping 
+    at: #hopscotchClearResultsButton put: subject evaluator presenter clearResultsButton;
+    at: #classExpander put: classExpansionLink;
+    at: #evaluateSelectionButton put: subject evaluator presenter evaluateSelectionButton;
+    at: #invertEvalStatusButton put: subject evaluator presenter invertEvalStatusButton.
+
+  ^ampleforth: 'This is an object presenter (aka  inspector).  At the top you''ll see its description, a link to the object''s enclosing object, and an expandable link to its class: &lt;div class="classExpander"&gt; &lt;/div&gt; Expanding it in place allows you to see the class in the context of the instance, which can be very handy.
+  &lt;br&gt;&lt;br&gt;
+  You can enter and evaluate Newspeak expressions in the editor pane below. They will be evaluated in the scope of the object being inspected. Shift-Return evaluates the currently selected text; if no text is selected, the current line (i.e., the line where the cursor is) is evaluated. You can also initiate evaluation of any selected text by pressing: &lt;div class = "evaluateSelectionButton"&gt;&lt;/div&gt; which is located above the editor on the left.
+  &lt;br&gt;&lt;br&gt;
+The editor can also evaluate at every keystroke; you can toggle this behavior using &lt;div class = "invertEvalStatusButton"&gt;&lt;/div&gt;
+also located above the editor.
+&lt;br&gt;&lt;br&gt;
+Evaluation results, if any, are displayed below the editor pane. Each result is a link; clicking on it takes you an object inspector on the result.  You can clear the results list by pressing the clear button to its right: &lt;div class="hopscotchClearResultsButton"&gt; &lt;/div&gt;
+&lt;br&gt;
+If  there are no results to display, the  results list area is blank. Below the results list you will typically see the slots of the object listed; this the basic view of objects. Some objects, such as integers or strings, have customized views. An object can have multiple views (and you can define new views as well). If there are multiple views, tab links appear underneath the results list, and you can select between them.' mapping: mapping
+)
+</pre></li>
+
+<li>In the code, we can see how it first prepares a <code>mapping</code> map, then returns a result of message send to self <code>ampleforth: aHTMLString mapping: mapping</code>. The message accepts the long pure HTML string we see above, and the mapping.
+<ul class="org-ul">
+<li>In the Html snippet, we can find references to 'special' class names:
+<ul class="org-ul">
+<li><code>&lt;div class="hopscotchClearResultsButton"&gt; &lt;/div&gt;</code></li>
+<li><code>&lt;div class="classExpander"&gt;</code></li>
+<li>.. etc ..</li>
+<li>Note those class names (e.g. classExpander) are equivalent to the 'special' class name evaluator used by AmpleforthEmbedder, in the section <a href="#org080cbe2">9.8</a></li>
+</ul></li>
+<li><p>
+Clearly those class names are keys in the <code>mappings</code> map.
+</p>
+<pre class="example" id="org5fa0110">
+mapping 
+  at: #hopscotchClearResultsButton put: subject evaluator presenter clearResultsButton;
+  at: #classExpander put: classExpansionLink;
+  .. etc ..
+</pre></li>
+</ul></li>
+<li><p>
+We can look at "find references" on this method, and find it is defined by <code>HopscotchForHTML5&gt;&gt;Presenter&gt;&gt;#ampleforth:mapping:</code>
+</p>
+<pre class="example" id="org17c8eba">
+ampleforth: h &lt;String&gt; mapping: m &lt;Map[String, Fragment]&gt; = (
+  ^AmpleforthFragment html: h mapping: m
+)
+</pre>
+<ul class="org-ul">
+<li>Also note that from the ObjectPresenter factory constructor it is clear ObjectPresenter implements ProgrammingPresenter which implements Presenter where the method <code>HopscotchForHTML5&gt;&gt;Presenter&gt;&gt;#ampleforth:mapping:</code> is defined.</li>
+</ul></li>
+
+<li><p>
+The above method constructs instance of <code>HopscotchForHTML5&gt;&gt;AmpleforthFragment</code> as follows
+</p>
+
+<pre class="example" id="org34f4809">
+public class AmpleforthFragment html: h &lt;String&gt; mapping: m &lt;Map[String, Fragment]&gt; = HTMLFragment html: h (
+  |
+  mapping &lt;Map[String, Fragment]&gt; = m.
+    document_slot &lt;Alien[Document]&gt;
+  |
+    processMappings.
+)
+</pre></li>
+
+<li><p>
+In turn the <code>HopscotchForHTML5&gt;&gt;AmpleforthFragment&gt;&gt;#processMappings</code> does the following work - the core of the work is call the method <code>#visual</code> on all Fragments in the <code>mappings</code>:
+</p>
+
+<pre class="example" id="orgdb9ff1e">
+public processMappings = (
+  mapping keysAndValuesDo: [:k &lt;String&gt; :v &lt;Fragment&gt; |
+    v parent: self.
+  domElementsWithClass: k do:
+  	[:element | element appendChild: v visual]
+  ]
+)
+</pre></li>
+
+<li><p>
+The <code>#visual</code> simply calls <code>#createVisual</code> and decorates it. But where is <code>#createVisual</code> defined?  
+</p>
+<pre class="example" id="org68831df">
+public visual = (
+  visualX isNil ifTrue: [visualX:: decorate: createVisual].
+  ^visualX
+)
+</pre></li>
+<li>which in turn calls <code>HopscotchForHTML5&gt;&gt;Fragment&gt;&gt;createVisual</code>, then decorates the visual result.</li>
+<li><p>
+The important item here is
+</p>
+<pre class="example" id="org615ccb8">
+createVisual = (
+  subclassResponsibility
+)
+</pre></li>
+<li><p>
+which is implemented in a large number of <code>Fragment</code> subclasses, such as:
+</p>
+<pre class="example" id="orgf531b67">
+createVisual in CheckboxFragment in HopscotchForHTML5
+createVisual in ColorPickerFragment in HopscotchForHTML5
+createVisual in DatePickerFragment in HopscotchForHTML5
+createVisual in PickerFragment in HopscotchForHTML5
+createVisual in ProgressBarFragment in HopscotchForHTML5
+createVisual in RadioButtonFragment in HopscotchForHTML5
+createVisual in RectangleFragment in HopscotchForHTML5
+</pre></li>
+
+<li><p>
+From the last list, we can see those are all UI elements- checkboxes, pickers, radio buttons etc. Their concrete <code>createVisual</code> implementations use the document objecrt to create a representation of UI elements which are clearly equivalent to DOM object, and can be converted to DOM objects. Let's look at <code>CheckboxFragment#createVisual</code> as an example:
+</p>
+
+<pre class="example" id="orgcbc302c">
+createVisual = (
+    | 
+    container &lt;Alien[Div]&gt; = document createElement: 'div'.
+    label &lt;Alien[Element]&gt; = document createTextNode: text.
+    |
+
+  container at: 'id' put: 'CheckboxContainer'.
+
+    (container at: 'style')
+        at: 'display' put: 'flex';
+        at: 'flex-direction' put: 'row';
+        at: 'align-items' put: 'center';
+        at: 'justify-content' put: 'flex-start'.
+
+    checkbox:: document createElement: 'input'. 
+    checkbox
+        at: 'type' put: 'checkbox';
+        at: 'checked' put: checked;
+        at: 'oninput' put: [:event |    
+            checked:: checked not.
+            holder isNil ifFalse: [         
+                holder value: checked.
+            ].
+            action isNil ifFalse: [
+                action value: checked.
+            ].
+            false
+        ].
+    container appendChild: checkbox.
+
+    container appendChild: label.
+
+    (checkbox at: 'style')
+        at: 'min-width' put: styleCheckboxSize;
+        at: 'min-height' put: styleCheckboxSize;
+        at: 'margin-right' put: '5px'.
+
+    ^container.
+
+</pre></li>
+</ol>
+
+<p>
+Seeing the creation of an Alien DOM &lt;div&gt; equivalent object in this last method, we conclude our discovery of "How does Newspeak displays itself in DOM and HTML?"
+</p>
+
+<p>
+<b>Summary of the discovery:</b>
+</p>
+
+<ul class="org-ul">
+<li><p>
+The <code>#helpText</code> contains a (almost) pure HTML and <code>mappings</code> of special class names such as <code>hopscotchClearResultsButton</code>, <code>classExpander</code>, etc.
+</p>
+<pre class="example" id="org07e8725">
+mapping 
+  at: #hopscotchClearResultsButton put: subject evaluator presenter clearResultsButton;
+  at: #classExpander put: classExpansionLink;
+  .. etc ..
+</pre></li>
+<li>We saw the <code>#helpText</code> returned an instance of class is <code>HopscotchForHTML5&gt;&gt;Fragment</code></li>
+<li>The returned <code>HopscotchForHTML5&gt;&gt;Fragment</code> instance then applies on each value from <code>mapping</code> the <code>HopscotchForHTML5&gt;&gt;Fragment&gt;&gt;#createVisual</code> at the end of the chain - building the DOM-like objects (called Fragments). Those visual instances are then inserted in the DOM, putting together the Newspeak IDE!.</li>
+</ul>
+
+
+<p>
+<b>Conclusion of sequence of calls:</b>
+</p>
+
+<p>
+We followed the sequence of method calls after the "Help button" was clicked:
+</p>
+
+<ul class="org-ul">
+<li><code>Browsing&gt;&gt;ObjectPresenter&gt;&gt;#helpText</code>                             - calls Presenter self in:</li>
+<li><code>HopscotchForHTML5&gt;&gt;Presenter&gt;&gt;#ampleforth:mapping:</code>               - this Presenter creates a Fragment <code>^AmpleforthFragment html: h mapping: m</code> in:</li>
+<li><code>HopscotchForHTML5&gt;&gt;AmpleforthFragment class&gt;&gt;#html:mapping:</code>      - This AmpleforthFragment constructor does the core of the DOM-like child fragments creation in:</li>
+<li><code>HopscotchForHTML5&gt;&gt;AmpleforthFragment&gt;&gt;#processMappings</code>          - For each mapping, one visual is created in the calls below</li>
+<li><code>HopscotchForHTML5&gt;&gt;Fragment&gt;&gt;#visual</code></li>
+<li><code>CheckboxFragment#createVisual</code>                                    - This uses "document createElement" to create and return an Alien DOM &lt;div&gt; equivalent - it contains a DOM element such as a checkbox.</li>
+</ul>
+
+<p>
+We saw how this sequence is responsible of presenting Help Text (with embedded Newspeak objects) as an navigatable live HTML, where we can explore and drill in instances, classes, or other Newspeak artifacts.
+</p>
 </div>
 </div>
 </div>
