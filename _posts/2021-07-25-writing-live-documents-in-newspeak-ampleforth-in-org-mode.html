@@ -2,8 +2,8 @@
 date: 2021-07-25 01:45
 author: mzimmerm
 layout: post
-title: Writing literate documents in Newspeak Ampleforth in Org Mode
-excerpt: Writing literate documents in Newspeak Ampleforth in Org Mode
+title: Writing live documents in Newspeak Ampleforth in Org Mode
+excerpt: Writing live documents in Newspeak Ampleforth in Org Mode
 tags: 
 - newspeak
 - org
@@ -26,9 +26,9 @@ Space for Newspeak here!
 This is all.
 </p>
 
-<div id="outline-container-orgbc8bb07" class="outline-2">
-<h2 id="orgbc8bb07">Changes I did to make it work</h2>
-<div class="outline-text-2" id="text-orgbc8bb07">
+<div id="outline-container-org28dfb82" class="outline-2">
+<h2 id="org28dfb82">Changes I did to make it work</h2>
+<div class="outline-text-2" id="text-org28dfb82">
 <ol class="org-ol">
 <li><p>
 In init.el, overrode (using ":before-until" advice) handling of function <code>org-html-src-block</code> from ox-html.el. The change, upon encountering a src_block with language newspeak, exports a div with a class <code>evaluator</code> used by Ampleforth.js. Place the following advice to the init.el
@@ -49,20 +49,22 @@ In init.el, overrode (using ":before-until" advice) handling of function <code>o
 </pre>
 </div></li>
 <li><p>
-In the org file: Added BEGIN_EXPORT html with 2 sections. First section adds styling on elements with class="evaluator", the second section adds the script with Ampleforth.js. NOTE: This must be at the end, for the script to be at the end of body or after the body.
+In the blog org file: Added BEGIN_EXPORT html with 2 sections. First section adds styling on elements with class="evaluator", the second section adds the script with Ampleforth.js. NOTE: This must be at the end, for the script to be at the end of body or after the body.
 </p>
-<pre class="example" id="org1f72fc2">
+<pre class="example" id="orgc70709e">
 #+begin_export html
    &lt;style&gt; img {width: 25px; height: 25px;} &lt;/style&gt; &lt;style&gt; .evaluator + pre {display: none;} .preview .evaluator + pre {display: block;} &lt;/style&gt;
    &lt;script type="text/javascript" class="preview" src="/js/Ampleforth.sources.js"&gt;&lt;/script&gt;
    &lt;script type="text/javascript" class="preview" src="/js/Ampleforth.js"&gt;&lt;/script&gt;
 #+end_export
 </pre></li>
-<li>In Ampleforth.js: replaced <code>i.src = "</code> with <code>i.src = "/img/</code></li>
+<li>Added the following files in the blog directory <code>$BLOG</code> (there is where Jekyll serves from):
+<ul class="org-ul">
+<li>Added <code>$BLOG/js/Ampleforth.js</code> and <code>$BLOG/js/Ampleforth.sources.js</code></li>
 <li><p>
-In the blog directory: Added the following images to blog img directory:
+In <code>$BLOG/img</code>, added images:
 </p>
-<pre class="example" id="org3034024">
+<pre class="example" id="orge89938d">
 "/accept16px.png"
 "/cancel16px.png"
 "/disclosureClosedImage.png"
@@ -94,13 +96,15 @@ In the blog directory: Added the following images to blog img directory:
 "/classUnknownImage.png"
 "/languageNewspeak3.png"
 </pre></li>
+</ul></li>
+<li>In Ampleforth.js: replaced <code>i.src = "</code> with <code>i.src = "/img/</code></li>
 </ol>
 </div>
 </div>
 
-<div id="outline-container-org09532f1" class="outline-2">
-<h2 id="org09532f1">This must be at the end</h2>
-<div class="outline-text-2" id="text-org09532f1">
+<div id="outline-container-org2d71a07" class="outline-2">
+<h2 id="org2d71a07">This must be at the end</h2>
+<div class="outline-text-2" id="text-org2d71a07">
  <style> img {width: 25px; height: 25px;} </style> <style> .evaluator + pre {display: none;} .preview .evaluator + pre {display: block;} </style>
 <script type="text/javascript" class="preview" src="/js/Ampleforth.sources.js"></script>
 <script type="text/javascript" class="preview" src="/js/Ampleforth.js"></script>

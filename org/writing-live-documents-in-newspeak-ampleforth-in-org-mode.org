@@ -4,8 +4,8 @@
 #+LAYOUT: post
 #+AUTHOR: mzimmerm
 #+DATE: 2021-07-25 Sun 01:45
-#+TITLE: Writing literate documents in Newspeak Ampleforth in Org Mode
-#+DESCRIPTION: Writing literate documents in Newspeak Ampleforth in Org Mode
+#+TITLE: Writing live documents in Newspeak Ampleforth in Org Mode
+#+DESCRIPTION: Writing live documents in Newspeak Ampleforth in Org Mode
 #+TAGS: newspeak org emacs ampleforth
 #+CATEGORIES: newspeak org emacs ampleforth
 #+OPTIONS: html-postamble:nil
@@ -36,7 +36,7 @@ This is all.
      (advice-add 'org-html-src-block :before-until #'org-html-src-block-newspeak)
 
    #+end_src
-2. In the org file: Added BEGIN_EXPORT html with 2 sections. First section adds styling on elements with class="evaluator", the second section adds the script with Ampleforth.js. NOTE: This must be at the end, for the script to be at the end of body or after the body.
+2. In the blog org file: Added BEGIN_EXPORT html with 2 sections. First section adds styling on elements with class="evaluator", the second section adds the script with Ampleforth.js. NOTE: This must be at the end, for the script to be at the end of body or after the body.
   #+BEGIN_EXAMPLE
     ,#+begin_export html
        <style> img {width: 25px; height: 25px;} </style> <style> .evaluator + pre {display: none;} .preview .evaluator + pre {display: block;} </style>
@@ -44,40 +44,42 @@ This is all.
        <script type="text/javascript" class="preview" src="/js/Ampleforth.js"></script>
     ,#+end_export
   #+END_EXAMPLE
-3. In Ampleforth.js: replaced ~i.src = "~ with ~i.src = "/img/~
-4. In the blog directory: Added the following images to blog img directory:
-  #+begin_example
-           "/accept16px.png"
-           "/cancel16px.png"
-           "/disclosureClosedImage.png"
-           "/disclosureTransitionImage.png"
-           "/disclosureOpenImage.png"
-           "/hsDropdownImage.png"
-           "/hsDropdownOutImage.png"
-           "/hsDropdownOverImage.png"
-           "/publicImage.png"
-           "/protectedImage.png"
-           "/privateImage.png"
-           "/hsAddImage.png"
-           "/hsAddOutImage.png"
-           "/hsAddOverImage.png"
-           "/hsDropdownImage.png"
-           "/hsDropdownOutImage.png"
-           "/hsDropdownOverImage.png"
-           "/hsExpandImage.png"
-           "/hsExpandOverImage.png"
-           "/hsExpandDownImage.png"
-           "/hsCollapseImage.png"
-           "/hsCollapseOverImage.png"
-           "/hsCollapseDownImage.png"
-           "/hsHomeImage.png"
-           "/hsHomeOverImage.png"
-           "/hsHomeOutImage.png"
-           "/hsHomeDownImage.png"
-           "/classPresenterImage.png"
-           "/classUnknownImage.png"
-           "/languageNewspeak3.png"
-  #+end_example
+3. Added the following files in the blog directory ~$BLOG~ (there is where Jekyll serves from):
+   - Added ~$BLOG/js/Ampleforth.js~ and ~$BLOG/js/Ampleforth.sources.js~
+   - In ~$BLOG/img~, added images:
+     #+begin_example
+       "/accept16px.png"
+       "/cancel16px.png"
+       "/disclosureClosedImage.png"
+       "/disclosureTransitionImage.png"
+       "/disclosureOpenImage.png"
+       "/hsDropdownImage.png"
+       "/hsDropdownOutImage.png"
+       "/hsDropdownOverImage.png"
+       "/publicImage.png"
+       "/protectedImage.png"
+       "/privateImage.png"
+       "/hsAddImage.png"
+       "/hsAddOutImage.png"
+       "/hsAddOverImage.png"
+       "/hsDropdownImage.png"
+       "/hsDropdownOutImage.png"
+       "/hsDropdownOverImage.png"
+       "/hsExpandImage.png"
+       "/hsExpandOverImage.png"
+       "/hsExpandDownImage.png"
+       "/hsCollapseImage.png"
+       "/hsCollapseOverImage.png"
+       "/hsCollapseDownImage.png"
+       "/hsHomeImage.png"
+       "/hsHomeOverImage.png"
+       "/hsHomeOutImage.png"
+       "/hsHomeDownImage.png"
+       "/classPresenterImage.png"
+       "/classUnknownImage.png"
+       "/languageNewspeak3.png"
+     #+end_example
+4. In Ampleforth.js: replaced ~i.src = "~ with ~i.src = "/img/~
 
 * This must be at the end   
 

@@ -1309,7 +1309,7 @@ If you use Newspeak as online from https://newspeaklanguage.org/samples/primordi
 
 After the update, the system will ask user if to re-apply your browser-local storage changes from the /backup/ and /lastSaved/.  For details of the local changes re-application, see [[*Saving changes in Newspeak][Saving changes in Newspeak]].
 
-**** Updating your local Newspeak webserver, installed as in [[install-method-2][Installation method 2 (local Newspeak webserver)]].
+**** Updating your local Newspeak webserver, installed for all platforms as shown in [[install-method-2][Installation method 2 (local Newspeak webserver)]].
 
 To update your local Newspeak webserver to the latest (thus getting fixes done since the last deployment), re-download and unzip as described in [[* Download, install, and start a local Newspeak webserver]]
 
@@ -1412,11 +1412,8 @@ Snippets of wisdom
 
 Much of this Q&A is sourced and expanded, or simply pasted from the Newspeak google group posts at https://groups.google.com/g/newspeaklanguage
 
-** IN-PROGRESS Working with code
 
-todo
-
-*** How do I save my changes? 
+** How do I save my changes? 
 
 Newspeak doesn't have an image.  So what do I actually do to develop software? I mean, I presume I run a copy of Newspeak somehow, and start adding classes to it.  But then where / how do my additions get saved if there isn't an image? When I've added a couple of classes to a running Newspeak environment, I presume they don't just disappear when I switch my computer off? So where do they go? Or where do I put them?
 
@@ -1427,7 +1424,7 @@ It won't save your state, but it will save your code.  Bear in mind that the web
 For a complete discussion, see [[*Saving changes in Newspeak][Chapter Saving changes in Newspeak]].
  
 
-*** How would I build and deploy a Newspeak application? 
+** How would I build and deploy a Newspeak application? 
 
 For ~HelloWorldApp~, see [[*Hello World in Newspeak][Hello World in Newspeak]].
 
@@ -1435,7 +1432,7 @@ For the ~CounterApp~ example, see section [[*Build, run, and debug the CounterAp
 
 
 
-*** How do I bring dependencies into modules to be distributed?
+** How do I bring dependencies into modules to be distributed?
 
 As discussed in [[*Dependencies and modularity: Perhaps the hardest part of Newspeak difference][Dependencies and modularity: Perhaps the hardest part of Newspeak difference]]:
 
@@ -1559,3 +1556,261 @@ This .vfuel can then be deployed into a (locally installed) Newspeak server.
   
 
 
+** IN-PROGRESS-NOW How does Ampleforth work to create literate / live Newspeak demos such as http://bracha.org/Literate/literate.html?
+
+Ampleforth is already described in https://blog.bracha.org/illiterateProgramming/out/illiterateProgramming.html by it's author Gilad Bracha. That is definitely the reference description!
+
+This section starts from a slightly different angle.
+
+Newspeak has a module which allows to present the Newspeak objects (the IDE, classes, instances, workspaces etc) live in any sutably marked up HTML page. This results in experience of a live document and a literate program, - a document containing multiple program snippets or whole programs. The program(s) snippet(s) inside the document can be changed, changing the results right inside the document. The program can also be explored (introspected), drilled into, etc.
+
+The module providing the experience a live document and a literate Newspeak program is called ~Ampleforth~.
+
+Classes in two modules, ~Ampleforth.ns~ and ~AmpleforthEmbedder.ns~ work together to allow "presenting" (converting) Newspeak objects to HTML, and interacting with the objects.
+
+The liveliness in HTML pages is provided by ~Ampleforth.js~, which is an app from ~Ampleforth.ns~, converted to Javascript ~Ampleforth.js~.
+
+An example of such page can be found at  http://bracha.org/Literate/literate.html,  https://blog.bracha.org/illiterateProgramming/out/illiterateProgramming.html, or   
+When ~Ampleforth.js~ is placed at the end of any HTML page, it works as follows:
+
+When the HTML is opened in a browser, the included script with  ~Ampleforth.js~ looks for <div> elements with specific class names, for example ~class="evaluator"~
+
+#+begin_src html
+  <div class="evaluator" expression = "11+22"> </div>
+#+end_src
+
+and inserts Newspeak objects converted to HTML to the page after, or instead of such specific elements.
+
+The HTML is processed in the following call sequence: ~AmplefortEmbeddor>>#start~ -> ~AmplefortEmbeddor>>#processEvaluators~ and the methods that follow.
+
+Here is the relevant code:
+
+    #+begin_example
+            public start = (
+              processEvaluators.
+              processMinibrowsers.
+              processClassPresenters.
+            )
+
+            public processEvaluators = (
+              domElementsWithClass: 'evaluator' do:
+                [:element |
+                | 
+                expression = element getAttribute: 'expression'. 
+                om <ObjectMirror> = platformMirror. 
+                es = EvaluatorSubject onModel: (EvaluationViewState onModel: om).
+                |
+                es initialSource: expression.
+                es evaluateLive: expression.
+                EmbeddedHopscotchWindow
+                  into: element
+                  openSubject: es].
+            )
+    #+end_example
+
+In the above code we see that for each ~domElementsWithClass:~ 'evaluator' is found in the HTML, it will look for contents of ~attribut=expression~. The ~expression~ is evaluated, the result of evaluation passed to EmbeddedHopscotchWindow which is inserted to the DOM instead of the <div> with class 'evaluator'.
+
+For example, if the HTML contains this div
+
+#+begin_src html
+  <div class="evaluator" expression = "11+22"> </div>
+#+end_src
+
+the expression ~11+22~ is evaluated, and the result (instance of Number with value 33) is placed in ~EmbeddedHopscotchWindow~ which is converted to HTML and inserted in the DOM where the above <div> was located.
+
+We can look in the browser debugger how the result looks:
+
+[[file:img/newspeak---a-few-notes.org-ampleforth-evaluator-expression-in-debuger.png]]
+
+After evaluating 11+22, the result 33 is inserted in it's own <a href> link.
+
+Not only that, clicking on the 33 link leads to Newspeak class presenting the instance of 33!
+
+
+** How does Newspeak displays itself in DOM and HTML?
+
+In addition to the ~Ampleforth~ class which can "insert" Newspeak elements live in any HTML page, there is a method that does a similar work for the purpose of presenting Newspeak IDE elements in the browser (when we run the IDE).
+
+This method is ~HopscotchForHTML5>>Presenter#:ampleforth: h <String> mapping: m <Map[String, Fragment]>~ - it does the magic that results of our viewing any HTML in the Newspeak IDE - one example is the Help Text, which is a pure HTML, presented by this method.
+
+Let us look at this method:
+
+#+name:  HopscotchForHTML5>>Presenter#:ampleforth:mapping:
+#+begin_example
+ampleforth: h <String> mapping: m <Map[String, Fragment]> = (
+  ^AmpleforthFragment html: h mapping: m
+  )
+#+end_example
+
+This constructs instance of ~HopscotchForHTML5>>AmpleforthFragment~ as follows
+
+#+name: HopscotchForHTML5>>AmpleforthFragment#html:mapping:
+#+begin_example
+public class AmpleforthFragment html: h <String> mapping: m <Map[String, Fragment]> = HTMLFragment html: h (
+	|
+	mapping <Map[String, Fragment]> = m.
+    document_slot <Alien[Document]>
+	|
+    processMappings.
+)
+#+end_example
+
+In turn the ~AmpleforthFragment#processMappings~ does the following work
+
+#+begin_example
+public processMappings = (
+  mapping keysAndValuesDo: [:k <String> :v <Fragment> |
+    v parent: self.
+	domElementsWithClass: k do:
+		[:element | element appendChild: v visual]
+  ]
+)
+#+end_example
+
+To investigate how this works on an example, let us look at the ~Browsing>>ObjectPresenter~ class in the ~Browsing.ns~ module.
+
+The ~ObjectPresenter~ class provides a view for objects. An example of ~Browsing>>ObjectPresenter~'s work is result of clicking on the "Help" button [[file:img/newspeak---a-few-notes.org-help-button.png]] on an object.
+
+Let's find a place in the IDE where we see a blue link starting with text "instance of ": For example, go to Workspaces where we see a situation similar to
+
+[[file:img/newspeak---a-few-notes.org-workspaces.png]]
+
+Click on the [[file:img/newspeak---a-few-notes.org-help-button.png]] beside Workspace1. The help coming from the ObjectPresenter shows:
+
+[[file:img/newspeak---a-few-notes.org-help-from-object-presenter.png]]
+(we cut the text here)
+
+
+Let us investigate how the Newspeak IDE arrives at this presentatation in the browser. As described, the core of this functionality is method ~HopscotchForHTML5>>Presenter#:ampleforth: h <String> mapping: m <Map[String, Fragment]>~ .
+
+But we need to start one level above. Follow the steps below to explore.
+
+
+- Open code for ~Browsing>>ObjectPresenter>>#helpText~, it shows clearly the text is the same as the one displayed in the help text above:
+  #+begin_example
+      helpText ^ <Fragment> = (
+      | mapping = Map new. |
+      mapping 
+        at: #hopscotchClearResultsButton put: subject evaluator presenter clearResultsButton;
+        at: #classExpander put: classExpansionLink;
+        at: #evaluateSelectionButton put: subject evaluator presenter evaluateSelectionButton;
+        at: #invertEvalStatusButton put: subject evaluator presenter invertEvalStatusButton.
+  
+      ^ampleforth: 'This is an object presenter (aka  inspector).  At the top you''ll see its description, a link to the object''s enclosing object, and an expandable link to its class: <div class="classExpander"> </div> Expanding it in place allows you to see the class in the context of the instance, which can be very handy.
+      <br><br>
+      You can enter and evaluate Newspeak expressions in the editor pane below. They will be evaluated in the scope of the object being inspected. Shift-Return evaluates the currently selected text; if no text is selected, the current line (i.e., the line where the cursor is) is evaluated. You can also initiate evaluation of any selected text by pressing: <div class = "evaluateSelectionButton"></div> which is located above the editor on the left.
+      <br><br>
+    The editor can also evaluate at every keystroke; you can toggle this behavior using <div class = "invertEvalStatusButton"></div>
+    also located above the editor.
+    <br><br>
+    Evaluation results, if any, are displayed below the editor pane. Each result is a link; clicking on it takes you an object inspector on the result.  You can clear the results list by pressing the clear button to its right: <div class="hopscotchClearResultsButton"> </div>
+    <br>
+    If  there are no results to display, the  results list area is blank. Below the results list you will typically see the slots of the object listed; this the basic view of objects. Some objects, such as integers or strings, have customized views. An object can have multiple views (and you can define new views as well). If there are multiple views, tab links appear underneath the results list, and you can select between them.' mapping: mapping
+    )
+  #+end_example
+- In the code, we can see it returns first prepares a ~mapping~ map, then returns a result of message send to self ~ampleforth: aHTMLString mapping: mapping~. The message accepts the long pure HTML string we see above, and the mapping.
+  - In the Html snippet, we can find references to 'special' class names:
+    - ~<div class="hopscotchClearResultsButton"> </div>~
+    - ~<div class="classExpander">~
+    - .. etc ..
+  - Clearly those class names are keys in the ~mappings~ map.
+    #+begin_example
+      mapping 
+        at: #hopscotchClearResultsButton put: subject evaluator presenter clearResultsButton;
+        at: #classExpander put: classExpansionLink;
+        .. etc ..
+    #+end_example
+- We can look at "find references" on this method, and find it is defined by ~HopscotchForHTML5>>Presenter>>#ampleforth:mapping:~
+  #+BEGIN_EXAMPLE
+    ampleforth: h <String> mapping: m <Map[String, Fragment]> = (
+      ^AmpleforthFragment html: h mapping: m
+    )
+  #+END_EXAMPLE
+  - Also note that from the ObjectPresenter factory constructor it is clear ObjectPresenter implements ProgrammingPresenter which implements Presenter where the method ~HopscotchForHTML5>>Presenter>>#ampleforth:mapping:~ is defined.
+- Back to ~#helpText~, we see the object returned from there (hence from ~#helpText~) is an instance of class ~HopscotchForHTML5>>Fragment~
+- The callers (senders) of #helpText take the resulting ~HopscotchForHTML5>>Fragment~ instance and call ~HopscotchForHTML5>>Fragment>>#visual~
+  #+begin_example
+    public visual = (
+      visualX isNil ifTrue: [visualX:: decorate: createVisual].
+      ^visualX
+    )
+  #+end_example  
+- which in turn calls ~HopscotchForHTML5>>Fragment>>createVisual~, then decorates the visual result.
+- The important item here is
+  #+begin_example
+    createVisual = (
+      subclassResponsibility
+    )
+  #+end_example
+- which is implemented in a large number of ~Fragment~ subclasses, such as:
+  #+begin_example
+    createVisual in CheckboxFragment in HopscotchForHTML5
+    createVisual in ColorPickerFragment in HopscotchForHTML5
+    createVisual in DatePickerFragment in HopscotchForHTML5
+    createVisual in PickerFragment in HopscotchForHTML5
+    createVisual in ProgressBarFragment in HopscotchForHTML5
+    createVisual in RadioButtonFragment in HopscotchForHTML5
+    createVisual in RectangleFragment in HopscotchForHTML5
+  #+end_example
+
+
+From the last list, we can see those are all UI elements - checkboxes, pickers, radio buttons etc.
+
+Their concrete ~createVisual~ implementations create a representation of UI elements.
+
+Let's look at ~CheckboxFragment#createVisual~ as an example:
+
+#+begin_example
+createVisual = (
+    | 
+    container <Alien[Div]> = document createElement: 'div'.
+    label <Alien[Element]> = document createTextNode: text.
+    |
+
+	container at: 'id' put: 'CheckboxContainer'.
+
+    (container at: 'style')
+        at: 'display' put: 'flex';
+        at: 'flex-direction' put: 'row';
+        at: 'align-items' put: 'center';
+        at: 'justify-content' put: 'flex-start'.
+        
+    checkbox:: document createElement: 'input'. 
+    checkbox
+        at: 'type' put: 'checkbox';
+        at: 'checked' put: checked;
+        at: 'oninput' put: [:event |    
+            checked:: checked not.
+            holder isNil ifFalse: [         
+                holder value: checked.
+            ].
+            action isNil ifFalse: [
+                action value: checked.
+            ].
+            false
+        ].
+    container appendChild: checkbox.
+
+    container appendChild: label.
+
+    (checkbox at: 'style')
+        at: 'min-width' put: styleCheckboxSize;
+        at: 'min-height' put: styleCheckboxSize;
+        at: 'margin-right' put: '5px'.
+
+    ^container.
+
+#+end_example
+
+We can see how this is a direct object representation of a DOM element, which can be converted to a Object insertable to the DOM.
+
+In conclusion, we see how in ~#helpText~, the pure HTML, along with the values of the ~mappings~ map
+
+    #+begin_example
+      mapping 
+        at: #hopscotchClearResultsButton put: subject evaluator presenter clearResultsButton;
+        at: #classExpander put: classExpansionLink;
+        .. etc ..
+    #+end_example
+
+created the ~Fragment~ instances, which are converted to DOM-equivalent visual instances in the ~HopscotchForHTML5>>Fragment>>createVisual~ implementations. Those visual instances are then inserted in the DOM, putting together the Newspeak IDE!
