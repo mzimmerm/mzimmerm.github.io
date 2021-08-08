@@ -474,18 +474,6 @@ Gilad defines
 
 
 
-* Useful editing hints
-:PROPERTIES:
-:ARCHIVE_TIME: 2021-07-19 Mon 23:44
-:ARCHIVE_FILE: ~/dev/my-projects-source/public-on-github/mzimmerm.github.io/org/newspeak---a-few-notes.org
-:ARCHIVE_CATEGORY: newspeak---a-few-notes
-:END:
-
-\[\[\*\([A-z 0-9()_\.\?~]+\)\]\] → [[*\1][Chapter \1] ] <<=== remove space
-
-visible-mode shows links expanded!!
-
-
 * Newspeak modules API zoo renames
 :PROPERTIES:
 :ARCHIVE_TIME: 2021-07-21 Wed 21:49
@@ -513,3 +501,165 @@ wishing renames to :
 
 
 
+* Useful editing hints
+:PROPERTIES:
+:ARCHIVE_TIME: 2021-07-19 Mon 23:44
+:ARCHIVE_FILE: ~/dev/my-projects-source/public-on-github/mzimmerm.github.io/org/newspeak---a-few-notes.org
+:ARCHIVE_CATEGORY: newspeak---a-few-notes
+:END:
+
+\[\[\*\([A-z 0-9()_\.\?~]+\)\]\] → [[*\1][Chapter \1] ] <<=== remove space
+
+visible-mode shows links expanded!!
+
+
+
+* IN-PROGRESS-NOW Review of Hopscotch
+:PROPERTIES:
+:ARCHIVE_TIME: 2021-08-05 Thu 01:03
+:ARCHIVE_FILE: ~/dev/my-projects-source/public-on-github/mzimmerm.github.io/org/newspeak---a-few-notes.org
+:ARCHIVE_CATEGORY: newspeak---a-few-notes
+:ARCHIVE_TODO: IN-PROGRESS-NOW
+:END:
+
+** Paper "Hopscotch: Towards User Interface Composition" by Vassili Bykov, 8 pages
+
+*** Introduction 
+- favours interaction model
+- enables composition of interfaces
+- discusses the deficiencies of the traditional approach, provides an overview of the Hopscotch alternative and analyses how it improves upon the status quo
+
+
+*** Traditional Interface Construction
+
+- based on form.
+- window divided into areas, each has a widget
+- widget: display simple data: string, list, input widget (checkbox, radio etc
+- complex data broken to widgets  
+- number of widgets interact in form
+- In more modern environments, embellishments
+such as movable view splitters and dockable panels may camouflage the underlying rigidity of such
+form-based UIs, and a good tools framework may
+ease the burden of creating a new tool. However,
+they still suffer from the following inherent problems of the form metaphor:
+- Domain structure replication.
+- Information fragmentation.
+- Arbitrary display constraints.
+- Monolithic tools.
+Let us consider these in detail
+
+**** 2.1 Domain Structure Replication
+- Complex domains have a hierarchical or directed graph-like structure. Presenting it in a truly graphical form typically involves considerable development
+effort a
+
+discussses list
+
+-  list displays the arcs originating in a graph node,
+and the application is programmed to respond to selection in the list by updating the UI to visualize the
+arc's target.
+- y Smalltalk implementation
+since, the browser has four list views side-by-side
+across the top of the window. Together they visualize the four levels of arcs leading to the four layers of
+code objects in the system: class categories, classes,
+method categories ("protocols") and methods.
+- Its implication, however, is that the structure of
+the domain is replicated and hard-coded in the
+structure of the tool window. Such UI assumptions
+place gratuitous constraints on the domain object
+model.
+- Two solutions appeared over the years to relax
+this constraint: tree views and columnar lists. Tree
+views are used in Windows Explorer and the current
+VisualWorks browser. The most popular example of
+a columnar list is the column view of OS X Finder.
+
+**** 2.2. Information Fragmentation
+
+- A tool
+such as the Smalltalk browser designed to present
+information in a highly structured form easily induces "tunnel vision", so that logically related entities such as closely related methods cannot be seen
+simultaneously. Thus, information structure replicated by the tool, while pe
+- Thus, UIs
+presenting a hierarchical domain through reusable
+widgets in a form-like arrangement appear to encourage modes by their very nature.
+This tunnel vision and modality are likely to be
+among the real reasons, besides the obvious inertia, why many users prefer plain source file view
+to structured editors that are literally based on the
+Smalltalk browser model.
+- The primary
+factor that determines the ideal size of a widget is
+the content it displays at any given moment. The
+primary factors that dictate the actual size of a widget in a form are the size of the window and its
+overall layout including the sizes of other widgets it
+contains. Cl
+- They still do not
+address the cause of the problem - the fact that
+window layout is determined and fixed in advance
+without regard to the display needs of the actual
+content.
+
+**** 2.4. Monolithic Tools
+
+*** 3. The HOpscotch approach
+
+- Accomodate nested classes 
+- Composition 
+- Browser-like: a tool holder 
+- The displayed elements are generally documents not forms
+- Reassuringly, the document metaphor has already once been used for structured code presentation in the browser of Strongtalk [16]. Despite its lack of consistent navigation model, the tendency to open too many windows and lack of simple tool composition capabilities, the Strongtalk browser shows that the document metaphor is indeed a context where the problems of information fragmentation and gratuitous modes can be solved
+- The objects that implement individual Hopscotch tools are called presenters. The architecture is indeed an extension of the *MVP* idea.
+-
+
+
+**** 3.2 Interaction model
+
+- Like in a web browser, clicking hyperlinks is the primary means of navigation. Auxiliary navigation mechanisms are the forward/back button
+- Editing a method is not a mode. It is possible at any moment to navigate away to look at another class or senders or implementors of a message and then use the "back" button or the history page to come back and continue editing. 
+- In contrast to the common model of a menu bar providing all possible actions, this approach makes it intuitively obvious in accordance with the Gestalt principle which object an action affects. It also avoids another vestige of modes in traditional UIs: menu items mysteriously disabled because they are not applicable to the currently selected object. (Which illustrates that in traditional UIs the concept of current selection or other UI state often introduce modes). In the Hopscotch model, the action menu of each object only includes the actions the object supports. In fact, with the adoption of the document metaphor and the dismissal of the menu bar, the concept of selection at the level higher than text editing becomes less prominent and the UI less stateful.
+- In an inspector, each slot of an object can be expanded in place into a full inspector on the value of the slot. In a similar fashion, a class nested inside another can be expanded in place in the Newspeak class browser view as shown in the screenshot on the previous page. Getting a little ahead of the presentation, it is also entirely possible to embed a browser into an inspector view, or an inspector into a browser with a trivial one-line code change.
+  
+
+**** 3.3 Architecture Overview
+
+***** ~Fragment~ The widget system used by Hopscotch are extensions of ~Fragments~
+
+
+***** ~Presenter~ The basic unit of the framework is a ~Presenter~.
+A ~Presenter~
+
+- Is responsible for displaying and manipulating a domain object in a particular way.
+  
+- May contain other presenters (child presenters), and may or may not be contained inside a higherlevel presenter (parent presenter). A navigator window is considered to be the parent of the topmost ("page-level") presenter.
+  
+- Creates and controls widgets (Fragments) such as text labels, editors, buttons, hyperlinks, or graphical images required to present its model.
+  
+- Unlike the traditional ~MVP~ architecture, a Hopscotch ~Presenter~ does not interact directly with model objects. Instead, it does interact with model objects through a ~Subject~.
+
+
+  Presenter -> has Subject -> has Model
+
+  *So can we call this Subject - View - Presenter*?
+
+***** ~Subject~ plays several roles in the framework.
+
+  - It is a ~location marker~ identifying the domain object being presented. Continuing the web browser analogy, we could say that by representing a "place" in the information space, a *subject is similar to a URL*
+    
+  - Indeed, *subjects are used by the framework as ~addresses~:*  when the user clicks a link or initiates navigation in some other way, the request the ~Navigator~ receives holds an instance of the subject identifying the destination. The subject is then used by the navigator to manufacture the appropriate ~Presenter~
+
+    - Navigation steps:     
+      - user click 
+        - is converted to NavigationRequest.
+        - NavigationRequest is passed to Navigator as NavigationRequest of destination change.
+      - the NavigationRequest contains ~Subject~ (address) identifying the destination
+      - *the ~Subject~ (address) is then used to create the ~Presenter~ for the destination. The method doing it is Subject>>#createPresenter.*
+      - Note: Navigator must be known in context which knows about clicks.
+    
+  - Besides identifying the location (address), a subject can also identify the ~viewpoint~ used. For example, a ~ClassSubject~ represents the full view of a class with its methods and other details. In contrast, a ~ClassInheritanceSubject~ represents a view of a class as part of the hierarchy that includes its superclasses and subclasses. *Together, the location and the viewpoint determine "the subject of the presentation,"* hence the term ~Subject~.
+    
+    - Consider this scenario: User clicks a link in source presenter to navigate to destination address and open it in a viewport (that is, open in one of potentially many frames or windows). We can shorten this to "User navigates to destination". Destination is subject of the sentence, hence the name "Subject" for it. Note that Subject implies two things: Address (which contains the contents) and viewport (the window or frame where to show the contents)
+    
+  - ~Indirection~ achieved by *using subjects rather than presenters as navigation targets* is important in separating the specification of navigation from a particular policy of displaying domain objects. *In different usage contexts with different display constraints, different presenters could be used for a particular subject*. For example, a ClassSubject can have two presenters, one of them optimized for smaller screens to include less information.
+
+  - The final role a subject can play is to serve as a utility kit providing methods that help presenters extract and process domain data.
+
+  

@@ -60,7 +60,7 @@ Examples:
 
 For me it is this article's summary is perhaps the best high level summary of Newspeak:  [[https://bracha.org/newspeak-modules.pdf][Modules as Objects in Newspeak]]. Let me paste it here removing references that would not make sense in another context:
 
-/Like Self, all computation — even an object’s own access to its internal structure  is performed by invoking methods on objects. Newspeak is class-based. Classes can be nested arbitrarily. Since all names denote method invocations, all classes are virtual; in particular, superclasses are virtual, so all classes act as mixins. Unlike its predecessors, there is no static state in Newspeak, nor is there a global namespace. Modularity in Newspeak is based exclusively on class nesting. There are no separate modularity constructs such as packages. Top level classes act as module definitions, which are independent, immutable, self-contained parametric namespaces. They can be instantiated into modules which may be stateful and mutually recursive./
+/Like Self, all computation - even an object's own access to its internal structure  is performed by invoking methods on objects. Newspeak is class-based. Classes can be nested arbitrarily. Since all names denote method invocations, all classes are virtual; in particular, superclasses are virtual, so all classes act as mixins. Unlike its predecessors, there is no static state in Newspeak, nor is there a global namespace. Modularity in Newspeak is based exclusively on class nesting. There are no separate modularity constructs such as packages. Top level classes act as module definitions, which are independent, immutable, self-contained parametric namespaces. They can be instantiated into modules which may be stateful and mutually recursive./
 
 This is a beautiful summary. But it is also not easy to "visualize" how is this tranfered to practice in Newspeak.
 
@@ -97,7 +97,7 @@ In more detail, let us try the following:
   [[file:img/newspeak---a-few-notes.org-my-new-class-now-added.png]]
 - Action: Return back to the main page by pressing the browser "Back" button, to get back to
   [[file:img/newspeak---a-few-notes.org-newspeak-ide-start.png]]
-- To run some Newspeak expressions: Click the "Workspaces" link
+- To run some Newspeak expressions, click the "Workspaces" link
   [[file:img/newspeak---a-few-notes.org-go-to-workspaces.png]]
   - Result: A new page opens, similar to
     [[file:img/newspeak---a-few-notes.org-workspaces.png]]
@@ -177,10 +177,10 @@ Notes:
 - Result: A new page opens, showing Newspeak classes, similar to [[file:img/newspeak---a-few-notes.org-newspeak-source.png]]
   - Note on the result: In the result, you should NOT see classes named ~CounterApp~ or ~CounterUI~.  If you do, you have most likely run through this tutorial before, and the classes are already in your browser local storage.  To clean any local changes saved locally for the online Newspeak, you can clean them in the browser local storage.  See 
 - *Motivation for the next action: We want to build the sample app ~CounterApp~.  We choose to build it simply by downloading and compiling two files from the existing source from the Newspeak github repo.*
-- Action: In the top right of the page (in the same line where we see "Root +") [[file:img/newspeak---a-few-notes.org-3-vertical-dots.png]], click the *vertical 3-dot* button on the far right.
+- Action:  <<compile-files>> In the top right of the page (in the same line where we see "Root +") [[file:img/newspeak---a-few-notes.org-3-vertical-dots.png]], click the *vertical 3-dot* button on the far right.
 - Result: A popup  [[file:img/newspeak---a-few-notes.org-compile-files.png]] shows
 
-- Action: Click "Compile Files".  This will ask us to select files stored on disk, and compile them.
+- Action: Click "Compile File(s)".  This will ask us to select files stored on disk, and compile them.
 - Result: OS file browser opens, and ask us to select files in the operating system file browser. 
 - Action: Navigate to the directory where we checked out the Newspeak github repo, OR where we saved the source for the ~.ns~ files (see Prerequisites of this section).  Select ~CounterApp.ns~ and ~CounterUI.ns~
 - Result: *The classes from the selected ~.ns~ files compile, and show in your IDE.* In your class list (the list under Root +), you should now see a section similar to this [[file:img/newspeak---a-few-notes.org-counter-classes.png]]
@@ -298,7 +298,7 @@ One more "fine point" note:
 - This flipping between the online Newspeak and local Newspeak could be confusing.  We could have started by downloading Newspeak locally, and follow the whole tutorial in local Newspeak.  However, we thought that may discourage some people who want to "take the shortest path", and start online.
 
 
-*Steps: Now we have introduced the context, we start the core of this section: We create the deployable file, ~CounterApp.vfuel~ and deploy it to the local Newspeak, by following the Action/Result steps below:*
+*Steps: <<make-deployment-file>> Now we have introduced the context, we start the core of this section: We create the deployable file, ~CounterApp.vfuel~ and deploy it to the local Newspeak, by following the Action/Result steps below:*
 
 - Action: Navigate to the online version of Newspeak at https://newspeaklanguage.org/samples/primordialsoup.html?snapshot=HopscotchWebIDE.vfuel and click the "Newspeak Source"
 - Result: Under "Root" you should see an alphabetically organized list of classes, similar to [[file:img/newspeak---a-few-notes.org-newspeak-source.png]], 
@@ -669,7 +669,7 @@ From the generic requirements above, App and Library need some way to perform th
 Following the basic requirements from the previous section [[*Application and library in computing]] in mainstream computing, we need methods such as those below.  The names are arbitrary, but conventional, and represent the APIs understood on the platform:
 
 - For an App:
-  - To perform requirement 3, /packaging/, let's call the method ~#package~
+  - To perform requirement 3, /packaging/, let's call the method ~#package~.
   - To perform requirement 1, /start execution/, let's call the method ~#main~
 - For a Library:
   - To perform requirement 3, /packaging/, let's call the method ~#packageLibrary~
@@ -692,6 +692,16 @@ But, how is the solution implemented, in more details? Well, we simply add some 
 
 - *To build (instantiate) a Library or execute and App*, we need to supply the capabilities of the Newspeak platform.  This IS provided by the /platform object/ analyzed in [[*The platform object][The platform object]].  So _we will pass the /platform/ object to the execution or instantiating methods_.
 - *To package     a Library or an App*, we need to supply all classes the Library or App needs to "carry along" in it's package.  Such "carried along" classes become slots on the module object (the "carried along" classes play the role of "imported classes" in mainstream).  In the IDE, during development of the module we are packaging, we may have been creating our own top level classes (and their nested classes obviously) needed by the module we are packaging.  Those classes do not exist on the end-user system where we will send the package for building or execution.  So all those added classes have to be "carried along" in the package.  We have seen all available classes in the IDE, including those we may have added, are supplied by [[*The manifest object][The manifest object]].  So _we will pass the /manifest/ object to the packaging methods_.
+
+
+So, in Newspeak, to supply dependencies, (due to intentional lack of global namespace), we will have to extend the signature names from previous chapter:
+
+- For an App:
+  - To perform requirement 3, /packaging/, let's call the method ~#packageUsing: manifest~.
+  - To perform requirement 1, /start execution/, let's call the method ~#main: platform args: args~
+- For a Library:
+  - To perform requirement 3, /packaging/, let's call the method ~#packageLibraryUsing: manifest~
+  - To perform requirement 2, /instantiate, load and use by the caller app/, let's call the method ~#buildUsing: platform~
 
 
 
@@ -924,21 +934,33 @@ This next step describes an example of a module which is intended to be distribu
 
 If we need our module ~RecipyWithDep~ to be packagable as an App:
 
-1. Add a *separate module* with a descriptive name (to make clear it is a App)
+1. Generally, add a *separate module* with a descriptive name (to make clear it is a App)
 2. In this *separate module*, provide the following API:
   - Factory constructor ~#packageUsing: manifest~ 
   - Instance method     ~#main: platform args: args~
 
-Note the parallel role between the following methods
+*Note 1:*
+
+We sometimes see Newspeak App modules lacking the ~#main: platform args: args~ method. Such modules are used as library modules.
+
+*Note 2:*
+
+Compare the parallel role between the following methods for a Library module and an App module:
 
 | Library                        |                 | App                        |
 |--------------------------------+-----------------+----------------------------|
 | #packageLibraryUsing: manifest | - has role of - | #packageUsing: manifest    |
 | #buildUsing: platform          | - has role of - | #main: platform args: args |
 
+We see that the packaging methods are equivalent. The library "build" method is equivalent to the App "main" method. If an App uses a Library, the library's ~#buildUsing: platform~ will be called in the App's ~#main: platform args: args~ method to build (create) the library's instance.
+
+Basically, a Library module and App module play a similar role. However, an App module is intended to be *packaged, distributed and run* as a standalone App, while an Library module is intended to be *packaged, distributed and included in App modules*.
+
 ***** Example:
 
-To create a packageble and distributable App module for the library module defined in [[*3. Library module: API of module that needs to be distributed for use in other modules][3. Library module: API of module that needs to be distributed for use in other modules]] , the ~RecipyWithDep~, create this App module 
+We will create an App module  ~RecipyWithDepApp~, which is a bit more complex App, in the sense it uses a pre-existing library module, defined in [[*3. Library module: API of module that needs to be distributed for use in other modules][3. Library module: API of module that needs to be distributed for use in other modules]].
+
+To create a packageble and runnable App module ~RecipyWithDepApp~, it must have methods ~#packageUsing: manifest~ and ~#main: platform args: args~.  The App must also store at it's slots everything the ~RecipyWithDep~ needs for it's instantiation. Here is the code:
 
 #+begin_src 
 class RecipyWithDepApp packageUsing: manifest = (
@@ -965,7 +987,7 @@ Also note how the passing of ~platform~ moves from the constructor in the module
   - In the module ~RecipyWithDep~ , it is on the /factory constructor/ /#usingPlatform: platform:/ 
   - To the App ~RecipyWithDepApp~, it is on thr /instance method/ /#main: platform args: args/.
 
-Also note, as you add the App class ~RecipyWithDepApp~ (using the "+ " button ), the IDE adds the *[deploy] [configurations] [run] [debug]* links beside it, recognizing it as an App. 
+Also note, as you add the App class ~RecipyWithDepApp~ in the IDE, (using the "+ " button ), the IDE shows  *[deploy] [configurations] [run] [debug]* links beside it, recognizing the top level class as an App. 
 
 
 **** TODO 5. Test module: TODO 
@@ -1029,13 +1051,14 @@ This concludes the section on General Module class.  Before the next step, pleas
 
 For a more complex example of a general module, see [[*1. General module with NO dependencies: API of module with no dependencies][1. General module with NO dependencies: API of module with no dependencies]]
 
+
 *** 3. Hello World App
 
 By now, we know that /modules/ are /instances of top level classes/, see [[*Discussion of Modules][Discussion of Modules]].  In [[*Newspeak modules API summary][Newspeak modules API summary]] we have shown that providing modules with convention API methods understood by tools such as the IDE, modules can behave as Apps, Libraries, or Tests.
 
 The [[*Newspeak modules API summary][Newspeak modules API summary]] describes the API for a module to be able to behave as an App on the Newspeak platform. 
 
-Steps to create the ~HelloWorldApp~ in the Newspeak IDE's
+So to create a Newspeak App (as opposed to a general module or a library), we need different API. Here are the steps to create the ~HelloWorldApp~ *application* in the Newspeak IDE's
 
 - As shown in the previous section, click the "+ ", paste the following class to the IDE, and click the "Accept" button.
   #+begin_src 
@@ -1046,13 +1069,16 @@ Steps to create the ~HelloWorldApp~ in the Newspeak IDE's
     )
   )
   #+end_src
-- You should see the class in the top classes list.  However, (as opposed to previous section ~HelloWorldGeneralModule~), our class has the links *[deploy] [configurations] [run] [debug]* beside it.  This is because the presence of ~#packageUsing: manifest~ makes it an App.  The tools (the IDE) understand this message and use it to show actions that can be done with an App: run, debug, deploy, show available configurations.  Presence of ~#main: platform args: args~ makes the module runnable as a standalone App. 
+- You should see the class in the top classes list.  However, (as opposed to previous section ~HelloWorldGeneralModule~), our class has the links *[deploy] [configurations] [run] [debug]* beside it.  This is because the presence of ~#packageUsing: manifest~ makes the class an App.  The tools (the IDE) understand this message and use it to show actions that can be done with an App: run, debug, deploy, show available configurations.  In addition, the presence of another method, the ~#main: platform args: args~ makes the module runnable as a standalone App. 
 - Click the *[run]* link to run the app inside the IDE.  The IDE calls first the ~#packageUsing: manifest~, then the ~#main: platform args: args~ which runs, and the text 'Hello World from HelloWorldApp' will be appended after the page body.
   [[file:img/newspeak---a-few-notes.org-hello-world-app-output.png]]
 
 
-Next, we will show how to deploy our ~HelloWorldApp~ as a standalone App.  From the section [[*Deploy CounterApp as standalone app into local Newspeak webserver]] we know an App can be packaged and deployed standalone into a local Newspeak webserver. 
+*Next, we will show how to deploy our ~HelloWorldApp~ as a standalone App.*
 
+From the section [[*Deploy CounterApp as standalone app into local Newspeak webserver]] we know an App can be packaged and deployed standalone into a local Newspeak webserver.
+
+Follow steps below to create a deployable app ~HelloWorldApp.vfuel~, then deploy it in a local Newspeak installation.
 
 - Action: In the class list, find the ~HelloWorldApp~ again, and click the [deploy] to the right.
 - Result: a popup showing deployment options, starting with ~asVictoryFuel~: [[file:img/newspeak---a-few-notes.org-click-deploy-on-counter-app.png]]
@@ -1067,6 +1093,7 @@ Next, we will show how to deploy our ~HelloWorldApp~ as a standalone App.  From 
 This concludes the section on App Module class.  We have shown how to create an App, run it in IDE, create a deployable .vfuel file, then deploy the App standalone in local Newspeak webserver.
 
 For a more complex example of an App module, see [[4. App module: API of module that needs to be distributed as an App][4. App module: API of module that needs to be distributed as an App]]
+
 
 *** 4. Hello World App using 3rd party dependency
 
@@ -1088,8 +1115,9 @@ class HelloTranslator = ()
 #+end_src
 
 #+begin_src 
-(* Library (distribution) class provides packaging and building of the HelloTranslator module *) 
 class HelloTranslatorLib packageLibraryUsing: manifest = (
+
+    (* Library (distribution) class provides packaging and building of the HelloTranslator module *) 
     | 
     HelloTranslator = manifest HelloTranslator. 
     |
@@ -1113,11 +1141,12 @@ The ~HelloTranslator~, hence the ~HelloTranslatorLib~
 Then, the /TranslatorCorp/ would work in their helper module and the /LanguageCorp's/ module as follows:
 
 #+begin_src
-(* This version of HelloTranslatorLib is not ready yet due to missing
-   HelloTranslatorHelper and LanguageSelectorLib.
-   Use the above version in your IDE experiments
-*)
-class HelloTranslatorLib packageLibraryUsing: manifest = (
+class HelloTranslatorLibWithMoreDependencies packageLibraryUsing: manifest = (
+
+  (* This version of HelloTranslatorLib is not ready yet due to missing
+     HelloTranslatorHelper and LanguageSelectorLib.
+     Use the above version in your IDE experiments
+  *)
   | 
   HelloTranslator = manifest HelloTranslator.
   HelloTranslatorHelper = manifest HelloTranslatorHelper.
@@ -1374,9 +1403,9 @@ Apart from the /lastSaved/ and /backup/ in-browser changes management, you can s
 Snippets of wisdom
 
 
--  This is a recipy how to implement what would be static variables in other languages: Anything that you expected to put in a static variable goes in an instance variable of a module. What about singleton classes? How do I ensure that there’s only one instance? The easiest way is to initialize a read only slot of a module with an object literal. What happens if there are multiple instances of the module declaration? Well, each module has its own “singleton”. That’s exactly what happens with singleton classes in Java when they are defined by multiple class loaders. 
-- From https://bracha.org/newspeak-modules.pdf Like Self, all computation — even an object’s own access to its internal structure  is performed by invoking methods on objects. Newspeak is class-based. Classes can be nested arbitrarily. Since all names denote method invocations, all classes are virtual; in particular, superclasses are virtual, so all classes act as mixins. Unlike its predecessors, there is no static state in Newspeak, nor is there a global namespace. Modularity in Newspeak is based exclusively on class nesting. There are no separate modularity constructs such as packages. Top level classes act as module definitions, which are independent, immutable, self-contained parametric namespaces. They can be instantiated into modules which may be stateful and mutually recursive.
-- StringTest>>#testShout is the Smalltalk way of identifying the testShout method of the StringTest class.  When you actually type the code into the browser, you don’t have to type the class name or the >>; instead, you just make sure that the appropriate class is selected.  Documentation example in text should show abstract argument names:
+-  This is a recipy how to implement what would be static variables in other languages: Anything that you expected to put in a static variable goes in an instance variable of a module. What about singleton classes? How do I ensure that there is only one instance? The easiest way is to initialize a read only slot of a module with an object literal. What happens if there are multiple instances of the module declaration? Well, each module has its own "singleton". That's exactly what happens with singleton classes in Java when they are defined by multiple class loaders. 
+- From https://bracha.org/newspeak-modules.pdf Like Self, all computation - even an object's own access to its internal structure  is performed by invoking methods on objects. Newspeak is class-based. Classes can be nested arbitrarily. Since all names denote method invocations, all classes are virtual; in particular, superclasses are virtual, so all classes act as mixins. Unlike its predecessors, there is no static state in Newspeak, nor is there a global namespace. Modularity in Newspeak is based exclusively on class nesting. There are no separate modularity constructs such as packages. Top level classes act as module definitions, which are independent, immutable, self-contained parametric namespaces. They can be instantiated into modules which may be stateful and mutually recursive.
+- StringTest>>#testShout is the Smalltalk way of identifying the testShout method of the StringTest class.  When you actually type the code into the browser, you don't have to type the class name or the >>; instead, you just make sure that the appropriate class is selected.  Documentation example in text should show abstract argument names:
   #+begin_example
     History>>goBackward
       self canGoBackward ifFalse: [self error: 'Already on the first element'].
@@ -1389,16 +1418,16 @@ Snippets of wisdom
 - In Newspeak, a top level class declaration is always a module declaration.  So this is a module:
   #+begin_src
     class HelloBraveNewWorld usingPlatform: platform = (
-      platform squeak Transcript open show: ‘Hello, Oh Brave new world’.
+      platform squeak Transcript open show: 'Hello, Oh Brave new world'.
     )
   #+end_src
   If we had written
   #+BEGIN_SRC
     class HelloBraveNewWorld = (
-      Transcript open show: ‘Hello, Oh Brave new world’.
+      Transcript open show: 'Hello, Oh Brave new world'.
     )
   #+END_SRC
-  and then created an instance via ~HelloBraveNewWorld new~ (if a class doesn’t specify a message for creating instances, new is the default), we would get a doesNotUnderstand: error, because HelloBraveNewWorld does not understand the message Transcript.  There simply is no way to access the standard output stream, or any other system state, without having it passed in via a parameter when a module is instantiated.
+  and then created an instance via ~HelloBraveNewWorld new~ (if a class doesn't specify a message for creating instances, new is the default), we would get a doesNotUnderstand: error, because HelloBraveNewWorld does not understand the message Transcript.  There simply is no way to access the standard output stream, or any other system state, without having it passed in via a parameter when a module is instantiated.
 - Workspace evaluation
   - ~ide namespacing manifest Collections~ (* Collections class *)
   - ~collections~  (* instance of CollectionForPrimodialSoup *)
@@ -1406,7 +1435,7 @@ Snippets of wisdom
 - If you are learning, make everything public.  everything = each method, slot, and inner class.  It may not be the right thing, but it helps as the error messages are not the best currently.  You will just get "Does not understand" too many times.  First time it took me a day to figure out hehe. 
 - so, basically, if I have an HTML string with a <div class='helpButton'>, this code in ClassPresenter>>helpText:  can insert a Hopscotch(?) instance of  HelpButton (assuming HelpButton was implemented) and the HelpButton instance will present itself as Html on that div? Hmm, maybe that org-to-ampleforth just got more exciting - but I have to hold myselt. -- answer: Pretty much.  You need to define the mapping from div classes to Newspeak widgets, as ClassPresenter>>helpText: does for the widgets it uses.
 - Library is an informal term.  Any Newspeak module definition (i.e., a top level class) is a library, and to use, it you call its class methods, most likely to instantiate it. If you want to deploy a module, you need to use it via an app (i.e, define something with #packageUsing: and #main:args:), directly or indirectly. 
-- Hopscotch: Compositionality is one of the most crucial, and most often overlooked, properties in software design; it’s what sets Hopscotch apart.
+- Hopscotch: Compositionality is one of the most crucial, and most often overlooked, properties in software design; it's what sets Hopscotch apart.
 
 
 
@@ -1512,7 +1541,7 @@ Why will you refresh? Apart from the odd crash, the more common problem is the p
 
 Only classes that the IDE considers apps (applications) show these links.
 
-IDE concludes a class is an app based on a convention: presence of method ~#packageUsing: manifest~.
+IDE concludes a class is an app based on a convention: the presence of the method ~#packageUsing: manifest~.
 
 For details see  [[*Newspeak modules API summary][Newspeak modules API summary]] and [[*Hello World in Newspeak][Hello World in Newspeak]].
 
@@ -1521,7 +1550,7 @@ For details see  [[*Newspeak modules API summary][Newspeak modules API summary]]
 
 Only classes that the IDE considers a test configuration show these links.
 
-IDE concludes a class is an app based on a convention: presence of method  ~#packageTestsUsing: manifest~.
+IDE concludes a class is an app based on a convention: the presence of the method  ~#packageTestsUsing: manifest~.
 
 For details see [[*Newspeak modules API summary][Newspeak modules API summary]].
 
@@ -1740,8 +1769,8 @@ But we need to start one level above to explore this step by step:
   public processMappings = (
     mapping keysAndValuesDo: [:k <String> :v <Fragment> |
       v parent: self.
-  	domElementsWithClass: k do:
-  		[:element | element appendChild: v visual]
+  	  domElementsWithClass: k do:
+  		  [:element | element appendChild: v visual]
     ]
   )
   #+end_example
@@ -1771,7 +1800,7 @@ But we need to start one level above to explore this step by step:
       createVisual in RectangleFragment in HopscotchForHTML5
     #+end_example
 
-11. From the last list, we can see those are all UI elements- checkboxes, pickers, radio buttons etc. Their concrete ~createVisual~ implementations use the document objecrt to create a representation of UI elements which are clearly equivalent to DOM object, and can be converted to DOM objects. Let's look at ~CheckboxFragment#createVisual~ as an example:
+11. From the last list, we can see those are all UI elements- checkboxes, pickers, radio buttons etc. Their concrete ~createVisual~ implementations use the document object to create a representation of UI elements which are clearly equivalent to DOM object, and can be converted to DOM objects. Let's look at ~CheckboxFragment#createVisual~ as an example:
 
   #+begin_example
   createVisual = (
@@ -1826,19 +1855,1246 @@ Seeing the creation of an Alien DOM <div> equivalent object in this last method,
         at: #classExpander put: classExpansionLink;
         .. etc ..
     #+end_example
-- We saw the ~#helpText~ returned an instance of class is ~HopscotchForHTML5>>Fragment~
-- The returned ~HopscotchForHTML5>>Fragment~ instance then applies on each value from ~mapping~ the ~HopscotchForHTML5>>Fragment>>#createVisual~ at the end of the chain - building the DOM-like objects (called Fragments). Those visual instances are then inserted in the DOM, putting together the Newspeak IDE!. 
+- We saw the ~#helpText~, by calling ~#ampleforth:mapping:~  created and returned an instance of class ~HopscotchForHTML5>>ApleforthFragment~
+- During creation, in it's factory ~HopscotchForHTML5>>AmpleforthFragment class>>#html:mapping:~ applies on each value from ~mapping~ the ~HopscotchForHTML5>>Fragment>>#createVisual~ at the end of the chain - building the DOM-like objects (called Fragments). Those visual instances are then inserted in the DOM, putting together the Newspeak IDE!. 
 
 
-*Conclusion of sequence of calls:*
+*Conclusion of sequence of calls from the "Help button" click to create DOM elements with Help contents*
 
 We followed the sequence of method calls after the "Help button" was clicked:
 
-- ~Browsing>>ObjectPresenter>>#helpText~                             - calls Presenter self in:
-- ~HopscotchForHTML5>>Presenter>>#ampleforth:mapping:~               - this Presenter creates a Fragment ~^AmpleforthFragment html: h mapping: m~ in:
-- ~HopscotchForHTML5>>AmpleforthFragment class>>#html:mapping:~      - This AmpleforthFragment constructor does the core of the DOM-like child fragments creation in:
-- ~HopscotchForHTML5>>AmpleforthFragment>>#processMappings~          - For each mapping, one visual is created in the calls below
-- ~HopscotchForHTML5>>Fragment>>#visual~
-- ~CheckboxFragment#createVisual~                                    - This uses "document createElement" to create and return an Alien DOM <div> equivalent - it contains a DOM element such as a checkbox.
+- ~Browsing>>ObjectPresenter>>#helpText~                             - calls Presenter self by returning:
+- ~HopscotchForHTML5>>Presenter>>#ampleforth:mapping:~               - Presenter constructs and returns a Fragment ~^AmpleforthFragment html: h mapping: m~ by calling:
+- ~HopscotchForHTML5>>AmpleforthFragment class>>#html:mapping:~      - This AmpleforthFragment constructor does the core of the DOM-like child fragments creation by looping through mappings in:
+- ~HopscotchForHTML5>>AmpleforthFragment>>#processMappings~          - For each mapping entry, one visual is created from "entry value" in the calls below; once the visual is returned back here, it is immediately inserted here into element with class="entry key" into ~domElementsWithClass~ 
+- ~HopscotchForHTML5>>Fragment>>#visual~                             - which calls "#createVisual" below
+- ~CheckboxFragment#createVisual~                                    - This uses "document createElement" to create, for each mapping entry, and return an Alien DOM <div> equivalent - it contains a DOM element such as a checkbox.
 
-We saw how this sequence is responsible of presenting Help Text (with embedded Newspeak objects) as an navigatable live HTML, where we can explore and drill in instances, classes, or other Newspeak artifacts.
+We saw how this sequence is responsible of presenting Help Text (with embedded Newspeak objects) as an navigatable live HTML browser-presented in the IDE, where we can explore and drill in instances, classes, or other Newspeak artifacts.
+
+
+
+* The Newspeak UI, ~HopscotchForHTML5~: Analysing it by digging though code; discovering ~Subject~ ~Model~ ~Presenter~ and ~Fragment~; writing ~CheckedItemApp~ sample App with a UI app based on what we learned
+
+** If you wish to start at the end: Full code of HopscotchForHTML5 sample app
+
+If you wish to start at the end, look at the full code of HopscotchForHTML5 sample app
+
+https://github.com/mzimmerm/newspeak-doc/tree/main/newspeak---a-few-notes-code/checked-item-app
+
+and some final comments of this section in [[*5. Complete code and UI of the *CheckedItemApp*][5. Complete code and UI of the *CheckedItemApp*]].
+
+ 
+** Discovery of the *HopscotchForHTML5* class basics
+
+*** Chapter goal
+
+*Hopscotsch is the Newspeak module used to write UIs in Newspeak.* The version of Hopscotch used in today's (year 2021) Newspeak is called *Hopscotch for HTML5*.  It is implemented in classes nested in the module's class (top level class) named ~HopscotchForHTML5~.
+
+The intent of this chapter is to discover things about ~HopscotchForHTML5~ mostly by browsing it's code in the IDE, plus some previously developed intuition :)
+
+I am trying to make the process of this chapter to be like discovering things about nature by observation. In our discovery, observation = browsing code only the Newspeak IDE. By observing, we should be able to extract knowledge and make generalizations and predictions.  In our discovery, extract knowledge = understand the core API;  make generalizations and predictions = be able to write a simple UI App of our own.
+
+Note: One important discovery tool is missing - in the current Newspeak, debugging anything in the UI is impossible, due to some known bugs.
+
+In other words, during our discovery process in this chapter:
+
+- Most of the information should come from browsing through the Newspeak IDE in the top level class ~HopscotchForHTML5~.
+
+- The end goal of our process is to write a simple Newspeak App with UI in Hopscotch. This simple Newspeak App is developed in chapter [[*Using chapters above to write a simple Hopscotch UI App, the *CheckedItemApp*][Using chapters above to write a simple Hopscotch UI App, the *CheckedItemApp*]].
+
+- There was also the benefit of previously looking at the ~CounterApp~ (aka cheating), but as much as possible, we are trying to extract everything we need from the "first principles" of browsing the Newspeak IDE top level class ~HopscotchForHTML5~.
+
+
+Two most important nested classes in ~HopscotchForHTML5~ are ~Subject~, ~Presenter~.  This statement did not come necessarily from observation (although we could claim that), but from a bit of a "previously developed intuition", as well as from the paper "Hopscotch: Towards User Interface Composition" by Vassili Bykov, 8 pages https://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.478.1098&rep=rep1&type=pdf. Note that the paper is about the original Hopscotch, not the HTML5 specific version. But I feel the core of the two versions seems close enough to start with the paper.
+
+
+So this chapter makes a reasonable assumption that the ~Subject~ and ~Presenter~ classes are of core importance in building UIs in Newspeak. Further, opening class ~Presenter~ in the Newspeak IDE, we see that it has a parent class ~Fragment~.  ~Fragment~ is new to the new version ~HopscotchForHTML5~ as opposed to the original ~Hopscotch~.  Because we consider ~Presenter~ important, so must be ~Fragment~. 
+
+So, enough meta talk, and let us browse the most important code of classes  ~Subject~ and ~Presenter~ - their *factory constructors*. As with any Newspeak class, we should start at the factory constructors to understand the class. Factory constructor is the only code which defines slots (slots as similar to members in other OO languages). Also we see that Fragment is parent of Presenter. So ~Fragment~ must be important; we added it's factory constructor to the constructor summary as well.
+
+#+begin_example
+public class Subject onModel: aModel = (
+  |
+	public model = aModel.
+  presenterSlot <Presenter>
+  public helpActive <Boolean> ::= false.
+  |)
+
+public class Presenter onSubject: aSubject <Subject> = Fragment (
+  |
+  public subject <Subject> ::= aSubject.
+  substanceSlot <Fragment>
+  public generation <Number> = uiGeneration.
+  |)
+
+class Fragment = (
+  |
+	visualX
+	public parent
+	public size ::= nil.
+	public expansibility ::= 0.
+	public compressibility ::= 0.
+	decorators
+	|)  
+#+end_example
+
+From the factory constructors, it is immediately clear that:
+
+1. For a subject to be created, a model is required. So model must be created before subject.
+2. For a presenter to be created, a subject is required. So subject must be created before presenter.
+
+
+*** Chapter conclusion
+
+*Lifecycle of any Hopscotch UI code:*
+- *We need to instantiate a Model first.*
+- *We need to instantiate a Subject on the model next.*
+- *We need to instantiate a Presenter on the subject last.* 
+
+This is quite clear from the signatures of those classes factory constructors - there can be no other way.
+
+A note on Newspeak syntax: while the ~Subject>>model~ slot and ~Presenter>>subject~ slots are public, they have no setters, so they are final. The value they acquire in the factory constructor cannot be changed. This is because the slots are defined using " = ", for example in ~public model = aModel.~ If the " ::= " was used instead of " = " to define the slot ~model~, then the slot  would not be final - a setter would exist. But as is, we cannot, even in principle, create the instances of Model/Subject/Presenter with null slots, change the creation order, and set the slots later.
+
+Next two chapters will look into details of *Presenter, Subject, and Model* classes, and associations between them.  The associations may not be important for writing UIs, but they are for understanding the Hopscotch framework.
+
+
+** The formulaic required repetitive methods of #isMyKind: and #isKindOfX
+
+This chapter is jumping right into a piece that is a bit difficult to understand: The required repetitive methods of ~#isMyKind: other~ and ~#isKindOfX~.
+
+Comments in ~Fragment~ and ~Subject~ talk about this:
+
+*Subclasses must implement #isMyKind: which tests whether another instance is of the same kind. The implementation is #isMyKind: is formulaic, calling #isKindOfX for whatever type X the instance represents*
+
+Because ~Presenter~ is a subclass of ~Fragment~, the equivalent of the above statement applies to ~Presenter~.
+
+Let us summarize a practical translation of this piece of documentation:
+
+*Any time we write a concrete implementation of ~Presenter~, ~Subject~ or ~Fragment~, we must implement two methods.  Suppose a concrete Presenter class is named ~MyConcretePresenter~.  In this class, we have to implement methods ~#isMyKind: other~ and ~#isKindOfMyConcretePresenter~ as follows:*
+
+#+begin_example
+  isMyKind: other <Fragment> ^ <Boolean> = (
+    ^other isKindOfMyConcretePresenter.
+  )
+
+  isKindOfMyConcretePresenter <Boolean> = (
+    ^true.
+  )
+#+end_example
+
+Similar code needs to be added to any concrete implementation of ~Fragment~ or ~Subject~. Just replace the "Presenter" with "Fragment" or "Subject".
+
+In the chapters below, we will not come back to this in too much detail, and always add such methods in our code.
+
+
+** The *Subject* class: Factory constructor, instance methods, how Subject knows Presenter
+
+*** Chapter goal: Overview of the *Subject* class
+
+This chapter is about the ~Subject~ class, in particular about three "important parts" we should know to understand the Newspeak UI.  Those parts are also important when we write code for concrete implementations of ~Subject~.
+
+Let us show the code for the ~Subject~ class, keeping only the "important parts" - each of them is discussed in subchapters below.
+
+~From class Subject~
+#+begin_example
+
+(* 1. The factory constructor *)
+
+public class Subject onModel: aModel = (
+  |
+  public model = aModel.
+  presenterSlot <Presenter>
+  public helpActive <Boolean> ::= false.
+  |
+) (
+
+
+  (* 2. The methods that deal with associating Subject and Presenter instances *)
+  
+  public createPresenter ^<Presenter> = (
+    subclassResponsibility
+  )
+  public presenter ^<Presenter> = (
+    presenterSlot isNil ifTrue: [presenterSlot:: createPresenter].
+    presenterSlot generation < uiGeneration ifTrue: [
+      presenterSlot:: createPresenter.
+      ].
+    ^presenterSlot
+  )
+
+  
+  (* 3. Unimplemented (abstract) methods which a concrete Subject implementation must provide *)
+  
+  isMyKind: s <Subject> ^ <Boolean> = (
+    subclassResponsibility
+  )
+
+  
+  (* Several other methods *)
+)
+#+end_example
+
+In the subchapters below, we go over each of the "important parts".
+
+
+*** The factory constructor *public class Subject onModel: aModel = (..)*
+
+This is the code which creates instances, and should be called from implementations' factory constructors. The code hold slots for ~model~, the associated ~presenterSlot~ and a help slot. For a practical purpose of writing UIs, this is the most important code.
+
+Concrete implementations of Subject, should (in fact must, it is enforced) invoke the Subject's factory as 
+
+ ~public class MyConcreteSubject onModel: model = Subject onModel: aModel ()~  
+
+ This should be sufficient for most concrete implementations of Subject.
+
+ 
+*** The unimplemented (abstract) methods: *Subject>>#createPresenter* and *Subject>>#isMyKind: otherSubject*
+
+The full signatures of the unimplemented methods which each concrete Subject implementation must provide are:
+
+- ~Subject>>#public createPresenter ^<Presenter>~ should return the concrete Presenter instance which will present the subject. This was also discussed in the chapter above.
+- ~Subject>>#isMyKind: otherSubject ^<Boolean>~   is repetitive but required. We have a common chapter for this, see [[*The formulaic required repetitive methods of #isMyKind: and #isKindOfX][The formulaic required repetitive methods of #isMyKind: and #isKindOfX]]
+  
+#+begin_example
+  public createPresenter ^<Presenter> = (
+    subclassResponsibility
+  )
+    
+  isMyKind: s <Subject> ^ <Boolean> = (
+    subclassResponsibility
+  )
+#+end_example
+
+In any concrete implementation of Presenter, those methods must be provided.
+
+**** The method ~#Subject>>createPresenter~ discovery from existing implementations
+
+Let us discover, from code browsing, what a concrete implementation of ~Subject>>#createPresenter~ should do.
+
+From the name and signature, clearly the ~Subject>>#createPresenter~ should return a new instance of ~Presenter~. Supposedly this is the actual UI instance.
+
+We can get some hints about Presenter implementations in existing Subject extensions from the IDE.  Here is an example of ~#createPresenter~ from ~HomeSubject~. All Subject implementations do something equivalent:
+
+~From class HomeSubject~
+#+begin_example
+  public createPresenter = (
+	  ^HomePresenter onSubject: self
+  )
+#+end_example
+
+*Conclusion: It seems clear that in any concrete implementation of ~Subject~ the method  ~#createPresenter~ is intended to create and return the Presenter we want to use to present the Subject.*
+ 
+
+
+
+*** The method *Subject>>#presenter* creates the subject's presenter by calling the *Subject>>#createPresenter*, then associate the instances
+
+**** Chapter goal
+
+Goal is to discuss how a ~Presenter~ instance is created, and where are the Subject <-> Presenter associations created.
+
+
+
+
+**** Where is Subject -> Presenter association created? In *Subject>>#presenter*
+
+The exact signature is ~Subject>>#public presenter ^<Presenter>~.
+
+~Subject~ holds association to it's ~Presenter~ in the ~Subject>>presenterSlot~. This slot is instantiated lazily in ~Subject>>#presenter~ by calling ~Subject>>#createPresenter~, then storing the instantiated presenter on the ~presenterSlot~:
+
+#+begin_example
+  public presenter ^<Presenter> = (
+    presenterSlot isNil ifTrue: [presenterSlot:: createPresenter].
+    presenterSlot generation < uiGeneration ifTrue: [
+      presenterSlot:: createPresenter.
+      ].
+    ^presenterSlot
+  )
+#+end_example
+
+So as long as something calls ~Subject>>#presenter~, after a Subject is created, then *the ~Subject~ knows about it's ~Presenter~ and keeps in on slot ~presenterSlot~, establishing the Subject->Presenter association* - which is what we wanted to show.
+
+
+
+**** Where is Presenter -> Subject association created? In the Presenter factory constructor *Presenter>>#class Presenter onSubject: aSubject = Fragment*
+
+The exact signature is public class ~Presenter onSubject: aSubject <Subject> = Fragment (..)~
+
+We can find our answer in a few steps, starting with ~Subject>>#presenter~:
+
+1. ~Subject>>#public presenter ^<Presenter>~ calls ~Subject>>#public createPresenter ^<Presenter>~
+
+2. ~Subject>>#public createPresenter ^<Presenter>~ creates the Presenter. While this method is abstract, we can discover what it is intended to do:
+   - a) From its signature ~Subject>>#public createPresenter ^<Presenter>~
+   - b) By looking as a concrete Presenter implementations in the IDE.  Here is an example of a concrete ~#createPresenter~ from ~HomeSubject~
+
+      ~From class HomeSubject~
+      #+begin_example
+        public createPresenter = (
+  	      ^HomePresenter onSubject: self
+        )
+      #+end_example
+      Clearly the conclusion from both is this: The intent of ~Subject>>#public createPresenter ^<Presenter>~ is to create a presenter which presents the ~Subject~ instance, and return it
+3. Next, let us study the concrete discovered example of ~HomePresenter~'s factory constructor.
+   #+begin_example
+     class HomePresenter onSubject: s = Presenter onSubject: s (
+     )
+   #+end_example
+   This is a standard Newspeak syntax for a super call. The factory constructor ~HomePresenter>>#onSubject: subject~ calls the superclass ~Presenter>>#onSubject: subject~ 
+
+   Having shown that, we can get back to this line:
+
+   ~HomePresenter onSubject: self~ - note that self is subject
+
+   This will cause the call to the "super" ~Presenter>>#onSubject: subject~. This "super" ~Presenter>>#onSubject: subject~ call places the passed subject on slot "subject" in the Presenter's factory constructor:
+
+  #+begin_example
+  public class Presenter onSubject: aSubject <Subject> = Fragment (
+    |
+    public subject <Subject> ::= aSubject.
+    substanceSlot <Fragment>
+    public generation <Number> = uiGeneration.
+    |)
+  #+end_example
+  
+4. So this line ~public subject <Subject> ::= aSubject~ creates the association from Presenter -> Subject. The associated subject instance is kept on slot ~Presenter>>subject~.
+
+
+This is what we have shown in summary: Calling a concrete subject's #presenter such as ~HomeSubject#presenter~ will associate Presenter -> Subject.
+
+Also, along with the previous chapter, callin ~Subject>>#presenter~ also creates the association "the other way". By calling ~Subject>>#presenter~, the bidirectional associations Presenter <-> Subject is established.
+
+"Some code" must call the ~Subject>>#presenter~ though.
+
+
+*** Chapter conclusion about principles of writing rudimentary Hopscotch UI
+
+In the conclusion of chapter [[*Discovery of the *HopscotchForHTML5* class basics][Discovery of the *HopscotchForHTML5* class basics]] we already discovered an important lifecycle any UI code need to perform: *Create an instance of a Model first, a Subject next, a Presenter last*.
+   
+In this chapter [[*The *Subject* class: Factory constructor, instance methods, how Subject knows Presenter][The *Subject* class: Factory constructor, instance methods, how Subject knows Presenter]] we added the following conclusions:
+
+*Conclusion 1: As long as the ~Subject>>#presenter~ is invoked (on an existing subject instance), two important things happen:*
+- A ~Presenter~ instance is created.
+- The bidirectional association between the subject and presenter instances is established.
+
+*Conclusion 2: So, when creating UIs, our code must invoke the ~Subject>>#presenter~ method, directly, or indirectly by calling some other method that ends up calling ~Subject>>#presenter~.*
+
+*Conclusion 3: Model can be any object.  ~ConcreteSubject~ must extend the ~Subject~.  Also the ~ConcreteSubject~ factory constructor must call the parent ~Subject~ factory constructor - see [[*The factory constructor *public class Subject onModel: aModel = (..)*][The factory constructor *public class Subject onModel: aModel = (..)*]] ; chapters below come to the equivalent conclusion for ~ConcretePresenter~.*
+
+Based on the conclusions 1, 2, 3, we can already write some pseudocode for writing core UI:
+
+*intermediary code - do not use yet*
+#+begin_example
+|concreteModel concreteSubject concretePresenter|
+concreteModel:: ConcreteModel new.
+concreteSubject:: ConcreteSubject onModel: concreteModel.
+concreteSubject presenter.
+#+end_example
+
+Note the last line ~concreteSubject presenter.~: Why did we not use ~concreteSubject:: ConcretePresenter onSubject: concreteSubject.~ instead, as seemingly this would achieve the presenter creation anyway?
+
+The answer to this question is as follows: While the latter code is certainly possible to use in principle, we have seen in the overview of Subject APIs above, that Hopscotch provides the method ~Subject>>#presenter~ which not only creates the Presenter instance by calling ~Subject>>#createPresenter~, but also wires up the Presenter <-> Subject associations!
+
+Clearly, the framework intents application code not to create Presenter instances directly, but intends for application code to call ~Subject>>#presenter~. However, this call should not be made directly in application code either. In chapter [[*HopscotchForHTML5: Analyzing senders of *Subject>>#presenter* and why *HopscotchWindow>>#openSubject: subject* should be invoked instead][HopscotchForHTML5: Analyzing senders of *Subject>>#presenter* and why *HopscotchWindow>>#openSubject: subject* should be invoked instead]] we provided some long reasoning for the following conclusion:
+
+*Conclusion 4: The root level of an application should not create ~Presenter~ directly or by calling ~Subject>>#presenter~ directly. Instead, application should invoke*
+
+~HopscotchWindow>>#openSubject: subject~
+
+This invocation eventually invokes ~Subject>>#presenter~ as intended, but does additional work of placing the creater ~Presenter~ instance in the context of the container body.
+
+So we arrived at a summary conclusion.
+
+*Summary conclusion: Here is the code for a barebones Hopscotch App*
+
+#+begin_example
+|concreteModel concreteSubject concretePresenter|
+concreteModel:: ConcreteModel new.
+concreteSubject:: ConcreteSubject onModel: concreteModel.
+hopscotchWindow openSubject: concreteSubject.
+#+end_example
+
+The last line will create instance of ConcretePresenter by calling ~ConcreteSubject>>#presenter~ and open it in a new window where the App will live! This snippet does not show definitions of ~ConcreteModel~ ~ConcreteSubject~ ~ConcretePresenter~, or how we obtain the ~hopscotchWindow~. We will get to that when creating a concrete App in [[*Using chapters above to write a simple Hopscotch UI App, the *CheckedItemApp*][Using chapters above to write a simple Hopscotch UI App, the *CheckedItemApp*]]
+
+
+** The *Presenter* class: Factory constructor, instance methods, how Presenter knows Subject
+
+*** Chapter goal: Overview of the *Presenter* class
+
+This chapter is about the ~Presenter~ class, in particular about three "important parts" we should know to understand the Newspeak UI.  Those parts are also important when we write code for concrete implementations of ~Presenter~.
+
+Let us show the code for the ~Presenter~ class, keeping only the "important parts" - each of them is discussed in subchapters below.
+
+#+begin_example
+
+(* The factory constructor.
+   The constructor also creates the association from Presenter instance to Subject instance
+   by keeping the associated subject slot
+*)
+
+public class Presenter onSubject: aSubject <Subject> = Fragment (
+  |
+  public subject <Subject> ::= aSubject.
+  substanceSlot <Fragment>
+  public generation <Number> = uiGeneration.
+  |
+) (
+  
+  
+  (* The unimplemented (abstract) method "definition"
+     which a concrete Presenter implementation must provide
+  *)
+  
+  public definition ^<Fragment> = (
+    subclassResponsibility
+  )
+
+  (* Further unimplemented (abstract) methods inherited from Fragment *)
+
+  isMyKind: f <Fragment> ^ <Boolean> = (
+    subclassResponsibility
+  )
+  
+  (* A few selected methods which allow Presenter instances to create instances of Fragments - Fragments are UI Widgets
+  *)
+
+  row: definitions = (
+	  ^RowComposer definitions: definitions
+  )
+  button: label <String> action: block <[]> = (
+    ^ButtonFragment label: label action: block
+  )
+  checkbox: text <String> value: v <Holder> action: a <[:Boolean]> = (
+    ^CheckboxFragment text: text value: v action: a
+  )
+  radioButton: text <String> value: v <Holder> group: g <Integer> action: a <[:Boolean]> = (
+    ^RadioButtonFragment text: text value: v group: g action: a
+  )
+  rectangle = (
+    ^RectangleFragment new
+  )
+)
+#+end_example
+
+In the subchapters below, we go over each of the "important parts".
+
+
+*** The factory constructor *class Presenter onSubject: aSubject = Fragment (..)*
+
+The factory constructor has the exact signature 
+
+~public class Presenter onSubject: aSubject <Subject> = Fragment (..)~
+
+It creates a presenter on subject, and also establishes the  association from Presenter instance to Subject instance as slot ~Presenter>>subject~.
+
+
+
+*** The unimplemented (abstract) methods: *Presenter>>#definition* and *Presenter>>#isMyKind: fragment*
+
+The precise signatures of unimplemented methods that each concrete Presenter must provide:
+
+- ~Presenter>>#public definition ^<Fragment>~ should create and return the actual "widget" (presentation view)
+  
+- ~Presenter>>#isMyKind: f <Fragment> ^<Boolean>~ is repetitive but required. It is inherited from class ~Fragment~. We have a common chapter for this, see [[*The formulaic required repetitive methods of #isMyKind: and #isKindOfX][The formulaic required repetitive methods of #isMyKind: and #isKindOfX]]
+
+**** The method *Presenter>>#definition* - provides the UI view
+
+Full signature is ~Presenter>>#definition ^<Fragment>~.
+
+This method is of core significance when writing UIs.
+
+The concrete implementations should return the actual "widget" (presentation) - basically, *this method returns the widget we want to see in the UI*.
+
+#+begin_example
+  public definition ^<Fragment> = (
+    subclassResponsibility
+  )
+#+end_example
+
+For a sample implementation, see the ~#definition~ method in [[*Class CheckedItemPresenter][Class CheckedItemPresenter]], or in the complete code in [[*5. Complete code and UI of the *CheckedItemApp*][5. Complete code and UI of the *CheckedItemApp*]].
+
+
+*** Instance methods on Presenter that create instances of Fragments
+
+Fragments are UI Widgets.
+
+It is worth realizing there are instance methods on Presenter which can create Fragments (widgets). Such widgets perform
+- layout (see method ~#row:~ or ~#column:~ on class Presenter)
+- "atomic" widgets (see method ~#button: label~ or ~checkbox: text~
+
+Browse the IDE for more details.
+
+
+
+*** Presenter extends Fragment
+
+In addition, from the Presenter factory
+
+  #+begin_example
+  public class Presenter onSubject: aSubject <Subject> = Fragment (
+    |
+    public subject <Subject> ::= aSubject.
+    substanceSlot <Fragment>
+    public generation <Number> = uiGeneration.
+    |)
+  #+end_example
+
+we see that Presenter extends Fragment.
+
+What is Fragment and what is it's role? Let us look at Fragment in a separate chapter.
+
+
+
+** The *Fragment* class
+
+From looking at ~Presenter~, we have already seen that ~Fragment~ is a base class for Presenter. ~Fragment~ is the root of the hierarchy for logical UI tree nodes.
+
+Although an important part of HopscotchForHTML5, we will not talk about Fragments beside showing it's slots - reason is we will not need Fragment to write our concrete simple app.
+
+#+begin_example
+class Fragment = (
+
+  |
+	visualX
+	public parent
+	public size ::= nil.
+	public expansibility ::= 0.
+	public compressibility ::= 0.
+	decorators
+	|)
+#+end_example
+
+
+** Summary of *Subject* and it's model, *Presenter* and *Fragment*, their associations, and their lifecycle
+
+Let us summarize the core classes of Hopscotch: *Subject* and it's model, *Presenter* and *Fragment* described in chapters above.
+
+1. ~Subject~: can be thought of as "address + viewport"; is passed to NavigationHistory; instantiates it's Presenter;
+
+   See [[*The *Subject* class: Factory constructor, instance methods, how Subject knows Presenter][The *Subject* class: Factory constructor, instance methods, how Subject knows Presenter]]
+
+2. ~Presenter~: presents domain objects; is part of hierarchical structure of presenters; instantiates and controls Widgets (Fragments); once instantiated, is the UI presentation of it's Subject;
+
+   See [[*The *Presenter* class: Factory constructor, instance methods, how Presenter knows Subject][The *Presenter* class: Factory constructor, instance methods, how Presenter knows Subject]]
+
+3. Important methods:
+   
+   - ~Subject>>#presenter~ - calls ~Subject>>#createPresenter~ then *associates Subject -> Presenter*. See [[*Where is Subject -> Presenter association created? In *Subject>>#presenter*][Where is Subject -> Presenter association created? In *Subject>>#presenter*]]
+   - ~Subject>>#createPresenter~ creates and returns the presenter instance by calling the concrete Presenter's factory method. See [[*The unimplemented (abstract) methods: *Subject>>#createPresenter* and *Subject>>#isMyKind: otherSubject*][The unimplemented (abstract) methods: *Subject>>#createPresenter* and *Subject>>#isMyKind: otherSubject*]]
+   - ~Presenter>>#definition~ creates the Fragment the presenter uses to present itself (view). See [[*The unimplemented (abstract) methods: *Presenter>>#definition* and *Presenter>>#isMyKind: fragment*][The unimplemented (abstract) methods: *Presenter>>#definition* and *Presenter>>#isMyKind: fragment*]]
+   - ~class Subject>>#onModel: aModel~ - *factory constructor associates Subject -> Model*. See [[*The factory constructor *public class Subject onModel: aModel = (..)*][The factory constructor *public class Subject onModel: aModel = (..)*]]
+   - ~class Presenter>>#onSubject: selfSubject~ - *factory constructor associates Presenter -> Subject*. See [[*The factory constructor *class Presenter onSubject: aSubject = Fragment (..)*][The factory constructor *class Presenter onSubject: aSubject = Fragment (..)*]]
+ 
+4. We established that associations between ~*Subject* and it's model, *Presenter* and *Fragment*~ are as follows:
+   - *Presenter -> Subject -> Model*
+   - *Presenter <- Subject <-w Model* (-> and <- means association, <-w means weak association- my not exist)
+   - Both directions in the *Presenter <-> Subject* association are established by calling the ~Subject>>#presenter~ method
+   - The *Subject -> Model* association is established in the Subject factory constructor ~Subject class>>#onModel: aModel~.
+   
+   See [[*Where is Subject -> Presenter association created? In *Subject>>#presenter*][Where is Subject -> Presenter association created? In *Subject>>#presenter*]] and [[*Where is Presenter -> Subject association created? In the Presenter factory constructor *Presenter>>#class Presenter onSubject: aSubject = Fragment*][Where is Presenter -> Subject association created? In the Presenter factory constructor *Presenter>>#class Presenter onSubject: aSubject = Fragment*]]
+   
+5. Lifecycle discoveries: We need to create a model first, a subject next, a presenter last. See [[*Chapter conclusion about principles of writing rudimentary Hopscotch UI][Chapter conclusion about principles of writing rudimentary Hopscotch UI]] for many details and also  [[*Discovery of the *HopscotchForHTML5* class basics][Discovery of the *HopscotchForHTML5* class basics]]
+
+6. Presenter should not be constructed in code directly using it's factory constructor. It should be constructed indirectly as ~hopscotchWindow openSubject: concreteSubject.~. See [[*Chapter conclusion about principles of writing rudimentary Hopscotch UI][Chapter conclusion about principles of writing rudimentary Hopscotch UI]].
+
+7. To implement some concrete UI, developer should:
+   - implement classes for ~ConcreteModel~,  ~ConcreteSubject~, and ~ConcretePresenter~
+   - All abstract methods in the above classes must be implemented. In particular, code methods to implement are
+     - ~ConcreteSubject>>#createPresenter~ which should create and return presenter for the subject. This should return typically, ~ConcretePresenter onSubject: self~
+     - ~ConcretePresenter>>#define~ which should create and return the Fragment (Presenter). This is a widget or multiple widgets layed out (e.g. row with a checkbox, label, and an icon) 
+   - Write rudimentary code in [[*Chapter conclusion about principles of writing rudimentary Hopscotch UI][Chapter conclusion about principles of writing rudimentary Hopscotch UI]]
+
+     
+The above steps should be sufficient to write a basic App with Hopscotch UI, which we will do in later chapter [[*Using chapters above to write a simple Hopscotch UI App, the *CheckedItemApp*][Using chapters above to write a simple Hopscotch UI App, the *CheckedItemApp*]].
+
+
+
+** Back to *HopscotchForHTML5* and how it relates to *HopscotchForHTML5Runtime*
+
+*** Chapter goal
+
+The goal of this chapter is to discover more about ~HopscotchForHTML5~ and how it relates to ~HopscotchForHTML5Runtime~.
+
+Ok, so we "know" that ~HopscotchForHTML5~ provides the Newspeak UI for the web version. We have seen it defines (as nested classes) the core UI classes ~Subject~, ~Presenter~, and ~Fragment~.
+
+Looking at the top level, we see two related classes, ~HopscotchForHTML5~ and ~HopscotchForHTML5Runtime~. So what is the latter class good for?
+
+
+
+*** The *HopscotchForHTML5* class
+
+Let us get back for a minute to ~HopscotchForHTML5~. We have seen, that is has a ton of slots and classes we would associate with UI elements, such as
+
+#+begin_example
+  (* Factory constructor *)
+  class HopscotchForHTML5 usingPlatform: p images: images ducts: ds = (
+    |
+    (* Imports *)
+  	private Color = p graphics Color.
+  	private Context = p graphics Context.
+    private Holder = ds Holder.
+    private Font = p fonts Font.
+    .. etc ..
+    public styleZebraPrimaryColor = Color white.
+  	public styleZebraSecondaryColor = Color gray: 0.97.
+  	|)
+#+end_example
+
+#+begin_example
+(* Selected nested classes *)
+class ButtonFragment
+class DatePickerFragment
+.. etc ..
+class Subject
+class Presented
+class Fragment
+.. etc ..
+#+end_example
+
+We alreary concluded that we will need an instance of ~HopscotchForHTML5~ if we want to build any UI for our Apps.
+
+
+*** The *HopscotchForHTML5Runtime* class
+
+Analyzing the class ~HopscotchForHTML5Runtime~, we see that:
+
+- It has the factory constructor ~#packageUsing: manifest~. From the Api chapters, for example  [[*4. App module: API of module that needs to be distributed as an App][4. App module: API of module that needs to be distributed as an App]] we know that such top level classes are apps, but, lacking the ~#main: platform args: args~ method, such module is used as library module.
+  
+- It packages the UI class, ~HopscotchForHTML5~, on it's slot
+
+- It has a instance method ~#using: platform~, which calls the factory method of ~PlatformWithHopscotch~ and returns it's instance.
+
+~HopscotchForHTML5Runtime~
+#+begin_example
+(* Factory constructor *)
+class HopscotchForHTML5Runtime packageUsing: manifest = (
+	|
+	private Fonts = manifest FontsForHTML5.
+  private Graphics = manifest GraphicsForHTML5.
+	private TextModule = manifest TextModule.
+	private Hopscotch = manifest HopscotchForHTML5.
+  private Ducts = manifest Ducts.
+	private images = Images packageUsing: manifest.
+	|
+)
+
+(* instance method *)
+public using: platform = (
+	^PlatformWithHopscotch usingPlatform: platform
+)
+#+end_example
+
+The presence of the two methods clearly shows  ~HopscotchForHTML5Runtime~ packages all three classes (HopscotchForHTML5, Ducts, images) that we will need to create ~HopscotchForHTML5~ using its factory constructor ~HopscotchForHTML5>>#usingPlatform: p images: images ducts: ds~.
+
+*So, the HopscotchForHTML5Runtime packages everything we need for HopscotchForHTML5*
+
+In addition, we see that the inner class ~HopscotchForHTML5Runtime>>PlatformWithHopscotch~ is a convenience class which already pre-creates instance of ~HopscotchForHTML5~ in this ~PlatformWithHopscotch~ snippet:
+
+#+begin_example
+(* Factory constructor *)
+class PlatformWithHopscotch usingPlatform: platform = (
+	|
+    public isKindOfPlatformWithElectron = platform isKindOfPlatformWithElectron.	
+    public kernel = platform kernel.
+    public collections = platform collections.
+    public actors = platform actors.
+    public mirrors = platform mirrors.    
+    public js = platform js.
+    public operatingSystem = platform operatingSystem.
+    public fonts = Fonts usingPlatform: self.
+    public graphics = Graphics usingPlatform: self.
+    public text = TextModule usingPlatform: self.
+    public hopscotch = Hopscotch usingPlatform: self images: images ducts: (Ducts usingPlatform: self).
+    public local = platform.
+    public victoryFuel = platform operatingSystem = 'emscripten' ifTrue: [platform victoryFuel].
+	|
+)
+#+end_example
+
+*A core question: what object is in the slot ~hopscotch~ in the above factory?* Let's follow these points:
+
+1. ~HopscotchForHTML5Runtime~, the outer class of ~PlatformWithHopscotch~ creates this slot:
+
+  ~private Hopscotch = manifest HopscotchForHTML5.~
+
+  clearly, the ~Hopscotch~ slot on ~HopscotchForHTML5Runtime~ holds the class ~HopscotchForHTML5~.
+  
+2. Next we see this line in the ~PlatformWithHopscotch~ factory constructor above - the ~class PlatformWithHopscotch usingPlatform: platform~:
+   
+  ~public hopscotch = Hopscotch usingPlatform: self images: images ducts: (Ducts usingPlatform: self)~
+
+  uses the expression ~Hopscotch~. What does it refer to?? In Newspeak, an expression like this used in a factory constructor slot, must be somewhere in the scope of the factory constructor's scope! The only items in scope there, must be in a slot of a parent class! Parent class of ~PlatformWithHopscotch~ is ~HopscotchForHTML5Runtime~. So this ~Hopscotch~ we are talking about here refers to a ~Hopscotch~ slot in ~HopscotchForHTML5Runtime~. And we have seen in item 1, that it holds the class ~HopscotchForHTML5~. As a result, the factory constructor in
+
+  ~public hopscotch = Hopscotch usingPlatform: self images: images ducts: (Ducts usingPlatform: self)~
+
+  is the same as
+
+  ~public hopscotch = HopscotchForHTML5 usingPlatform: self images: images ducts: (Ducts usingPlatform: self)~
+
+
+
+From there we have the answer to our core question of this paragraph: *The slot ~hopscotch~ in the factory for PlatformWithHopscotch is instance of ~HopscotchForHTML5~*
+
+*Now let's draw two conclusions we arrived at in this paragraph:*
+
+1. *Conclusion 1. The module HopscotchForHTML5Runtime is a packaging library for instances of HopscotchForHTML5. By packaging the runtime, everything we need to write UI code is available in the HopscotchForHTML5 instance. How do we get such instance? This is described in Conclusion 2.*
+
+2. *Conclusion 2. Any code that is able to create ~hopscotchForHTML5Runtime~, an instance of ~HopscotchForHTML5Runtime~ will have access to instance of ~HopscotchForHTML5~ using the second line below:*
+
+  ~hopscotchForHTML5Runtime using: platform.~ <== this is instance of PlatformWithHopscotch
+  ~(hopscotchForHTML5Runtime using: platform) hopscotch.~ <== hopscotch is the slot on PlatformWithHopscotch. It is instance of HopscotchForHTML5 as we have seen above.
+
+
+Summary: In this chapter, we deduced code we need to obtain ~hopscotch~, an instance of ~HopscotchForHTML5~. This instance is all we need to write any Newspeak UI!
+
+
+** Using chapters above to write a simple Hopscotch UI App, the *CheckedItemApp*
+
+*** Chapter goal
+
+This chapter goal is to use the intuition and knowledge acquired in the above chapters, to write a sample UI App in Newspeak. 
+
+Let us name the app class ~CheckedItemApp~. The reason for the name is clarified in [[*3. Write code for *CheckedItemUI*, the class showing the UI][3. Write code for *CheckedItemUI*, the class showing the UI]].
+
+We will do our best by deducting the App structure and UI and code just by browsing and applying the knowledge developed by browsing the ~HopscotchForHTML5~ in chapters above - without looking at the pre-existing ~CounterApp~ sample app, see [[*Build, run, and debug the CounterApp in Newspeak (in the online version)][Build, run, and debug the CounterApp in Newspeak (in the online version)]].
+
+The App and it's UI are built step by step in the subchapters below.
+
+Note that only Step 3, [[*3. Write code for *CheckedItemUI*, the class showing the UI][3. Write code for *CheckedItemUI*, the class showing the UI]] will be using the knowledge from this chapter.  The rest of the steps use the knowledge about APIs needed to write a Newspeak App. This knowledge was developed in 
+
+
+*** 1. Start coding the Application class *CheckedItemApp*
+
+We will use information about APIs that define a Newspeak App from chapter  [[*4. App module: API of module that needs to be distributed as an App][4. App module: API of module that needs to be distributed as an App]]  and  [[*3. Hello World App][3. Hello World App]]  to create the application class ~CheckedItemApp~.
+
+As a start, we borrow code from the Hello World App to create a top level App class:
+
+  ~class CheckedItemApp~
+  #+begin_example 
+  class CheckedItemApp packageUsing: manifest = ()
+  (
+    public main: platform args: args = (
+      'Hello World from HelloWorldApp' out.
+    )
+  )
+  #+end_example
+
+  To recap, the methods ~#packageUsing: manifest~ and ~#main: platform args: args~ make this top level class a packageble, distributable, and runnable Newspeak app.
+
+
+*** 2. Add code to the *CheckedItemApp* which allows to "import" the Hopscotch module
+
+**** Add the packaging of the HopscotchForHTML5 module
+
+In this chapter, we to progress the code of the app we want to build by adding things that allow us to build a UI.
+
+We start with renaming ~HelloWorldApp~ to ~CheckedItemApp~, that is simple.
+
+In chapter  [[*4. App module: API of module that needs to be distributed as an App][4. App module: API of module that needs to be distributed as an App]]  and modularity chapters earlier, we saw that an App must package (bring along) all classes and instances that it will need to create the deployment artifact. Packaging is done in factory constructors of Apps - the ~#packageUsing: manifest~.
+
+We need to package the HopscotchForHTML5 module. We use Conclusion 2 at the end of chapter [[*The *HopscotchForHTML5Runtime* class][The *HopscotchForHTML5Runtime* class]] to package an instance of ~HopscotchForHTML5Runtime~. (This will will carry the ~HopscotchForHTML5~ instance in it, as discussed there).
+
+Note that for the packaged instance to be usable when running the app, we need to keep the packaged instance ~hopscotchForHTML5Runtime~ on a slot (as a member). So we also need to add the slots section | .. |. 
+
+
+~class CheckedItemApp~
+#+begin_example 
+class CheckedItemApp packageUsing: manifest = (
+  (* Added this 3-line section *)
+  |
+  hopscotchForHTML5Runtime = manifest HopscotchForHTML5Runtime packageUsing: manifest.
+  |
+)
+(
+  public main: platform args: args = (
+    
+    'Hello World from HelloWorldApp' out.
+  )
+)
+#+end_example
+
+While we keep the full code listed here, to only paste the added section, find the ~CheckedItemApp>>#packageUsing: manifest~ method in the IDE, and paste the 3-line section there.
+
+[[file:img/newspeak---a-few-notes.org-checked-item-app-step-3.png]]
+
+
+**** Add the hopscotchForHTML5 module that will allow us to build UI
+
+Next, we know that in the ~main: platform args: args~ method where the App starts, we will need to obtain or create an instance of ~HopscotchForHTML5~ to be able to build any UI. 
+
+In the conclusion of chapter [[*The *HopscotchForHTML5Runtime* class][The *HopscotchForHTML5Runtime* class]], we saw that we can get at instance of the UI creating object hopscotchForHTML5, as follows:
+
+~hopscotchForHTML5Runtime using: platform.~ <== this is instance of PlatformWithHopscotch
+~(hopscotchForHTML5Runtime using: platform) hopscotch.~ <== hopscotch is the slot on PlatformWithHopscotch. It is instance of HopscotchForHTML5
+
+So let us add that code to our ~CheckedItemApp>>#main:args~:
+
+~class CheckedItemApp~
+#+begin_example 
+class CheckedItemApp packageUsing: manifest = (
+  |
+  hopscotchForHTML5Runtime = manifest HopscotchForHTML5Runtime packageUsing: manifest.
+  |
+)
+(
+  public main: platform args: args = (
+    (* Added this 5-line section *)
+    |
+    platformWithHopscotch = platform isKindOfPlatformWithHopscotch ifTrue: [platform]
+                                                                   ifFalse: [hopscotchForHTML5Runtime using: platform].   
+    hopscotchForHTML5 = platformWithHopscotch hopscotch.
+    |
+    
+    'Hello World from HelloWorldApp' out.
+  )
+)
+#+end_example
+
+In the IDE, find the already created method ~CheckedItemApp>>#main: platform args: args~ and paste the added 5-line section there. If you skipped the chapter where ~#main:args:~ was first created, in the IDE, use + to add an instance method to ~CheckedItemApp~ (make sure it is an instance method, not a constructor).
+
+The expression defining the ~platformWithHopscotch~ is perhaps the only thing we did not fully explain in this exploration. We did explain the "true" branch but not the "false" branch. There is a detail description in the final code, see [[* 5. Complete code and UI of the *CheckedItemApp*][ 5. Complete code and UI of the *CheckedItemApp*]].
+
+
+*** 3. Write code for *CheckedItemUI*, the class showing the UI
+
+Chapter introduction and goal: In this chapter, we will write the core of the UI for the application. This code will be added as several nested classes to a top level class we will name ~CheckedItemUI~.  To write this UI, we will use the knowledge discovered and summarized in chapter [[*Summary of *Subject* and it's model, *Presenter* and *Fragment*, their associations, and their lifecycle][Summary of *Subject* and it's model, *Presenter* and *Fragment*, their associations, and their lifecycle]].   We will need to create concrete classes for the *Model, Subject and Presenter*, then we will need to instantiate those classes (in that order) to form the UI.
+
+The UI will be extremely simple: a label with text "check this", and one check box. We should be able to check the checkbox. That is all.
+
+Note that we will not write any *Fragment* (Widget) classes, we only use some preexisting fragment-creation methods discovered by browsing ~HopscotchForHTLM5>>Presenter~ such as ~#row:~, ~#label:~ and ~#checkbox:~.
+
+Chapters below describe writing the code step by step.
+
+**** Class CheckedItemUI
+
+Let's add a new top level class ~CheckedItemUI~.
+
+Note: We recall, instances of top level classes are called modules, and behave that way.  The top level class ~CheckedItemUI~, provides a natural namespace, so the classes' naming prefix ~CheckedItem~ in ~CheckedItemModel~ and other nested classes introduced in this chapter is not needed. We will keep the class names prefix for the purpose of clarity of the text.
+
+We plan for the new top level class ~CheckedItemUI~ to contain:
+
+1. Slots needed to create elements in the instance of this class. 
+  
+2. Nested classes ~CheckedItemModel~, ~CheckedItemSubject~ and ~CheckedItemPresenter~ which we will create below. Important: Notice that these classes are nested in the top level class ~CheckedItemUI~.  This is a natural modularization we would use in Newspeak. Also notice this nesting mimics the nesting of ~Subject~ and ~Presenter~ in the module ~HopscotchForHTML5~.
+
+
+At this point, we create only the barenones of our UI, like this:
+
+~class CheckedItemUI~
+#+begin_example
+  class CheckedItemUI = () ()
+#+end_example
+
+We will add it's factory constructor, slots, and it's nested classes along the way in later chapters, describing why each such element is needed.  In particular we will add:
+
+- The nested classes will be added naturally by adding them inside ~CheckedItemUI~ in the IDE. This happens in chapters [[*Class CheckedItemModel][Class CheckedItemModel]],  [[*Class CheckedItemSubject][Class CheckedItemSubject]],  and [[*Class CheckedItemPresenter][Class CheckedItemPresenter]] .
+  
+- The factory constructor and slots will be added once we finish the rest of the app code and the UI code - in chapter [[*When the app runs in the *#main:args:* method, instantiate the *CheckedItemUI*][When the app runs in the *#main:args:* method, instantiate the *CheckedItemUI*]] and its subchapters.
+
+
+**** Class CheckedItemModel
+
+As discussed in [[*Summary of *Subject* and it's model, *Presenter* and *Fragment*, their associations, and their lifecycle][Summary of *Subject* and it's model, *Presenter* and *Fragment*, their associations, and their lifecycle]], we start writing UI with writing the model class. As this is a part of the UI, a natural way to express such composition is to make the model class *a nested class in ~CheckedItemUI~.*
+
+Let's name the model class ~CheckedItemModel~.
+
+To support the UI, we need two items in our  model: a string for label, and a Boolean representing if the checkbox was selected. Our model class extends Object by default; it's factory constructor is the default ~#new~ method. Neither the default parent class Object nor the default factory constructor ~#new~ need to be specified in Newspeak. 
+
+~class CheckedItemModel~
+#+begin_example
+public class CheckedItemModel = (
+|
+  public label ::= 'check to complete'.
+  public isChecked ::= false.
+  |
+)
+()
+#+end_example
+
+Add the above code as a nested class of ~CheckedItemUI~, by clicking the + beside "Classes" inside CheckedItemUI, and pasting the code in the text area.
+
+[[file:img/newspeak---a-few-notes.org-add-nested-class-checked-item-model.png]]
+
+Click the "Accept" button [[file:img/newspeak---a-few-notes.org-accept-image.png]] to save the added class.
+
+
+
+**** Class CheckedItemSubject
+
+Having defined a model class ~CheckedItemModel~, we need to define our UI's concrete Subject class, let's name it ~CheckedItemSubject~. Naturally, it will be an extension of Subject. As mentioned, it will be nested in ~CheckedItemUI~.
+
+Recall from [[*The *Subject* class: Factory constructor, instance methods, how Subject knows Presenter][The *Subject* class: Factory constructor, instance methods, how Subject knows Presenter]] that the factory constructor of Subject is ~Subject>>#onModel: model~. This will associate subject with it's model.  We will use the same name for the factory constructor for our ~CheckedItemSubject~ and call the super factory from Subject.
+
+We will also use the knowledge from the same chapter regarding it's factory constructor and abstract methods we need to implement. Let us summarize it here again: 
+
+- The factory constructor of our ~CheckedItemSubject~ will call the factory constructor of it's parent, ~Subject>>#onModel: model~.  This is expressed by the signature ~public class CheckedItemSubject onModel: model = Subject onModel: model~ where our new class calls the super constructor ~Subject>>#onModel: model~.
+
+- ~Subject~ class has an abstract method ~#createPresenter~ (indicated by "subclassResponsibility") which should return a presenter. In the same link, we saw that ~#createPresenter~ should create an instance of Presenter (the yet-to-be-created ~CheckedItemPresenter~). The instance should then be returned. 
+
+- We need to add the formulaic implementations of ~#isMyKind~ and ~#isKindOfCheckedItemSubject~. See [[*The formulaic required repetitive methods of #isMyKind: and #isKindOfX][The formulaic required repetitive methods of #isMyKind: and #isKindOfX]].
+
+So the code for our concrete Subject ~CheckedItemSubject~ which implements the desired factory constructor and all abstract methods implemented should be:
+
+~class CheckedItemSubject~
+#+begin_example
+public class CheckedItemSubject onModel: model = Subject onModel: model (
+)(
+  createPresenter = (
+    ^CheckedItemPresenter onSubject: self.
+  )
+
+  (* required isMyKind and isKindOfX formulaic methods *)
+  isMyKind: other = (
+    ^ other isKindOfCheckedItemSubject.
+  )
+  isKindOfCheckedItemSubject = (
+    ^ true.
+  )
+)
+#+end_example
+
+As with the model, add an inner class of CheckedItemUI by clicking the + beside Classes inside CheckedItemUI, then paste the code above in the text area:
+
+[[file:img/newspeak---a-few-notes.org-add-inner-class-checked-item-subject.png]]
+
+Click the "Accept" button [[file:img/newspeak---a-few-notes.org-accept-image.png]] to save the added class.
+
+
+**** Class CheckedItemPresenter
+
+Having defined a model class ~CheckedItemModel~ and a subject class ~CheckedItemSubject~, we will need the last piece of our UI, the concrete Presenter class.
+
+Presenter is the class which does the work of creating the UI widgets. We have seen in chapter [[*The *Presenter* class: Factory constructor, instance methods, how Presenter knows Subject][The *Presenter* class: Factory constructor, instance methods, how Presenter knows Subject]] that Presenter is created in the factory constructor ~Presenter>>#onSubject: subject~, and it contains important wiring of the subject and presenter associations. Our concrete class factory constructor must do the same, so it needs to call this parent factory. This is done using factory method ~CheckedItemPresenter onSubject: subject = Presenter onSubject: subject ()~  
+
+For a concrete UI, method which creates the UI view is ~#definition~. It does that by creating and returning Fragmets or Presenter objects. The created objects can be a composition of both layout elements such as rows and columns, and widgets such as checkboxes and labels.
+
+Also, we will need [[*The formulaic required repetitive methods of #isMyKind: and #isKindOfX][The formulaic required repetitive methods of #isMyKind: and #isKindOfX]].
+
+Add the following code for class ~CheckedItemPresenter~. As with the model and presenter, we make the ~CheckedItemPresenter~ an inner class of CheckedItemUI, by clicking the + beside Classes inside CheckedItemUI.
+
+~class CheckedItemPresenter~
+#+begin_example
+
+public class CheckedItemPresenter onSubject: subject = Presenter onSubject: subject (
+) (
+public definition = (
+
+    ^column: {
+      label: 'column label: Rudiments of Todo list.'.
+      (checkbox: subject model label
+       value: subject model isChecked
+       action: [  :aaachecked | updateGUI: 
+                           [  (subject model isChecked)
+                                  ifTrue: [subject model isChecked: false]
+                                  ifFalse: [subject model isChecked: true]
+                            ]
+                        ]
+      ).
+    }. 
+  )
+
+  isMyKind: other = (
+    ^other isKindOfCheckedItemPresenter.
+  )
+
+  isKindOfCheckedItemPresenter = (
+    ^true.
+  )
+
+)
+#+end_example
+
+
+
+*** 4. Integrate the *CheckedItemUI* into the *CheckedItemApp*
+
+So far we have prepared two separate classes:
+
+1. ~CheckedItemApp~: We added this class in [[*Add the hopscotchForHTML5 module that will allow us to build UI][Add the hopscotchForHTML5 module that will allow us to build UI]], as a the top level class. We equipped the class with API methods that make the class instance an application. We also added the ~hopscotchForHTML5~ object on a slot with the same name in the ~#main:args~ method. The ~hopscotchForHTML5~ object has everything we need to write our simple UI - but of course we also need to write code for the UI.  We did that as well - see next item on the list
+2. ~CheckedItemUI~: We added this class in step [[*3. Write code for *CheckedItemUI*, the class showing the UI][3. Write code for *CheckedItemUI*, the class showing the UI]]. In that step, we also added the code that creates a row of widgets (fragments) in the ~CheckedItemUI>>#define~ method.
+
+
+In the rest of this chapter, we finish integrating the ~CheckedItemUI~ into the ~CheckedItemApp~ by creating an instance of ~CheckedItemUI~.  This instance creation will perform the process of showing our UI, defined in the ~CheckedItemUI>>#define~ method.
+
+**** Package the *CheckedItemUI* class into the *CheckedItemApp*
+
+As we know, Newspeak must explicitly package all dependencies that may not exist on the target system where we deploy our ~CheckedItemApp~ app.
+
+The packaging is done inside the IDE in convention named method ~CheckedItemApp>>#packageUsing: manifest~.
+
+The code changes we need to make to achieve the dependency packaging is marked here:
+
+~class CheckedItemApp~
+#+begin_example
+class CheckedItemApp packageUsing: manifest = (
+  |
+  hopscotchForHTML5Runtime = manifest HopscotchForHTML5Runtime packageUsing: manifest.
+  (* Added 1-line to package the CheckedItemUI class on slot with same name *)
+  CheckedItemUI = manifest CheckedItemUI.
+  |
+)
+#+end_example
+
+The ~CheckedItemUI~ class is pulled (from manifest) and stored on a slot named ~CheckedItemUI~ (this is customary, to name the slot same as the class name, but does not have to be). This is similar to importing ~CheckedItemUI~ into ~CheckedItemApp~ in other languages.
+
+However, packaging in Newspeak performed by placing some object or class on slot does more.  Apart from declaring the dependency of ~CheckedItemApp~ on ~CheckedItemUI~, the actual class  ~CheckedItemUI~ will be serialized and shipped with the  ~CheckedItemApp~.
+
+**** When the app runs in the *#main:args:* method, instantiate the *CheckedItemUI*
+
+When the ~CheckedItemApp~ starts (which we know is in the ~#main:args~ method), we need to create an instance of ~CheckedItemUI~. Once we have the instance, we need to create instances of the nested model, then subject, then presenter. 
+
+In the summary conclusion in [[*Chapter conclusion about principles of writing rudimentary Hopscotch UI][Chapter conclusion about principles of writing rudimentary Hopscotch UI]] we have summarized how a rudimentary Hopscotch UI should be created. Let us repeat it here:
+
+#+begin_example
+|concreteModel concreteSubject concretePresenter|
+concreteModel:: ConcreteModel new.
+concreteSubject:: ConcreteSubject onModel: concreteModel.
+hopscotchWindow openSubject: concreteSubject.
+#+end_example
+
+So let us use this snippet in our core UI code (instead of starting names with /Concrete/ start them with /CheckedItem/).
+
+Add the "3-lines" section on the bottom of ~#main:args:~, so it looks like this:
+
+We are making this code unnecessarily verbatim and long, to spell out what we discussed:
+
+ ~class CheckedItemApp~
+ #+begin_example
+ public main: platform args: args = (
+    |
+    (* WHILE WE DEDUCED HOW THIS BEHAVES IN THE IDE, THE VFUEL BEHAVIOR IS ONLY DESCRIBED HERE.
+       In IDE: When main is invoked by clicking [run] or [debug] in the IDE,
+         we just return platform. Because in the IDE, platform is already created
+         by the IDE by 'hopscotchForHTML5Runtime using: platform' (returns PlatformWithHopscotch).
+         so calling 'platform hopscotch' returns hopscotchForHTML5.
+         
+       Electron: platform behaves same as IDE platform.
+         
+       In vfuel: When main is invoked in the vfuel app, the passed platform
+                 does not contain hopscotch. It is constructed so that
+                 isKindOfPlatformWithHopscotch returns false.
+                 We need to re-create hopscotchForHTML5Runtime,
+                 by calling 'hopscotchForHTML5Runtime using: platform' (returns PlatformWithHopscotch);
+                 This will be same PlatformWithHopscotch as in the IDE.
+    *)
+    platformWithHopscotch = platform isKindOfPlatformWithHopscotch ifTrue: [platform]
+                                                                   ifFalse: [hopscotchForHTML5Runtime using: platform].   
+
+    hopscotchForHTML5 = platformWithHopscotch hopscotch.
+    (* Added 1-line to instantiate CheckedItemUI from the platform - which has hopscotch available *)
+    checkedItemUI = CheckedItemUI usingPlatform: platformWithHopscotch.
+
+    (* Added 3 temporary slots to verbosely process *)
+    checkedItemModel
+    checkedItemSubject
+    checkedItemPresenter
+    |
+
+    (* Added 3-lines to show steps very verbosely.
+       The last line creates a window, instantiates a Presenter
+       and it's definition fragments.
+    *)
+    checkedItemModel:: checkedItemUI CheckedItemModel new.
+    checkedItemSubject:: checkedItemUI CheckedItemSubject onModel: checkedItemModel.
+    hopscotchForHTML5 HopscotchWindow openSubject: checkedItemSubject.
+
+    (* also removed: 'Hello World from HelloWorldApp' out. *)
+  )
+ #+end_example
+
+Let's go over the added lines, and why they were added this way.
+
+
+***** Why did we added the line calling factory constructor of CheckedItemUI? Also, this leads to a change in CheckedItemUI.
+
+So, why did we add this line to the ~CheckedItemApp>>#main:args:~ method:
+
+~checkedItemUI = CheckedItemUI usingPlatform: platformWithHopscotch.~?
+
+Explanation:
+
+- The CheckedItemApp is merely an application wrapper around the module CheckedItemUI. This is how modules are distributed and run. Our module (top level class instance) CheckedItemUI needs a factory constructor which is passed a platform object.  At runtime, instances of top level classes "import" dependencies from the ~platform~.  All top level classes that are general modules need such factory constructor. It was discussed at length in the early sections, around and after section [[*Application and library modules in Newspeak][Application and library modules in Newspeak]].
+
+- So from above links, we know our CheckedItemUI will need a factory constructor such as ~CheckedItemUI>>#usingPlatform: platformWithHopscotch.~ This is what the added line expresses: It creates an instance of CheckedItemUI and stores it on a local variable.
+
+- Looking back to chapter [[*Class CheckedItemUI][Class CheckedItemUI]], we did not add any slots or constructors for the top level class ~CheckedItemUI~ so far.  Our ~CheckedItemUI~ will definitely need to "import" and "hold on" classes or instances of ~Subject~ and ~Presenter~ for use in it's nested classes ~CheckedItemSubject~ and ~CheckedItemPresenter~.
+
+This explanation also leads to the need to beef up the ~CheckedItemUI~ by adding both a factory constructor and slots for classes needed by nested children.
+
+So as discussed in the explanation, let's add the factory constructor and it's slots to ~CheckedItemUI~.
+
+Replace the ~#new~ constructor with the following:
+
+~class CheckedItemUI~
+#+begin_example
+(* Added this factory constructor and slots for Subject and Presenter *)
+class CheckedItemUI usingPlatform: platformWithHopscotch = (
+|
+Subject   = platformWithHopscotch hopscotch Subject.
+Presenter = platformWithHopscotch hopscotch Presenter.
+|
+)
+#+end_example
+
+Also, we recall from [[*Add the hopscotchForHTML5 module that will allow us to build UI][Add the hopscotchForHTML5 module that will allow us to build UI]] that
+
+~platformWithHopscotch hopscotch~
+
+returns instance of HopscotchForHTML5 which has access to the ~Subject~ and ~Presenter~ nested classes (among others).  The added code above just stores them on slots of ~CheckedItemUI~ with same names.
+
+To recap, the slots are needed in the ~CheckedItemUI~ for use by its nested classes, the  ~CheckedItemPresenter~ and  ~CheckedItemSubject~.  When the nested classes refer to ~Subject~ and ~Presenter~ in their code - for example in the constructor line ~CheckedItemSubject onModel: model = Subject onModel:~ - the ~Subject~ can only be found if it is on a slot of either the CheckedItemSubject or the parent CheckedItemUI. As always, all dependencies must be found somewhere in the slot scope going up.
+
+A note: The need to put ~Subject~ on slot of ~CheckedItemUI~ rather than (for example) on the ~CheckedItemSubject~ is due to the fact that any element used in the constructor of ~CheckedItemSubject~ must be available in the scope of slots in nesting classes all the way up, when the contructor is called.
+
+In summary, as the ~#main:args:~ is called, it first uses it's instance slot ~hopscotchForHTML5Runtime~ to create local variables ~platformWithHopscotch~, ~hopscotchForHTML5~ (unused), and ~checkedItemUI~.
+
+The local variable ~checkedItemUI~ will be used to create and show the UI in the code detailed in the next chapter.
+
+
+***** What are the lines at the of *#main:args*?
+
+This is the last step we need to discuss!
+
+The last three lines below create the rudimentary Hopscotch UI with a window, and an instance of ~CheckedItemPresenter~ placed in the window. For details, see [[*When the app runs in the *#main:args:* method, instantiate the *CheckedItemUI*][When the app runs in the *#main:args:* method, instantiate the *CheckedItemUI*]] and in detail in [[*Chapter conclusion about principles of writing rudimentary Hopscotch UI][Chapter conclusion about principles of writing rudimentary Hopscotch UI]].
+
+ ~class CheckedItemApp~
+#+begin_example
+    (* Added 3-lines to show steps very verbosely.
+       The last line creates a window, instantiates a Presenter
+       and it's definition fragments.
+    *)
+    checkedItemModel:: checkedItemUI CheckedItemModel new.
+    checkedItemSubject:: checkedItemUI CheckedItemSubject onModel: checkedItemModel.
+    hopscotchForHTML5 HopscotchWindow openSubject: checkedItemSubject.
+#+end_example
+
+Notice this code is at the very end of the method ~CheckedItemApp>>#main:args:~ which we know is a convention API called to run the app.  The line
+
+~hopscotchForHTML5 HopscotchWindow openSubject: checkedItemSubject.~
+
+is the last line of our application. In this method, Hopscotch takes over, creates the UI and starts interaction with user's input devices. 
+
+In the last chapter, we merely summarize code for all classes we created for our App, the ~CheckedItemApp~.
+
+
+*** 5. Complete code and UI of the *CheckedItemApp*
+
+The complete code and UI of the ~CheckedItemApp~ can be found here:
+
+https://github.com/mzimmerm/newspeak-doc/tree/main/newspeak---a-few-notes-code/checked-item-app
+
+If you prefer not to follow all the detail steps of buiding the ~CheckedItemApp~, you can just install the complete code from there.
+
+To install the complete code to Newspeak, download the ".ns" files from there, then, from your Newspeak IDE (local or online) use the "Compile file(s)" link to import the files into your IDE. If you are not sure what that means, read the section around [[compile-files]["Compile file(s)"]].
+
+Running the app from the IDE, presents the UI we built as in this screenshot. 
+
+[[file:img/newspeak---a-few-notes.org-checked-item-app-ui-running.png]]
+
+You can also package it and run the App as a standalone .vfuel file from the IDE, by clicking the *[deploy]* link beside the class name, then selecting "As VictoryFuel with Mirrors".
+
+[[file:img/newspeak---a-few-notes.org-deploy-checked-item-app.png]]
+
+More details on deployment for another sample App is in the intro section around [[make-deployment-file][Make deployment file for CounterApp]]
+
+
+Note: The code for the *CheckedItemApp* built here is as simple as it can be, to focus on understanding ~HopscotchForHTML5~. The App should be improved in the future. The main weakness of the current version is that it exposes model publicly - model functions should be wrapped in Subject.
+
+This concludes the chapter that explores ~HopscotchForHTML5~.
+
+
+* Some of the more boring details
+
+** HopscotchForHTML5: Analyzing senders of *Subject>>#presenter* and why *HopscotchWindow>>#openSubject: subject* should be invoked instead
+
+Motivation: We know that ~Subject>>#presenter~ is a crucial method that creates a presenter for an existing subject, and establishes their association. We want to find the method or methods applications should invoke that eventually lead to calling ~Subject>>#presenter~.
+
+
+We know ~Subject>>#presenter~ invokes ~Subject>>#createPresenter~. This seems a good indication that the Hopscotch framework creators wanted us to invoke ~Subject>>#presenter~ to get us from a Subject instance to a Presenter instance (the one created in ~Subject>>#createPresenter~); the Presenter instantiated there would then present the UI. (We already discussed that it is reasonable to assume that implementations of ~Subject>>#createPresenter~ should create and return a concrete Presenter.)
+
+But do we know whether:
+
+1. We are supposed to invoke ~Subject>>#presenter~ directly in our application?
+   
+2. Or is the intent of Hopscotch that our application should invoke some other method and through several steps inside the Hopscotsch framework eventually call ~Subject>>#presenter~?
+
+Well that is a good detective story. Let us take a wild assumption that item 2 is the intended method.
+
+There is a vague weak supporting reason for possibility 2. An App will have to create something like a Window, a Frame, or some such object into which our app will be presented. So maybe, a good place to look for a method our application should invoke (instead of ~Subject>>#presenter~, is some kind of Window creation in HopscotchForHTML5 (where we would expect ~Subject#presenter~ to be invoked).
+
+Let us investigate that direction.
+
+A) First, let's look for senders of ~Subject>>#presenter~, all the way up.  There are only four senders of ~#presenter~ in Hopscotch classes:
+
+1. ~#enterSubject:~ in Subject in HopscotchForHTML5
+2. ~#enterSubject:~ in HopscotchShell in HopscotchForHTML5
+3. ~#refresh~ in HopscotchShell in HopscotchForHTML5
+4. ~#refreshmentPresenter~ in Presenter in HopscotchForHTML5
+
+The first just calls the second
+
+~class Subject~
+#+begin_example
+  enterSubject: s = (
+	  (* TODO: use sendUp and open a new window if undelivered *)
+	  ^shell enterSubject: s
+  )
+#+end_example
+We can ignore the third and forth, as they have to do with refresh. That leaves us with the second, ~HopscotchShell>>enterSubject:~. If we find who sends this message, (maybe following up a few of its senders) we should arrive at the method our application should invoke (which then would end up calling #createSubject, the method we are intrested in calling. 
+
+B) So next, let's look for senders of ~HopscotchShell>>#enterSubject: subject~ only in Hopscotch classes, we get
+
+1. enterSubject: in ToolbarPresenter in HopscotchWindow in HopscotchForHTML5
+2. enterSubject: in Presenter in HopscotchForHTML5
+3. enterSubject:fromSnippet: in EmbeddedHopscotchWindow in HopscotchForHTML5
+4. find: in ToolbarPresenter in IDEWindow in Browsing
+5. goHome in HopscotchShell in HopscotchForHTML5
+6. homeButton in Presenter in HopscotchForHTML5
+7. ~into:openSubject: in HopscotchWindow in HopscotchForHTML5~
+8. openSubject: in Window in HopscotchProxy in AppPlatform in Browsing
+
+Now a detective story becomes more of a guessing game. But anything that is creating a Window or invoked from Window is a good guess, as any application would have to place it's Presenter into a Window or Frame or some such.
+
+So let's look further at 7.
+
+~HopscotchWindow>>#into: container openSubject: subject~
+
+This seems to be doing something useful, it creates a toolbar, adds it to container, etc.
+
+C) So let's look for senders of ~HopscotchWindow>>#into:openSubject:~ only in Hopscotch classes, we get
+
+
+1. into:openSubject: in EmbeddedHopscotchWindow in HopscotchForHTML5
+2. openSubject: in EmbeddedHopscotchWindow in HopscotchForHTML5
+3. openSubject: in HopscotchWindow in HopscotchForHTML5
+
+
+~HopscotchWindow>>#openSubject: subject~
+
+public openSubject: s = (
+	^into: body openSubject: s
+)
+
+is promising.
+
+~HopscotchWindow>>#openSubject: subject~ looks like may be the method that we should invoke in our app to eventually create the Presenter.
+
+The invocations sequence would be
+
+~HopscotchWindow>>#openSubject: subject~ invokes ->
+~HopscotchWindow>>#into: container openSubject: subject~  invokes ->
+~HopscotchShell>>#enterSubject: subject~   invokes ->
+~Subject>>#presenter~ invokes ->
+~Subject>>#createPresenter~
+
+The last method creates and returns the presenter; which is then entered and placed to the page container (body).
+
+*Conclusion: We found through some assumption, a bit of detective work through code that included guesses, that our application should not create ~Presenter~ directly or by calling ~Subject>>#presenter~ directly. Instead, our application should invoke*
+
+
+~HopscotchWindow>>#openSubject: subject~
+
+*this invocation will do the work of creating the Presenter for the Subject, and entering the presenter into the appropriate place in the container body.*
+
+We will use this conclusion as a core conclusion when writing our sample Application.
