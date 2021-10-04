@@ -31,29 +31,95 @@ Much of this document is collected from existing Newspeak sources:
 | 2021-07-05 |   | Milan Zimmermann |   | Reworked the saving paragraph:  "lastSaved" vs "backup" in [[Saving changes in Newspeak]]                                                                                                   |
 | 2021-07-16 |   | Milan Zimmermann |   | Added section [[*Newspeak is different.  An ide-driven journey around the Newspeak platform][Newspeak is different.  An ide-driven journey around the Newspeak platform]]                                                                                                |
 | 2021-07-28 |   | Milan Zimmermann |   | Added sections [[How does Ampleforth work to create live literate Newspeak demos such as http://bracha.org/Literate/literate.html?][How does Ampleforth work to create live literate Newspeak demos such as http://bracha.org/Literate/literate.html?]] and [[How does Newspeak displays itself in DOM and HTML?][How does Newspeak displays itself in DOM and HTML?]] |
-|            |   |                  |   |                                                                                                                                                                                         |
+| 2021-08-10 |   | Milan Zimmermann |   | Added section [[*The Newspeak UI, *HopscotchForHTML5*: Analysing it by code browsing; Discovering *Subject*, *Model*, *Presenter*, *Fragment*; Writing *CheckedItemApp* sample App][The Newspeak UI, *HopscotchForHTML5*: Analysing it by code browsing; Discovering *Subject*, *Model*, *Presenter*, *Fragment*; Writing *CheckedItemApp* sample App]]         |
+| 2021-08-15 |   | Milan Zimmermann |   | Added section [[*Exemplars: Enabling liveliness everywhere][Exemplars: Enabling liveliness everywhere]]                                                                                                                                 |
+| 2021-08-15 |   | Milan Zimmermann |   | Added section [[*Newspeak terminology][Newspeak terminology]]                                                                                                                                                      |
 
   
-* Notation
+* Terminology and notation
 
-*** Message (function) names notation in text
+*** Notation: In the text, how do we express a class name, a message (function, method) name, or a slot name?
 
-We needed a brief introduction to explain a notation used in this document.
+This is a brief introduction to explain a notation used in this document.
 
-Newspeak is a class based, message based system.  All runtime operations are message sends (method calls).
+Newspeak is a class based, and message based system.  All runtime operations are message sends (method calls).
 
-What do we mean by a 'message'?  Think of it as a method or function name with parameter names (method signature). 
-What do we mean by a 'message send'? T hink of it as calling (invoking) the method or function
+- What do we mean by a 'message'?  Think of it as a method or function name with parameter names (method signature). 
+- What do we mean by a 'message send'? Think of it as calling (invoking) the method or function.
 
-In fact, we may use 'method name' and 'message name' interchangeably, although it is not quite precise.  Same for 'send a message' and 'call (or invoke) a method'
+In fact, we may use 'method name' and 'message name' interchangeably, although it is not quite precise.  We also may use the term 'send a message' and 'call (or invoke) a method' interchangeably.
 
-Here is the notation we want to introduce: When you see in text, something like ~Rectangle >> #initWidth: width andHeight: height~, it means: "class /Rectangle/ has a method named /initWith:andHeight/, with first parameter name /width/ and second parameter name /height/".  If you see just ~#initWidth: width andHeight: height~ it means the same, but we assume the class name "Rectangle" is clear from context.  Depending on context, it could also mean "in some piece of code, we called method  ~#initWidth: width andHeight: height~ on an instance of a Rectangle.
+Here is the notation we want to introduce: When you see in text, something like ~Rectangle>>#initWidth: width andHeight: height~, it means: "class /Rectangle/ has a method named /initWith:andHeight/, with first parameter named /width/ and second parameter named /height/". 
 
-Sometimes the parameter names are not included and we shorten the signature to ~#initWidth:andHeight:~
+If you see just ~#initWidth: width andHeight: height~ it means the same as above, but we assume the class name "Rectangle" on which the method is declared, is clear from the context, and the meaning is same as above.
 
-Examples:
+The parameter names are not part of the signature (a unique method name), and are often not included in the method signature.  If the parameter names are not included, we shorten the signature to ~Rectangle>>#initWidth:andHeight:~ or ~#initWidth:andHeight:~.
+
+Examples of this notation:
+
+- ~Rectangle>>#initWidth width :andHeight: height~
+- ~Rectangle>>#initWidth:andHeight:~
+- ~#initWidth:andHeight:~
 - ~#main: platform args: args~ 
 - ~#usingPlatform: platform~
+- ~Number>>squeared~ - in this example, note there is not colon ~:~ at the end of the signature. The message ~squared~ is unary (does not accept a parameter) acts only on the Number instance, returning the squared value of the ~Number~ instance.
+- ~squared~ - as above, but ~Number~ is clear from the context in the text.
+
+
+
+*** Newspeak terminology
+
+Newspeak is different. This includes terminology that may not be familiar.  Below we list terms that are generally used.  This section sort of jumps ahead of the gradual introduction to Newspeak, but should help when reading the text.
+
+- *Top level class* : Class that appears on the top level class list in the IDE. Top level class has no enclosing class. 
+- *Module Declaration* : Source of top level class
+- *Module Definition* : Class object of top level class
+- *Module* :   Instance of top level class
+- *Slot* : Equivalent of a member variable or a local variable in other languages.  In Newspeak, everything is a message send, so a slot is equivalent to a getter (and also a setter, if the slot is mutable).  Slot mutability is clear from the syntax at the line of it's declaration - see below.   
+- *Instance slot declaration* : Expression between the bars ~| |~ locater inside the primary factory method, irrespective whether it has a ~=~, ~=::~ or (nothing) to the right of the slot name. For example ~|mySlot =:: 1|~ is a declaration of a mutable slot named ~mySlot~.  ~|mySlot = 1|~ is a declaration of an immutable slot named ~mySlot~. 
+- *Local slot declaration* : Equivalent of a local variable.  Syntactically all above applies, but the expression between the bars ~| |~ is located inside an instance method.
+- *Primary factory method* : The method that allows to accept parameters (capabilities), declare instance slots, and produce an instance of a class.  In practical terms, looking at code, the primary factory method is the method starting on the same line where the class code starts. Also, the primary factory method is the only place in which we can declare instance slots:
+    #+begin_example
+      (* The string "usingPlatform: andA1:" is the primary factory method signature.
+         The whole section up to the closing bracket is the factory method.
+      *)
+      class A2 usingPlatform: p andA1: A1 =
+        (
+          (* 1. Primary factory method slots and body. We can write code below slots *)
+          |slots|
+        )
+    #+end_example
+- *Factory method* : The method that produces an instance but cannot declare instance slots.   In practical terms, looking at code, the factory method is the method in the class code section after the ":" - in this example, section 3. including the surrounding brackets.  
+    #+begin_example
+      class A2 usingPlatform: p andA1: A1 =
+        (
+          (* 1. Primary factory method slots and body *)
+          |slots|
+        )
+        (
+          (* 2. methods and nested classes *)
+        )
+        :
+        (
+          (* 3. factory methods *)
+          factoryMethod1 = ( (*Code returning instance*) )
+        )
+    #+end_example 
+- *Class factory object* : The user accessible object that represents the class in the language. This object provides the factory methods (both primary factory methods and factory methods). From user's perspective, the *class factory object*, *class object*, and *class* are all informal names for the same thing!  This is slightly different for the language implementor, for whom the class factory object is distinct from the class - see the section below.  
+
+
+**** Some terminology differences for language user vs. language implementor 
+
+ In a language implementation, there is likely a representation of the *class*, that probably points to a mixin and a superclass, and may or may not have other things. For the language implementor, this representation of *class* is called a *class factory object*. This object is distinct, from the _user accessible object that represents the *class* in the language_. So the term *class factory object* is used to distinguish it from the *class* itself, but that is a distinction for the implementor, not the user.
+
+Informally, when speaking from the language user's perspective, we often refer to this user accessible object as the *class*, or the *class object*, or the *class factory object* (all names for the same thing). 
+
+So I suppose when talking about the language, we should use the term "class" or perhaps "class object" for this thing.
+
+
+**** Furter notes on terminology
+
+ See spec, section 6.4. Also see 3.5 which discusses methods and what defines them (mixins) as opposed to their declarations (again, essentially source)
 
 
 * Perhaps the best high level summary of Newspeak
@@ -71,6 +137,7 @@ This document is both a personal experience of learning Newspeak, an an attempt 
 * Newspeak: A quickstart.  Explore the IDE.  Then develop CounterApp, package it and deploy it
 
 TL;DR: This quickstart section attempts to provide an incremental introduction to Newspeak.  First, we introduce the Newspeak online IDE, then we build and deploy a sample Newspeak app called ~CounterApp~.  A spoiler: we can look ahead and run the app we will be building - the ~CounterApp~ - online at https://newspeaklanguage.org/samples/primordialsoup.html?snapshot=CounterApp.vfuel. 
+
 
 ** Run the online version of the Newspeak IDE.  Read docs, watch videos
 
@@ -217,6 +284,7 @@ Next:
 TL;DR: This section describes:
 
 - How to download, install, and start a *local Newspeak webserver*.
+
 - How opening a browser tab at http://localhost:8080/primordialsoup.html?snapshot=HopscotchWebIDE.vfuel runs the local version of the Newspeak IDE (reaching the just installed local Newspeak webserver).
 
 Prerequisites: 
@@ -230,10 +298,13 @@ Notes:
 
 *Action steps to download, install, and start using a local Newspeak webserver*
 
-- First, you may want to review the Newspeak downloads page at https://newspeaklanguage.org/downloads.html, in particular the *For all platforms* link.  
+- First, you may want to review the Newspeak downloads page at https://newspeaklanguage.org/downloads.html, in particular the *For all platforms* link.
+
 - Next, to install and start a local Newspeak webserver, you can 
+
   - Either download and unzip the file *servable.zip* from the link above (https://github.com/newspeaklanguage/newspeaklanguage.github.io/raw/master/servable.zip) to any directory, then start the Newspeak server by running ~serve.sh~ from the extracted file.
-  - Or run the following commands from the command line 
+
+  - Or run the following commands from the command line (this assumes your directory from which Newspeak is served is ~$HOME/software/newspeak/my-serve-http~:
     #+begin_src shell :noeval
       MY_SERVE_NEWSPEAK=$HOME/software/newspeak/my-serve-http
       mkdir --parent $MY_SERVE_NEWSPEAK || echo Unable to create directory $MY_SERVE_NEWSPEAK 
@@ -249,6 +320,7 @@ Notes:
       chmod u+x serve.sh
       ./serve.sh
     #+end_src
+
 - Expected Result: "serving at port 8080".  Note: In *servable.zip* there is a file ~server.py~, which defines the Newspeak server port.  The port is set to 8080.  Edit the file and change port if needed.
 
 
@@ -262,6 +334,7 @@ Note: The use of the local version is the same as the use of the online version.
 Summary: 
 
 - In this section we installed the local Newspeak webserver, and started using the served Newspeak IDE.
+
 - The installation method described here is the [[install-method-2][Installation method 2 (local Newspeak webserver)]]   
 
 Next: [[*Deploy CounterApp as standalone app into local Newspeak webserver][Chapter Deploy ~CounterApp~ as standalone app into local Newspeak webserver]]
@@ -1360,6 +1433,7 @@ To describe a concrete (somewhat artificial) situation: Let's say that on Github
   
 
 
+
 ** Saving changes in Newspeak
 
 TL;DR: Changes can be saved either /inside the browser/ in the browser's local storage, or, /outside the browser/ on the filesystem.  Any changes you make (for example: you add a class, change a class, evaluate something in the workspace) are stored in the browser local storage in two entries: *lastSaved* and *backup*.  Clicking the "Accept" button  [[file:img/newspeak---a-few-notes.org-accept-image.png]] saves the changes in local storage under the key /backup/, while clicking the "Save" button [[file:img/newspeak---a-few-notes.org-save-button.png]], at any time after "Accept", saves the changes under the key /lastSaved/.  Alternatively, you can `export` code by clicking the "three dot menu" button to the right of the class, then clicking the "Save to file" item in the popup menu.  You can `import` code by clicking the "three dot menu" on the top, to the right of "Root +", then selecting the "Compile File(s)" in the popup menu.
@@ -1377,8 +1451,8 @@ How is the browser local storage handled, and how is /lastSaved/ different from 
   - In the "Storage" section expand "Local Storage".
   - You can see our changes in the appropriate URL, both under the key /lastSaved/ and the key /backup/.
 
-- How does the/lastSaved/ and /backup/ system work on browser restart? On restart, the Newspeak system checks to see if there are any changes under the key /backup/ and/or under the key /lastSaved/.  If /lastSaved/ changes exists, we check if there are any subsequent changes under /backup/.  If not, we use the /lastSaved/ version.  If there are unsaved changes (/backup/ entry exists), a dialog will come up asking you how to proceed:  [[file:img/newspeak---a-few-notes.org-message-restore-from-backup.png]]
-  - This message tells us, we did make code changes, then clicked "Accept" [[file:img/newspeak---a-few-notes.org-accept-image.png]], without pressing "Save" [[file:img/newspeak---a-few-notes.org-save-button.png]], and reloaded the page.  In other words, changes are stored under the key /backup/ but not(yet) under /lastSaved/.  In most situations, pressing *Restore from backup* is the best choice.  Your code will load the changes from the /backup/ key, and contain all your changes.  At any time, you can click "Save" and merge the /backup/ changes to /lastSaved/.
+- How does the/lastSaved/ and /backup/ system work on browser restart? On restart, the Newspeak system checks to see if there are any changes under the key /backup/ and/or under the key /lastSaved/.  If /lastSaved/ changes exists, Newspeak checks if there are any subsequent changes under /backup/.  If not, we use the /lastSaved/ version.  If there are unsaved changes (/backup/ entry is not empty), a dialog will come up asking you how to proceed:  [[file:img/newspeak---a-few-notes.org-message-restore-from-backup.png]]
+  - This message tells us, we did make code changes, then clicked "Accept" [[file:img/newspeak---a-few-notes.org-accept-image.png]], without pressing "Save" [[file:img/newspeak---a-few-notes.org-save-button.png]], and reloaded the page.  In other words, changes are stored under the key /backup/ but not(yet) under /lastSaved/.  In most situations, pressing *Restore from backup* is the best choice.  Your code will load the changes from the /backup/ key, and contain all your changes.  At any time, you can click "Save" and merge the /backup/ changes to /lastSaved/.  After, the question above will not be asked until you made new changes and "Accepted" them.
   - For search purposes, here is the text of the message: "You have backup changes that are newer than your last save.  Do you want to restore these changes, or load from the last save?"
 
 - Note: There is a fine point we should make.  Crudely, we can say that "the Newspeak IDE is the file ~HopscotchWebIDE.vfuel~ interpreted by the browser when pointing to the URL https://newspeaklanguage.org/samples/primordialsoup.html?snapshot=HopscotchWebIDE.vfuel.  However, we need to realize that the browser immediately downloads and caches this file.  Changing anything in Newspeak (adding a class, typing to the Workspace), causes the changes to be saved locally.  If we close the browser, and visit the same online URL again, we will see the site as we left it - with the local changes "added" to the vanilla Newspeak IDE! Which local changes are "added" (/backup/ or /lastSaved/ or both), is determined by your answer to the dialog above.
@@ -1394,6 +1468,492 @@ Apart from the /lastSaved/ and /backup/ in-browser changes management, you can s
     
 - During development in Newspeak, you will want to save your work.  Until source control is integrated into the IDE, the current approach is to `export` ("Save to file") all classes you changed in a directory on your system as *.ns* files, and potentially create a code repository in that directory.  If we later want for Newspeak to use the repository version, we ("Compile File(s)") the *.ns* files back to Newspeak.  For how to access the "Save to file" and "Compile File(s)" buttons, see TL;DR in section [[*Saving changes in Newspeak][Chapter Saving changes in Newspeak]]
 
+
+
+
+** Exemplars: Enabling liveliness everywhere
+
+What are "examplars"? Exemplars are Newspeak code examples, placed inside comments.  Their role is to provide live code for browsing, as well as document typical use of a class and it's methods.
+
+*** Exemplars motivation
+
+We often ask "how is this class used"? "What is the result of calling one of it's methods"?  Answer can be provided by any of the following mechanisms:
+
+- Reading the class code and deriving a result (in our head).
+- Finding a test for the class and the method and analyzing it's code and results.
+- Writing a simple example program using the class and method.  In Smalltalk and Newspeak, this is done by navigating to "Workspaces" and writing some code - instantiating the class, passing it's factory some arguments, and calling the method you are interested in.
+- *Exemplars provide a class-author supplied mechanism to instantiate the class and run it's methods, as if a user was doing that in the Workspace*
+
+
+*** Exemplars documentation
+
+Gilad Bracha's blog post https://blog.bracha.org/exemplarDemo/exemplar2021.html?snapshot=BankAccountExemplarDemo.vfuel
+
+Gilad Bracha's BankAccount video https://www.youtube.com/watch?v=qKWPSvcF0zA
+
+
+*** A class with an exemplar
+
+A class with exemplar can be found at [[https://github.com/newspeaklanguage/newspeak/blob/master/BankAccount.ns][BankAccount]] in Newspeak sources.
+
+There are three exemplars in the code
+
+#+begin_example
+(* :exemplar: BankAccount balance: 100 *)
+(* :exemplar: deposit: 100 *)
+(* :exemplar: withdraw: 100 *) 
+#+end_example
+
+From the source and the pulled comments, we can see that an exemplar is a piece of metadata inside comments. The metadata is expected to be valid Newspeak code after the text marked as ~:exemplar:~.
+
+We can also guess that the ~:exemplar:~ code provides a way to instantiate the class and run some methods on it - basically mimicking what we would do in a workspace if we wanted to explore the class instance's behavior.
+
+From the source we can also see the ~:exemplar:~ comment is placed before the ~=~ sign in a factory or method declaration - that is the only place where the parser is looking for exemplars. 
+
+#+begin_example
+class BankAccount balance: b <Integer>
+(* :exemplar: BankAccount balance: 100 *) = ( .. factory code .. )
+#+end_example
+
+To make the :exemplar: stand out more, we can format the code so that the comment with exemplar occupies it's own line. The formatting above is "normative" though.
+
+#+begin_example
+class BankAccount balance: b <Integer>
+(* :exemplar: BankAccount balance: 100 *)
+  = ( .. factory code .. )
+#+end_example
+
+
+
+*** Exemplars role
+
+The role of exemplars is two-fold:
+
+1. Provide lively code in the IDE. By adding appropriate exemplars for a class, the IDE, when browsing the class, will use the exemplars code to create the class instance. Once an instance exists, it can call methods on it.
+2. Provide code examples of class instantiation and running it's methods.
+
+
+*** How does the BankAccount class look in the IDE with and without an exemplar?
+
+If a class such as the ~BankAccount~ provides exemplars (at least an exemplar for the primary factory method), *an instance of the BankAccount is presented in the IDE UI; the BankAccount class presenter is also shown, embedded in the instance*. 
+
+Inclusion of an exemplar allows the IDE to create a live instance, present it's browser, and allows the user to interact with the live instance.
+
+If a class such as the ~BankAccount~ does not provide exemplars, *only the BankAccount class presenter is shown in the IDE UI*. See the section below.
+
+
+**** BankAccount class with an exemplar in the IDE
+
+Viewed inside the IDE, a class that provides an exemplar:
+
+[[file:img/newspeak---a-few-notes.org-class-with-exemplar.png]]
+
+The line on top, starting with *self   instance of BankAccount* is the beginning of the object presenter. The presented object is the object the IDE created using the code in the ~:exeplar:~  (s).
+
+The line with the blue link to *BankAccount* (after the line with *class*) is the beginning of the class presenter section, embedded in the object presenter. The class presenter section ends just above the line *Evaluate Selection*. 
+
+We can see that the *IDE UI presents the instance of the BankAccount, with the BankAccount class presenter embedded*. That places the emphasis on liveliness: The IDE user can experiment with the instance behavior inside the "Evaluate Selection" mini-workspace. An example of such experiment:
+
+1. In the workspace, type ~deposit: 20~ - a method name, and pass it a value.
+2. Use the key Ctrl-A to highlight the code (This is browser specific, the Mac key for highlight would be different)
+   [[file:img/newspeak---a-few-notes.org-class-with-exemplar-invoke-method.png]]
+3. Use the key Shift-Enter to execute the message send. The IDE sends the message ~deposit: 20~ to the instance created by the IDE using the  code in the ~:exemplar:~, which immediately updates the value of ~balance_slot~ from 100 to 120.
+   [[file:img/newspeak---a-few-notes.org-class-with-exemplar-invoke-method-shift-enter.png]]
+
+
+As we can see, exemplars help to focus to browse instances and experiment with them by sending messages.
+
+We can still browse the classes - in our case the BankAccount class, by clicking on it's link.
+
+[[file:img/newspeak---a-few-notes.org-class-with-exemplar-class.png]]
+
+
+
+**** BankAccount class without an exemplar in the IDE
+
+To show the contrasting example, this is how the same class looks in the IDE after removal of the ~:exemplar:~ sections
+
+[[file:img/newspeak---a-few-notes.org-class-without-exemplar-class.png]]
+
+
+We can see only the class viewer is presented in the IDE (NOT the embedding object browser).
+
+We could still experiment with the BankAccount, but we have to go to Workspaces, or find if a test for the class and methods exists.
+
+
+*** More details on exemplars
+
+This section is edited from the Google Groups posts around https://groups.google.com/g/newspeaklanguage/c/cPG5Q6NOwiA/m/fSuol8w_AQAJ
+
+**** The presence of an exemplar factory makes the IDE to create the instance and show the instance browser
+
+In the BankAccount video https://www.youtube.com/watch?v=qKWPSvcF0zA, if the exemplar on the factory method 
+~#balance: b~ was missing, the exemplar instance would not even be shown in the IDE?
+
+Correct. If there isn't an exemplar for self, the method exemplars cannot work.
+
+
+**** Can there be multiple exemplars in a comment?
+
+There can in fact be multiple exemplar comments. An exemplar comment is one whose identifer (the name given between colons in the tag at the beginning of the comment) starts with #exemplar.
+
+For example, we can define a method #foo:
+
+#+begin_example
+  public foo: x (* :exemplar_1:  foo: 3 *) (* an random comment *)  (:exemplar_2: foo: 'a' *) = (^x)
+#+end_example
+
+In that case, the Debug button will provide a menu of the two exemplars.
+ 
+
+**** Are the exemplars always extracted from the comment before the " = (..)" section defining the factory constructor, instance method or class method, OR can they be at any position in the code?
+
+Exemplars must be placed before the method body starts (or for classes, before factory body starts).
+
+For a concrete example, let us look at this pseudo-code of factory method ~balance: b~, see markings with <== on the right
+
+#+begin_example
+class BankAccount balance: b <Integer>
+(* :exemplar: BankAccount balance: 100 *) = ( (* <== This, and only this location is parsed for exemplar *)
+	|
+    balance_slot <Integer> ::= b.
+	|
+  (* :exemplar: BankAccount balance: 200 *) = ( (* <== This would NOT be parsed for exemplar *)
+) (
+)
+#+end_example
+
+Exemplar comments are just an instance of the general notion of metadata comments. You can have metadata comments everywhere, but there are general rules for what AST node a metadata comment applies to. Metadata must apply to the correct AST nodes. The mirror system looks for metadata  for methods and classes in these places. You can look at the methods #metadata and #parseMetadata in MethodMirror and ClassHeaderMirror, to see how this works; also the class MetadataParsing.
+
+
+
+**** Examplars using block and value: How would an examplar for a more complex object look like?
+
+How do examplars look in general (for factories or methods), if a parameter is a "complex" object? ( rather than an object for which we can create a literal (Number, String, Boolean, List of the above etc) directly in the :examplar: text like in the BankAccount)
+
+I know the second question is open,  but I am now curious how such exemplars are done. I can imagine if a parameter can be constructed from literals, then we just provide those parameter constructions as part of the exemplar. But if it goes deeper?
+
+You may indeed need to build up the object from multiple parts, much as you might do in the #main:args: method of an application. You would want to define local variables for intermediate results etc.  So you write all this code in a block and call value on it:
+
+#+begin_example
+class Complicated usingPlatform: p with: s  (* :exemplar: [ | T1 = SomeClass usingPlatform: platform. T2 = AnotherClass with:T1. Complicated usingPlatform: platform with: T2] value *) =  ( .. code here .. )
+#+end_example
+
+
+**** What is the purpose of the exemplar on the primary factory method?
+
+Primary purpose of the exemplar on the primary factory method is to provide an instance for life evaluation in the IDE.
+
+Generally, the exemplar on the primary factory method would call the primary factory method (to get us an instance and also document the signature), BUT this is not always the case.
+
+The overriding purpose of such exemplar is to get an instance whichever way possible, such as getting an instance from the Platform object or from the Ide object.  On top level classes, which expect platform or ide as an argument, such example would be circular.  So, for example, many top level classes have exemplars like this:
+
+#+begin_example
+  class CollectionsForPrimordialSoup usingInternalKernel: ik (* :exemplar:  platform collections *) = ( .. slots ..)
+#+end_example
+
+#+begin_example
+  class Namespacing usingPlatform: p (* :exemplar:  ide namespacing *) = ( .. slots .. )
+#+end_example
+
+#+begin_example
+  class TextModule usingPlatform: p <Platform> (* :exemplar: platform text *) =  ( .. slots .. )
+#+end_example
+
+#+begin_example
+class Debugging usingPlatform: platform ide: ide (* :exemplar: ide debugging *) =  ( .. slots .. )
+#+end_example
+
+These examples show how to get an instance from the platform, the ide, or similar object available in the IDE.
+
+Note: In fact, whether to use this style is still an open question. Do we want the exemplar to be the same object we use in the system, or a distinct copy? What semantic effects might we see in either case as the user experiments with the exemplar?
+Using the IDE's own instance makes the system more live, but may allow users to easily shoot themselves in the foot. It was just the easiest thing to do right now. It also has exposed a bug. Changing methods in this case seems to have no effect, unclear why yet.
+
+**** The examplars are evaluated "as if in a Workspace"
+
+The IDE is the metadata interpreter for exemplar comments, and it uses the same namespace similar to what it creates for workspaces to evaluate them.
+ 
+This ~namespace~ includes top level classes in the root namespace (Root) as well as things like platform and ide, sort of like the
+
+~manifest object + platform object + ide object~
+
+The exact mechanism used right now is that Workspace has a number of methods like #ide, #platform and others, and has a  #doesNotUnderstand: method that looks up names in the root namespace. The code for it looks like this:
+
+~WorkspaceManager>>Workspace>># doesNotUnderstand: message~
+#+begin_example
+protected doesNotUnderstand: message = (
+	^Root
+		at: message selector
+		ifAbsent: [super doesNotUnderstand: message]
+)
+#+end_example
+
+So calling in Workspace (to be exact, in an instance, e.g. workspace1)
+
+~workspace1 ide~
+
+returns (via *ide selector -> 'HopscotchWebIDE'*)
+
+~Root at: 'HopscotchWebIDE'~
+
+
+** IN-PROGRESS-NOW Access control and access modifiers in Newspeak.
+
+This section summarizes access control in Newspeak. In other words, what are the rules for class and object members to be allowed access from other classes and objects.  
+
+For a heads up, access control rules define how, if an expression (a line of code), will be valid at runtime. The rules must take into account 
+
+a) access modifiers "private" "public" and default (protected); 
+b) if the accessed objects and members are in the same class, nested class or enclosing class of the expression for which the rules evaluate access;
+c) if the accessed objects and members are in the same class or an inherited class.
+
+Clearly, access control rules are not trivial. But hopefully we will be able to summarize it reasonably briefly.
+
+
+*** Introduction to access control in Newspeak
+
+Main article background for this section is the online presentation "Can Beautiful Languages Do Access Control?" https://00463064267054129163.googlegroups.com/attach/16b8a25058caa/ns-access-control.pdf?part=0.1&view=1&vt=ANaJVrHvttkWPn-fNP95UFKbcCbbp1VaDJlJSx1HzBevq_xhafVpZ4uz1ffKMTvkAxLFnAk2_xurwU-BTi3FIMnPj1FlU7-S-zKgS2y2eNXheQQsxM8mJUY.  The text below is based on it and borrows from it, but introduces terminology that is not part of the presentation.
+
+Goal of this section is to understand the Newspeak security and access system.
+
+
+*** Context to access control in Newspeak.
+
+Let's provide a context of access control.
+
+- Newspeak classes are nested and also inherited. Class members are slots, methods, and their nested classes. 
+- Each member may have access modifiers keywords: public, private. No modifier means protected.
+- What does "access control" mean in a broader sense? 
+   - We want to understand how objects can access ("have the access rights to") other objects and  other objects' members: slots, methods, inner class objects. 
+   - The access rights are defined by rules which navigate a path in three independent "dimensions"
+      - The "accessibility dimension": Points on this dimension are access modifiers: public, private, protected (default, no keyword)
+      - The "lexical dimension" : Points on this dimension are enclosing and nested classes
+      - The "inheritance dimension" : Points on this dimension are classes on the inheritance chain
+
+
+*** Access control definition and terminology
+
+Let us describe what we mean by the term "Access" or "Access rights" of objA to access objB or objA to send message msg to objB.
+
+- In a Newspeak's (class based) system of objects, each object may contain slots, methods, and nested classes. Because in Newspeak runtime, any operation is a message send, we can speak of the following: 
+   - At runtime, in Newspeak's system of objects, object objA may or may not be able to reference (see) another object objB.
+   - If objA is not allowed to reference objB, a security exception results. 
+   - If objA can reference objB, we say that objA has access (or access rights) to objB. Further, if objA has access to objB, assume there is a method, slot, or nested class msg  declared on objB. Even though objA has access to objB, objA still may or may not be able to send the message msg to objB (execute objB msg). If objA has the ability to send message msg to objB, we say that"object objA has access to msg on objB"
+   
+
+Combined, we say that objA has *access* (or *access rights*) to send a message msg to objB, if a message send ~objB msg~ is allowed at runtime from code in objA.
+
+  
+*** Slides 61, 62, 63: Rules for accessing members above and below the class in the nesting hierarchy
+
+This section summarizes rules which define whether an object is allowed to send a message to another object.  
+
+- *Slides 61, 62, 63 overview*: They describe how Newspeak code in a class accesses members (classes, slots, methods) above and below the class in the nesting hierarchy and the member members, depending on the accessed member's public, private and protected status. In particular:
+
+- *Slide 61*: describes public, private keywords and protected members of a class. No keyword before the member name makes the member protected.
+
+- *Slide 62*: describes how Newspeak code in a class accesses private and protected members (classes, slots, methods) above and below the class in the nesting hierarchy:
+
+  - a) Private and protected members can be seen by nested classes
+
+  - b) Enclosing classes cannot see private or protected members of nested classes
+
+  - c) Subclasses are never aware of private members of superclasses and vice versa
+
+- *Comments on slide 62*:
+
+  1. Items a) and b) describe lexical access (in terms of nested classes and the enclosing class). We can interpret lexical access as 'looking at source code'. If we print the code of the module declaration (the code of top level class, including all nested classes), and use a ruler to browse up and down the class hierarchy, we are using lexical access.  In other words, think of looking at a line of code with an expression such as ~aObj msg~ or ~msg~ and ask: Is the message send accessible at runtime? Then:
+
+     - The first rule can be interpretted as: If a member ~msg~ exists *UP the lexical scope* as a member, it will be visible (can be accessed at runtime without access error), no matter if it is private, protected or public.
+
+     - The second rule can be interpreted as: If a member ~msg~  exists *DOWN (IN a nested class) the lexical scope*, it will only be accessible if public.
+
+  2. *The Sky and the ground memoization of rules a) and b)*: We can imagine, if we are looking UP, the sky is see-through, everything is visible and accessible, all the way to the remote stars; in our situation all members lexically UP are visible and accessible. Looking DOWN, our visibility of private and protected members stops at seeding the ground - the bottom of the class our line is in. Except the public members which we can always see through the ground.
+
+  3. The third item discusses the rule for inheritance.
+
+- *Slide 63*: discusses how objects can access members. This implies runtime.
+
+  - An object may access a private or protected member only if 
+
+    - a) it is a member of the object or 
+
+    - b) a lexically visible member of an enclosing object
+
+- *Comments on slide 63*:
+
+  1. While first two bullets of slide 62 describe how we can evaluate access lexically (looking at code), slide 63 describes runtime: lets say a line ~obj member~ or ~member~ is executed. Slide 63 tells us that:
+
+    - ~obj member~ is valid if member is a member of the object
+
+    - ~member~ is valid if the ~member~ is lexically visible member of an enclosing object (can be several levels up). 
+
+  2. There are further rules which describe how message sends find the object on which the message exists (slides 64-77)
+  
+
+*** IN-PROGRESS-NOW todo: Add section with reworded simplified rules 
+*** IN-PROGRESS-NOW todo: Worked examples of for slides 61, 62, 63: Rules for accessing members above and below the class in the nesting hierarchy
+
+
+todo:
+-  lexical access have a priority (before inheritance)
+
+*** Email to the Newspeak group
+
+Gilad, 
+
+
+This is another all too wordy follow up from the earlier thread on access modifiers in Newspeak.
+
+
+A few Fridays ago, I was on a plane for four hours, and thought I would take an hour to go over the slides in  Can Beautiful Languages Do Access Control?
+- https://00463064267054129163.googlegroups.com/attach/16b8a25058caa/ns-access-control.pdf?part=0.1&view=1&vt=ANaJVrHvttkWPn-fNP95UFKbcCbbp1VaDJlJSx1HzBevq_xhafVpZ4uz1ffKMTvkAxLFnAk2_xurwU-BTi3FIMnPj1FlU7-S-zKgS2y2eNXheQQsxM8mJUY
+
+
+Well it took me the whole four hours and more :) but I feel I got an ok understanding (much better than an earlier "intuitive guessing"). 
+
+
+General: 
+
+
+Slide 62 is a great summary of access control that answers some of my core questions about up vs down nesting accessibility. Basically I am thinking of it this way: 
+- "I am writing code in the context of class C. If the code needs to use an instance of class B, I need to look at the code of class B with all it's enclosing and nested classes, as if I saved the module declaration where B is declared. The rule is: 
+- instance of  B can access all members of all classes in the class B's lexical scope UP;
+- instance of B can only access public members of public classes in the class B's lexical scope  DOWN". 
+
+
+I am not sure if my above interpretation of slide 62 is completely correct, but that is what I came up with after some experimentation.   (Another interpretation of the "going down in nesting" rule would be that, in an access chain such as "objectB NestedInObjectB new nestedInNestedOfObjectB new msg" everything along the access chain" must  be public.)
+
+
+Also the slides explaining how the lexical chain lookup has precedence to the inheritance chain lookup are super helpful.
+
+
+Obviously all this is just a part of a necessarily complex problem at the intersection of (or maybe rather on the cartesian product of) access modifiers, nesting, and inheritance.  
+
+
+One overall comment-question: I see examples in the slides that go over the "comb rule". It is a bit hard without comments for the slides, but I assume the "comb rule" is applied in other languages that have both nested classes and inheritance such as Java (?). The Newspeak rule "lexical scope first, inheritance next" is definitely simpler, but I wonder if detractors would say something like "well in Java we do not really use nested classes all that much, so Java is actually simpler because we have only one dimension, the inheritance axis" ... but in Newspeak nesting is sort of core, so the bigger complexity is inevitable. Anyway, that is just musing.
+
+
+When reading and thinking about the slides, I wrote up some questions.  I do not expect all to be commented on, for the simple reason my questions' wording may not be comprehensible :) - and they are long ... But I try .. so some questions, trying to set up their context:
+
+
+- Question 1: My handle of the message send  lookup (slides 64-77) is perhaps decent but shallow.  In particular, it is hard for me to see a motivation for the self sends and implicit receiver sends, regarding the lookup algorithm switching from "look for private msg along the lexical scope dimension first" to "look for protected or public msg along the inheritance dimension next" if the lookup of private msg fails.  Would there be some handy "motivational examples",  as to why such a lookup algorithm (especially around switching from private only to protected or public) was selected, similar to the one example on slides 46 and 47? I feel the result of this decision is "natural" but I am unable to rationalize it or provide a good example.
+- Question 2: Is it correct to say that a slot access is a subset of the implicit receiver send? As an example, let's assume in code, there is a line "slot1." or "slot1:: 10." (I mean outside the slot declaration section).  Do we apply the rules defined  for "implicit receiver sends" described in slides 69-77, substituting "msg" for "slot1"?
+- Question 3: On slide 88, in the outer send description, should the text be "outer C msg" rather than "outer N msg"? I am asking because the text only talks about C, never about N
+- Question 4: On slide 69, implicit receiver send: "Lookup declaration of private msg in immediately surrounding class. If not found, recurse up lexical scope until lexical top. " : What does the "recurse up lexical scope" look for? Does it look up the lexical scope only for private msg? Also if a public or protected msg is found lexically up, is such msg skipped OR does a presence of public or protected msg trigger the inheritance chain lookup, even though there may be lexically higher level private msg?
+- Question 5: This is related to the previous question on implicit receiver sends, but expanded to self sends comparison.  What is the difference between the self send lookup and the implicit receiver send lookup ... These two send types are tied nicely in slide 89 'observations' using the outer sends (tied in my understanding -  in the sense of having core similarities, and can be implemented using outer sends).  Would it be reasonable to think of the difference as follows
+   - The self send lookup and the implicit receiver send lookup use almost the same algorithm, with one exception: The self send  lookup tries to lookup private msg only in the lexically immediately enclosing class, then the lookup switches over to the inheritance lookup, WHILE the implicit receiver send lookup keeps going lexically all the way up looking for private msg (and only if it fails switches over to inheritance  public/protectedlookup)? 
+- A tangent question 5: If I see "self msg." somewhere in code. Can the class of self ever be different from the class that I find by lexical lookup from where the line "self msg." is located? I know I am missing something obvious but can't put my finger on it.
+- Question 6: object access to a protected member vs a private member. Slide 63 describes the rule on when an object may access a protected member. If I write the same slide, but replace "protected" with "private", would the slide be correct?
+- Question 7: slide 68 'enclosing objects' shows circles with C0, C1 etc. what are they? The classes are S0 ,S1 etc. I assume the O0, O1, O2,etc are instances of S0, S1, S2 et.  Do the C0, C1, C2 etc circles have something to do with showing the fact that classes are virtual in Newspeak?
+
+
+
+
+I would be grateful for any comments but please do not spend too much time parsing my  questions where they are not clear.
+
+
+Thanks
+
+
+Milan
+
+-----------------------
+Thanks Gilad, 
+
+This is great. I will follow up briefly inline; I think I have a few followup questions between this post and the terminology post, so I will do both in the terminology post. 
+
+After that, only if I still have something to ask after going over the PDF.
+
+On Sunday, 8 August 2021 at 07:53:05 UTC-7 Gilad Bracha wrote:
+Hi Milan,
+
+I'm attaching a PDF of slides from a talk I gave in 2015.  Of course, slides without narration are not ideal, but they actually answer most of your questions. There is a lot of general introduction to Newspeak as well, but especially from slide 61 on.
+I also answer your questions inline below.
+
+On Sat, Aug 7, 2021 at 11:19 PM Milan Zimmermann <milan.zi...@gmail.com> wrote:
+Can I read on visibility modifiers in Newspeak somewhere?
+
+See attachment.
+
+(Hmm, after writing all this I suppose I should start with the specs :) )
+
+Yes, but I acknowledge that is not light reading.
+
+True. I actually went over one of the first versions of the specs back in .. eh, not sure, around 2009 if not before, but it did not register as you see  :) It is terse read without hands on, as it probably should be :)
+
+
+but still, let me ask about a few things related...
+
+Just playing with simple code, several time I ran into "not understood" because I missed a public keyword on a nested class.
+
+Yes, that happens. What we can and should do is provide better error messages in these cases, indicating that there really was a method, but not accessible. The problem is that from a security perspective, one may not want to make that distinction as it gives out information to an attacker. But during development it would be nice, so it needs thought.
+
+Sounds good. I can see how proper security considerations make developing a platform so much harder, in addition if one wants to toggle behavior on development time vs runtime even more so.
+ 
+
+- How does visibility work within the class nesting hierarchy, up and down nested classes and their instance methods and slots? 
+
+I call it accessibility, not visibility, to be precise.
+
+I like 'accessibility' and 'access modifiers' fwiw.  Better fitting terms speak meaning more precisely. But at some point in the past I got used to the less used term visibility. I should change the subject of this post. 
+
+
+
+- Down direction: Is the code in a nesting class Parent able to access anything or everything in it's nested class Child (slots, classes, constructors, instance and class methods), irrespective of the visibility modifiers anywhere?  
+
+No.  The parent can access the children via "lexical scope" but it has no privileged access to their internals. It accesses them like anyone else.
+
+Ah, ok thanks. I definitely had a misconception here,  I was thinking instances of nesting 'parents' have 'more' access rights to instances of nested 'children' (compared to some other class that got their hands on a child class and instantiated it) . But that would not actually be democratic ... not sure that expresses anything. But for sure I feel to have a better handle after your lexical scope rule answer.
+
+
+- Up direction: What are the rules in the other direction: Is the code in a nested class Child able to access anything or everything in it's nesting Parent, irrespective of the visibility modifiers anywhere? 
+
+Lexical scoping. This is a bit of a misnomer, as this is really a result of dynamic lookup rules, not static scoping rules, but the effect is the same. This means the child can access anything lexically visible in the enclosing classes (but not in its siblings).
+
+Thanks.
+
+- I see most (all?) constructors on top level classes in the IDE are not public.
+
+No. Top level classes don't have an explicit access modifier, ever, but primary factories are always public. The modifier on a class dictates the classes' accessibility, not the factory method's.
+
+Hence it makes no sense for top  level classes - they are not members of any other object. Once you have access to a class, you can instantiate it (hence factory is always public).
+
+Thanks. I think I will have a follow up question in the other post on this (not to make too many posts running) 
+
+
+
+- Regarding visibility rules, is there any difference in a class accessing it's slots, vs it's nested classes, instance and class methods?  
+
+No.
+
+Right, this one I thought was the case, but wanted to check.
+
+Thanks as always,
+-----------------------
+
+
+
+** Debugging in Newspeak
+
+To debug, insert a line like this in code:
+
+#+begin_example
+  break.
+#+end_example
+
+To debug in the slot declaration section, insert a code like this
+
+to debug in here, 
+#+begin_example
+| foo = some expression. |
+#+end_example
+
+wrap the expression in a block and call value like this:
+
+#+begin_example
+| foo = [break. some expression] value. |
+#+end_example
 
 
 ** IN-PROGRESS-NOW Snippets of wisdom from various sources
@@ -1874,7 +2434,16 @@ We saw how this sequence is responsible of presenting Help Text (with embedded N
 
 
 
-* The Newspeak UI, ~HopscotchForHTML5~: Analysing it by digging though code; discovering ~Subject~ ~Model~ ~Presenter~ and ~Fragment~; writing ~CheckedItemApp~ sample App with a UI app based on what we learned
+
+** What are Newspeak "Exemplars"?
+
+Exemplars are small Newspeak code examples placed inside comments.  Their role is to provide live examples of code, as well as document typical use of a class and it's methods.
+
+See [[*Exemplars: Enabling liveliness everywhere][Exemplars: Enabling liveliness everywhere]] for details.
+
+
+
+* The Newspeak UI, *HopscotchForHTML5*: Analysing it by code browsing; Discovering *Subject*, *Model*, *Presenter*, *Fragment*; Writing *CheckedItemApp* sample App
 
 ** If you wish to start at the end: Full code of HopscotchForHTML5 sample app
 
@@ -3002,6 +3571,7 @@ More details on deployment for another sample App is in the intro section around
 Note: The code for the *CheckedItemApp* built here is as simple as it can be, to focus on understanding ~HopscotchForHTML5~. The App should be improved in the future. The main weakness of the current version is that it exposes model publicly - model functions should be wrapped in Subject.
 
 This concludes the chapter that explores ~HopscotchForHTML5~.
+
 
 
 * Some of the more boring details
