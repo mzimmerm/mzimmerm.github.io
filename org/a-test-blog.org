@@ -28,7 +28,7 @@
 
 * Things I had to add or modify, to get org and org html export working
 
-Details are inline, here is a summary.
+Details are inline, here is a summary from 2021-10-14.
 
 ** In export to html, to achieve:
 
