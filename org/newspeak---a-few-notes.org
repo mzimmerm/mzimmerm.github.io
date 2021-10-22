@@ -156,9 +156,9 @@ In more detail, let us try the following:
   [[file:img/newspeak---a-few-notes.org-newspeak-source.png]]
 - Note: The blue links are classes.  To view, or change them, click the class link 
 - Action: Click the "+" beside the "Root" to add a class.
-- Result: A class editor opens, with a template of a new class definition.  At first, let's just create a dummy class by editing the template
+- Result: A class editor opens, with a template of a new class declaration (class source code; the IDE uses the term class definition).  At first, let's just create a dummy class by editing the template
   [[file:img/newspeak---a-few-notes.org-newspeak-source-defining-a-new-class.png]]
-- Action: Click the checkbox on the top right [[file:img/newspeak---a-few-notes.org-accept-image.png]] to "Accept" the new class definition.  Note: Clicking the "Accept" button is important.  If you make any code changes, or workspace code changes, do not forget to click "Accept", otherwise your changes will be lost immediately after moving away from the source editing page.  See the discussions in [[*Saving changes in Newspeak][Chapter Saving changes in Newspeak]].
+- Action: Click the checkbox on the top right [[file:img/newspeak---a-few-notes.org-accept-image.png]] to "Accept" the new class declaration.  Note: Clicking the "Accept" button is important.  If you make any code changes, or workspace code changes, do not forget to click "Accept", otherwise your changes will be lost immediately after moving away from the source editing page.  See the discussions in [[*Saving changes in Newspeak][Chapter Saving changes in Newspeak]].
 
 - Result: The class now appears in the list of classes (may need to scroll down, classes are sorted alphabetically)
   [[file:img/newspeak---a-few-notes.org-my-new-class-now-added.png]]
@@ -1699,239 +1699,366 @@ returns (via *ide selector -> 'HopscotchWebIDE'*)
 
 ** IN-PROGRESS-NOW Access control and access modifiers in Newspeak.
 
-This section summarizes access control in Newspeak. In other words, what are the rules for class and object members to be allowed access from other classes and objects.  
+*** Introduction
 
-For a heads up, access control rules define how, if an expression (a line of code), will be valid at runtime. The rules must take into account 
+This section describes access control in Newspeak.
 
-a) access modifiers "private" "public" and default (protected); 
-b) if the accessed objects and members are in the same class, nested class or enclosing class of the expression for which the rules evaluate access;
-c) if the accessed objects and members are in the same class or an inherited class.
+The main backround source for this section is the online presentation [[https://00463064267054129163.googlegroups.com/attach/16b8a25058caa/ns-access-control.pdf?part=0.1&view=1&vt=ANaJVrHvttkWPn-fNP95UFKbcCbbp1VaDJlJSx1HzBevq_xhafVpZ4uz1ffKMTvkAxLFnAk2_xurwU-BTi3FIMnPj1FlU7-S-zKgS2y2eNXheQQsxM8mJUY][Can Beautiful Languages Do Access Control?]].  The text here is based on and borrows from the above, but may introduce terminology that is not part of the presentation.
 
-Clearly, access control rules are not trivial. But hopefully we will be able to summarize it reasonably briefly.
+Access control is a set of rules for class and object members (accessed items).
+
+The access control rules decide whether an expression (a line of code), will be accessible (can be executed) at runtime.
+
+The rules take into account 
+
+1) Access modifiers "private" "public" and default (protected) on the accessed items; 
+2) Wheather the accessed items are declared in the same class, nested class or enclosing class of the expression for which the rules evaluate access. In other words, access control rules interact with the lexical structure. 
+3) Whether the accessed items are declared in the same class or an inherited class. In other words, access control interacts with inheritance.
+
+Clearly, access control rules are not trivial.
 
 
-*** Introduction to access control in Newspeak
+*** Access control context, description and terminology
 
-Main article background for this section is the online presentation "Can Beautiful Languages Do Access Control?" https://00463064267054129163.googlegroups.com/attach/16b8a25058caa/ns-access-control.pdf?part=0.1&view=1&vt=ANaJVrHvttkWPn-fNP95UFKbcCbbp1VaDJlJSx1HzBevq_xhafVpZ4uz1ffKMTvkAxLFnAk2_xurwU-BTi3FIMnPj1FlU7-S-zKgS2y2eNXheQQsxM8mJUY.  The text below is based on it and borrows from it, but introduces terminology that is not part of the presentation.
+Every expression in Newspeak is a message send.  So let us describe what is meant by the term "Access" or "Access rights" of objA to access objB or objA to send message msg to objB.
 
-Goal of this section is to understand the Newspeak security and access system.
-
-
-*** Context to access control in Newspeak.
-
-Let's provide a context of access control.
-
-- Newspeak classes are nested and also inherited. Class members are slots, methods, and their nested classes. 
+- Newspeak classes can be nested and also inherited.
+- Newspeak classes can have the following members: *slots, methods, inner classes*. 
 - Each member may have access modifiers keywords: public, private. No modifier means protected.
-- What does "access control" mean in a broader sense? 
-   - We want to understand how objects can access ("have the access rights to") other objects and  other objects' members: slots, methods, inner class objects. 
-   - The access rights are defined by rules which navigate a path in three independent "dimensions"
-      - The "accessibility dimension": Points on this dimension are access modifiers: public, private, protected (default, no keyword)
-      - The "lexical dimension" : Points on this dimension are enclosing and nested classes
-      - The "inheritance dimension" : Points on this dimension are classes on the inheritance chain
-
-
-*** Access control definition and terminology
-
-Let us describe what we mean by the term "Access" or "Access rights" of objA to access objB or objA to send message msg to objB.
-
-- In a Newspeak's (class based) system of objects, each object may contain slots, methods, and nested classes. Because in Newspeak runtime, any operation is a message send, we can speak of the following: 
+- "Access control" describes how objects can access ("have the access rights to") other objects and other objects' members.
+- The access rights are determined by rules which navigate in three independent "dimensions"
+  - The "accessibility dimension": Points on this dimension are access modifiers: public, private, protected (default, no keyword)
+  - The "lexical dimension" : Points on this dimension are enclosing and nested classes
+  - The "inheritance dimension" : Points on this dimension are classes on the inheritance chain
+- In a Newspeak's (class based) system of objects, each object may contain slots, methods, and nested classes.
+- Because in Newspeak runtime, any operation is a message send, we can speak of the following: 
    - At runtime, in Newspeak's system of objects, object objA may or may not be able to reference (see) another object objB.
    - If objA is not allowed to reference objB, a security exception results. 
-   - If objA can reference objB, we say that objA has access (or access rights) to objB. Further, if objA has access to objB, assume there is a method, slot, or nested class msg  declared on objB. Even though objA has access to objB, objA still may or may not be able to send the message msg to objB (execute objB msg). If objA has the ability to send message msg to objB, we say that"object objA has access to msg on objB"
+   - If objA can reference objB, we say that objA has access (or access rights) to objB. Further, if objA has access to objB, assume there is a method, slot, or nested class named ~member~ declared on objB. Even though objA has access to objB, objA still may or may not be able to send the message ~member~ to objB (execute ~objB member~). If objA has the ability to send message msg to objB, we say that "object objA has access to member on objB"
    
 
-Combined, we say that objA has *access* (or *access rights*) to send a message msg to objB, if a message send ~objB msg~ is allowed at runtime from code in objA.
+Combined, we say that objA has *access* (or *access rights*) to send a message ~member~ to objB, if a message send ~objB member~ is allowed to execute at runtime from some place in code of objA.
 
   
 *** Slides 61, 62, 63: Rules for accessing members above and below the class in the nesting hierarchy
 
-This section summarizes rules which define whether an object is allowed to send a message to another object.  
+This section goes over access control rules described in slides in [[https://00463064267054129163.googlegroups.com/attach/16b8a25058caa/ns-access-control.pdf?part=0.1&view=1&vt=ANaJVrHvttkWPn-fNP95UFKbcCbbp1VaDJlJSx1HzBevq_xhafVpZ4uz1ffKMTvkAxLFnAk2_xurwU-BTi3FIMnPj1FlU7-S-zKgS2y2eNXheQQsxM8mJUY][Can Beautiful Languages Do Access Control?]].
 
-- *Slides 61, 62, 63 overview*: They describe how Newspeak code in a class accesses members (classes, slots, methods) above and below the class in the nesting hierarchy and the member members, depending on the accessed member's public, private and protected status. In particular:
+**** Slides 61, 62, 63 overview 
 
-- *Slide 61*: describes public, private keywords and protected members of a class. No keyword before the member name makes the member protected.
+These slides describe how Newspeak code in a class accesses members (classes, slots, methods) above and below the class in the nesting hierarchy and the member members, depending on the accessed member's public, private and protected status. In particular:
 
-- *Slide 62*: describes how Newspeak code in a class accesses private and protected members (classes, slots, methods) above and below the class in the nesting hierarchy:
 
-  - a) Private and protected members can be seen by nested classes
+**** Slide 61: public, protected, private
 
-  - b) Enclosing classes cannot see private or protected members of nested classes
+This slide describes that Newspeak provides three levels of accessibility:
+  - public
+  - protected (No keyword before the member name makes the member protected)
+  - private 
 
-  - c) Subclasses are never aware of private members of superclasses and vice versa
 
-- *Comments on slide 62*:
+**** Slide 62: Lexical access rules for private and protected members, and inheritance access rule
 
-  1. Items a) and b) describe lexical access (in terms of nested classes and the enclosing class). We can interpret lexical access as 'looking at source code'. If we print the code of the module declaration (the code of top level class, including all nested classes), and use a ruler to browse up and down the class hierarchy, we are using lexical access.  In other words, think of looking at a line of code with an expression such as ~aObj msg~ or ~msg~ and ask: Is the message send accessible at runtime? Then:
+This slide describes how Newspeak code in a class can access private and protected members (classes, slots, methods) above and below the class in the nesting hierarchy:
 
-     - The first rule can be interpretted as: If a member ~msg~ exists *UP the lexical scope* as a member, it will be visible (can be accessed at runtime without access error), no matter if it is private, protected or public.
+  - Rule a) Private and protected members can be seen by nested classes
 
-     - The second rule can be interpreted as: If a member ~msg~  exists *DOWN (IN a nested class) the lexical scope*, it will only be accessible if public.
+  - Rule b) Enclosing classes cannot see private or protected members of nested classes
 
-  2. *The Sky and the ground memoization of rules a) and b)*: We can imagine, if we are looking UP, the sky is see-through, everything is visible and accessible, all the way to the remote stars; in our situation all members lexically UP are visible and accessible. Looking DOWN, our visibility of private and protected members stops at seeding the ground - the bottom of the class our line is in. Except the public members which we can always see through the ground.
+  - Rule c) Subclasses are never aware of private members of superclasses and vice versa
 
-  3. The third item discusses the rule for inheritance.
+***** *Comments on slide 62*:
 
-- *Slide 63*: discusses how objects can access members. This implies runtime.
+1. Rules a) and b) describe *lexical scope based access* from a class (say named C) to it's nested classe and it's enclosing classes. We can interpret lexical access as 'looking at source code'. If we print the code of the module declaration (the code of a top level class, including all nested classes), and use a finger to browse up and down the enclosing and nested classes, we are using lexical access.
 
-  - An object may access a private or protected member only if 
+     - rule a) can be interpretted as: *code in class C can access all members of all classes in the class C’s lexical scope UP*
+
+     - rule b) can be interpreted as:  *code in class C can only access public members of nested classes in the class C’s lexical scope DOWN*. 
+       
+2. We can remember rules a) and b) using *Sky and the Ground memoization of rules a) and b)* as follows: 
+
+  - Imagine looking UP, to the sky: sky is see-through, everything is visible and accessible, all the way to the remote stars.  This can be translated as in our situation *all members (private, protected, public) lexically UP are visible and accessible*. 
+
+  - Imagine looking DOWN to the ground: the ground stops any visibility below the surface. This can be translated that all private and protected members DOWN below the bottom of our class are invisible. 
+
+3. Rule c) is for inheritance: private members can be only accessed in the class where they are declared.
+
+
+**** Slide 63: Is an extension and rewording of slide 62
+
+  - *An object may access a private or protected member only if*
 
     - a) it is a member of the object or 
 
     - b) a lexically visible member of an enclosing object
 
-- *Comments on slide 63*:
+***** *Comments on slide 63*:
 
-  1. While first two bullets of slide 62 describe how we can evaluate access lexically (looking at code), slide 63 describes runtime: lets say a line ~obj member~ or ~member~ is executed. Slide 63 tells us that:
+1. Slide 63 rule a) clarifies that objects can access their own private and protected members
+  
+2. Slide 63 rule b) is reworded and summarized Slide 62 rules a) and b) (UP and DOWN lexical rules)
 
-    - ~obj member~ is valid if member is a member of the object
+3. So slide 63 does not adds the intuitive but important rule that an object can access any of it's own members, regardless the member's access modifier.  
 
-    - ~member~ is valid if the ~member~ is lexically visible member of an enclosing object (can be several levels up). 
 
-  2. There are further rules which describe how message sends find the object on which the message exists (slides 64-77)
+**** Colollary on slides 61, 62, 63
+
+Public members are accessible everywhere, including from modules outside of modules where they are declared. 
+
+
+**** Slides 64-77: Types of message sends
+
+This section makes a few notes about slides 64-77 in  [[https://00463064267054129163.googlegroups.com/attach/16b8a25058caa/ns-access-control.pdf?part=0.1&view=1&vt=ANaJVrHvttkWPn-fNP95UFKbcCbbp1VaDJlJSx1HzBevq_xhafVpZ4uz1ffKMTvkAxLFnAk2_xurwU-BTi3FIMnPj1FlU7-S-zKgS2y2eNXheQQsxM8mJUY][Can Beautiful Languages Do Access Control?]].
+
+Those slides describe types of message sends in Newspeak, as well as the algorithms of how the appropriate messages are looked up due to nesting, inheritance, and presence of access modifies on messages. 
+
+A message is denoted as *msg* in this text. However, keep in mind that a *msg* can be a name of any class *member* (a *slot*, a *method*, a *nested class*). This unification is possible due to the fact that every runtime operation in Newspeak is a message send - so accessing a slot, a method, or a nested class can be all represented as a message send: Either ~anObject msg~ or ~msg~. The latter (~msg~) is a message sent to an implicit receiver. In the former (~anObject msg~) /anObject/ can be a special object /super/ or /self/ or /outer/, but the two basic forms of sending a message are all that we need to think of.
+
+Syntactically, the types of message sends can be expressed as one of the following -  
+
+- ordinary sends (*anObject msg*), 
+- self sends (*self msg*), 
+- super sends (*super msg*), 
+- implicit receiver sends (*msg*), 
+- outer sends (*outer Classname msg*)
+
+See slides 64-77 for details of the algorithms. The text below only has a few selected comments and questions/answers regarding those slides.
+
+1. These slides describe algorithms of how Newspeak finds the class on which the message exists.  It is the found class's message which is send (to the receiver object). One interesting thing is that in protected lookup, existence of a private msg is ignored.
+
+2. A slot access is a subset of the implicit receiver send. As an example, let’s assume in code, there is a line "slot1." or "slot1:: 10." (outside the slot declaration section).  The rules for "implicit receiver sends" described in slides 69-77, apply for "slot1" - just substitute "msg" for "slot1".  Same situation applies for accessing nested classes - because a "msg", a "slot" a "nested class" are all "members", and all the rules apply for members.
+
+3. On slide 69, implicit receiver send: "Lookup declaration of private msg in immediately surrounding class. If not found, recurse up lexical scope until lexical top." : 
+
+   - Question: What does the "recurse up lexical scope" look for? Does it look up the lexical scope only for private msg? Also if a public or protected msg is found lexically up, is such msg skipped OR does a presence of public or protected msg trigger the inheritance chain lookup, even though there may be lexically higher level private msg?
+
+   - Answer: Any lexically visible declaration will do. The point here is that if it's private, you can run the code immediately. If it is not private, it may have been overridden in a subclass, so you need to do the lookup. If it hasn't been overridden, you will eventually hit the definition you saw in the lexical scope.
+  
+4. Slide 68 'enclosing objects' shows circles with C0, C1 etc. 
+
+  - Question: what are the circles with C0, C1 etc? The classes are S0 ,S1 etc. I assume the O0, O1, O2,etc are instances of S0, S1, S2 et.  Do the C0, C1, C2 etc circles have something to do with showing the fact that classes are virtual in Newspeak?
+  - Answer: Yes. The Ci are classes. The slide illustrates what can happen in the general case.
+
+
+*** IN-PROGRESS-NOW todo: Worked accessibility examples of for slides 62 and 63
+
+**** Worker accessibility example introduction 
+
+This section is a step by step experiment accessibility rules described in slides 62 and 63.
+
+Start with the following class code:
+
+#+BEGIN_EXAMPLE
+  Newspeak3
+  'Root'
+  class C1 = () (
+
+      class ProtC2 = () (
+          class ProtC3 = () (
+              protM = (
+                  ^'protC3ProtM'
+              )
+              public pubM = (
+                  ^'protC3PubM'
+              )
+          )
+          public class PubC3 = () (
+              protM = (
+                  ^'pubC3ProtM'
+              )
+              public pubM = (
+                  ^'pubC3PubM'
+              )
+          )
+          protM = (
+              ^'protC2ProtM'
+          )
+          public pubM = (
+              ^'protC2PubM'
+          )
+      )
+
+      protectedFails = (
+          ^'protectedFails' 
+          (* C1 new protectedFails: Fails. 
+
+          Reason:  I feel the reason is not completely obvious from the slides, as we are typing code in the Workspace, and it is not immediately clear how code in Workspace is lexically (nesting wise) related to the class ~C1~. A note: The Newspeak IDE provides a Root namespace, all modules are nested in it. Both the Workspace and the C1 module code are nested in the IDE. Having made that note let's work trough why this message send fails: The workspace context is lexically NOT enclosing C1. The code line that we wrote, ~C1 new protectedFails~ is lexically in the workspace module; the member we are trying to access, ~protectedFails~, is lexically in the C1 module.  In summary, this fails because of rule on slide 63 b: An object (workspace where we type the expression) may access private or protected member (~protectedFails~) only if a) it is a member or b) a lexically visible member of an enclosing class (C1 class is not enclosing to Workspace class). In our situation, the code in expressions ~C1 new protectedFails~ typed in the Workspace class cannot see a private or protected member (~C1>>#protectedFails~) of a class (C1) because the method C1>>#protectedFails is neither a member of  Workspace, nor it is in Workspace's enclosing class.
+
+          Note: As a practical result, because we are testing in the workspace, we will make all our test methods in the C1 class public (for example ~public protC2New~, ~public protC2NewProtM~ and we will investigate the access rules on the expressions inside the methods on ~C1~. We name the methods on C1 so the naming reflects what the tested expression in the method does. For example: the name ~protC2NewProtM~ expresses in the name that we call the expression ~ProtC2 new protM~.  Also there is another important point here: For between-modules visibility: A module C1, looking into another module C2, can only see public members in C2. So C1 must make public any of it's members intended to be used outside of C1 - in other words, C1 module's API methods must be public. 
+          *)
+      )
+
+      public publicSucceeds = (
+          ^'publicSucceeds' 
+          (* C1 new publicSucceeds: Success. 
+
+          Reason: A public member (message named ~publicSucceeds~ here) is accessible from any lexical context - 'anywhere in code', even from another module (workspace in this case). 
+          *) 
+      )
+
+      public protC2 = (
+          ProtC2.  
+          (* Success. 
+
+          Reason: According to *Slide 63 a, classes are allowed access to all it's members (even private or protected)*. Here, the code is in class C1 (in it's member method ~protC2~), and accesses ~C1~s member nested class ~ProtC2~, so ~ProtC2~ can be accessed. Same would apply if the member nested class was private (~private PrivC2~ instead of ~ProtC2~). 
+          *)
+          '^ProtC2'
+      )
+
+      public protC2New = (
+          ProtC2 new.
+          (* Success. 
+
+          Reason: Similar reason as in ~protC2~ in the section above: . There is a fine print reason here we should add (this reason is not spelled out in the slide rules): The rules on member class visibility transfer to their primary factory methods; so the fact that code in ~C1~ can access it's member ~ProtC2~, transforms to ~ProtC2~'s primary constructor, ~new~ in this case. In other words, ~C1~ can access it's member ~ProtC2~, implies that  ~C1~ can access it's member's primary factory (method ~new~).
+          *)
+          'protC2New'
+      )
+
+      public protC2NewProtM = (
+          ProtC2 new protM.
+           
+          (* Fails.
+             Reason: We showed success all the way before sending ~protM~; sending ~protM~ (fully specified as ~C1>>ProtC2>>#protM~) fails. The code being executed, ~ProtC2 new protM~ is in class ~C1~. Method ~C1>>ProtC2>>#protM~ is a protected member on ~Prot2~, nested in ~C1~. According to *Slide 62 b) Enclosing classes (code in C1) cannot see private or protected members (protected method ~protM~) of nested classes (~ProtC2~).*, and so ~ProtC2 new protM~ fails according to this rule.
+          *)
+          ^ 'protC2NewProtM'
+      )
+
+      public protC2NewPubM = (
+          ProtC2 new pubM. 
+
+          (* Succeeds 
+             Reason:  ~pubM~ is public. According to [[* Colollary on slides 61, 62, 63][Colollary on slides 61, 62, 63]] public members are accessible anywhere - even in nested classes that are not public. Here, ~C1>>ProtC2>>#pubM~ is accessible from anywhere.  
+          *)
+
+          ^ 'protC2NewPubM'
+      )
+  )
+#+END_EXAMPLE
+
+Let us describe this class.
+
+1. We named the class ~C1~. ~C1~ is a top level class (which makes it a module, see the module section). Class  ~C1~ is intended to test a limited subset of accessibility scenarios. Note that ~C1~ is not marked public. However, in Newspeak, all top level classes are public by default!
+
+2. Naming:
+
+   - The strings *Prot* and *Pub* in the class names, denotes whether they are declared public or protected. The numbers 1, 2, 3 in the names C1, ProtC2, PubC3 etc express nesting level 'level 1', 'level 2' and 'level 3'.
+
+   - The naming of the methods, for example ~protC2ProtM~ stands for "on protected class C2, protected method" and denotes class's and method's public / protected status for a quick lookup.
+
+3. ~C1~ has 1 nested class, ~ProtC2~  which in turn has 2 nested classes, protected nestd class ~ProtC3~ and  public nested class ~PubC3~ to test public and protected access. Also,  ~ProtC3~ and  ~PubC3~  classes has one public and one protected method, named according to their access status, for example, ~PubC3>>#pubC3ProtM~ and  ~PubC3>>#pubC3PubM~
+
+6. The methods just generally return a string with it's name, such as ~^'protC3ProtM'~ or return an expression such as ~ProtC2 new protM~ which we are testing for accessibility.
+
+7. When we want to express the level of nesting in text, we may refer names such as ~C1>>ProtC2>>PubC3>>#pubC3PubM~
+
+9. During testing, we will concentrate on why a certain expression evaluation succeeds or fails from the accessibility perspective, and will explain the success or failure based on rules in Slides 62 and 63.
+
+  
+**** C1: Execute some code in C1, gradually adding to expressions
+
+
+***** afdsfadf
+
+Workspace expression: ~~
+Runs this code: ~~
+Does:  
+Result: Success/Fails
+Reason: 
+
+***** Structure of examples
+
+Each example we run to test accessibility has the following structure.
+
+Workspace expression: *Here we can see the expression to type in workspace. In most cases, this is a method (message sent) to instance of class. With a few exceptions in methods 'publicSucceeds' and 'protectedFails', this message sent always succeeds;  we are testing accessibility in the code which is in the method contents - this is the code listed in 'Runs this code:'*
+Runs this code: *Here we can see the contents of the method - the code we are testing for accessibility*
+Does: *Here we describe in brief what the code in 'Runs this code:' does* 
+Result: Success/Fails *Here we describe the result of accessibility experiment in the section*
+Reason: *Here we describe the reason for the Success/Fails result. In most cases, we tie the reason to the accessibility 'theory', generally in slides 62 and 63 in n [[https://00463064267054129163.googlegroups.com/attach/16b8a25058caa/ns-access-control.pdf?part=0.1&view=1&vt=ANaJVrHvttkWPn-fNP95UFKbcCbbp1VaDJlJSx1HzBevq_xhafVpZ4uz1ffKMTvkAxLFnAk2_xurwU-BTi3FIMnPj1FlU7-S-zKgS2y2eNXheQQsxM8mJUY][Can Beautiful Languages Do Access Control?]]*
+
+***** C1
+
+Go to Workspace and type of paste ~C1~ there, highlight it, and click on 'Evaluate selection' or do Shift+Enter.
+
+Workspace expression: ~C1~
+Runs this code: ~C1~
+Does: Creates and return a class C1.
+Result: Success
+Reason: The top level class ~C1~ is always implicitly public, even without a public keyword! This rule is related to accessibility and modularity, but not spelled out in the Slides 60-63. The top level (and implicitly public!) class ~C1~ can be accessed in any other top level class, including the workspace where we are typing the expression. 
+
+***** C1 new
+
+Workspace expression: ~C1 new~
+Runs this code:  ~C1 new~ 
+Does: creates a new instance of class C1.
+Result: Success
+Reason: Similar to the previous section, the reason is accessibility and modularity related. As mentioned in section aboce, a top level class is always publicly available in any code; here we find this extentds to it's primary factory method ~new~. A primary factory method on a top level class (module declaration) is always public (even if not explicitly specified).
+
+***** C1 new protectedFails
+
+Workspace expression: ~C1 new protectedFails~
+Runs this code: ~C1 new protectedFails~
+Does: Sends a protected message ~protectedFails~ to instance of ~C1~
+Result: Fails
+Reason:  I feel the reason is not completely obvious from the slides, as we are typing code in the Workspace, and it is not immediately clear how code in Workspace is lexically (nesting wise) related to the class ~C1~. A note: The Newspeak IDE provides a Root namespace, all modules are nested in it. Both the Workspace and the C1 module code are nested in the IDE. Having made that note let's work trough why this message send fails: The workspace context is lexically NOT enclosing C1. The code line that we wrote, ~C1 new protectedFails~ is lexically in the workspace module; the member we are trying to access, ~protectedFails~, is lexically in the C1 module.  In summary, this fails because of rule on slide 63 b: An object (workspace where we type the expression) may access private or protected member (~protectedFails~) only if a) it is a member or b) a lexically visible member of an enclosing class (C1 class is not enclosing to Workspace class). In our situation, the code in expressions ~C1 new protectedFails~ typed in the Workspace class cannot see a private or protected member (~C1>>#protectedFails~) of a class (C1) because the method C1>>#protectedFails is neither a member of  Workspace, nor it is in Workspace's enclosing class.
+
+Note: As a practical result, because we are testing in the workspace, we will make all our test methods in the C1 class public (for example ~public protC2New~, ~public protC2NewProtM~ and we will investigate the access rules on the expressions inside the methods on ~C1~. We name the methods on C1 so the naming reflects what the tested expression in the method does. For example: the name ~protC2NewProtM~ expresses in the name that we call the expression ~ProtC2 new protM~.  Also there is another important point here: For between-modules visibility: A module C1, looking into another module C2, can only see public members in C2. So C1 must make public any of it's members intended to be used outside of C1 - in other words, C1 module's API methods must be public. 
+
+***** C1 new publicSucceeds
+
+Having realized in the section above that expression ~C1 new protectedFails~ fails accessibility rules on the protected method ~C1>>#protectedFails~, we now test how things change if we call a public method ~C1>>#publicSucceeds~ instead of the protected  ~C1>>#protectedFails~.  The public method ~C1>>#publicSucceeds~ is equivalent to the failing protected method ~C1>>#protectedFails~ except it's name and it's public modifier.
+
+Workspace expression: C1 new publicSucceeds
+Runs this code: ~C1 new publicSucceeds~
+Does: Sends a public message publicSucceeds to instance of C1.
+Result: Success 
+Reason: A public member (message named ~publicSucceeds~ here) is accessible from any lexical context - 'anywhere in code', even from another module (workspace in this case).
+
+***** C1 new protC2
+
+From this section onward, the method names we run are all public, so they can be executed from accessibility perspective by calling the method on an instance such as ~C1 new~.  The method names attempt to express the expression executed. For example
+
+- method named ~protC2~ suggests the method creates a ~ProtC2~ class.
+- method named ~protC2New~ suggests the method creates a ~ProtC2 new~ - instance of ProtC2 class.
+- method named ~protC2NewPubM~ suggests the method runs ~ProtC2 new pubM~ - sends message ~pubM~ to a new instance of the class ~ProtC2~.
+
+
+Workspace expression: ~C1 new protC2~
+Runs this code: ~ProtC2~
+Does: Creates class ProtC2
+Result: Success
+Reason: According to *Slide 63 a, classes are allowed access to all it's members (even private or protected)*. Here, the code is in class C1 (in it's member method ~protC2~), and accesses ~C1~s member nested class ~ProtC2~, so ~ProtC2~ can be accessed. Same would apply if the member nested class was private (~private PrivC2~ instead of ~ProtC2~).
+
+***** C1 new protC2New
+
+Workspace expression: ~C1 new protC2New~
+Runs this code: ~ProtC2 new~
+Does: Creates an instance of class ProtC2 
+Result: Success
+Reason: Similar reason as in ~protC2~ in the section above: . There is a fine print reason here we should add (this reason is not spelled out in the slide rules): The rules on member class visibility transfer to their primary factory methods; so the fact that code in ~C1~ can access it's member ~ProtC2~, transforms to ~ProtC2~'s primary constructor, ~new~ in this case. In other words, ~C1~ can access it's member ~ProtC2~, implies that  ~C1~ can access it's member's primary factory (method ~new~).
   
 
-*** IN-PROGRESS-NOW todo: Add section with reworded simplified rules 
-*** IN-PROGRESS-NOW todo: Worked examples of for slides 61, 62, 63: Rules for accessing members above and below the class in the nesting hierarchy
+----------------------------------------- todo add reasons to code --------------------------
+***** C1 new protC2NewProtM
 
+Workspace expression: ~C1 new protC2NewProtM~
+Runs this code: ~ProtC2 new protM~
+Does: Creates an instance of class ~ProtC2~ and attempts to send protected message ~protM~ to it.
+Result: Fails to send message ~protM~
+Reason: We showed success all the way before sending ~protM~; sending ~protM~ (fully specified as ~C1>>ProtC2>>#protM~) fails. The code being executed, ~ProtC2 new protM~ is in class ~C1~. Method ~C1>>ProtC2>>#protM~ is a protected member on ~Prot2~, nested in ~C1~. According to *Slide 62 b) Enclosing classes (code in C1) cannot see private or protected members (protected method ~protM~) of nested classes (~ProtC2~).*, and so ~ProtC2 new protM~ fails according to this rule.
 
-todo:
--  lexical access have a priority (before inheritance)
+If we make the method we are calling, the ~C1>>ProtC2>>#protM~,  public,  then the call to ~protM~ in ~ProtC2 new protM~ will succeed. We will show it by calling an equivalent but public method ~C1>>ProtC2>>#pubM~ in the next section.
 
-*** Email to the Newspeak group
+***** IN-PROGRESS-NOW C1 new protC2NewPubM
 
-Gilad, 
+This section shows how to 'resolve' the accessibility failure discussed in the previous section. The takeaway is that if a code wants to access members of any nested class, the nested class must make such member public.
 
+Workspace expression: ~C1 new protC2NewPubM~
+Runs this code: ~ProtC2 new pubM~
+Does: Creates an instance of class ~ProtC2~ and sends message ~pubM~ to it
+Result: Succeeds sending public message ~C1>>ProtC2>>#pubM~ from code in ~C1~
+Reason:  ~pubM~ is public. According to [[* Colollary on slides 61, 62, 63][Colollary on slides 61, 62, 63]] public members are accessible anywhere - even in nested classes that are not public. Here, ~C1>>ProtC2>>#pubM~ is accessible from anywhere.   
 
-This is another all too wordy follow up from the earlier thread on access modifiers in Newspeak.
-
-
-A few Fridays ago, I was on a plane for four hours, and thought I would take an hour to go over the slides in  Can Beautiful Languages Do Access Control?
-- https://00463064267054129163.googlegroups.com/attach/16b8a25058caa/ns-access-control.pdf?part=0.1&view=1&vt=ANaJVrHvttkWPn-fNP95UFKbcCbbp1VaDJlJSx1HzBevq_xhafVpZ4uz1ffKMTvkAxLFnAk2_xurwU-BTi3FIMnPj1FlU7-S-zKgS2y2eNXheQQsxM8mJUY
-
-
-Well it took me the whole four hours and more :) but I feel I got an ok understanding (much better than an earlier "intuitive guessing"). 
-
-
-General: 
-
-
-Slide 62 is a great summary of access control that answers some of my core questions about up vs down nesting accessibility. Basically I am thinking of it this way: 
-- "I am writing code in the context of class C. If the code needs to use an instance of class B, I need to look at the code of class B with all it's enclosing and nested classes, as if I saved the module declaration where B is declared. The rule is: 
-- instance of  B can access all members of all classes in the class B's lexical scope UP;
-- instance of B can only access public members of public classes in the class B's lexical scope  DOWN". 
-
-
-I am not sure if my above interpretation of slide 62 is completely correct, but that is what I came up with after some experimentation.   (Another interpretation of the "going down in nesting" rule would be that, in an access chain such as "objectB NestedInObjectB new nestedInNestedOfObjectB new msg" everything along the access chain" must  be public.)
-
-
-Also the slides explaining how the lexical chain lookup has precedence to the inheritance chain lookup are super helpful.
-
-
-Obviously all this is just a part of a necessarily complex problem at the intersection of (or maybe rather on the cartesian product of) access modifiers, nesting, and inheritance.  
-
-
-One overall comment-question: I see examples in the slides that go over the "comb rule". It is a bit hard without comments for the slides, but I assume the "comb rule" is applied in other languages that have both nested classes and inheritance such as Java (?). The Newspeak rule "lexical scope first, inheritance next" is definitely simpler, but I wonder if detractors would say something like "well in Java we do not really use nested classes all that much, so Java is actually simpler because we have only one dimension, the inheritance axis" ... but in Newspeak nesting is sort of core, so the bigger complexity is inevitable. Anyway, that is just musing.
-
-
-When reading and thinking about the slides, I wrote up some questions.  I do not expect all to be commented on, for the simple reason my questions' wording may not be comprehensible :) - and they are long ... But I try .. so some questions, trying to set up their context:
-
-
-- Question 1: My handle of the message send  lookup (slides 64-77) is perhaps decent but shallow.  In particular, it is hard for me to see a motivation for the self sends and implicit receiver sends, regarding the lookup algorithm switching from "look for private msg along the lexical scope dimension first" to "look for protected or public msg along the inheritance dimension next" if the lookup of private msg fails.  Would there be some handy "motivational examples",  as to why such a lookup algorithm (especially around switching from private only to protected or public) was selected, similar to the one example on slides 46 and 47? I feel the result of this decision is "natural" but I am unable to rationalize it or provide a good example.
-- Question 2: Is it correct to say that a slot access is a subset of the implicit receiver send? As an example, let's assume in code, there is a line "slot1." or "slot1:: 10." (I mean outside the slot declaration section).  Do we apply the rules defined  for "implicit receiver sends" described in slides 69-77, substituting "msg" for "slot1"?
-- Question 3: On slide 88, in the outer send description, should the text be "outer C msg" rather than "outer N msg"? I am asking because the text only talks about C, never about N
-- Question 4: On slide 69, implicit receiver send: "Lookup declaration of private msg in immediately surrounding class. If not found, recurse up lexical scope until lexical top. " : What does the "recurse up lexical scope" look for? Does it look up the lexical scope only for private msg? Also if a public or protected msg is found lexically up, is such msg skipped OR does a presence of public or protected msg trigger the inheritance chain lookup, even though there may be lexically higher level private msg?
-- Question 5: This is related to the previous question on implicit receiver sends, but expanded to self sends comparison.  What is the difference between the self send lookup and the implicit receiver send lookup ... These two send types are tied nicely in slide 89 'observations' using the outer sends (tied in my understanding -  in the sense of having core similarities, and can be implemented using outer sends).  Would it be reasonable to think of the difference as follows
-   - The self send lookup and the implicit receiver send lookup use almost the same algorithm, with one exception: The self send  lookup tries to lookup private msg only in the lexically immediately enclosing class, then the lookup switches over to the inheritance lookup, WHILE the implicit receiver send lookup keeps going lexically all the way up looking for private msg (and only if it fails switches over to inheritance  public/protectedlookup)? 
-- A tangent question 5: If I see "self msg." somewhere in code. Can the class of self ever be different from the class that I find by lexical lookup from where the line "self msg." is located? I know I am missing something obvious but can't put my finger on it.
-- Question 6: object access to a protected member vs a private member. Slide 63 describes the rule on when an object may access a protected member. If I write the same slide, but replace "protected" with "private", would the slide be correct?
-- Question 7: slide 68 'enclosing objects' shows circles with C0, C1 etc. what are they? The classes are S0 ,S1 etc. I assume the O0, O1, O2,etc are instances of S0, S1, S2 et.  Do the C0, C1, C2 etc circles have something to do with showing the fact that classes are virtual in Newspeak?
-
-
-
-
-I would be grateful for any comments but please do not spend too much time parsing my  questions where they are not clear.
-
-
-Thanks
-
-
-Milan
-
------------------------
-Thanks Gilad, 
-
-This is great. I will follow up briefly inline; I think I have a few followup questions between this post and the terminology post, so I will do both in the terminology post. 
-
-After that, only if I still have something to ask after going over the PDF.
-
-On Sunday, 8 August 2021 at 07:53:05 UTC-7 Gilad Bracha wrote:
-Hi Milan,
-
-I'm attaching a PDF of slides from a talk I gave in 2015.  Of course, slides without narration are not ideal, but they actually answer most of your questions. There is a lot of general introduction to Newspeak as well, but especially from slide 61 on.
-I also answer your questions inline below.
-
-On Sat, Aug 7, 2021 at 11:19 PM Milan Zimmermann <milan.zi...@gmail.com> wrote:
-Can I read on visibility modifiers in Newspeak somewhere?
-
-See attachment.
-
-(Hmm, after writing all this I suppose I should start with the specs :) )
-
-Yes, but I acknowledge that is not light reading.
-
-True. I actually went over one of the first versions of the specs back in .. eh, not sure, around 2009 if not before, but it did not register as you see  :) It is terse read without hands on, as it probably should be :)
-
-
-but still, let me ask about a few things related...
-
-Just playing with simple code, several time I ran into "not understood" because I missed a public keyword on a nested class.
-
-Yes, that happens. What we can and should do is provide better error messages in these cases, indicating that there really was a method, but not accessible. The problem is that from a security perspective, one may not want to make that distinction as it gives out information to an attacker. But during development it would be nice, so it needs thought.
-
-Sounds good. I can see how proper security considerations make developing a platform so much harder, in addition if one wants to toggle behavior on development time vs runtime even more so.
- 
-
-- How does visibility work within the class nesting hierarchy, up and down nested classes and their instance methods and slots? 
-
-I call it accessibility, not visibility, to be precise.
-
-I like 'accessibility' and 'access modifiers' fwiw.  Better fitting terms speak meaning more precisely. But at some point in the past I got used to the less used term visibility. I should change the subject of this post. 
-
-
-
-- Down direction: Is the code in a nesting class Parent able to access anything or everything in it's nested class Child (slots, classes, constructors, instance and class methods), irrespective of the visibility modifiers anywhere?  
-
-No.  The parent can access the children via "lexical scope" but it has no privileged access to their internals. It accesses them like anyone else.
-
-Ah, ok thanks. I definitely had a misconception here,  I was thinking instances of nesting 'parents' have 'more' access rights to instances of nested 'children' (compared to some other class that got their hands on a child class and instantiated it) . But that would not actually be democratic ... not sure that expresses anything. But for sure I feel to have a better handle after your lexical scope rule answer.
-
-
-- Up direction: What are the rules in the other direction: Is the code in a nested class Child able to access anything or everything in it's nesting Parent, irrespective of the visibility modifiers anywhere? 
-
-Lexical scoping. This is a bit of a misnomer, as this is really a result of dynamic lookup rules, not static scoping rules, but the effect is the same. This means the child can access anything lexically visible in the enclosing classes (but not in its siblings).
-
-Thanks.
-
-- I see most (all?) constructors on top level classes in the IDE are not public.
-
-No. Top level classes don't have an explicit access modifier, ever, but primary factories are always public. The modifier on a class dictates the classes' accessibility, not the factory method's.
-
-Hence it makes no sense for top  level classes - they are not members of any other object. Once you have access to a class, you can instantiate it (hence factory is always public).
-
-Thanks. I think I will have a follow up question in the other post on this (not to make too many posts running) 
-
-
-
-- Regarding visibility rules, is there any difference in a class accessing it's slots, vs it's nested classes, instance and class methods?  
-
-No.
-
-Right, this one I thought was the case, but wanted to check.
-
-Thanks as always,
------------------------
-
+*This is perhaps the most important discovery so far. Code in class ~C1~ (in it's method ~protC2NewPubM~), can access (call) public method  ~C1>>ProtC2>>#pubM~ on it's nested class, even if the nested class  ~C1>>ProtC2~ is protected - same if the class ~C1>>ProtC2~ was private!! The accessibility rules do not request what I would call 'accessibility along the whole path' - it is sufficient that the accessed member (~C1>>ProtC2>>#pubM~ here) is accessible according to the accessibility rules.*
 
 
 ** Debugging in Newspeak
