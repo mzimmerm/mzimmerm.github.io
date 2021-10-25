@@ -21,7 +21,7 @@ Much of this document is collected from existing Newspeak sources:
 - Gilad Bracha's Room 101 blog at https://gbracha.blogspot.com/
 
 
-* Changelog
+* Changelog - last change 2021-10-25
 
 |       Date |   | Author           |   | Change                                                                                                                                                                                  |
 |------------+---+------------------+---+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -34,8 +34,9 @@ Much of this document is collected from existing Newspeak sources:
 | 2021-08-10 |   | Milan Zimmermann |   | Added section [[*The Newspeak UI, *HopscotchForHTML5*: Analysing it by code browsing; Discovering *Subject*, *Model*, *Presenter*, *Fragment*; Writing *CheckedItemApp* sample App][The Newspeak UI, *HopscotchForHTML5*: Analysing it by code browsing; Discovering *Subject*, *Model*, *Presenter*, *Fragment*; Writing *CheckedItemApp* sample App]]         |
 | 2021-08-15 |   | Milan Zimmermann |   | Added section [[*Exemplars: Enabling liveliness everywhere][Exemplars: Enabling liveliness everywhere]]                                                                                                                                 |
 | 2021-08-15 |   | Milan Zimmermann |   | Added section [[*Newspeak terminology][Newspeak terminology]]                                                                                                                                                      |
-
+| 2021-10-25 |   | Milan Zimmermann |   | Added section [[* Access control and access modifiers in Newspeak][Access control and access modifiers in Newspeak]]                                                                                                                           |
   
+
 * Terminology and notation
 
 *** Notation: In the text, how do we express a class name, a message (function, method) name, or a slot name?
@@ -72,9 +73,9 @@ Examples of this notation:
 Newspeak is different. This includes terminology that may not be familiar.  Below we list terms that are generally used.  This section sort of jumps ahead of the gradual introduction to Newspeak, but should help when reading the text.
 
 - *Top level class* : Class that appears on the top level class list in the IDE. Top level class has no enclosing class. 
-- *Module Declaration* : Source of top level class
-- *Module Definition* : Class object of top level class
-- *Module* :   Instance of top level class
+- *Module Declaration* : Source code of a top level class.
+- *Module Definition* or *Module class* : The class object of a top level class.
+- *Module* :   Instance of a top level class. When talking about API, we sometimes use the term /module/ instead of /module declaration/. 
 - *Slot* : Equivalent of a member variable or a local variable in other languages.  In Newspeak, everything is a message send, so a slot is equivalent to a getter (and also a setter, if the slot is mutable).  Slot mutability is clear from the syntax at the line of it's declaration - see below.   
 - *Instance slot declaration* : Expression between the bars ~| |~ locater inside the primary factory method, irrespective whether it has a ~=~, ~=::~ or (nothing) to the right of the slot name. For example ~|mySlot =:: 1|~ is a declaration of a mutable slot named ~mySlot~.  ~|mySlot = 1|~ is a declaration of an immutable slot named ~mySlot~. 
 - *Local slot declaration* : Equivalent of a local variable.  Syntactically all above applies, but the expression between the bars ~| |~ is located inside an instance method.
@@ -488,7 +489,7 @@ Each paragraph below is devoted to a feature that was surprising (to me) or unus
 
 *** Top level classes in the IDE
 
-Top level classes in the IDE are crucial as Newspeak modules in general, Apps and Libraries.
+Top level classes in the IDE are crucial because their instances are Newspeak modules. A Module can play a role of an App or Library.
 
 I the IDE, click on the "Newspeak Source" button. We see the word *Root* on top left, and below, a list of class names. 
 
@@ -509,14 +510,15 @@ Lets again quote from [[https://bracha.org/newspeak-modules.pdf][Modules as Obje
 
 /In Newspeak, nor is there a global namespace. Modularity in Newspeak is based exclusively on class nesting. There are no separate modularity constructs such as packages. Top level classes act as module definitions, which are independent, immutable, self-contained parametric namespaces. They can be instantiated into modules which may be stateful and mutually recursive./
 
-Newspeak basically uses the following definitions:
+Newspeak basically uses the following definitions - see also the section [[*Newspeak terminology][Newspeak terminology]]:
 
-- */Module definition/* or */Module class/* is any */top level class/*.  We will use the terms interchangeably.
+- */Module declaration/* is the source code of any top level class
+- */Module definition/* or */Module class object/* is any */top level class object/*.  We will use the terms interchangeably depending on context.
 - */Module/* or */Newspeak module/* is an */instance of any top level class/*.
 
 So, an instance of any class shown on the top level in the IDE is a /module/.
 
-*/Newspeak Module/ is not only an empty new term.  It turns out, that, by nesting other classes, /modules/ also satisfy what we normally want from software modules: they are self-contained elements of data and functionality which can be distributed or executed, given expected API.*  See [[*Newspeak modules API summary][Newspeak modules API summary]]. In addition, /Newspeak modules/ cannot cross-access each other when deployed - unless one module explicitly requests another /module/ or /module class/ during packaging and building.  
+*/Newspeak Module/ is not only an empty new term.  It turns out, that, by nesting other classes, /modules/ also satisfy what we normally want from software modules: they are self-contained elements of data and functionality which can be distributed or executed, given expected API.*  To understand more about how expected API determines a module's role, see [[*Newspeak modules API summary][Newspeak modules API summary]]. In addition, /Newspeak modules/ cannot cross-access each other when deployed - unless one module explicitly requests another /module/ or /module class/ during packaging and building.  
 
 
 *** Discussion of Namespaces
@@ -534,7 +536,7 @@ Creates an instance of "org.apache.SomeClass" at runtime by finding it on CLASSP
 
 The Newspeak language does not have a /global namespace/ but the Newspeak IDE does have a /global namespace/ - the /Root/ on top of the IDE we have seen in the previous chapter. There is some discussion regarding why that is in [[*Namespaces and existence of global namespace in the IDE][Namespaces and existence of global namespace in the IDE]].
 
-The consequence of /no global namespace in the language/ is that, at runtime (outside of IDE), a Newspeak module class must declare it's dependency on another module class explicitly, by storing the dependency class module definition ("import" it) on it's module slot! See how all classes needed at runtime are "imported" by holding on to them on module slots in code samples, including:
+The consequence of /no global namespace in the language/ is that, at runtime (outside of IDE), a Newspeak module class must declare it's dependency on another module class (or module) explicitly, by storing the dependency module definition (or dependency module) on it's module slot! This storing of a dependency on a slot can be looked at as "importing" the dependency.  See how all classes needed at runtime are "imported" by holding on to them on module slots in code samples, including:
 - In [[*4. Hello World App using 3rd party dependency][4. Hello World App using 3rd party dependency]] the ~HelloTranslatorLib~ holds on to the ~HelloTranslator~
 - In [[4. App module: API of module that needs to be distributed as an App][4. App module: API of module that needs to be distributed as an App]] ~RecipyWithDepApp~ holds on to the ~RecipyWithDep~, and ~RecipyNoDep~. 
 
@@ -548,7 +550,7 @@ The existence of the /Root namespace/ in the Newspeak IDE describes one of my su
 Next we can ask, why does the Newspeak IDE need a global namespace (Root), while the Newspeak language does not have one, in fact very intentionally does not have one?  The reason is, when working in the IDE, we want cross-access between the /module classes/ (the /top level classes/).  At runtime, that is, after packaging and deployment of any Newspeak module (outside the IDE), only the modules intended to be used by other modules should be available!  Modules cannot freely cross-use each other, because there is no global namespace to find each other (or each other's class).  If a moduleA needs to use moduleB, moduleA must explicitly ask to include moduleB's definition (the class of moduleB) at the packaging stage. See also the text and links in [[*Dependencies and modularity: Perhaps the hardest part of Newspeak difference][Dependencies and modularity: Perhaps the hardest part of Newspeak difference]].
 
 
-** Class structure, factory constructors, platform and manifest, modules API
+** Class structure, factory methods, platform and manifest, modules API
 
 *** Section TL;DR:
 
@@ -569,24 +571,24 @@ Continue reading what we can learn from looking at the expanded classes.
 First, we can see, each top level class has 4 sections.  Let's take the ActivationMirrorTestingConfiguration as an example
 
 1.  A collapsible class name section for the class, ~ActivationMirrorTestingConfiguration~ with two sub items
-   - a message to class on top ~#packageTestsUsing: manifest~ in our class.  This message is a "core" constructor.  It is called the *Factory constructor*. 
-   - a list of ~Slots~.  Slots are like "member variables".  Slots can only be created in the /factory constructor/!
+   - a message to class on top ~#packageTestsUsing: manifest~ in our class.  This message is a "core" constructor.  It is called the *Factory method*. 
+   - a list of ~Slots~.  Slots are like "member variables".  Slots can only be created in the /factory method/!
 2.  a list of ~Classes~.  Those are nested classes of the class ActivationMirrorTestingConfiguration
 3.  a list of ~Instance methods~.  Those are instance methods we can call on instances of ActivationMirrorTestingConfiguration
 4.  a list of ~Class methods~.  Those are class methods we can call on the class ActivationMirrorTestingConfiguration.  They are "alternative constructors".
 
-There is a plus ("+ ") symbol  in the header of some of them.  The reason there is no plus ("+ ") symbol beside slots, is that slots can only be added in the code of the /factory constructor/.  Add a slot from the  /factory constructor/ code, and the added slot name will show in the IDE.
+There is a plus ("+ ") symbol  in the header of some of them.  The reason there is no plus ("+ ") symbol beside slots, is that slots can only be added in the code of the /factory method/.  Add a slot from the  /factory method/ code, and the added slot name will show in the IDE.
 
 
-*** Factory constructors
+*** Factory methods
 
-We mentioned the messages on top like ~#packageTestsUsing: manifest~ are called the /factory constructors/.
+We mentioned the messages on top like ~#packageTestsUsing: manifest~ are called the /factory methods/.
 
-*The core role of a /factory constructor/ is to create slots.  No other method can create slots!*
+*The core role of a /factory method/ is to create slots.  No other method can create slots!*
 
-*The platform objects (objects that represent the Newspeak system), and / or the dependencies objects or classes (classes that need to be "imported" from the manifest) are passed to the factory constructor and held on slots.  From there, they are available to all nested classes and nested objects of the top level instance!*
+*The platform objects (objects that represent the Newspeak system), and / or the dependencies objects or classes (classes that need to be "imported" from the manifest) are passed to the factory method and held on slots.  From there, they are available to all nested classes and nested objects of the top level instance!*
 
-/factory constructor/ names on the /top level classes/ have an eerily similar structure.  I was asking myself why, what do they have in common.  So I listed more of the factory constructor names.  Here is the list of the /factory constructors/ on some top level classes:
+/factory method/ names on the /top level classes/ have an eerily similar structure.  I was asking myself why, what do they have in common.  So I listed more of the factory method names.  Here is the list of the /factory methods/ on some top level classes:
 
 #+BEGIN_EXAMPLE
 class AccessModifierTesting                 usingPlatform:       platform  testFramework: minitest = (| etc
@@ -603,7 +605,7 @@ class RuntimeForV8                          packageUsing:        manifest = ( et
 class Streams                               usingPlatform:       platform = ( etc
 #+END_EXAMPLE
 
-We can see that the factory constructors accept, at first position, one of 2 arguments
+We can see that the factory methods accept, at first position, one of 2 arguments
 
 - ~platform~
 - ~manifest~
@@ -702,24 +704,31 @@ See [[*Common and distinct roles of platform and manifest in modules][Chapter Co
 
 *** Common and distinct roles of platform and manifest in modules
 
-Why are the ~platform~ and ~manifest~ objects so important to appear again and again in the /top level classes factory parameters/ as seen in [[*Factory constructors][Factory constructors]]
+Why are the ~platform~ and ~manifest~ objects so important to appear again and again in the /top level classes' factory parameters/, as seen in [[*Factory methods][Factory methods]] ?
 
 The answer is somewhat common for ~manifest~ and ~platform~, so we describe their role in this common section.
 
-And, the common need for either  ~manifest~ or ~platform~ is modularity.  But what does that mean?
+And, the common need for both ~manifest~ and ~platform~ stems from modularity.  But what does that mean?
 
-We saw that the /modules/ are DEFINED AS /instances of top level classes/ in Newspeak.  So in this text, we will use the term /module/ and /module instance/ for such top level class or its instance.
+In [[*Newspeak terminology][Newspeak terminology,]] we saw that the /modules/ are DEFINED AS /instances of top level classes/.
 
-And we saw that there is no global namespace in Newspeak.  Module instances, need other objects (dependencies) to do useful work.  In Newspeak, for a module instance to "contain" ANY dependency, such dependency must be on the module instance slot (slot is like the member variable).  Also, at the point of the module construction we MUST supply such dependency.  Because only the /factory constructor/ can define slots, the *module factory constructor must be passed everything the module needs from outside*.  
+And we saw that there is no global namespace in Newspeak.  Modules need other objects (dependencies) to do useful work.  In Newspeak, for a module to "contain" ANY dependency, such dependency must be on the module instance slot (slot is like a member variable).  Also, at the point of the module construction we MUST supply such dependency.  Because only the /factory/ can define slots, the *module factory must be passed everything the module needs from outside*.  
 
-This is where  ~platform~ and ~manifest~ come in.  They are "special" in the sense that they supply objects and classes needed by the module.  But each happens at a special point of the module lifecycle.  This is summarized in [[*Modules: Application, library, test, general][Modules: Application, library, test, general]]
+This is where ~platform~ and ~manifest~ come in.  They are "special" in the sense that they supply objects and classes needed by the module.  But each is needed at a special point of the module lifecycle: 
 
-We know any Newspeak object can have only one "slot defining" constructor (called /factory constructor/.  So any module can *only have one of the following factory constructors*
+- The /manifest/ object is needed at packaging step on the system where we create the package: /manifest/ is passed to the module packaging method such as ~#package(Something)Using: manifest~ which packages dependencies that need to be carried over from the system we are packaging on, to the module artifact that is copied to the deployment platform.
+- The /platform/ object is needed on the deployment step on the deployment system, to instantiate the module on the deployment platform, and passed there to the runtime instantiation method such as ~#build(Something)Using: platform~.
 
-- Factory method passing manifest, named similar to ~#package(Something)Using: manifest~  - manifest is needed during packaging (imports). Only App, Library, and Test configuration modules use this factory constructor.
-- Factory method passing platform, named similar to ~#(doSomething)usingPlatform: platform~ - platform is needed at runtime. For  App, Library, and Test configuration modules, method passing platform in an instance method.
+This is discussed in much more detail in the section below, [[*Modules: Application, library, test, general][Modules: Application, library, test, general]].
 
-Which method is used on which module type? Follow the next section [[*Modules: Application, library, test, general][Modules: Application, library, test, general]]
+We can reword the above as follows:
+
+We already know that any Newspeak object can have only one "slot defining constructor" (called /factory/) in it's API.  But, as a module needs both ~platform~ and ~manifest~, how can we ensure a module has both available?  This is done by *convention methods*, that are either a /factory/ or a regular /instance method/, depending whether the module is an /App, Library, and Test configuration module/ OR a /General/ module.
+
+- App, Library, and Test configuration modules (but not "general modules") have a *factory* passing a ~manifest~ in it's API. This /factory/ is named similar to ~#package(Something)Using: manifest~.  This factory is called on the system where we create the package to "import" objects and/or their classes during packaging (by placing them to the package artifact which can be delivered over to the runtime system).
+- Any "general" modules (not App, Library, or Test configurations) have a *factory* passing a ~platform~ in it's API. This /factory/ is named similar to ~#(doSomething)usingPlatform: platform~.  This factory is called on the runtime system for module instantiation.  An App, Library, and Test configuration module (where the /factory/ is already taken by presence of method passing platform such as ~#package(Something)Using: manifest~) would typically also have this method in it's API, but NOT as a factory, rather as an instance method.
+
+To read more details about which method is used on which module type, and why, follow the next section [[*Modules: Application, library, test, general][Modules: Application, library, test, general]].
 
 
 ** Modules: Application, library, test, general
@@ -728,11 +737,13 @@ This chapter is in a way the core why I started writing this whole big chapter [
 
 *** Application and library in computing
 
-In computing, a program may be an Application (App) or a Library.  This looks arbitrary, but not without merit.  On a high level, we have the following general requirements from an App, and from a Library:
+In computing, a program may be an Application (App) or a Library.  This looks arbitrary, but not without merit.  On a high level, we have the following general requirements for an App, and a Library:
 
-1.  An App must be able to *start execution* on the platform to which it is targeted (here, platform in the sense of "Linux platform", "Android platform", "Windows platform", and in our situation, the "Newspeak platform). 
-2.  A Library must be able to be *instantiated, loaded or linked, then used*, at least in principle, by the caller App or Library on that platform.  The /used/ library is often called a dependency.  The term /used/ implies that the Library is *found* and *connected* to the App or Library which is using it.
-3.  In addition, we should be able to *package* both the App and the Library for distribution.
+1. An App must be able to *start execution* on the platform to which it is targeted (here, platform in the sense of "Linux platform", "Android platform", "Windows platform", and in our situation, the "Newspeak platform). 
+2. A Library must be able to be *instantiated, loaded or linked, then used*, at least in principle, by the caller App or another Library on that platform.  The library /used/ by an App or another Library is often called a dependency.  The term /used/ implies that the Library is *found* and *connected* to the App or Library which is using it.
+3. In addition, we should be able to *package* both the App and the Library for distribution.
+
+So an App needs to provide a facility (API, method) to perform item 1 and 3.  A Library needs to provide a facility to perform item 2 and 3.
 
 From the generic requirements above, App and Library need some way to perform the requirements.  Methods perform requirements, so we need some "convention" methods to perform the requirements 1, 2, 3.  Such convention methods represent an API, are are described in the following section.
 
@@ -748,80 +759,79 @@ Following the basic requirements from the previous section [[*Application and li
   - To perform requirement 3, /packaging/, let's call the method ~#packageLibrary~
   - To perform requirement 2, /instantiate, load and use by the caller app/, let's call the method ~#build~
 
-A mainstream system has the advantage of access to a global namespace - generally a filesystem via a PATH, CLASSPATH, PYTHONPATH or similar.  We discussed that earlier as well.  Inside any of these methods, during execution, the program can look and find various artifacts in needs on the platform.  If we start the method equivalent to "#main" in Python, inside #main there may be a line of code such as ~from graphics import Rectangle~.  So we need the Rectangle class.  No problem, we go to the classpath, find the namespace /graphics/, there lives the module /graphics/, and the class /Rectangle/ is there.  We load it and continue. 
+A mainstream system has the advantage of access to a global namespace - generally a filesystem via a PATH, CLASSPATH, PYTHONPATH or similar.  We discussed that earlier as well.  Inside any of these methods, during execution, the program can look and find various artifacts it needs on the platform.  If we start the method equivalent to "#main" in Python, inside #main there may be a line of code such as ~from graphics import Rectangle~.  So we need the Rectangle class.  No problem, we go to the classpath, find the namespace /graphics/, there lives the module /graphics/, and the class /Rectangle/ is there.  We load it and continue. 
 
 
 *** Application and library modules in Newspeak
 
-In Newspeak, everything is done via objects.  So App and Library must be an object.  Further, Newspeak starts all operations on the instances of top level classes, that is, on modules. (Modules are /instances of top level classes/, see [[*Discussion of Modules][Discussion of Modules]])
+In Newspeak, everything is done via objects.  So App and Library must be an object.  Further, Newspeak starts all operations on the instances of top level classes, that is, on modules. For terminology, see [[*Newspeak terminology][Newspeak terminology]], also [[*Discussion of Modules][Discussion of Modules]].
 
-So in Newspeak, any App is a module, and any Library is a module.
+But Newspeak cannot load anything globally.  If the API for the App and library was as defined above in [[*Application and library API in computing][Application and library API in computing]], applications would not run as there would be no way to bring anything from a construct such as the CLASSPATH.  In more detail if the App's ~#main~ method defined above was to run, and Newspeak would discover the equivalent of "import" (which is slot creation in factory methods), it would not be able to find the "imported" dependency module.  It does not have the global namespace or access to the  PATH, CLASSPATH, PYTHONPATH or similar. 
 
-But Newspeak cannot load anything globally.  If the API for the App and library was as defined above in [[*Application and library API in computing][Application and library API in computing]], applications would not run as there would be no way to bring anything from a construct such as the CLASSPATH.  In more detail if the App's ~#main~ method defined above was to run, and Newspeak would discover the equivalent of "import" (which is slot creation in factory constructors), it would not be able to find the "imported" dependency module.  It does not have the global namespace or access to the  PATH, CLASSPATH, PYTHONPATH or similar. 
+*The solution is, in Newspeak, all the runtime dependencies (or rather their classes) must be passed to the /factory methods/*  
 
-*The solution is, in Newspeak, all the runtime dependencies (or rather their classes) must be passed to the /factory constructors/*  
-
-But, how is the solution implemented, in more details? Well, we simply add some objects to the Module factory constructors.  But which objects? 
+But, how is the solution implemented, in more details? Well, we simply add some objects to the Module factory methods.  But which objects? 
 
 - *To build (instantiate) a Library or execute and App*, we need to supply the capabilities of the Newspeak platform.  This IS provided by the /platform object/ analyzed in [[*The platform object][The platform object]].  So _we will pass the /platform/ object to the execution or instantiating methods_.
 - *To package     a Library or an App*, we need to supply all classes the Library or App needs to "carry along" in it's package.  Such "carried along" classes become slots on the module object (the "carried along" classes play the role of "imported classes" in mainstream).  In the IDE, during development of the module we are packaging, we may have been creating our own top level classes (and their nested classes obviously) needed by the module we are packaging.  Those classes do not exist on the end-user system where we will send the package for building or execution.  So all those added classes have to be "carried along" in the package.  We have seen all available classes in the IDE, including those we may have added, are supplied by [[*The manifest object][The manifest object]].  So _we will pass the /manifest/ object to the packaging methods_.
 
 
-So, in Newspeak, to supply dependencies, (due to intentional lack of global namespace), we will have to extend the signature names from previous chapter:
+So, Newspeak, to supply dependencies, (due to intentional lack of global namespace), extends the signatures of requirements 1, 2, 3 from previous chapter. To provide "carry over" (imported) classes from ~manifest~, and system classes from ~platform~, Newspeak uses the following signature names:
 
-- For an App:
-  - To perform requirement 3, /packaging/, let's call the method ~#packageUsing: manifest~.
-  - To perform requirement 1, /start execution/, let's call the method ~#main: platform args: args~
-- For a Library:
-  - To perform requirement 3, /packaging/, let's call the method ~#packageLibraryUsing: manifest~
-  - To perform requirement 2, /instantiate, load and use by the caller app/, let's call the method ~#buildUsing: platform~
+- *For an App*:
+  - To perform requirement 3, /packaging/, Newspeak uses the factory method ~#packageUsing: manifest~.
+  - To perform requirement 1, /start execution/, Newspeak uses the instance method ~#main: platform args: args~
+- *For a Library*:
+  - To perform requirement 3, /packaging/, Newspeak uses the factory method ~#packageLibraryUsing: manifest~
+  - To perform requirement 2, /instantiate, load and use by the caller app/, Newspeak uses the instance method ~#buildUsing: platform~
 
+These four methods are core "convention" methods for all Newspeak modules which we want to behave as either Apps or Libraries.
 
 
 *** Newspeak modules API summary
 
-This section is a summary and reference of Application, library, and test modules API in Newspeak.  It is sort of the pinnacle of the parent section about Apps and Libraries. 
+This section is a summary and reference of Application, Library, and Test configuration modules API in Newspeak.  It is sort of the pinnacle of the parent section about Apps and Libraries. 
 
 *As explained in the previous section, in Newspeak, compared to a mainstream platform which has access to global namespace, we have to change the API signatures described in [[*Application and library API in computing][Application and library API in computing]] by passing the /platform/ and the /manifest/ object.*  We also change the signatures to match actual Newspeak names.
 
-*Here are the APIs which define whether a Newspeak module is an App, a Library, a Test Configuration, or a General module*.  The requirements 1, 2, 3 refer to the requirements (roles) in  [[*Application and library API in computing][Application and library API in computing]]. Please note that Newspeak is not using the terms "App module", "Library module", "General module", or "Test Configuration module". I find it a useful classification of modules though.
+*Here are the APIs which define whether a Newspeak module is an App, a Library, a Test Configuration, or a General module*.  The requirements 1, 2, 3 refer to the requirements (roles) in  [[*Application and library API in computing][Application and library API in computing]]. Please note that Newspeak is not using the terms "App module", "Library module", "General module", or "Test Configuration module". I find such classification of modules useful though.
 
 - *Newspeak App module* is defined by the presence of:
-  - Factory constructor ~#packageUsing: manifest~        which performs requirement 3, /packaging/. 
-    - Implementations should set slots by pulling needed classes from the manifest
-  - Instance method     ~#main: platform args: args~     which performs requirement 1, /start execution/.
+  - Factory method ~#packageUsing: manifest~ which performs requirement 3, /packaging/. 
+    - Implementations should set pull needed classes from the manifest and place then on slots to package them on the app artifact.  App slots serve as "imports".
+  - Instance method ~#main: platform args: args~ which performs requirement 1, /start execution/.
     - Implementations should instantiate, from slot classes and platform objects, all object needed to run the app, then call methods on them as needed.  Examples of needed objects instantiating:
-      - /Slot1 usingPlatform: platform [and: otherObjects]/ if Slot1 is Other module
+      - /Slot1 usingPlatform: platform [and: otherObjects]/ if Slot1 is a General module
       - /Slot2 buildUsing: platform/ if Slot1 is a Library module   
       
 - *Newspeak Library module* is defined by the presence of:
-  - Factory constructor ~#packageLibraryUsing: manifest~ which performs requirement 3, /packaging/.
+  - Factory method ~#packageLibraryUsing: manifest~ which performs requirement 3, /packaging/.
     - Implementations should put all classes needed to build the distributed module to slots, from manifest.  Needed classes not on manifest should be created by calling A3RdPartyDependdency>>#packageLibraryUsing: manifest 
-  - Instance method     ~#buildUsing: platform~          which performs requirement 2, /instantiate, load and use by the caller app/.
+  - Instance method ~#buildUsing: platform~ which performs requirement 2, /instantiate, load and use by the caller app/.
     - Implementations should build, then return a working instance of the module we want to distribute, NOT the instance on which this #buildUsing is defined!! Building the distributed instance will possibly call other needed dependencies #buildUsing: or #usingPlatform" methods.  Examples of how needed dependencies :
       - /Slot1 usingPlatform: platform [and: otherObjects]/ if Slot1 is a General module
       - /Slot2 buildUsing: platform/ if Slot1 is a Library module    
     - Important note:  *If we want to distribute a module MyModule1 (this may or may not be a library module!), we have to create a separate top level Library Module, MyModule1Library for the purpose of distributing MyModule1*! The #buildUsing: implementation we are talking about here, is the  "MyModule1Lib>>#buildUsing:" method! -  NOT the  "MyModule1>>#buildUsing:" method, as this may not even exist on MyModule1!
     
 - *Newspeak Test Configuration module* by convention ends with "Configuration", and is defined by the presence of:
-  - Factory constructor ~#packageTestsUsing: manifest~              which performs requirement 3, /packaging/
+  - Factory method ~#packageTestsUsing: manifest~ which performs requirement 3, /packaging/
     - Implementations should put on slot the class of the Module being tested.
-  - Instance method     ~#testModulesUsingPlatform: p minitest: m~  which performs requirement 2, /instantiate/, 
-    - Implementations should call return instance of the tested class.  Example: ^{AccessModifierTesting usingPlatform: platform testFramework: minitest}
-    - Note: If class MyTestModule has the test methods, MyTestModuleConfiguration must be created.  This is the class we are talking about 
+  - Instance method ~#testModulesUsingPlatform: p minitest: m~  which performs requirement 2, /instantiate/, 
+    - Implementations should call return instance of the tested class.  Example: ~^{AccessModifierTesting usingPlatform: platform testFramework: minitest}~
+  - *Note:* Tests, by convention, need two classes to be created. If class MyTestModule has the test methods, MyTestModuleConfiguration must be created.  This is the class we are talking about in this section. There are no "convention" methods on the test module MyTestModule. 
       
 - *Newspeak General module* is /any other module/ - any module that does not have any of the above API.  General modules *do not have any convention API name*.
-  - However, we often find they have a /factory constructor/ named *similar to* ~#usingPlatform: platform [and: otherObjects]~ which create a working instance. Note that the [and: otherObjects] portion is completely free, it can be named differently.  
+  - However, we often find they have a /factory method/ named *similar to* ~#usingPlatform: platform [and: otherObjects]~ which create a working instance. Note that the [and: otherObjects] portion is completely free, it can be named differently.  
     - These modules can for example be 
       - modules we distribute using the /Library Distribution module/ 
       - tests we run using the /Test Configuration module/
 
-Note that the methods which *perform the packaging*, are /factory constructors/, while the methods which perform *execution or build* are /instance methods/.  The reason is, a /factory constructor/ is the only method which can store stuff in slots! So any classes modules need to "carry along" ("import" using manifest) must be put to slots during a factory constructor call.
+Note that on App and Library modules, the methods which *perform the packaging*, are /factory methods/ (~manifest~ is passed to them), while the methods which perform *execution or build* are /instance methods/ (~platform~ is passed to them).  The reason is, a /factory method/ is the only method which can store stuff in slots! So any classes needed to be "carried along" for packaging (pulled from manifest then "imported" on the target platform during construction), must be placed on slots during the factory method call.
 
-Note that the IDE uses some of those methods to show appropriate action links.  For example,
+Note that the IDE uses the presence of certain methods to show appropriate action links.  For example,
 
-- The presence of method ~#packageUsing: manifest~ in the module, IDE shows links to *[deploy] [configurations] [run] [debug]*
-- The presence of method ~#packageTestsUsing: manifest~ in the module, IDE shows links to *[run tests] [show tests]*
+- If the method ~#packageUsing: manifest~ exists in the module, IDE shows links to *[deploy] [configurations] [run] [debug]*
+- If the method ~#packageTestsUsing: manifest~ exists in the module, IDE shows links to *[run tests] [show tests]*
 
 
 *** Newspeak modules API zoo 
@@ -832,34 +842,44 @@ See [[*Newspeak modules API summary][Newspeak modules API summary]] for roles of
 
 The table below summarizes APIs of all type of modules 
 
-| Module type                            | Factory Constructor. Role=package                   | Note       | Sep | Instance method. Role=build or execute          | Note                                                                                                                   |
-|----------------------------------------+-----------------------------------------------------+------------+-----+-------------------------------------------------+------------------------------------------------------------------------------------------------------------------------|
-| Library                                | #packageLibraryUsing: manifest                      |            | -   | #buildUsing: platform                           |                                                                                                                        |
-| App                                    | #packageUsing: manifest                             |            | -   | #main: platform args: args                      | calls General modules Factory constructors, and/or Library module instance method, then appropriate methods to run app |
-| Test Configuration                     | #packageTestsUsing: manifest                        |            | -   | #testModulesUsingPlatform: platform minitest: m | calls Test module Factory constructor which runs tests                                                                 |
-|----------------------------------------+-----------------------------------------------------+------------+-----+-------------------------------------------------+------------------------------------------------------------------------------------------------------------------------|
-|----------------------------------------+-----------------------------------------------------+------------+-----+-------------------------------------------------+------------------------------------------------------------------------------------------------------------------------|
-|                                        | Factory Constructor.                                |            | -   |                                                 |                                                                                                                        |
-|----------------------------------------+-----------------------------------------------------+------------+-----+-------------------------------------------------+------------------------------------------------------------------------------------------------------------------------|
-| General, needs platform + other module | similar to #usingPlatform: platform [andModule: m1] |            | -   | Note: name is completely free                   |                                                                                                                        |
-| General, needs other module            | similar to #andModule: m1                           |            | -   | Note: name is completely free                   |                                                                                                                        |
-| General, with no dependencies          | #new                                                |            | -   |                                                 |                                                                                                                        |
-| Test                                   | #usingPlatform: platform testFramework: minitest    | runs tests | -   |                                                 |                                                                                                                        |
+| Module type                            | Factory method. Role=package                        | Note       | Sep | Instance method. Role=build or execute          | Note                                                                                                     |
+|----------------------------------------+-----------------------------------------------------+------------+-----+-------------------------------------------------+----------------------------------------------------------------------------------------------------------|
+| Library                                | #packageLibraryUsing: manifest                      |            | -   | #buildUsing: platform                           |                                                                                                          |
+| App                                    | #packageUsing: manifest                             |            | -   | #main: platform args: args                      | calls General modules Factory methods, and/or Library module method, then appropriate methods to run app |
+| Test Configuration                     | #packageTestsUsing: manifest                        |            | -   | #testModulesUsingPlatform: platform minitest: m | calls Test module Factory method which runs tests                                                        |
+|----------------------------------------+-----------------------------------------------------+------------+-----+-------------------------------------------------+----------------------------------------------------------------------------------------------------------|
+|----------------------------------------+-----------------------------------------------------+------------+-----+-------------------------------------------------+----------------------------------------------------------------------------------------------------------|
+|                                        | Factory method.                                     |            | -   |                                                 |                                                                                                          |
+|----------------------------------------+-----------------------------------------------------+------------+-----+-------------------------------------------------+----------------------------------------------------------------------------------------------------------|
+| General, needs platform + other module | similar to #usingPlatform: platform [andModule: m1] |            | -   | Note: name is completely free                   |                                                                                                          |
+| General, needs other module            | similar to #andModule: m1                           |            | -   | Note: name is completely free                   |                                                                                                          |
+| General, with no dependencies          | #new                                                |            | -   |                                                 |                                                                                                          |
+| Test                                   | #usingPlatform: platform testFramework: minitest    | runs tests | -   |                                                 |                                                                                                          |
 
 Notes:
 
-- The ~#usingPlatform: platform [andModule: m1]~ is an example of a factory constructor which is passed the platform and a dependency which is module m1. The point is the the start of the method name ~#usingPlatform:~ is fixed, other parameters can be added for dependencies, in any free form.
-- The IDE, when we click [run] to run the App, the IDE calls the App's factory constructor ~#packageUsing: manifest~, then the Instance method (run)
+- The ~#usingPlatform: platform [andModule: m1]~ is an example of a factory method which is passed the platform and a dependency which is module m1. The point is the the start of the method name ~#usingPlatform:~ is fixed, other parameters can be added for dependencies, in any free form.
+- The IDE, when we click [run] to run the App, the IDE calls the App's factory method ~#packageUsing: manifest~, then the Instance method (run)
 
 We can provide a "recipy" for how any App module should be written:
 
-- In the Factory Constructor ~#packageUsing: manifest~, store any "carry along" (import) classes on slots
+- In the Factory method ~#packageUsing: manifest~, store any "carry along" (imported) classes on the slots
 - In the instance method ~#main: platform args: args~
   - First use all (import) classes on slots to instantiate and build their modules:
-    - For slots that are general modules classes, call their Factory constructors  ~#usingPlatform: platform [andModule: m1]~ to build instances of modules (dependencies)
-    - For slots that are library modules classes, call their build instance methods, ~#buildLibraryUsingPlatform: platform~ to build instances of 3rd party modules (dependencies) 
+    - For slots that are general modules classes, call their Factory methods, named similar to ~#usingPlatform: platform [andModule: m1]~, to build instances of modules (dependencies)
+    - For slots that are library modules classes, call their build instance methods, named similar to ~#buildLibraryUsingPlatform: platform~, to build instances of 3rd party modules (dependencies) 
   - Next, on the instances created just before, call appropriate methods to run the app
     
+
+*** A recipy to convert a General module to an App or Library module
+
+Often, we start developing a module class (a top level class) for "internal" use, with no need to "ship" it as an App or a Library for others to use. Such module would be built as a General module with methods described above in [[* Newspeak modules API zoo][Newspeak modules API zoo]]. Later, we may decide to make this class available to others as a library or an app. 
+
+This section provides a "recipy" to convert a General module to an App or Library module.
+
+From the API naming "convention" in [[* Newspeak modules API zoo][Newspeak modules API zoo]], we can deduce a "recipy" to convert a General module to an App or a Library:
+- If we want to convert a General module to an App,     we need to "move" the factory method named similar to ~#usingPlatform: platform:~ to an instance method named ~#main: platform args: args~, and add a factory method ~#packageUsing: manifest~.
+- If we want to convert a General module to a  Library, we need to "move" the factory method named similar to ~#usingPlatform: platform:~ to an instance method named ~#buildUsing: platform~       and add a factory method ~#packageLibraryUsing: manifest~.
 
 
 *** Newspeak platform and manifest objects summary
@@ -877,7 +897,7 @@ Sections above attempted to discover and describe modules API, see [[*Newspeak m
 
 While perhaps rare, this is the simplest case. If our module does not need any dependencies, not even from common classes such as collection:
 
-- provide a /factory constructor/ ~#new~
+- provide a /factory method/ ~#new~
 
 ***** Example:
 
@@ -910,8 +930,8 @@ class RecipyNoDep = ()
 
 If our module need some other module from IDE, such as collections, you have to pass it the ~platform~ object, and potentially other objects or classes our module depends on
 
-- provide a /factory constructor/ ~#usingPlatform: platform~
-- OR if another module is needed, provide a /factory constructor/ such as ~#usingPlatform: platform andModule: translator~
+- provide a /factory method/ ~#usingPlatform: platform~
+- OR if another module is needed, provide a /factory method/ such as ~#usingPlatform: platform andModule: translator~
 
 ***** Example:
 
@@ -947,16 +967,16 @@ Note that the RecipyNoDep class could be passed instead of the instance; obvious
 
 **** 3. Library module: API of module that needs to be distributed for use in other modules
 
-This next step describes an example of a module which is intended to be distributable as a library. In Newspeak, *this means such module must be both packageble and distributable* - the roles of "packageble" and "distributable" are achieved by implementing the 2 methods below. We call such modules informally /library modules/.
+This next step describes an example of a module which is intended to be distributable as a library. In Newspeak, *this means such module must be both packageble and distributable* - the roles of "packageble" and "distributable" are achieved by implementing the 2 methods below. We call such modules informally /Library modules/.
 
 In the previous section, we introduced a general module ~RecipyWithDep~. If we needed this module to be packagable as a library, add the following:
 
 1. Add a *separate module* with a descriptive name (to make clear it is a library), such as ~RecipyWithDepLib~
 2. In this *separate module*, provide the following API:
-  - Factory constructor ~#packageLibraryUsing: manifest~, which allows "imports"
+  - Factory method ~#packageLibraryUsing: manifest~, which allows "imports"
   - Instance method     ~#buildUsing: platform~, which allows dependencies to be pulled at construction time
 
-Note that in this case, /#buildUsing: platform/ must not be added any other arguments. Any "carry along" (imported) classes that may be needed at build time, must be saved on slots in the /#packageLibraryUsing: manifest/ factory constructor.
+Note that in this case, /#buildUsing: platform/ must not be added any other arguments. Any "carry along" (imported) classes that may be needed at build time, must be saved on slots in the /#packageLibraryUsing: manifest/ factory method.
 
 ***** Example:
 
@@ -983,7 +1003,7 @@ class RecipyWithDepLib packageLibraryUsing: manifest = (
 Note how the library must store any "carry along" (imported) classes on slots during packaging, then instantiate them during building. 
 
 Also note how the passing of ~platform~ moves from the constructor in the module, to the instance method in the library:
-  - In the module ~RecipyWithDep~ , it is on the /factory constructor/ /#usingPlatform: platform:/ 
+  - In the module ~RecipyWithDep~ , it is on the /factory method/ /#usingPlatform: platform:/ 
   - To the distribution library ~RecipyWithDepLib~, it is on the /instance method/ /#buildUsing: platform/.
 
 Although intended for distribution, for testing this process, the library can be used in workspace as 
@@ -1009,8 +1029,8 @@ If we need our module ~RecipyWithDep~ to be packagable as an App:
 
 1. Generally, add a *separate module* with a descriptive name (to make clear it is a App)
 2. In this *separate module*, provide the following API:
-  - Factory constructor ~#packageUsing: manifest~ 
-  - Instance method     ~#main: platform args: args~
+  - Factory method ~#packageUsing: manifest~ 
+  - Instance method ~#main: platform args: args~
 
 *Note 1:*
 
@@ -1054,11 +1074,13 @@ class RecipyWithDepApp packageUsing: manifest = (
 )
 #+end_src
 
-Note how the App (same as the library) must store any "carry along" (imported) classes on slots during packaging, then instantiate them in #main#args: at runtime (for library, at build time). 
+Note how the App stores any "carry along" (imported) classes from the manifest on slots during packaging in the ~packageUsing: manifest~ factory, then instantiate the "carry along" classes in ~#main: platform args: args~ at runtime. For a library, this happ build time). 
 
-Also note how the passing of ~platform~ moves from the constructor in the module to the instance method in the App:
-  - In the module ~RecipyWithDep~ , it is on the /factory constructor/ /#usingPlatform: platform:/ 
-  - To the App ~RecipyWithDepApp~, it is on thr /instance method/ /#main: platform args: args/.
+Also note when we converted the General module to an App:
+  - In the General module ~RecipyWithDep~, the ~platform~ object is passed to the /factory method/ ~#usingPlatform: platform:~. 
+  - In the App            ~RecipyWithDepApp~, the ~platform~ object is passed to the /instance method/ ~#main: platform args: args~.
+
+See the section [[* A recipy to convert a General module to an App or Library module][A recipy to convert a General module to an App or Library module]] for a general recipy to convert a General module such as  ~RecipyWithDep~ to an App such as ~RecipyWithDepApp~.
 
 Also note, as you add the App class ~RecipyWithDepApp~ in the IDE, (using the "+ " button ), the IDE shows  *[deploy] [configurations] [run] [debug]* links beside it, recognizing the top level class as an App. 
 
@@ -1094,7 +1116,7 @@ Steps to run Hello World from Workspace
 
 *** 2. Hello World from general module
 
-In this section, we will build a Hello World which is a /module/ (a /instance of top level class/ as we know already).  The [[*Newspeak modules API summary][Newspeak modules API summary]] section would classify this as "General" module, because it does not have any of the special convention methods in it's API.  The only method of this class is it's default /factory constructor/ ~#new~.
+In this section, we will build a Hello World which is a /module/ (a /instance of top level class/ as we know already).  The [[*Newspeak modules API summary][Newspeak modules API summary]] section would classify this as "General" module, because it does not have any of the special convention methods in it's API.  The only method of this class is it's default /factory method/ ~#new~.
 
 Steps to create the Hello World general module in the Newspeak IDE's
 
@@ -1114,7 +1136,7 @@ Steps to create the Hello World general module in the Newspeak IDE's
 - What happened?
   - First of all the "Hello World" shows on the bottom again.
   - How did it get there?
-    - Clicking the class link, prepares to present the class.  In the IDE, the class is presented inside an instance of itself.  So, an instance of ~HelloWorldGeneralModule~ is created, by calling the implicit "#new" factory constructor.  The code of the factory constructor is ~'Hello World ' out~.  This code, when running, appends the text to the end of the body.
+    - Clicking the class link, prepares to present the class.  In the IDE, the class is presented inside an instance of itself.  So, an instance of ~HelloWorldGeneralModule~ is created, by calling the implicit "#new" factory method.  The code of the factory method is ~'Hello World ' out~.  This code, when running, appends the text to the end of the body.
     - Similarly, every time we just click on the > in the class list beside the class, a new instance is created (to serve the presented, and one more 'Hello World' appears
       [[file:img/newspeak---a-few-notes.org-hello-world-3-times-after-body.png]] 
     
@@ -1142,7 +1164,7 @@ So to create a Newspeak App (as opposed to a general module or a library), we ne
     )
   )
   #+end_src
-- You should see the class in the top classes list.  However, (as opposed to previous section ~HelloWorldGeneralModule~), our class has the links *[deploy] [configurations] [run] [debug]* beside it.  This is because the presence of ~#packageUsing: manifest~ makes the class an App.  The tools (the IDE) understand this message and use it to show actions that can be done with an App: run, debug, deploy, show available configurations.  In addition, the presence of another method, the ~#main: platform args: args~ makes the module runnable as a standalone App. 
+- You should see the class in the top classes list.  However, (as opposed to previous section ~HelloWorldGeneralModule~), our class has the links *[deploy] [configurations] [run] [debug]* beside it.  This is because the presence of ~#packageUsing: manifest~ factory makes the class an App by convention.  The tools (the IDE) understand this message and use it to show actions that can be done with an App: run, debug, deploy, show available configurations.  In addition, the presence of another method, the ~#main: platform args: args~ makes the module runnable as a standalone App. 
 - Click the *[run]* link to run the app inside the IDE.  The IDE calls first the ~#packageUsing: manifest~, then the ~#main: platform args: args~ which runs, and the text 'Hello World from HelloWorldApp' will be appended after the page body.
   [[file:img/newspeak---a-few-notes.org-hello-world-app-output.png]]
 
@@ -1606,7 +1628,7 @@ For example, we can define a method #foo:
 In that case, the Debug button will provide a menu of the two exemplars.
  
 
-**** Are the exemplars always extracted from the comment before the " = (..)" section defining the factory constructor, instance method or class method, OR can they be at any position in the code?
+**** Are the exemplars always extracted from the comment before the " = (..)" section defining the factory method, instance method or class method, OR can they be at any position in the code?
 
 Exemplars must be placed before the method body starts (or for classes, before factory body starts).
 
@@ -1697,7 +1719,7 @@ returns (via *ide selector -> 'HopscotchWebIDE'*)
 ~Root at: 'HopscotchWebIDE'~
 
 
-** IN-PROGRESS-NOW Access control and access modifiers in Newspeak.
+** Access control and access modifiers in Newspeak
 
 *** Introduction
 
@@ -1712,10 +1734,10 @@ The access control rules decide whether an expression (a line of code), will be 
 The rules take into account 
 
 1) Access modifiers "private" "public" and default (protected) on the accessed items; 
-2) Wheather the accessed items are declared in the same class, nested class or enclosing class of the expression for which the rules evaluate access. In other words, access control rules interact with the lexical structure. 
+2) Wheather the accessed items are declared in the same class, nested class or enclosing class of the expression for which the rules evaluate access. In other words, access control rules interact with the lexical structure (nesting) of the classes involved: classes where the code is located, in relation to the classes which are used in the code. 
 3) Whether the accessed items are declared in the same class or an inherited class. In other words, access control interacts with inheritance.
 
-Clearly, access control rules are not trivial.
+Clearly, access control rules are not trivial.  This section attempts to explain them, and provide some practical examples.
 
 
 *** Access control context, description and terminology
@@ -1723,8 +1745,8 @@ Clearly, access control rules are not trivial.
 Every expression in Newspeak is a message send.  So let us describe what is meant by the term "Access" or "Access rights" of objA to access objB or objA to send message msg to objB.
 
 - Newspeak classes can be nested and also inherited.
-- Newspeak classes can have the following members: *slots, methods, inner classes*. 
-- Each member may have access modifiers keywords: public, private. No modifier means protected.
+- Newspeak classes can have the following *members*: *slots, methods, nested classes*. 
+- Each /member/ may have access modifiers keywords: public, private. No modifier means protected.
 - "Access control" describes how objects can access ("have the access rights to") other objects and other objects' members.
 - The access rights are determined by rules which navigate in three independent "dimensions"
   - The "accessibility dimension": Points on this dimension are access modifiers: public, private, protected (default, no keyword)
@@ -1734,19 +1756,21 @@ Every expression in Newspeak is a message send.  So let us describe what is mean
 - Because in Newspeak runtime, any operation is a message send, we can speak of the following: 
    - At runtime, in Newspeak's system of objects, object objA may or may not be able to reference (see) another object objB.
    - If objA is not allowed to reference objB, a security exception results. 
-   - If objA can reference objB, we say that objA has access (or access rights) to objB. Further, if objA has access to objB, assume there is a method, slot, or nested class named ~member~ declared on objB. Even though objA has access to objB, objA still may or may not be able to send the message ~member~ to objB (execute ~objB member~). If objA has the ability to send message msg to objB, we say that "object objA has access to member on objB"
+   - If objA can reference objB, we say that objA has access (or access rights) to objB. Further, if objA has access to objB, assume there is a method, slot, or nested class named ~memberB~ declared on objB. Even though objA has access to objB, objA still may or may not be able to send the message ~memberB~ to objB (execute ~objB memberB~). If objA has the ability to send message msg to objB, we say that "object objA has access to memberB on objB"
    
 
-Combined, we say that objA has *access* (or *access rights*) to send a message ~member~ to objB, if a message send ~objB member~ is allowed to execute at runtime from some place in code of objA.
+Combined, we say that objA has *access* (or *access rights*) to send a message ~memberB~ to ~objB~, if a message send ~objB memberB~ is allowed to execute at runtime from some place in code of ~objA~.
 
   
 *** Slides 61, 62, 63: Rules for accessing members above and below the class in the nesting hierarchy
 
-This section goes over access control rules described in slides in [[https://00463064267054129163.googlegroups.com/attach/16b8a25058caa/ns-access-control.pdf?part=0.1&view=1&vt=ANaJVrHvttkWPn-fNP95UFKbcCbbp1VaDJlJSx1HzBevq_xhafVpZ4uz1ffKMTvkAxLFnAk2_xurwU-BTi3FIMnPj1FlU7-S-zKgS2y2eNXheQQsxM8mJUY][Can Beautiful Languages Do Access Control?]].
+Slides in this presentation serve as a core source for the rules that define accessibility:
 
-**** Slides 61, 62, 63 overview 
+ [[https://00463064267054129163.googlegroups.com/attach/16b8a25058caa/ns-access-control.pdf?part=0.1&view=1&vt=ANaJVrHvttkWPn-fNP95UFKbcCbbp1VaDJlJSx1HzBevq_xhafVpZ4uz1ffKMTvkAxLFnAk2_xurwU-BTi3FIMnPj1FlU7-S-zKgS2y2eNXheQQsxM8mJUY][Can Beautiful Languages Do Access Control?]].
 
-These slides describe how Newspeak code in a class accesses members (classes, slots, methods) above and below the class in the nesting hierarchy and the member members, depending on the accessed member's public, private and protected status. In particular:
+This section goes over access control rules described in the above slides.
+
+The core slides are slides 61, 62, 63. They describe how Newspeak code in a class accesses members (classes, slots, methods) above and below the class in the nesting hierarchy and the member members, depending on the accessed member's public, private and protected status.
 
 
 **** Slide 61: public, protected, private
@@ -1801,52 +1825,25 @@ This slide describes how Newspeak code in a class can access private and protect
 3. So slide 63 does not adds the intuitive but important rule that an object can access any of it's own members, regardless the member's access modifier.  
 
 
-**** Colollary on slides 61, 62, 63
+**** Corollary on slides 61, 62, 63
 
-Public members are accessible everywhere, including from modules outside of modules where they are declared. 
+Public members are accessible everywhere, including from modules outside of the module where they are declared, as long as the object to which they are sent is accessible. 
 
+To explain what we mean by "as long as the object to which they are sent is accessible": Let's say we are evaluating accessibility of ~msgC~ in an expression that is a sequence of messages such as ~objA msgA msgB msgC~. If ~objA msgA~ returns ~objB~, then, the expression is equivalent to ~objB msgB msgC~. If ~objB msgB~ returns ~objC~, the expression is equivalent to ~objC msgC~.  
 
-**** Slides 64-77: Types of message sends
-
-This section makes a few notes about slides 64-77 in  [[https://00463064267054129163.googlegroups.com/attach/16b8a25058caa/ns-access-control.pdf?part=0.1&view=1&vt=ANaJVrHvttkWPn-fNP95UFKbcCbbp1VaDJlJSx1HzBevq_xhafVpZ4uz1ffKMTvkAxLFnAk2_xurwU-BTi3FIMnPj1FlU7-S-zKgS2y2eNXheQQsxM8mJUY][Can Beautiful Languages Do Access Control?]].
-
-Those slides describe types of message sends in Newspeak, as well as the algorithms of how the appropriate messages are looked up due to nesting, inheritance, and presence of access modifies on messages. 
-
-A message is denoted as *msg* in this text. However, keep in mind that a *msg* can be a name of any class *member* (a *slot*, a *method*, a *nested class*). This unification is possible due to the fact that every runtime operation in Newspeak is a message send - so accessing a slot, a method, or a nested class can be all represented as a message send: Either ~anObject msg~ or ~msg~. The latter (~msg~) is a message sent to an implicit receiver. In the former (~anObject msg~) /anObject/ can be a special object /super/ or /self/ or /outer/, but the two basic forms of sending a message are all that we need to think of.
-
-Syntactically, the types of message sends can be expressed as one of the following -  
-
-- ordinary sends (*anObject msg*), 
-- self sends (*self msg*), 
-- super sends (*super msg*), 
-- implicit receiver sends (*msg*), 
-- outer sends (*outer Classname msg*)
-
-See slides 64-77 for details of the algorithms. The text below only has a few selected comments and questions/answers regarding those slides.
-
-1. These slides describe algorithms of how Newspeak finds the class on which the message exists.  It is the found class's message which is send (to the receiver object). One interesting thing is that in protected lookup, existence of a private msg is ignored.
-
-2. A slot access is a subset of the implicit receiver send. As an example, let’s assume in code, there is a line "slot1." or "slot1:: 10." (outside the slot declaration section).  The rules for "implicit receiver sends" described in slides 69-77, apply for "slot1" - just substitute "msg" for "slot1".  Same situation applies for accessing nested classes - because a "msg", a "slot" a "nested class" are all "members", and all the rules apply for members.
-
-3. On slide 69, implicit receiver send: "Lookup declaration of private msg in immediately surrounding class. If not found, recurse up lexical scope until lexical top." : 
-
-   - Question: What does the "recurse up lexical scope" look for? Does it look up the lexical scope only for private msg? Also if a public or protected msg is found lexically up, is such msg skipped OR does a presence of public or protected msg trigger the inheritance chain lookup, even though there may be lexically higher level private msg?
-
-   - Answer: Any lexically visible declaration will do. The point here is that if it's private, you can run the code immediately. If it is not private, it may have been overridden in a subclass, so you need to do the lookup. If it hasn't been overridden, you will eventually hit the definition you saw in the lexical scope.
-  
-4. Slide 68 'enclosing objects' shows circles with C0, C1 etc. 
-
-  - Question: what are the circles with C0, C1 etc? The classes are S0 ,S1 etc. I assume the O0, O1, O2,etc are instances of S0, S1, S2 et.  Do the C0, C1, C2 etc circles have something to do with showing the fact that classes are virtual in Newspeak?
-  - Answer: Yes. The Ci are classes. The slide illustrates what can happen in the general case.
+So if we are evaluating evaluating access of ~msgC~, accessibility must have been succesfull all along the "path" in the message sequence ~objA msgA msgB~.  That is, we assume we evaluated that accessibility was succesfull in all of  
+- ~objA~
+- ~objA msgA~
+- ~objA msgA msgB~ (which is accessibility of ~msgB~ from ~objB msgB~)
 
 
-*** IN-PROGRESS-NOW todo: Worked accessibility examples of for slides 62 and 63
+*** Worked accessibility examples, using rules from slides 61, 62, 63
 
-**** Worker accessibility example introduction 
+**** Code used in accessibility examples
 
-This section is a step by step experiment accessibility rules described in slides 62 and 63.
+This section is a step by step experiment accessibility rules described in slides 61, 62, 63.
 
-Start with the following class code:
+We will use the following class code.  To follow the steps of this section, compile the following class into your IDE.  Save the code in a file on your system, then see the paragraph [[compile-files]] how to compile the code into your IDE. 
 
 #+BEGIN_EXAMPLE
   Newspeak3
@@ -1882,7 +1879,7 @@ Start with the following class code:
           ^'protectedFails' 
           (* C1 new protectedFails: Fails. 
 
-          Reason:  I feel the reason is not completely obvious from the slides, as we are typing code in the Workspace, and it is not immediately clear how code in Workspace is lexically (nesting wise) related to the class ~C1~. A note: The Newspeak IDE provides a Root namespace, all modules are nested in it. Both the Workspace and the C1 module code are nested in the IDE. Having made that note let's work trough why this message send fails: The workspace context is lexically NOT enclosing C1. The code line that we wrote, ~C1 new protectedFails~ is lexically in the workspace module; the member we are trying to access, ~protectedFails~, is lexically in the C1 module.  In summary, this fails because of rule on slide 63 b: An object (workspace where we type the expression) may access private or protected member (~protectedFails~) only if a) it is a member or b) a lexically visible member of an enclosing class (C1 class is not enclosing to Workspace class). In our situation, the code in expressions ~C1 new protectedFails~ typed in the Workspace class cannot see a private or protected member (~C1>>#protectedFails~) of a class (C1) because the method C1>>#protectedFails is neither a member of  Workspace, nor it is in Workspace's enclosing class.
+          Reason:  I feel the reason is not completely obvious, as we are typing code in the Workspace, and it is not immediately clear how code in Workspace is lexically (nesting wise) related to the class ~C1~. A note: The Newspeak IDE provides a Root namespace, all modules are nested in it. Both the Workspace and the C1 module code are nested in the IDE. Having made that note let's work trough why this message send fails: The workspace context is lexically NOT enclosing C1. The code line that we wrote, ~C1 new protectedFails~ is lexically in the workspace module; the member we are trying to access, ~protectedFails~, is lexically in the C1 module.  In summary, this fails because of rule on slide 63 b: An object (workspace where we type the expression) may access private or protected member (~protectedFails~) only if a) it is a member or b) a lexically visible member of an enclosing class (C1 class is not enclosing to Workspace class). In our situation, the code in expressions ~C1 new protectedFails~ typed in the Workspace class cannot see a private or protected member (~C1>>#protectedFails~) of a class (C1) because the method C1>>#protectedFails is neither a member of  Workspace, nor it is in Workspace's enclosing class.
 
           Note: As a practical result, because we are testing in the workspace, we will make all our test methods in the C1 class public (for example ~public protC2New~, ~public protC2NewProtM~ and we will investigate the access rules on the expressions inside the methods on ~C1~. We name the methods on C1 so the naming reflects what the tested expression in the method does. For example: the name ~protC2NewProtM~ expresses in the name that we call the expression ~ProtC2 new protM~.  Also there is another important point here: For between-modules visibility: A module C1, looking into another module C2, can only see public members in C2. So C1 must make public any of it's members intended to be used outside of C1 - in other words, C1 module's API methods must be public. 
           *)
@@ -1902,23 +1899,23 @@ Start with the following class code:
 
           Reason: According to *Slide 63 a, classes are allowed access to all it's members (even private or protected)*. Here, the code is in class C1 (in it's member method ~protC2~), and accesses ~C1~s member nested class ~ProtC2~, so ~ProtC2~ can be accessed. Same would apply if the member nested class was private (~private PrivC2~ instead of ~ProtC2~). 
           *)
-          '^ProtC2'
+          ^ 'ProtC2'
       )
 
       public protC2New = (
           ProtC2 new.
           (* Success. 
 
-          Reason: Similar reason as in ~protC2~ in the section above: . There is a fine print reason here we should add (this reason is not spelled out in the slide rules): The rules on member class visibility transfer to their primary factory methods; so the fact that code in ~C1~ can access it's member ~ProtC2~, transforms to ~ProtC2~'s primary constructor, ~new~ in this case. In other words, ~C1~ can access it's member ~ProtC2~, implies that  ~C1~ can access it's member's primary factory (method ~new~).
+          Reason: Similar reason as in ~protC2~ in the section above: . There is a fine print reason here we should add (this reason is not spelled out in the slide rules): The rules on member class visibility transfer to their primary factory methods; so the fact that code in ~C1~ can access it's member ~ProtC2~, transforms to ~ProtC2~'s primary constructor, ~new~ in this case. In other words, ~C1~ can access it's member ~ProtC2~, implies that  ~C1~ can access it's member's primary factory (method ~new~, fully described as ~C1>>ProtC2>>#new~).
           *)
-          'protC2New'
+          ^ 'protC2New'
       )
 
       public protC2NewProtM = (
           ProtC2 new protM.
            
           (* Fails.
-             Reason: We showed success all the way before sending ~protM~; sending ~protM~ (fully specified as ~C1>>ProtC2>>#protM~) fails. The code being executed, ~ProtC2 new protM~ is in class ~C1~. Method ~C1>>ProtC2>>#protM~ is a protected member on ~Prot2~, nested in ~C1~. According to *Slide 62 b) Enclosing classes (code in C1) cannot see private or protected members (protected method ~protM~) of nested classes (~ProtC2~).*, and so ~ProtC2 new protM~ fails according to this rule.
+             Reason: We showed success all the way before sending ~protM~; sending ~protM~ (fully specified as ~C1>>ProtC2>>#protM~) fails. The code being executed, ~ProtC2 new protM~ is in class ~C1~. Method ~C1>>ProtC2>>#protM~ is a protected member on ~Prot2~, nested in ~C1~. According to *Slide 62 b) Enclosing classes (code in C1) cannot see private or protected members (protected method ~protM~) of nested classes (~ProtC2~).*. Sending message ~ProtM~ in ~ProtC2 new protM~ fails according to this rule, as expected.
           *)
           ^ 'protC2NewProtM'
       )
@@ -1927,7 +1924,7 @@ Start with the following class code:
           ProtC2 new pubM. 
 
           (* Succeeds 
-             Reason:  ~pubM~ is public. According to [[* Colollary on slides 61, 62, 63][Colollary on slides 61, 62, 63]] public members are accessible anywhere - even in nested classes that are not public. Here, ~C1>>ProtC2>>#pubM~ is accessible from anywhere.  
+             Reason:  ~pubM~ is public. According to [[* Corollary on slides 61, 62, 63][Corollary on slides 61, 62, 63]] public members are accessible anywhere - even in nested classes that are not public. Here, ~C1>>ProtC2>>#pubM~ is accessible from anywhere.  
           *)
 
           ^ 'protC2NewPubM'
@@ -1951,55 +1948,50 @@ Let us describe this class.
 
 7. When we want to express the level of nesting in text, we may refer names such as ~C1>>ProtC2>>PubC3>>#pubC3PubM~
 
-9. During testing, we will concentrate on why a certain expression evaluation succeeds or fails from the accessibility perspective, and will explain the success or failure based on rules in Slides 62 and 63.
+9. During testing, we will concentrate on why a certain expression evaluation succeeds or fails from the accessibility perspective, and will explain the success or failure based on rules in Slides 61, 62, 63.
 
   
-**** C1: Execute some code in C1, gradually adding to expressions
+**** Execute expressions in C1, gradually adding terms, to study by example
 
-
-***** afdsfadf
-
-Workspace expression: ~~
-Runs this code: ~~
-Does:  
-Result: Success/Fails
-Reason: 
 
 ***** Structure of examples
 
 Each example we run to test accessibility has the following structure.
 
-Workspace expression: *Here we can see the expression to type in workspace. In most cases, this is a method (message sent) to instance of class. With a few exceptions in methods 'publicSucceeds' and 'protectedFails', this message sent always succeeds;  we are testing accessibility in the code which is in the method contents - this is the code listed in 'Runs this code:'*
-Runs this code: *Here we can see the contents of the method - the code we are testing for accessibility*
-Does: *Here we describe in brief what the code in 'Runs this code:' does* 
-Result: Success/Fails *Here we describe the result of accessibility experiment in the section*
-Reason: *Here we describe the reason for the Success/Fails result. In most cases, we tie the reason to the accessibility 'theory', generally in slides 62 and 63 in n [[https://00463064267054129163.googlegroups.com/attach/16b8a25058caa/ns-access-control.pdf?part=0.1&view=1&vt=ANaJVrHvttkWPn-fNP95UFKbcCbbp1VaDJlJSx1HzBevq_xhafVpZ4uz1ffKMTvkAxLFnAk2_xurwU-BTi3FIMnPj1FlU7-S-zKgS2y2eNXheQQsxM8mJUY][Can Beautiful Languages Do Access Control?]]*
+- Workspace expression: *Here we can see the expression to type in workspace. In most cases, this is a method (message sent) to instance of class. With a few exceptions in methods 'publicSucceeds' and 'protectedFails', this message sent always succeeds;  we are testing accessibility in the code which is in the method contents - this is the code listed in 'Runs this code:'*
+- Runs this code: *Here we can see the contents of the method - the code we are testing for accessibility*
+- Does: *Here we describe in brief what the code in 'Runs this code:' does* 
+- Code Result: Success/Fails *Here we describe the result of accessibility experiment in the section*
+- Reason: *Here we describe the reason for the Success/Fails result. In most cases, we tie the reason to the accessibility 'theory', generally in slides 61, 62, 63 in n [[https://00463064267054129163.googlegroups.com/attach/16b8a25058caa/ns-access-control.pdf?part=0.1&view=1&vt=ANaJVrHvttkWPn-fNP95UFKbcCbbp1VaDJlJSx1HzBevq_xhafVpZ4uz1ffKMTvkAxLFnAk2_xurwU-BTi3FIMnPj1FlU7-S-zKgS2y2eNXheQQsxM8mJUY][Can Beautiful Languages Do Access Control?]]*
 
 ***** C1
 
 Go to Workspace and type of paste ~C1~ there, highlight it, and click on 'Evaluate selection' or do Shift+Enter.
 
-Workspace expression: ~C1~
-Runs this code: ~C1~
-Does: Creates and return a class C1.
-Result: Success
-Reason: The top level class ~C1~ is always implicitly public, even without a public keyword! This rule is related to accessibility and modularity, but not spelled out in the Slides 60-63. The top level (and implicitly public!) class ~C1~ can be accessed in any other top level class, including the workspace where we are typing the expression. 
+- Workspace expression: ~C1~
+- Runs this code: ~C1~
+- Does: Creates and return a class C1.
+- Code Result: Success
+  [[file:img/newspeak---a-few-notes.org-access-C1.png]]
+- Reason: The top level class ~C1~ is always implicitly public, even without a public keyword! This rule is related to accessibility and modularity, but not spelled out in the Slides 60-63. The top level (and implicitly public!) class ~C1~ can be accessed in any other top level class, including the workspace where we are typing the expression. 
 
 ***** C1 new
 
-Workspace expression: ~C1 new~
-Runs this code:  ~C1 new~ 
-Does: creates a new instance of class C1.
-Result: Success
-Reason: Similar to the previous section, the reason is accessibility and modularity related. As mentioned in section aboce, a top level class is always publicly available in any code; here we find this extentds to it's primary factory method ~new~. A primary factory method on a top level class (module declaration) is always public (even if not explicitly specified).
+- Workspace expression: ~C1 new~
+- Runs this code:  ~C1 new~ 
+- Does: creates a new instance of class C1.
+- Code Result: Success
+  [[file:img/newspeak---a-few-notes.org-access-C1new.png]]
+- Reason: Similar to the previous section, the reason is accessibility and modularity related. As mentioned in section aboce, a top level class is always publicly available in any code; here we find this extentds to it's primary factory method ~new~. A primary factory method on a top level class (module declaration) is always public (even if not explicitly specified).
 
 ***** C1 new protectedFails
 
-Workspace expression: ~C1 new protectedFails~
-Runs this code: ~C1 new protectedFails~
-Does: Sends a protected message ~protectedFails~ to instance of ~C1~
-Result: Fails
-Reason:  I feel the reason is not completely obvious from the slides, as we are typing code in the Workspace, and it is not immediately clear how code in Workspace is lexically (nesting wise) related to the class ~C1~. A note: The Newspeak IDE provides a Root namespace, all modules are nested in it. Both the Workspace and the C1 module code are nested in the IDE. Having made that note let's work trough why this message send fails: The workspace context is lexically NOT enclosing C1. The code line that we wrote, ~C1 new protectedFails~ is lexically in the workspace module; the member we are trying to access, ~protectedFails~, is lexically in the C1 module.  In summary, this fails because of rule on slide 63 b: An object (workspace where we type the expression) may access private or protected member (~protectedFails~) only if a) it is a member or b) a lexically visible member of an enclosing class (C1 class is not enclosing to Workspace class). In our situation, the code in expressions ~C1 new protectedFails~ typed in the Workspace class cannot see a private or protected member (~C1>>#protectedFails~) of a class (C1) because the method C1>>#protectedFails is neither a member of  Workspace, nor it is in Workspace's enclosing class.
+- Workspace expression: ~C1 new protectedFails~
+- Runs this code: ~C1 new protectedFails~
+- Does: Sends a protected message ~protectedFails~ to instance of ~C1~
+- Code Result: Fails
+  [[file:img/newspeak---a-few-notes.org-access-C1newProtectedFails.png]]
+- Reason:  I feel the reason is not completely obvious, as we are typing code in the Workspace, and it is not immediately clear how code in Workspace is lexically (nesting wise) related to the class ~C1~. A note: The Newspeak IDE provides a Root namespace, all modules are nested in it. Both the Workspace and the C1 module code are nested in the IDE. Having made that note let's work trough why this message send fails: The workspace context is lexically NOT enclosing C1. The code line that we wrote, ~C1 new protectedFails~ is lexically in the workspace module; the member we are trying to access, ~protectedFails~, is lexically in the C1 module.  In summary, this fails because of rule on slide 63 b: An object (workspace where we type the expression) may access private or protected member (~protectedFails~) only if a) it is a member or b) a lexically visible member of an enclosing class (C1 class is not enclosing to Workspace class). In our situation, the code in expressions ~C1 new protectedFails~ typed in the Workspace class cannot see a private or protected member (~C1>>#protectedFails~) of a class (C1) because the method C1>>#protectedFails is neither a member of  Workspace, nor it is in Workspace's enclosing class.
 
 Note: As a practical result, because we are testing in the workspace, we will make all our test methods in the C1 class public (for example ~public protC2New~, ~public protC2NewProtM~ and we will investigate the access rules on the expressions inside the methods on ~C1~. We name the methods on C1 so the naming reflects what the tested expression in the method does. For example: the name ~protC2NewProtM~ expresses in the name that we call the expression ~ProtC2 new protM~.  Also there is another important point here: For between-modules visibility: A module C1, looking into another module C2, can only see public members in C2. So C1 must make public any of it's members intended to be used outside of C1 - in other words, C1 module's API methods must be public. 
 
@@ -2007,58 +1999,79 @@ Note: As a practical result, because we are testing in the workspace, we will ma
 
 Having realized in the section above that expression ~C1 new protectedFails~ fails accessibility rules on the protected method ~C1>>#protectedFails~, we now test how things change if we call a public method ~C1>>#publicSucceeds~ instead of the protected  ~C1>>#protectedFails~.  The public method ~C1>>#publicSucceeds~ is equivalent to the failing protected method ~C1>>#protectedFails~ except it's name and it's public modifier.
 
-Workspace expression: C1 new publicSucceeds
-Runs this code: ~C1 new publicSucceeds~
-Does: Sends a public message publicSucceeds to instance of C1.
-Result: Success 
-Reason: A public member (message named ~publicSucceeds~ here) is accessible from any lexical context - 'anywhere in code', even from another module (workspace in this case).
+- Workspace expression: C1 new publicSucceeds
+- Runs this code: ~C1 new publicSucceeds~
+  [[file:img/newspeak---a-few-notes.org-access-C1newPublicSuceeds.png]]
+- Does: Sends a public message publicSucceeds to instance of C1.
+- Code Result: Success
+  
+- Reason: A public member (message named ~publicSucceeds~ here) is accessible from any lexical context - 'anywhere in code', even from another module (workspace in this case).
 
 ***** C1 new protC2
 
-From this section onward, the method names we run are all public, so they can be executed from accessibility perspective by calling the method on an instance such as ~C1 new~.  The method names attempt to express the expression executed. For example
+From this section onward, the method names we run are all public, defined on ~C1~. As public, all methods can be succesfully executed from accessibility perspective by calling the method on an instance such as ~C1 new~.  The method names attempt to express the expression executed. For example
 
 - method named ~protC2~ suggests the method creates a ~ProtC2~ class.
 - method named ~protC2New~ suggests the method creates a ~ProtC2 new~ - instance of ProtC2 class.
 - method named ~protC2NewPubM~ suggests the method runs ~ProtC2 new pubM~ - sends message ~pubM~ to a new instance of the class ~ProtC2~.
 
 
-Workspace expression: ~C1 new protC2~
-Runs this code: ~ProtC2~
-Does: Creates class ProtC2
-Result: Success
-Reason: According to *Slide 63 a, classes are allowed access to all it's members (even private or protected)*. Here, the code is in class C1 (in it's member method ~protC2~), and accesses ~C1~s member nested class ~ProtC2~, so ~ProtC2~ can be accessed. Same would apply if the member nested class was private (~private PrivC2~ instead of ~ProtC2~).
+- Workspace expression: ~C1 new protC2~
+- Runs this code: ~ProtC2~
+- Does: Creates class ProtC2
+- Code Result: Success
+  [[file:img/newspeak---a-few-notes.org-access-C1newProtC2.png]]
+- Reason: According to *Slide 63 a, classes are allowed access to all it's members (even private or protected)*. Here, the code is in class C1 (in it's member method ~protC2~), and accesses ~C1~s member nested class ~ProtC2~, so ~ProtC2~ can be accessed. Same would apply if the member nested class was private (~private PrivC2~ instead of ~ProtC2~).
 
 ***** C1 new protC2New
 
-Workspace expression: ~C1 new protC2New~
-Runs this code: ~ProtC2 new~
-Does: Creates an instance of class ProtC2 
-Result: Success
-Reason: Similar reason as in ~protC2~ in the section above: . There is a fine print reason here we should add (this reason is not spelled out in the slide rules): The rules on member class visibility transfer to their primary factory methods; so the fact that code in ~C1~ can access it's member ~ProtC2~, transforms to ~ProtC2~'s primary constructor, ~new~ in this case. In other words, ~C1~ can access it's member ~ProtC2~, implies that  ~C1~ can access it's member's primary factory (method ~new~).
+- Workspace expression: ~C1 new protC2New~
+- Runs this code: ~ProtC2 new~
+- Does: Creates an instance of class ProtC2 
+- Code Result: Success
+  [[file:img/newspeak---a-few-notes.org-access-C1newProtC2New.png]]
+- Reason: Similar reason as in ~protC2~ in the section above: There is a fine print reason here (this reason is not spelled out in the slide rules): The rules on member class visibility transfer to their primary factory methods; so the fact that code in ~C1~ can access it's member ~ProtC2~, transforms to ~ProtC2~'s primary constructor, ~new~ in this case. In other words, if ~C1~ can access it's member ~ProtC2~, implies that  ~C1~ can access it's member's primary factory (method ~new~, fully described as ~C1>>ProtC2>>#new~).
   
-
------------------------------------------ todo add reasons to code --------------------------
 ***** C1 new protC2NewProtM
 
-Workspace expression: ~C1 new protC2NewProtM~
-Runs this code: ~ProtC2 new protM~
-Does: Creates an instance of class ~ProtC2~ and attempts to send protected message ~protM~ to it.
-Result: Fails to send message ~protM~
-Reason: We showed success all the way before sending ~protM~; sending ~protM~ (fully specified as ~C1>>ProtC2>>#protM~) fails. The code being executed, ~ProtC2 new protM~ is in class ~C1~. Method ~C1>>ProtC2>>#protM~ is a protected member on ~Prot2~, nested in ~C1~. According to *Slide 62 b) Enclosing classes (code in C1) cannot see private or protected members (protected method ~protM~) of nested classes (~ProtC2~).*, and so ~ProtC2 new protM~ fails according to this rule.
+- Workspace expression: ~C1 new protC2NewProtM~
+- Runs this code: ~ProtC2 new protM~
+- Does: Creates an instance of class ~ProtC2~ and attempts to send protected message ~protM~ to it.
+- Code Result: Fails to send message ~protM~
+  [[file:img/newspeak---a-few-notes.org-access-C1newProtC2NewProtM.png]]
+- Reason: We showed success all the way before sending ~protM~; sending ~protM~ (fully specified as ~C1>>ProtC2>>#protM~) fails. The code being executed, ~ProtC2 new protM~ is in class ~C1~. Method ~C1>>ProtC2>>#protM~ is a protected member on ~Prot2~, nested in ~C1~. According to *Slide 62 b) Enclosing classes (code in C1) cannot see private or protected members (protected method ~protM~) of nested classes (~ProtC2~).*. Sending message ~ProtM~ in ~ProtC2 new protM~ fails according to this rule, as expected.
 
-If we make the method we are calling, the ~C1>>ProtC2>>#protM~,  public,  then the call to ~protM~ in ~ProtC2 new protM~ will succeed. We will show it by calling an equivalent but public method ~C1>>ProtC2>>#pubM~ in the next section.
+If we make the method we are calling, the ~C1>>ProtC2>>#protM~,  public, then the call to ~protM~ in ~ProtC2 new protM~ will succeed. We will show it by calling an equivalent but public method ~C1>>ProtC2>>#pubM~ in the next section.
 
 ***** IN-PROGRESS-NOW C1 new protC2NewPubM
 
 This section shows how to 'resolve' the accessibility failure discussed in the previous section. The takeaway is that if a code wants to access members of any nested class, the nested class must make such member public.
 
-Workspace expression: ~C1 new protC2NewPubM~
-Runs this code: ~ProtC2 new pubM~
-Does: Creates an instance of class ~ProtC2~ and sends message ~pubM~ to it
-Result: Succeeds sending public message ~C1>>ProtC2>>#pubM~ from code in ~C1~
-Reason:  ~pubM~ is public. According to [[* Colollary on slides 61, 62, 63][Colollary on slides 61, 62, 63]] public members are accessible anywhere - even in nested classes that are not public. Here, ~C1>>ProtC2>>#pubM~ is accessible from anywhere.   
+- Workspace expression: ~C1 new protC2NewPubM~
+- Runs this code: ~ProtC2 new pubM~
+- Does: Creates an instance of class ~ProtC2~ and sends public message ~pubM~ to it
+- Code Result: Succeeds sending public message ~C1>>ProtC2>>#pubM~ from code in ~C1~
+  [[file:img/newspeak---a-few-notes.org-access-C1newProtC2NewPubM.png]]
+- Reason:  ~pubM~ is public member on a nested class ~ProtC2~ (lexically a member of ~C1~). According to [[* Corollary on slides 61, 62, 63][Corollary on slides 61, 62, 63]] public members are accessible anywhere - even in nested classes that are not public, as long as the object to which they are sent is accessible. Here, ~C1>>ProtC2>>#pubM~ is accessible from method ~C1>>#protC2NewPubM~, because we evaluated access all along the path ~ProtC2 new~ (resulting in instance of ProtC2), and ~pubM~ is a public method on ~ProtC2~.
 
-*This is perhaps the most important discovery so far. Code in class ~C1~ (in it's method ~protC2NewPubM~), can access (call) public method  ~C1>>ProtC2>>#pubM~ on it's nested class, even if the nested class  ~C1>>ProtC2~ is protected - same if the class ~C1>>ProtC2~ was private!! The accessibility rules do not request what I would call 'accessibility along the whole path' - it is sufficient that the accessed member (~C1>>ProtC2>>#pubM~ here) is accessible according to the accessibility rules.*
+
+***** Accessibility summary
+
+We have shown some selected examples of how accessibility works in Newspeak.
+
+When we evaluate an expression such as ~objA memberA memberB memberC~ for accessibility, we need to evaluate access in each subexpression starting from the left, using rules in slides 62, 63. (accessibility evaluation must succeed along the whole path).
+
+The steps of accessibility evaluation:
+1. Find the "lexical point" - the class in which the expression is "lexically located". It may be
+   - in a factory, 
+   - or in a method, 
+   - or in a slot. 
+   - *Note: Nested classes of C1 are EXLUDED from the "lexical point" search - then the "lexical point" would be the nested class*.
+2. Say the class in which factory, method or slot the expression is located is named ~C1~, then ~C1~ is the "lexical point". 
+3. Then, at each point of the path, use rules in 62 and 63 to determine accessibility of a ~member~, from the "lexical point" ~C1~. In a nutshell we can use this algorithm in determining accessibility: 
+   - members of the "lexical point" ~C1~, or members of classes which are "lexically enclosing (UP)" from the "lexical point" ~C1~, can be accessed. This applies to all modifiers on such members: public, private, protected.
+   - public members of any class can be accessed
+   - all other members may not be accessed - notably, non-public members of nested classes (DOWN) may NOT be accessed.
 
 
 ** Debugging in Newspeak
@@ -2434,7 +2447,7 @@ But we need to start one level above to explore this step by step:
        ^AmpleforthFragment html: h mapping: m
      )
    #+END_EXAMPLE
-   - Also note that from the ObjectPresenter factory constructor it is clear ObjectPresenter implements ProgrammingPresenter which implements Presenter where the method ~HopscotchForHTML5>>Presenter>>#ampleforth:mapping:~ is defined.
+   - Also note that from the ObjectPresenter factory method it is clear ObjectPresenter implements ProgrammingPresenter which implements Presenter where the method ~HopscotchForHTML5>>Presenter>>#ampleforth:mapping:~ is defined.
 
 5. The above method constructs instance of ~HopscotchForHTML5>>AmpleforthFragment~ as follows
 
@@ -2607,7 +2620,7 @@ Two most important nested classes in ~HopscotchForHTML5~ are ~Subject~, ~Present
 
 So this chapter makes a reasonable assumption that the ~Subject~ and ~Presenter~ classes are of core importance in building UIs in Newspeak. Further, opening class ~Presenter~ in the Newspeak IDE, we see that it has a parent class ~Fragment~.  ~Fragment~ is new to the new version ~HopscotchForHTML5~ as opposed to the original ~Hopscotch~.  Because we consider ~Presenter~ important, so must be ~Fragment~. 
 
-So, enough meta talk, and let us browse the most important code of classes  ~Subject~ and ~Presenter~ - their *factory constructors*. As with any Newspeak class, we should start at the factory constructors to understand the class. Factory constructor is the only code which defines slots (slots as similar to members in other OO languages). Also we see that Fragment is parent of Presenter. So ~Fragment~ must be important; we added it's factory constructor to the constructor summary as well.
+So, enough meta talk, and let us browse the most important code of classes  ~Subject~ and ~Presenter~ - their *factory methods*. As with any Newspeak class, we should start at the factory methods to understand the class. Factory method is the only code which defines slots (slots as similar to members in other OO languages). Also we see that Fragment is parent of Presenter. So ~Fragment~ must be important; we added it's factory method to the constructor summary as well.
 
 #+begin_example
 public class Subject onModel: aModel = (
@@ -2635,7 +2648,7 @@ class Fragment = (
 	|)  
 #+end_example
 
-From the factory constructors, it is immediately clear that:
+From the factory methods, it is immediately clear that:
 
 1. For a subject to be created, a model is required. So model must be created before subject.
 2. For a presenter to be created, a subject is required. So subject must be created before presenter.
@@ -2648,9 +2661,9 @@ From the factory constructors, it is immediately clear that:
 - *We need to instantiate a Subject on the model next.*
 - *We need to instantiate a Presenter on the subject last.* 
 
-This is quite clear from the signatures of those classes factory constructors - there can be no other way.
+This is quite clear from the signatures of those classes factory methods - there can be no other way.
 
-A note on Newspeak syntax: while the ~Subject>>model~ slot and ~Presenter>>subject~ slots are public, they have no setters, so they are final. The value they acquire in the factory constructor cannot be changed. This is because the slots are defined using " = ", for example in ~public model = aModel.~ If the " ::= " was used instead of " = " to define the slot ~model~, then the slot  would not be final - a setter would exist. But as is, we cannot, even in principle, create the instances of Model/Subject/Presenter with null slots, change the creation order, and set the slots later.
+A note on Newspeak syntax: while the ~Subject>>model~ slot and ~Presenter>>subject~ slots are public, they have no setters, so they are final. The value they acquire in the factory method cannot be changed. This is because the slots are defined using " = ", for example in ~public model = aModel.~ If the " ::= " was used instead of " = " to define the slot ~model~, then the slot  would not be final - a setter would exist. But as is, we cannot, even in principle, create the instances of Model/Subject/Presenter with null slots, change the creation order, and set the slots later.
 
 Next two chapters will look into details of *Presenter, Subject, and Model* classes, and associations between them.  The associations may not be important for writing UIs, but they are for understanding the Hopscotch framework.
 
@@ -2684,7 +2697,7 @@ Similar code needs to be added to any concrete implementation of ~Fragment~ or ~
 In the chapters below, we will not come back to this in too much detail, and always add such methods in our code.
 
 
-** The *Subject* class: Factory constructor, instance methods, how Subject knows Presenter
+** The *Subject* class: Factory method, instance methods, how Subject knows Presenter
 
 *** Chapter goal: Overview of the *Subject* class
 
@@ -2695,7 +2708,7 @@ Let us show the code for the ~Subject~ class, keeping only the "important parts"
 ~From class Subject~
 #+begin_example
 
-(* 1. The factory constructor *)
+(* 1. The factory method *)
 
 public class Subject onModel: aModel = (
   |
@@ -2734,9 +2747,9 @@ public class Subject onModel: aModel = (
 In the subchapters below, we go over each of the "important parts".
 
 
-*** The factory constructor *public class Subject onModel: aModel = (..)*
+*** The factory method *public class Subject onModel: aModel = (..)*
 
-This is the code which creates instances, and should be called from implementations' factory constructors. The code hold slots for ~model~, the associated ~presenterSlot~ and a help slot. For a practical purpose of writing UIs, this is the most important code.
+This is the code which creates instances, and should be called from implementations' factory methods. The code hold slots for ~model~, the associated ~presenterSlot~ and a help slot. For a practical purpose of writing UIs, this is the most important code.
 
 Concrete implementations of Subject, should (in fact must, it is enforced) invoke the Subject's factory as 
 
@@ -2813,7 +2826,7 @@ So as long as something calls ~Subject>>#presenter~, after a Subject is created,
 
 
 
-**** Where is Presenter -> Subject association created? In the Presenter factory constructor *Presenter>>#class Presenter onSubject: aSubject = Fragment*
+**** Where is Presenter -> Subject association created? In the Presenter factory method *Presenter>>#class Presenter onSubject: aSubject = Fragment*
 
 The exact signature is public class ~Presenter onSubject: aSubject <Subject> = Fragment (..)~
 
@@ -2832,18 +2845,18 @@ We can find our answer in a few steps, starting with ~Subject>>#presenter~:
         )
       #+end_example
       Clearly the conclusion from both is this: The intent of ~Subject>>#public createPresenter ^<Presenter>~ is to create a presenter which presents the ~Subject~ instance, and return it
-3. Next, let us study the concrete discovered example of ~HomePresenter~'s factory constructor.
+3. Next, let us study the concrete discovered example of ~HomePresenter~'s factory method.
    #+begin_example
      class HomePresenter onSubject: s = Presenter onSubject: s (
      )
    #+end_example
-   This is a standard Newspeak syntax for a super call. The factory constructor ~HomePresenter>>#onSubject: subject~ calls the superclass ~Presenter>>#onSubject: subject~ 
+   This is a standard Newspeak syntax for a super call. The factory method ~HomePresenter>>#onSubject: subject~ calls the superclass ~Presenter>>#onSubject: subject~ 
 
    Having shown that, we can get back to this line:
 
    ~HomePresenter onSubject: self~ - note that self is subject
 
-   This will cause the call to the "super" ~Presenter>>#onSubject: subject~. This "super" ~Presenter>>#onSubject: subject~ call places the passed subject on slot "subject" in the Presenter's factory constructor:
+   This will cause the call to the "super" ~Presenter>>#onSubject: subject~. This "super" ~Presenter>>#onSubject: subject~ call places the passed subject on slot "subject" in the Presenter's factory method:
 
   #+begin_example
   public class Presenter onSubject: aSubject <Subject> = Fragment (
@@ -2868,7 +2881,7 @@ Also, along with the previous chapter, callin ~Subject>>#presenter~ also creates
 
 In the conclusion of chapter [[*Discovery of the *HopscotchForHTML5* class basics][Discovery of the *HopscotchForHTML5* class basics]] we already discovered an important lifecycle any UI code need to perform: *Create an instance of a Model first, a Subject next, a Presenter last*.
    
-In this chapter [[*The *Subject* class: Factory constructor, instance methods, how Subject knows Presenter][The *Subject* class: Factory constructor, instance methods, how Subject knows Presenter]] we added the following conclusions:
+In this chapter [[*The *Subject* class: Factory method, instance methods, how Subject knows Presenter][The *Subject* class: Factory method, instance methods, how Subject knows Presenter]] we added the following conclusions:
 
 *Conclusion 1: As long as the ~Subject>>#presenter~ is invoked (on an existing subject instance), two important things happen:*
 - A ~Presenter~ instance is created.
@@ -2876,7 +2889,7 @@ In this chapter [[*The *Subject* class: Factory constructor, instance methods, h
 
 *Conclusion 2: So, when creating UIs, our code must invoke the ~Subject>>#presenter~ method, directly, or indirectly by calling some other method that ends up calling ~Subject>>#presenter~.*
 
-*Conclusion 3: Model can be any object.  ~ConcreteSubject~ must extend the ~Subject~.  Also the ~ConcreteSubject~ factory constructor must call the parent ~Subject~ factory constructor - see [[*The factory constructor *public class Subject onModel: aModel = (..)*][The factory constructor *public class Subject onModel: aModel = (..)*]] ; chapters below come to the equivalent conclusion for ~ConcretePresenter~.*
+*Conclusion 3: Model can be any object.  ~ConcreteSubject~ must extend the ~Subject~.  Also the ~ConcreteSubject~ factory method must call the parent ~Subject~ factory method - see [[*The factory method *public class Subject onModel: aModel = (..)*][The factory method *public class Subject onModel: aModel = (..)*]] ; chapters below come to the equivalent conclusion for ~ConcretePresenter~.*
 
 Based on the conclusions 1, 2, 3, we can already write some pseudocode for writing core UI:
 
@@ -2914,7 +2927,7 @@ hopscotchWindow openSubject: concreteSubject.
 The last line will create instance of ConcretePresenter by calling ~ConcreteSubject>>#presenter~ and open it in a new window where the App will live! This snippet does not show definitions of ~ConcreteModel~ ~ConcreteSubject~ ~ConcretePresenter~, or how we obtain the ~hopscotchWindow~. We will get to that when creating a concrete App in [[*Using chapters above to write a simple Hopscotch UI App, the *CheckedItemApp*][Using chapters above to write a simple Hopscotch UI App, the *CheckedItemApp*]]
 
 
-** The *Presenter* class: Factory constructor, instance methods, how Presenter knows Subject
+** The *Presenter* class: Factory method, instance methods, how Presenter knows Subject
 
 *** Chapter goal: Overview of the *Presenter* class
 
@@ -2924,7 +2937,7 @@ Let us show the code for the ~Presenter~ class, keeping only the "important part
 
 #+begin_example
 
-(* The factory constructor.
+(* The factory method.
    The constructor also creates the association from Presenter instance to Subject instance
    by keeping the associated subject slot
 *)
@@ -2976,9 +2989,9 @@ public class Presenter onSubject: aSubject <Subject> = Fragment (
 In the subchapters below, we go over each of the "important parts".
 
 
-*** The factory constructor *class Presenter onSubject: aSubject = Fragment (..)*
+*** The factory method *class Presenter onSubject: aSubject = Fragment (..)*
 
-The factory constructor has the exact signature 
+The factory method has the exact signature 
 
 ~public class Presenter onSubject: aSubject <Subject> = Fragment (..)~
 
@@ -3068,31 +3081,31 @@ Let us summarize the core classes of Hopscotch: *Subject* and it's model, *Prese
 
 1. ~Subject~: can be thought of as "address + viewport"; is passed to NavigationHistory; instantiates it's Presenter;
 
-   See [[*The *Subject* class: Factory constructor, instance methods, how Subject knows Presenter][The *Subject* class: Factory constructor, instance methods, how Subject knows Presenter]]
+   See [[*The *Subject* class: Factory method, instance methods, how Subject knows Presenter][The *Subject* class: Factory method, instance methods, how Subject knows Presenter]]
 
 2. ~Presenter~: presents domain objects; is part of hierarchical structure of presenters; instantiates and controls Widgets (Fragments); once instantiated, is the UI presentation of it's Subject;
 
-   See [[*The *Presenter* class: Factory constructor, instance methods, how Presenter knows Subject][The *Presenter* class: Factory constructor, instance methods, how Presenter knows Subject]]
+   See [[*The *Presenter* class: Factory method, instance methods, how Presenter knows Subject][The *Presenter* class: Factory method, instance methods, how Presenter knows Subject]]
 
 3. Important methods:
    
    - ~Subject>>#presenter~ - calls ~Subject>>#createPresenter~ then *associates Subject -> Presenter*. See [[*Where is Subject -> Presenter association created? In *Subject>>#presenter*][Where is Subject -> Presenter association created? In *Subject>>#presenter*]]
    - ~Subject>>#createPresenter~ creates and returns the presenter instance by calling the concrete Presenter's factory method. See [[*The unimplemented (abstract) methods: *Subject>>#createPresenter* and *Subject>>#isMyKind: otherSubject*][The unimplemented (abstract) methods: *Subject>>#createPresenter* and *Subject>>#isMyKind: otherSubject*]]
    - ~Presenter>>#definition~ creates the Fragment the presenter uses to present itself (view). See [[*The unimplemented (abstract) methods: *Presenter>>#definition* and *Presenter>>#isMyKind: fragment*][The unimplemented (abstract) methods: *Presenter>>#definition* and *Presenter>>#isMyKind: fragment*]]
-   - ~class Subject>>#onModel: aModel~ - *factory constructor associates Subject -> Model*. See [[*The factory constructor *public class Subject onModel: aModel = (..)*][The factory constructor *public class Subject onModel: aModel = (..)*]]
-   - ~class Presenter>>#onSubject: selfSubject~ - *factory constructor associates Presenter -> Subject*. See [[*The factory constructor *class Presenter onSubject: aSubject = Fragment (..)*][The factory constructor *class Presenter onSubject: aSubject = Fragment (..)*]]
+   - ~class Subject>>#onModel: aModel~ - *factory method associates Subject -> Model*. See [[*The factory method *public class Subject onModel: aModel = (..)*][The factory method *public class Subject onModel: aModel = (..)*]]
+   - ~class Presenter>>#onSubject: selfSubject~ - *factory method associates Presenter -> Subject*. See [[*The factory method *class Presenter onSubject: aSubject = Fragment (..)*][The factory method *class Presenter onSubject: aSubject = Fragment (..)*]]
  
 4. We established that associations between ~*Subject* and it's model, *Presenter* and *Fragment*~ are as follows:
    - *Presenter -> Subject -> Model*
    - *Presenter <- Subject <-w Model* (-> and <- means association, <-w means weak association- my not exist)
    - Both directions in the *Presenter <-> Subject* association are established by calling the ~Subject>>#presenter~ method
-   - The *Subject -> Model* association is established in the Subject factory constructor ~Subject class>>#onModel: aModel~.
+   - The *Subject -> Model* association is established in the Subject factory method ~Subject class>>#onModel: aModel~.
    
-   See [[*Where is Subject -> Presenter association created? In *Subject>>#presenter*][Where is Subject -> Presenter association created? In *Subject>>#presenter*]] and [[*Where is Presenter -> Subject association created? In the Presenter factory constructor *Presenter>>#class Presenter onSubject: aSubject = Fragment*][Where is Presenter -> Subject association created? In the Presenter factory constructor *Presenter>>#class Presenter onSubject: aSubject = Fragment*]]
+   See [[*Where is Subject -> Presenter association created? In *Subject>>#presenter*][Where is Subject -> Presenter association created? In *Subject>>#presenter*]] and [[*Where is Presenter -> Subject association created? In the Presenter factory method *Presenter>>#class Presenter onSubject: aSubject = Fragment*][Where is Presenter -> Subject association created? In the Presenter factory method *Presenter>>#class Presenter onSubject: aSubject = Fragment*]]
    
 5. Lifecycle discoveries: We need to create a model first, a subject next, a presenter last. See [[*Chapter conclusion about principles of writing rudimentary Hopscotch UI][Chapter conclusion about principles of writing rudimentary Hopscotch UI]] for many details and also  [[*Discovery of the *HopscotchForHTML5* class basics][Discovery of the *HopscotchForHTML5* class basics]]
 
-6. Presenter should not be constructed in code directly using it's factory constructor. It should be constructed indirectly as ~hopscotchWindow openSubject: concreteSubject.~. See [[*Chapter conclusion about principles of writing rudimentary Hopscotch UI][Chapter conclusion about principles of writing rudimentary Hopscotch UI]].
+6. Presenter should not be constructed in code directly using it's factory method. It should be constructed indirectly as ~hopscotchWindow openSubject: concreteSubject.~. See [[*Chapter conclusion about principles of writing rudimentary Hopscotch UI][Chapter conclusion about principles of writing rudimentary Hopscotch UI]].
 
 7. To implement some concrete UI, developer should:
    - implement classes for ~ConcreteModel~,  ~ConcreteSubject~, and ~ConcretePresenter~
@@ -3123,7 +3136,7 @@ Looking at the top level, we see two related classes, ~HopscotchForHTML5~ and ~H
 Let us get back for a minute to ~HopscotchForHTML5~. We have seen, that is has a ton of slots and classes we would associate with UI elements, such as
 
 #+begin_example
-  (* Factory constructor *)
+  (* Factory method *)
   class HopscotchForHTML5 usingPlatform: p images: images ducts: ds = (
     |
     (* Imports *)
@@ -3155,7 +3168,7 @@ We alreary concluded that we will need an instance of ~HopscotchForHTML5~ if we 
 
 Analyzing the class ~HopscotchForHTML5Runtime~, we see that:
 
-- It has the factory constructor ~#packageUsing: manifest~. From the Api chapters, for example  [[*4. App module: API of module that needs to be distributed as an App][4. App module: API of module that needs to be distributed as an App]] we know that such top level classes are apps, but, lacking the ~#main: platform args: args~ method, such module is used as library module.
+- It has the factory method ~#packageUsing: manifest~. From the Api chapters, for example  [[*4. App module: API of module that needs to be distributed as an App][4. App module: API of module that needs to be distributed as an App]] we know that such top level classes are apps, but, lacking the ~#main: platform args: args~ method, such module is used as library module.
   
 - It packages the UI class, ~HopscotchForHTML5~, on it's slot
 
@@ -3163,7 +3176,7 @@ Analyzing the class ~HopscotchForHTML5Runtime~, we see that:
 
 ~HopscotchForHTML5Runtime~
 #+begin_example
-(* Factory constructor *)
+(* Factory method *)
 class HopscotchForHTML5Runtime packageUsing: manifest = (
 	|
 	private Fonts = manifest FontsForHTML5.
@@ -3181,14 +3194,14 @@ public using: platform = (
 )
 #+end_example
 
-The presence of the two methods clearly shows  ~HopscotchForHTML5Runtime~ packages all three classes (HopscotchForHTML5, Ducts, images) that we will need to create ~HopscotchForHTML5~ using its factory constructor ~HopscotchForHTML5>>#usingPlatform: p images: images ducts: ds~.
+The presence of the two methods clearly shows  ~HopscotchForHTML5Runtime~ packages all three classes (HopscotchForHTML5, Ducts, images) that we will need to create ~HopscotchForHTML5~ using its factory method ~HopscotchForHTML5>>#usingPlatform: p images: images ducts: ds~.
 
 *So, the HopscotchForHTML5Runtime packages everything we need for HopscotchForHTML5*
 
 In addition, we see that the inner class ~HopscotchForHTML5Runtime>>PlatformWithHopscotch~ is a convenience class which already pre-creates instance of ~HopscotchForHTML5~ in this ~PlatformWithHopscotch~ snippet:
 
 #+begin_example
-(* Factory constructor *)
+(* Factory method *)
 class PlatformWithHopscotch usingPlatform: platform = (
 	|
     public isKindOfPlatformWithElectron = platform isKindOfPlatformWithElectron.	
@@ -3216,11 +3229,11 @@ class PlatformWithHopscotch usingPlatform: platform = (
 
   clearly, the ~Hopscotch~ slot on ~HopscotchForHTML5Runtime~ holds the class ~HopscotchForHTML5~.
   
-2. Next we see this line in the ~PlatformWithHopscotch~ factory constructor above - the ~class PlatformWithHopscotch usingPlatform: platform~:
+2. Next we see this line in the ~PlatformWithHopscotch~ factory method above - the ~class PlatformWithHopscotch usingPlatform: platform~:
    
   ~public hopscotch = Hopscotch usingPlatform: self images: images ducts: (Ducts usingPlatform: self)~
 
-  uses the expression ~Hopscotch~. What does it refer to?? In Newspeak, an expression like this used in a factory constructor slot, must be somewhere in the scope of the factory constructor's scope! The only items in scope there, must be in a slot of a parent class! Parent class of ~PlatformWithHopscotch~ is ~HopscotchForHTML5Runtime~. So this ~Hopscotch~ we are talking about here refers to a ~Hopscotch~ slot in ~HopscotchForHTML5Runtime~. And we have seen in item 1, that it holds the class ~HopscotchForHTML5~. As a result, the factory constructor in
+  uses the expression ~Hopscotch~. What does it refer to?? In Newspeak, an expression like this used in a factory method slot, must be somewhere in the scope of the factory method's scope! The only items in scope there, must be in a slot of a parent class! Parent class of ~PlatformWithHopscotch~ is ~HopscotchForHTML5Runtime~. So this ~Hopscotch~ we are talking about here refers to a ~Hopscotch~ slot in ~HopscotchForHTML5Runtime~. And we have seen in item 1, that it holds the class ~HopscotchForHTML5~. As a result, the factory method in
 
   ~public hopscotch = Hopscotch usingPlatform: self images: images ducts: (Ducts usingPlatform: self)~
 
@@ -3287,7 +3300,7 @@ In this chapter, we to progress the code of the app we want to build by adding t
 
 We start with renaming ~HelloWorldApp~ to ~CheckedItemApp~, that is simple.
 
-In chapter  [[*4. App module: API of module that needs to be distributed as an App][4. App module: API of module that needs to be distributed as an App]]  and modularity chapters earlier, we saw that an App must package (bring along) all classes and instances that it will need to create the deployment artifact. Packaging is done in factory constructors of Apps - the ~#packageUsing: manifest~.
+In chapter  [[*4. App module: API of module that needs to be distributed as an App][4. App module: API of module that needs to be distributed as an App]]  and modularity chapters earlier, we saw that an App must package (bring along) all classes and instances that it will need to create the deployment artifact. Packaging is done in factory methods of Apps - the ~#packageUsing: manifest~.
 
 We need to package the HopscotchForHTML5 module. We use Conclusion 2 at the end of chapter [[*The *HopscotchForHTML5Runtime* class][The *HopscotchForHTML5Runtime* class]] to package an instance of ~HopscotchForHTML5Runtime~. (This will will carry the ~HopscotchForHTML5~ instance in it, as discussed there).
 
@@ -3382,11 +3395,11 @@ At this point, we create only the barenones of our UI, like this:
   class CheckedItemUI = () ()
 #+end_example
 
-We will add it's factory constructor, slots, and it's nested classes along the way in later chapters, describing why each such element is needed.  In particular we will add:
+We will add it's factory method, slots, and it's nested classes along the way in later chapters, describing why each such element is needed.  In particular we will add:
 
 - The nested classes will be added naturally by adding them inside ~CheckedItemUI~ in the IDE. This happens in chapters [[*Class CheckedItemModel][Class CheckedItemModel]],  [[*Class CheckedItemSubject][Class CheckedItemSubject]],  and [[*Class CheckedItemPresenter][Class CheckedItemPresenter]] .
   
-- The factory constructor and slots will be added once we finish the rest of the app code and the UI code - in chapter [[*When the app runs in the *#main:args:* method, instantiate the *CheckedItemUI*][When the app runs in the *#main:args:* method, instantiate the *CheckedItemUI*]] and its subchapters.
+- The factory method and slots will be added once we finish the rest of the app code and the UI code - in chapter [[*When the app runs in the *#main:args:* method, instantiate the *CheckedItemUI*][When the app runs in the *#main:args:* method, instantiate the *CheckedItemUI*]] and its subchapters.
 
 
 **** Class CheckedItemModel
@@ -3395,7 +3408,7 @@ As discussed in [[*Summary of *Subject* and it's model, *Presenter* and *Fragmen
 
 Let's name the model class ~CheckedItemModel~.
 
-To support the UI, we need two items in our  model: a string for label, and a Boolean representing if the checkbox was selected. Our model class extends Object by default; it's factory constructor is the default ~#new~ method. Neither the default parent class Object nor the default factory constructor ~#new~ need to be specified in Newspeak. 
+To support the UI, we need two items in our  model: a string for label, and a Boolean representing if the checkbox was selected. Our model class extends Object by default; it's factory method is the default ~#new~ method. Neither the default parent class Object nor the default factory method ~#new~ need to be specified in Newspeak. 
 
 ~class CheckedItemModel~
 #+begin_example
@@ -3420,17 +3433,17 @@ Click the "Accept" button [[file:img/newspeak---a-few-notes.org-accept-image.png
 
 Having defined a model class ~CheckedItemModel~, we need to define our UI's concrete Subject class, let's name it ~CheckedItemSubject~. Naturally, it will be an extension of Subject. As mentioned, it will be nested in ~CheckedItemUI~.
 
-Recall from [[*The *Subject* class: Factory constructor, instance methods, how Subject knows Presenter][The *Subject* class: Factory constructor, instance methods, how Subject knows Presenter]] that the factory constructor of Subject is ~Subject>>#onModel: model~. This will associate subject with it's model.  We will use the same name for the factory constructor for our ~CheckedItemSubject~ and call the super factory from Subject.
+Recall from [[*The *Subject* class: Factory method, instance methods, how Subject knows Presenter][The *Subject* class: Factory method, instance methods, how Subject knows Presenter]] that the factory method of Subject is ~Subject>>#onModel: model~. This will associate subject with it's model.  We will use the same name for the factory method for our ~CheckedItemSubject~ and call the super factory from Subject.
 
-We will also use the knowledge from the same chapter regarding it's factory constructor and abstract methods we need to implement. Let us summarize it here again: 
+We will also use the knowledge from the same chapter regarding it's factory method and abstract methods we need to implement. Let us summarize it here again: 
 
-- The factory constructor of our ~CheckedItemSubject~ will call the factory constructor of it's parent, ~Subject>>#onModel: model~.  This is expressed by the signature ~public class CheckedItemSubject onModel: model = Subject onModel: model~ where our new class calls the super constructor ~Subject>>#onModel: model~.
+- The factory method of our ~CheckedItemSubject~ will call the factory method of it's parent, ~Subject>>#onModel: model~.  This is expressed by the signature ~public class CheckedItemSubject onModel: model = Subject onModel: model~ where our new class calls the super constructor ~Subject>>#onModel: model~.
 
 - ~Subject~ class has an abstract method ~#createPresenter~ (indicated by "subclassResponsibility") which should return a presenter. In the same link, we saw that ~#createPresenter~ should create an instance of Presenter (the yet-to-be-created ~CheckedItemPresenter~). The instance should then be returned. 
 
 - We need to add the formulaic implementations of ~#isMyKind~ and ~#isKindOfCheckedItemSubject~. See [[*The formulaic required repetitive methods of #isMyKind: and #isKindOfX][The formulaic required repetitive methods of #isMyKind: and #isKindOfX]].
 
-So the code for our concrete Subject ~CheckedItemSubject~ which implements the desired factory constructor and all abstract methods implemented should be:
+So the code for our concrete Subject ~CheckedItemSubject~ which implements the desired factory method and all abstract methods implemented should be:
 
 ~class CheckedItemSubject~
 #+begin_example
@@ -3461,7 +3474,7 @@ Click the "Accept" button [[file:img/newspeak---a-few-notes.org-accept-image.png
 
 Having defined a model class ~CheckedItemModel~ and a subject class ~CheckedItemSubject~, we will need the last piece of our UI, the concrete Presenter class.
 
-Presenter is the class which does the work of creating the UI widgets. We have seen in chapter [[*The *Presenter* class: Factory constructor, instance methods, how Presenter knows Subject][The *Presenter* class: Factory constructor, instance methods, how Presenter knows Subject]] that Presenter is created in the factory constructor ~Presenter>>#onSubject: subject~, and it contains important wiring of the subject and presenter associations. Our concrete class factory constructor must do the same, so it needs to call this parent factory. This is done using factory method ~CheckedItemPresenter onSubject: subject = Presenter onSubject: subject ()~  
+Presenter is the class which does the work of creating the UI widgets. We have seen in chapter [[*The *Presenter* class: Factory method, instance methods, how Presenter knows Subject][The *Presenter* class: Factory method, instance methods, how Presenter knows Subject]] that Presenter is created in the factory method ~Presenter>>#onSubject: subject~, and it contains important wiring of the subject and presenter associations. Our concrete class factory method must do the same, so it needs to call this parent factory. This is done using factory method ~CheckedItemPresenter onSubject: subject = Presenter onSubject: subject ()~  
 
 For a concrete UI, method which creates the UI view is ~#definition~. It does that by creating and returning Fragmets or Presenter objects. The created objects can be a composition of both layout elements such as rows and columns, and widgets such as checkboxes and labels.
 
@@ -3602,7 +3615,7 @@ We are making this code unnecessarily verbatim and long, to spell out what we di
 Let's go over the added lines, and why they were added this way.
 
 
-***** Why did we added the line calling factory constructor of CheckedItemUI? Also, this leads to a change in CheckedItemUI.
+***** Why did we added the line calling factory method of CheckedItemUI? Also, this leads to a change in CheckedItemUI.
 
 So, why did we add this line to the ~CheckedItemApp>>#main:args:~ method:
 
@@ -3610,21 +3623,21 @@ So, why did we add this line to the ~CheckedItemApp>>#main:args:~ method:
 
 Explanation:
 
-- The CheckedItemApp is merely an application wrapper around the module CheckedItemUI. This is how modules are distributed and run. Our module (top level class instance) CheckedItemUI needs a factory constructor which is passed a platform object.  At runtime, instances of top level classes "import" dependencies from the ~platform~.  All top level classes that are general modules need such factory constructor. It was discussed at length in the early sections, around and after section [[*Application and library modules in Newspeak][Application and library modules in Newspeak]].
+- The CheckedItemApp is merely an application wrapper around the module CheckedItemUI. This is how modules are distributed and run. Our module (top level class instance) CheckedItemUI needs a factory method which is passed a platform object.  At runtime, instances of top level classes "import" dependencies from the ~platform~.  All top level classes that are general modules need such factory method. It was discussed at length in the early sections, around and after section [[*Application and library modules in Newspeak][Application and library modules in Newspeak]].
 
-- So from above links, we know our CheckedItemUI will need a factory constructor such as ~CheckedItemUI>>#usingPlatform: platformWithHopscotch.~ This is what the added line expresses: It creates an instance of CheckedItemUI and stores it on a local variable.
+- So from above links, we know our CheckedItemUI will need a factory method such as ~CheckedItemUI>>#usingPlatform: platformWithHopscotch.~ This is what the added line expresses: It creates an instance of CheckedItemUI and stores it on a local variable.
 
 - Looking back to chapter [[*Class CheckedItemUI][Class CheckedItemUI]], we did not add any slots or constructors for the top level class ~CheckedItemUI~ so far.  Our ~CheckedItemUI~ will definitely need to "import" and "hold on" classes or instances of ~Subject~ and ~Presenter~ for use in it's nested classes ~CheckedItemSubject~ and ~CheckedItemPresenter~.
 
-This explanation also leads to the need to beef up the ~CheckedItemUI~ by adding both a factory constructor and slots for classes needed by nested children.
+This explanation also leads to the need to beef up the ~CheckedItemUI~ by adding both a factory method and slots for classes needed by nested children.
 
-So as discussed in the explanation, let's add the factory constructor and it's slots to ~CheckedItemUI~.
+So as discussed in the explanation, let's add the factory method and it's slots to ~CheckedItemUI~.
 
 Replace the ~#new~ constructor with the following:
 
 ~class CheckedItemUI~
 #+begin_example
-(* Added this factory constructor and slots for Subject and Presenter *)
+(* Added this factory method and slots for Subject and Presenter *)
 class CheckedItemUI usingPlatform: platformWithHopscotch = (
 |
 Subject   = platformWithHopscotch hopscotch Subject.

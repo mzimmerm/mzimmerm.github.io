@@ -51,7 +51,7 @@ In init.el, overrode (using ":before-until" advice) handling of function <code>o
 <li><p>
 In the blog org file: Added BEGIN_EXPORT html with 2 sections. First section adds styling on elements with class="evaluator", the second section adds the script with Ampleforth.js. NOTE: This must be at the end, for the script to be at the end of body or after the body.
 </p>
-<pre class="example" id="orgc70709e">
+<pre class="example" id="orge66c0fd">
 #+begin_export html
    &lt;style&gt; img {width: 25px; height: 25px;} &lt;/style&gt; &lt;style&gt; .evaluator + pre {display: none;} .preview .evaluator + pre {display: block;} &lt;/style&gt;
    &lt;script type="text/javascript" class="preview" src="/js/Ampleforth.sources.js"&gt;&lt;/script&gt;
@@ -64,7 +64,7 @@ In the blog org file: Added BEGIN_EXPORT html with 2 sections. First section add
 <li><p>
 In <code>$BLOG/img</code>, added images:
 </p>
-<pre class="example" id="orge89938d">
+<pre class="example" id="org0ca89d0">
 "/accept16px.png"
 "/cancel16px.png"
 "/disclosureClosedImage.png"
@@ -97,7 +97,7 @@ In <code>$BLOG/img</code>, added images:
 "/languageNewspeak3.png"
 </pre></li>
 </ul></li>
-<li>In Ampleforth.js: replaced <code>i.src = "</code> with <code>i.src = "/img/</code></li>
+<li>In Ampleforth.js: replaced <code>i.src = ""</code> with <code>i.src = "/img/"</code></li>
 </ol>
 </div>
 </div>

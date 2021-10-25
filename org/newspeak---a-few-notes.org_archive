@@ -663,3 +663,101 @@ A ~Presenter~
   - The final role a subject can play is to serve as a utility kit providing methods that help presenters extract and process domain data.
 
   
+
+* Slide 30: Newspeak security is based on the Object-capability model.
+:PROPERTIES:
+:ARCHIVE_TIME: 2021-09-07 Tue 16:38
+:ARCHIVE_FILE: ~/dev/my-projects-source/public-on-github/mzimmerm.github.io/org/newspeak---a-few-notes.org
+:ARCHIVE_OLPATH: Programming in Newspeak/Access control and access modifiers in Newspeak.
+:ARCHIVE_CATEGORY: newspeak---a-few-notes
+:END:
+
+This section summarizes a core security slide from the main article.
+- slide 30: 
+   - Newspeak security is based on the Object-capability model.
+   - Object reachability defines authority. Translation: 
+      - Security is thus defined as authority, which is fully defined by reachability
+      - If objectA can reach objectB, then objectA can use the accessible capabilities of ObjectB. Capabilities are method, slots and nested classes.  Access to capabilities can be restricted by 
+         - access modifier keywords [ public, private, protected (default, no keyword)] 
+         - lexical structure (class nesting)
+         - inheritance                
+   - Question: Is reachability just another term for accessibility?
+- Message sends
+   - Situation: When a message msg is sent to an object, the message  msg can exist in ("be declared in") the object's class, or the object's superclass, or the object's class enclosing or enclosed class. The msg may be declared on zero, one, or many such classes; each occurrence may be private, public, or protected (default) accessibility. This situation  leads to a set of rules that govern how the "correct" msg should be found, accessed, and executed.
+
+
+
+* Slides 64 - 77: Algorithm and rules for message sends in Newspeak
+:PROPERTIES:
+:ARCHIVE_TIME: 2021-09-07 Tue 16:39
+:ARCHIVE_FILE: ~/dev/my-projects-source/public-on-github/mzimmerm.github.io/org/newspeak---a-few-notes.org
+:ARCHIVE_OLPATH: Programming in Newspeak/Access control and access modifiers in Newspeak.
+:ARCHIVE_CATEGORY: newspeak---a-few-notes
+:END:
+
+- Types of message sends in Newspeak 
+   - ordinary sends to explicit object : slide 64
+      1. e msg (- aka e.msg *)
+         - Lookup msg in class of receiver; if public, execute. If protected, fail (DNU). 
+         - Ignore private versions If not found, recurse upwards (until Object).
+   - self sends : slide 65
+      1. self msg (- aka this.msg *) 
+         - If the immediately enclosing class declares a private msg, execute it 
+         - Otherwise, lookup public or protected msg in class of the receiver; ignore private versions
+         -  If not found, recurse upwards (until Object).
+   - super sends : slide 66
+      1. super msg (- aka super.msg *) 
+         - Lookup public or protected msg in superclass of receiver; ignore private versions. 
+         - If not found, recurse upwards (until Object).
+   - implicit receiver sends : slide 69-77 (from the scope we see this is complex)
+      1. msg (- aka msg *) 
+         - First try to find msg in lexical scope:
+            - Lookup declaration of private msg in immediately surrounding class. If not found, recurse up lexical scope until lexical top.  If the previous lexical step finds a declaration of msg (private by the above rule definition), execute
+            - else (msg is protected or public)
+                  - let r be the corresponding enclosing object. Lookup public or protected msg in class of r. If not found, recurse upwards (until Object).
+         - Next try find msg in inheritance scope
+            - If no lexically visible declaration was found, lookup public or protected msg in superclass of receiver; ignore private versions. 
+            - If not found, recurse upwards (until Object).
+   - outer sends : slide 88
+      1. outer N msg (- no obvious analog*) 
+         - Find innermost enclosing class named C. If a private msg is defined in C, execute. 
+         - If not found, let r be the corresponding enclosing object. Lookup public or protected msg in class of r; ignore private versions. 
+         - If not found, recurse upwards (until Object).
+- Types of message sends in Newspeak re-stated
+   - outer send:
+      1. From the definition, the outer msg lookup is the same as in implicit messase lookup, with one difference: The outer msg lookup may skip some lexical enclosures; the lookup starts at some (higher level enclosing) class named C. 
+      2. Slide 89
+         - self msg ~ outer C msg 
+            - where C is immediately enclosing class 
+         - msg ~ outer N msg 
+            - where N is innermost lexically enclosing class that declares msg
+         - From the second point, we see that implicit message send is an outer send to the innermost lexical enclosure which declares msg
+
+
+
+* Corollary on slides 61, 62, 63 - Extension
+:PROPERTIES:
+:ARCHIVE_TIME: 2021-10-25 Mon 19:10
+:ARCHIVE_FILE: ~/dev/my-projects-source/public-on-github/mzimmerm.github.io/org/newspeak---a-few-notes.org
+:ARCHIVE_OLPATH: Programming in Newspeak/Access control and access modifiers in Newspeak./Slides 61, 62, 63: Rules for accessing members above and below the class in the nesting hierarchy
+:ARCHIVE_CATEGORY: newspeak---a-few-notes
+:END:
+This Corollary provides a "recipy" of looking at accessibility. First of all, everything in Newspeak is a message sent to an object. So looking to evaluate accessibility of an expression such as  ~objA memberA memberB memberC~, we evaluate accessibility of all terms, starting from the left, using rules in Slides 61, 62, 63:
+
+1. Find the class where the expression ~objA memberA memberB memberC~ is "lexically" located. We look for the class immediately "up" from the line where the expression is located: It may be in a factory, or in a method, or in a slot of a class, say it is ~C1~. *Note: Nested class of C1 is EXLUDED from the lexical location search - then the "lexical location" would be the nested class*.
+2. ~objA~ : can be either a member of ~C1~, or an instance of a class (say it is ~ObjA~), or a class (say it is ~C2~
+   - We ask: is ~objA~ accessible?
+     - If ~objA~ is member of ~C1~ (can be slot, method, or nested class), YES
+     - Else if ~objA~ is class ~C2~
+       - If class ~C2~ is a nesting class lexically UP from the point of where the expression is located (with any modifier): YES
+       - Else: NO
+     - Else if ~objA~ is an instance of ~ObjA~:
+       - If class ~ObjA~ is a nesting class lexically UP from the point of where the expression is located (with any modifier): YES
+     - Else NO
+   - If answer is NO, accessibility FAILED.
+3. ~objA memberA~ : Find the class of which the result is instanceof (say it is ~ObjB~ todo this is getting complicated, archive this.
+   - We ask: is ~ObjB~ accessible? To find the answer, use the same process described above, replacing ~ObjA~ with ~ObjB~
+4. ~objA memberA memberB~ (which is accessibility of ~memberB~ from ~objB memberB~)
+
+
+

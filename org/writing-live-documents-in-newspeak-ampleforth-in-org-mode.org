@@ -79,7 +79,7 @@ This is all.
        "/classUnknownImage.png"
        "/languageNewspeak3.png"
      #+end_example
-4. In Ampleforth.js: replaced ~i.src = "~ with ~i.src = "/img/~
+4. In Ampleforth.js: replaced ~i.src = ""~ with ~i.src = "/img/"~
 
 * This must be at the end   
 
