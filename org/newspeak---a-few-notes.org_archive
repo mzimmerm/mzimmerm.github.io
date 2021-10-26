@@ -735,19 +735,63 @@ This section summarizes a core security slide from the main article.
 
 
 
-* Corollary on slides 61, 62, 63 - Extension
+* TODO Corollary on slides 61, 62, 63 - Extension
 :PROPERTIES:
 :ARCHIVE_TIME: 2021-10-25 Mon 19:10
 :ARCHIVE_FILE: ~/dev/my-projects-source/public-on-github/mzimmerm.github.io/org/newspeak---a-few-notes.org
 :ARCHIVE_OLPATH: Programming in Newspeak/Access control and access modifiers in Newspeak./Slides 61, 62, 63: Rules for accessing members above and below the class in the nesting hierarchy
 :ARCHIVE_CATEGORY: newspeak---a-few-notes
 :END:
-This Corollary provides a "recipy" of looking at accessibility. First of all, everything in Newspeak is a message sent to an object. So looking to evaluate accessibility of an expression such as  ~objA memberA memberB memberC~, we evaluate accessibility of all terms, starting from the left, using rules in Slides 61, 62, 63:
+This Corollary provides a "recipy" of looking at accessibility. todo - this is not finished, too wordy and likely wrong.
 
-1. Find the class where the expression ~objA memberA memberB memberC~ is "lexically" located. We look for the class immediately "up" from the line where the expression is located: It may be in a factory, or in a method, or in a slot of a class, say it is ~C1~. *Note: Nested class of C1 is EXLUDED from the lexical location search - then the "lexical location" would be the nested class*.
-2. ~objA~ : can be either a member of ~C1~, or an instance of a class (say it is ~ObjA~), or a class (say it is ~C2~
+Every runtime operation in Newspeak is *message sent*, but wording around accessibility uses the term *member* not *message* or *message sent*.  How should we understand this discrepancy?
+
+Recall that a (class) member can mean any of:
+
+- instance slot (is object or class). We use the name memberSlot below.
+- method. We use the name memberMethod below.
+- nested class. We use the name memberClass below.
+
+Any "atomic" expression may be: 
+
+1. nonMemberObject
+   - this MUST be an object in a locally declared slot, as any object used in any context can only be coming from either an instance slot (aka instance variable) or locally declared slot (aka local variable).
+2. nonMemberObject msg
+3. (implicitObject) msg
+4. memberMethod
+5. memberSlot
+6. memberSlot msg
+7. memberClass
+8. memberClass msg
+
+So we can change the above to
+
+Any "atomic" expression may be: 
+
+1. localSlot
+2. localSlot msg
+3. (implicitObject) msg
+4. memberMethod
+5. memberSlot
+6. memberSlot msg
+7. memberClass
+8. memberClass msg
+
+The reason the accessibility text can use the term *member* rather than *message sent* is complicated (to me) but does make some sense.  Let me try my best to explain. The way to resolve this is the following thought process.
+
+Accessibility is evaluated through the process of looking at "lexical ownership"
+- Any "msg" in items 1-8 is in the end, a memberMethod on some class. To distin. 
+
+If we ask "does the "atomic" expression 1-8 succeed at runtime?  We go through the following 
+
+ 
+ 
+So looking to evaluate accessibility of an expression such as  ~objA msgA msgB msgC~, we evaluate accessibility of all terms, starting from the left, using rules in Slides 61, 62, 63:
+
+1. Find the class where the expression ~objA msgA msgB msgC~ is "lexically" located. We look for the class immediately "up" from the line where the expression is located: It may be in a factory, or in a method, or in a slot of a class, say it is ~C1~. *Note: Nested class of C1 is EXLUDED from the lexical location search - then the "lexical location" would be the nested class*.
+2. ~objA~ : can be either a msg of ~C1~, or an instance of a class (say it is ~ObjA~), or a class (say it is ~C2~
    - We ask: is ~objA~ accessible?
-     - If ~objA~ is member of ~C1~ (can be slot, method, or nested class), YES
+     - If ~objA~ is msg of ~C1~ (can be slot, method, or nested class), YES
      - Else if ~objA~ is class ~C2~
        - If class ~C2~ is a nesting class lexically UP from the point of where the expression is located (with any modifier): YES
        - Else: NO
@@ -755,9 +799,46 @@ This Corollary provides a "recipy" of looking at accessibility. First of all, ev
        - If class ~ObjA~ is a nesting class lexically UP from the point of where the expression is located (with any modifier): YES
      - Else NO
    - If answer is NO, accessibility FAILED.
-3. ~objA memberA~ : Find the class of which the result is instanceof (say it is ~ObjB~ todo this is getting complicated, archive this.
+3. ~objA msgA~ : Find the class of which the result is instanceof (say it is ~ObjB~ todo this is getting complicated, archive this.
    - We ask: is ~ObjB~ accessible? To find the answer, use the same process described above, replacing ~ObjA~ with ~ObjB~
-4. ~objA memberA memberB~ (which is accessibility of ~memberB~ from ~objB memberB~)
+4. ~objA msgA msgB~ (which is accessibility of ~msgB~ from ~objB msgB~)
 
 
+* IN-PROGRESS-NOW Accessibility summary
+:PROPERTIES:
+:ARCHIVE_TIME: 2021-10-26 Tue 16:04
+:ARCHIVE_FILE: ~/dev/my-projects-source/public-on-github/mzimmerm.github.io/org/newspeak---a-few-notes.org
+:ARCHIVE_OLPATH: Programming in Newspeak/Access control and access modifiers in Newspeak/Worked accessibility examples, using rules from slides 61, 62, 63/Execute expressions in C1, gradually adding terms, to study by example
+:ARCHIVE_CATEGORY: newspeak---a-few-notes
+:ARCHIVE_TODO: IN-PROGRESS-NOW
+:END:
+
+*This seems a good summary but it needs think-through. It is much more wordy than slides 62 and 63, but it explains the terminology shift from "message send" in Newspeak to the wording of accessibility using the term "member" instead.*
+
+We can write any expression for which we evaluate accessibility as ~obj~, ~msg~ or ~obj msg~. The expression ~msg~ does have an implicit receiver, so any expression can be written as one of:
+
+- ~obj~ 
+- ~obj msg~
+
+When we evaluate such expression for accessibility, we need to evaluate access using rules in slides 62, 63.  As Newspeak uses "lexical position" (that is, where in the code is the accessed message or class defined vs. where the accessed expression is located), accessibility evaluation boils down to this process
+
+1. Find the "lexical point" - the class in which the expression is "lexically located". It may be
+   - in a factory, 
+   - or in a method, 
+   - or in a slot declaration. 
+   - *Note: Nested classes of C1 are EXLUDED from the "lexical point" search - then the "lexical point" would be the nested class.*
+2. Let's say the class in which the expression is located is named ~C1~, then ~C1~ is the "lexical point". 
+3. When evaluating ~obj~ for access, we ask: Can the class ~C1~ access the class of which ~obj~ is an instanceof? (Let's say the class is ~Cmember~. Also note that ~Cmember~ must be in some lexical relation to ~C1~: C1 is nested in Cmember, Cmember is nested in C1, C1 is same as Cmember, or none of the above.  Slide 62 gives us the answer to accessibility of Cmember from C1 (and hence accessibility of expression ~obj~ written in it's lexical point, class C1): The access is allowed, if ~Cmember~ is public, OR if ~Cmember~ is a nesting class of ~C1~ (UP from C1), or if ~Cmember~ is member class of ~C1~). 
+4. When evaluating ~obj msg~ for access, we ask: Can the class ~C1~ access the *member method* corresponding to the ~msg~?  (Let's say the member is ~memberMethod~ declared on ~Cmember~. A note of ~Cmember~ lexical relation to ~C1~ applies.  Slide 63 gives us the answer to accessibility of ~memberMethod~ from C1 (and hence accessibility of expression ~obj msg~ written in it's lexical point, class C1): The access is allowed, if ~memberMethod~ is public, OR if ~Cmember~ is a nesting class of ~C1~ (UP from C1), or if ~Cmember~ is member class of ~C1~). 
+
+
+
+Items 3 and 4 can be reduced to this algorithm in determining accessibility of the expression ~obj(instance of Cmember, )~ or ~obj msg(memberMethod on Cmember)~: 
+   - Access is allowed if for ~Cmember~ and ~memberMethod~ at least one is true:
+     1. ~Cmember~ and ~memberMethod~ are members of the "lexical point" ~C1~ 
+     2. ~Cmember~ and ~memberMethod~ are members of classes which are "lexically enclosing (UP)" from the "lexical point" ~C1~. 
+     3. ~Cmember~ and ~memberMethod~ are public, irrespective where they are in the nesting hierarchy relative to ~C1~.
+   - All other members may NOT be accessed - notably, if  ~Cmember~ and ~memberMethod~ are non-public members of nested classes (DOWN).
+
+Note: 1 and 2 apply irrespecrive of ~Cmember~ or ~memberMethod~ being public, private, protected. But note that "public" is included in item 3. 
 

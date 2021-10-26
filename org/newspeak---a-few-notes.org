@@ -76,8 +76,8 @@ Newspeak is different. This includes terminology that may not be familiar.  Belo
 - *Module Declaration* : Source code of a top level class.
 - *Module Definition* or *Module class* : The class object of a top level class.
 - *Module* :   Instance of a top level class. When talking about API, we sometimes use the term /module/ instead of /module declaration/. 
-- *Slot* : Equivalent of a member variable or a local variable in other languages.  In Newspeak, everything is a message send, so a slot is equivalent to a getter (and also a setter, if the slot is mutable).  Slot mutability is clear from the syntax at the line of it's declaration - see below.   
-- *Instance slot declaration* : Expression between the bars ~| |~ located inside the primary factory method body.  The slot name can have ~=~, ~=::~ or (nothing) to the right of the slot name.  The syntactical differences determine whether the slot is mutable or immutable.  For example ~|mySlot =:: 1|~ is a declaration of a mutable slot named ~mySlot~.  ~|mySlot = 1|~ is a declaration of an immutable slot named ~mySlot~, initialized to ~1~ at the point of the declaration.  ~|mySlot|~  is a declaration of immutable slot, which can be initialized once in code. 
+- *Slot* : Equivalent of a member variable or a local variable in other languages.  In Newspeak, everything is a message send, so a slot is a getter (or also a setter, if the slot is mutable).  Slot mutability is clear from the syntax at the line of it's declaration - see below.   
+- *Instance slot declaration* : Expression between the bars ~| |~ located inside the primary factory method body.  The slot name can have ~=~, ~=::~ or (nothing) to the right of the slot name.  The syntactical differences determine whether the slot is mutable or immutable.  For example ~|mySlot =:: 1|~ is a declaration of a mutable slot named ~mySlot~.  ~|mySlot = 1|~ is a declaration of an immutable slot named ~mySlot~, initialized to ~1~ at the point of the declaration.  ~|mySlot|~  is a declaration of immutable slot, which can be initialized once in code. The ~::~ expresses mutability in Newspeak (the symbol on the left is a setter).
 - *Local slot declaration* : Is a local slot inside a method, equivalent of a local variable.  Syntactically a /local slot/ is declared same as an /instance slot/, except the expression between the bars ~| |~ is located inside a method.
 - *Primary factory method* : The method that allows to accept parameters (capabilities), declare instance slots, and produce an instance of a class.  In practical terms, looking at code, the primary factory method is the method starting on the same line where the class code starts. Also, the primary factory method is the only place in which we can declare instance slots:
     #+begin_example
@@ -1827,14 +1827,7 @@ This slide describes how Newspeak code in a class can access private and protect
 
 **** Corollary on slides 61, 62, 63
 
-Public members are accessible everywhere, including from modules outside of the module where they are declared, as long as the object to which they are sent is accessible. 
-
-To explain what we mean by "as long as the object to which they are sent is accessible": Let's say we are evaluating accessibility of ~msgC~ in an expression that is a sequence of messages such as ~objA msgA msgB msgC~. If ~objA msgA~ returns ~objB~, then, the expression is equivalent to ~objB msgB msgC~. If ~objB msgB~ returns ~objC~, the expression is equivalent to ~objC msgC~.  
-
-So if we are evaluating evaluating access of ~msgC~, accessibility must have been succesfull all along the "path" in the message sequence ~objA msgA msgB~.  That is, we assume we evaluated that accessibility was succesfull in all of  
-- ~objA~
-- ~objA msgA~
-- ~objA msgA msgB~ (which is accessibility of ~msgB~ from ~objB msgB~)
+Public member on any class is accessible from anywhere.  By "anywhere" we meand "lexically anywhere" - we can write an expression which contains a public member in any code (even if the module where we write the code is different from the module where the public member is declared). 
 
 
 *** Worked accessibility examples, using rules from slides 61, 62, 63
@@ -1924,7 +1917,7 @@ We will use the following class code.  To follow the steps of this section, comp
           ProtC2 new pubM. 
 
           (* Succeeds 
-             Reason:  ~pubM~ is public. According to [[* Corollary on slides 61, 62, 63][Corollary on slides 61, 62, 63]] public members are accessible anywhere - even in nested classes that are not public. Here, ~C1>>ProtC2>>#pubM~ is accessible from anywhere.  
+             Reason:  ~pubM~ is public member on a nested class ~ProtC2~ (lexically a member of ~C1~). According to [[* Corollary on slides 61, 62, 63][Corollary on slides 61, 62, 63]] public member (here ~pubM~) is accessible from anywhere (here from ~C1~). Obviously, we have already validated access of the first part of the expression, ~ProtC2 new~.  
           *)
 
           ^ 'protC2NewPubM'
@@ -2043,35 +2036,19 @@ From this section onward, the method names we run are all public, defined on ~C1
 
 If we make the method we are calling, the ~C1>>ProtC2>>#protM~,  public, then the call to ~protM~ in ~ProtC2 new protM~ will succeed. We will show it by calling an equivalent but public method ~C1>>ProtC2>>#pubM~ in the next section.
 
-***** IN-PROGRESS-NOW C1 new protC2NewPubM
-
-This section shows how to 'resolve' the accessibility failure discussed in the previous section. The takeaway is that if a code wants to access members of any nested class, the nested class must make such member public.
+***** C1 new protC2NewPubM
 
 - Workspace expression: ~C1 new protC2NewPubM~
 - Runs this code: ~ProtC2 new pubM~
 - Does: Creates an instance of class ~ProtC2~ and sends public message ~pubM~ to it
 - Code Result: Succeeds sending public message ~C1>>ProtC2>>#pubM~ from code in ~C1~
   [[file:img/newspeak---a-few-notes.org-access-C1newProtC2NewPubM.png]]
-- Reason:  ~pubM~ is public member on a nested class ~ProtC2~ (lexically a member of ~C1~). According to [[* Corollary on slides 61, 62, 63][Corollary on slides 61, 62, 63]] public members are accessible anywhere - even in nested classes that are not public, as long as the object to which they are sent is accessible. Here, ~C1>>ProtC2>>#pubM~ is accessible from method ~C1>>#protC2NewPubM~, because we evaluated access all along the path ~ProtC2 new~ (resulting in instance of ProtC2), and ~pubM~ is a public method on ~ProtC2~.
+- Reason:  ~pubM~ is public member on a nested class ~ProtC2~ (lexically a member of ~C1~). According to [[* Corollary on slides 61, 62, 63][Corollary on slides 61, 62, 63]] public member (here ~pubM~) is accessible from anywhere (here from ~C1~). Obviously, we have already validated access of the first part of the expression, ~ProtC2 new~.  
 
 
-***** Accessibility summary
+Note: All along during accessibility discussion, we assumed a message in an expression is understood by the receiver, and merely examined whether the code where the expression is, has access to the message.  To make an explicit note in this section:  ~pubM~ is a member method on ~ProtC2~, so the instance ~ProtC2 new~ does understand ~pubM~.  Here, ~C1>>ProtC2>>#pubM~ is accessible from method ~C1>>#protC2NewPubM~, that is all that matters for accessibility evaluation.  The fact that ~pubM~ a member (on ~ProtC2~) but that is not relevant in accessibility evaluation, although obviously necessary for understanding.
 
-We have shown some selected examples of how accessibility works in Newspeak.
-
-When we evaluate an expression such as ~objA memberA memberB memberC~ for accessibility, we need to evaluate access in each subexpression starting from the left, using rules in slides 62, 63. (accessibility evaluation must succeed along the whole path).
-
-The steps of accessibility evaluation:
-1. Find the "lexical point" - the class in which the expression is "lexically located". It may be
-   - in a factory, 
-   - or in a method, 
-   - or in a slot. 
-   - *Note: Nested classes of C1 are EXLUDED from the "lexical point" search - then the "lexical point" would be the nested class*.
-2. Say the class in which factory, method or slot the expression is located is named ~C1~, then ~C1~ is the "lexical point". 
-3. Then, at each point of the path, use rules in 62 and 63 to determine accessibility of a ~member~, from the "lexical point" ~C1~. In a nutshell we can use this algorithm in determining accessibility: 
-   - members of the "lexical point" ~C1~, or members of classes which are "lexically enclosing (UP)" from the "lexical point" ~C1~, can be accessed. This applies to all modifiers on such members: public, private, protected.
-   - public members of any class can be accessed
-   - all other members may not be accessed - notably, non-public members of nested classes (DOWN) may NOT be accessed.
+Summary: This section [[* C1 new protC2NewPubM][C1 new protC2NewPubM]] shows how to 'resolve' the accessibility failure discussed in the previous section. The takeaway is that if a code wants to access members of any nested class, the nested class must make such member public - as we did here (protected ~protM~ access failed, changing to public ~pubM~ access succeeded).
 
 
 ** Debugging in Newspeak
