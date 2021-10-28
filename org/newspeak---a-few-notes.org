@@ -77,25 +77,27 @@ Newspeak is different. This includes terminology that may not be familiar.  Belo
 - *Module Definition* or *Module class* : The class object of a top level class.
 - *Module* :   Instance of a top level class. When talking about API, we sometimes use the term /module/ instead of /module declaration/. 
 - *Slot* : Equivalent of a member variable or a local variable in other languages.  In Newspeak, everything is a message send, so a slot is a getter (or also a setter, if the slot is mutable).  Slot mutability is clear from the syntax at the line of it's declaration - see below.   
-- *Instance slot declaration* : Expression between the bars ~| |~ located inside the primary factory method body.  The slot name can have ~=~, ~=::~ or (nothing) to the right of the slot name.  The syntactical differences determine whether the slot is mutable or immutable.  For example ~|mySlot =:: 1|~ is a declaration of a mutable slot named ~mySlot~.  ~|mySlot = 1|~ is a declaration of an immutable slot named ~mySlot~, initialized to ~1~ at the point of the declaration.  ~|mySlot|~  is a declaration of immutable slot, which can be initialized once in code. The ~::~ expresses mutability in Newspeak (the symbol on the left is a setter).
-- *Local slot declaration* : Is a local slot inside a method, equivalent of a local variable.  Syntactically a /local slot/ is declared same as an /instance slot/, except the expression between the bars ~| |~ is located inside a method.
-- *Primary factory method* : The method that allows to accept parameters (capabilities), declare instance slots, and produce an instance of a class.  In practical terms, looking at code, the primary factory method is the method starting on the same line where the class code starts. Also, the primary factory method is the only place in which we can declare instance slots:
+- *Instance slot declaration* : Name on the left of an expression between the bars ~| |~ located inside the *primary factory method*.  Instance slot is an *equivalent* of a member variable in other OO languages, and it's scope is the instance, with some minute but important differences due to nesting. The slot name can have the symbol ~=~, ~=::~ or (nothing) to the right of the slot name.  The syntactical differences determine whether the slot is mutable or immutable.  For example ~|mySlot =:: 1|~ is a declaration of a mutable slot named ~mySlot~.  ~|mySlot = 1|~ is a declaration of an immutable slot named ~mySlot~, initialized to ~1~ at the point of the declaration.  ~|mySlot|~  is a declaration of immutable slot, which can be initialized once in code. The ~::~ expresses mutability in Newspeak (the symbol on the left is a setter).
+- *Local slot declaration* : Same as the /instance slot/ above, except the local slot declaration is located inside the bars ~| |~ in the body of instance method or class method (but NOT primary factory method body, that is reserved for *instance slots*). Local slot is an *equivalent* of a local variable. 
+- *Primary factory method* : The method that allows to accept parameters (capabilities), declare instance slots, and produce an instance of a class.  In practical terms, looking at code, the primary factory method is the method starting on the same line where the class code starts. Also, the /primary factory method/ is the only place in which we can declare instance slots.  An example of a primary factory method named ~#usingPlatform: p andA1: A1~ on class ~A2~:
     #+begin_example
       (* The string "usingPlatform: andA1:" is the primary factory method signature.
          The primary factory method is declared as follows:
       *)
       class A2 usingPlatform: p andA1: A1 =
         (
-          (* 1. Primary factory method slots and body. We can write code below slots *)
+          (* 1. Primary factory method slots and body.*)
           |slots|
+          (* .. instantiation code here .. *)
         )
     #+end_example
-- *Factory method* : The method that produces an instance but cannot declare instance slots.   In practical terms, looking at code, the factory method is the method in the class code section after the ":" - in this example, section 3. including the surrounding brackets.  
+- *Factory method* : The method that produces an instance but cannot declare instance slots.   In practical terms, looking at code, the factory method is the method in the class code section after the ":" - in this example, in section 3.  An example of  /factory method/ named ~#factoryMethod1~ on class ~A2~:  
     #+begin_example
       class A2 usingPlatform: p andA1: A1 =
         (
-          (* 1. Primary factory method slots and body *)
+          (* 1. Primary factory method slots and body. *)
           |slots|
+          (* .. instantiation code here .. *)
         )
         (
           (* 2. instance methods and nested classes *)

@@ -93,22 +93,22 @@ categories:
 <ul>
 <li><a href="#orgd9476b0">6.7.0.1. 1. General module with NO dependencies: API of module with no dependencies</a>
 <ul>
-<li><a href="#org9e2e0cb">6.7.0.1.1. Example:</a></li>
+<li><a href="#org5b6af35">6.7.0.1.1. Example:</a></li>
 </ul>
 </li>
 <li><a href="#org7062cfa">6.7.0.2. 2. General module with dependencies: API of module with dependencies</a>
 <ul>
-<li><a href="#org7abaced">6.7.0.2.1. Example:</a></li>
+<li><a href="#org3936d95">6.7.0.2.1. Example:</a></li>
 </ul>
 </li>
 <li><a href="#org0efa847">6.7.0.3. 3. Library module: API of module that needs to be distributed for use in other modules</a>
 <ul>
-<li><a href="#org7606445">6.7.0.3.1. Example:</a></li>
+<li><a href="#orgd577cb7">6.7.0.3.1. Example:</a></li>
 </ul>
 </li>
 <li><a href="#org818d945">6.7.0.4. 4. App module: API of module that needs to be distributed as an App</a>
 <ul>
-<li><a href="#org5b6af35">6.7.0.4.1. Example:</a></li>
+<li><a href="#org50d7da2">6.7.0.4.1. Example:</a></li>
 </ul>
 </li>
 <li><a href="#orgb451316">6.7.0.5. <span class="todo TODO">TODO</span> 5. Test module: TODO</a></li>
@@ -251,7 +251,7 @@ categories:
 <li><a href="#org4910947">10.1. If you wish to start at the end: Full code of HopscotchForHTML5 sample app</a></li>
 <li><a href="#org9cfef77">10.2. Discovery of the <b>HopscotchForHTML5</b> class basics</a>
 <ul>
-<li><a href="#org87b8e2a">10.2.1. Chapter goal</a></li>
+<li><a href="#orgbbc3511">10.2.1. Chapter goal</a></li>
 <li><a href="#orgb71cfea">10.2.2. Chapter conclusion</a></li>
 </ul>
 </li>
@@ -267,7 +267,7 @@ categories:
 </li>
 <li><a href="#orgebfc0c9">10.4.4. The method <b>Subject&gt;&gt;#presenter</b> creates the subject's presenter by calling the <b>Subject&gt;&gt;#createPresenter</b>, then associate the instances</a>
 <ul>
-<li><a href="#orgab3f024">10.4.4.1. Chapter goal</a></li>
+<li><a href="#orge2bea4c">10.4.4.1. Chapter goal</a></li>
 <li><a href="#org801c63a">10.4.4.2. Where is Subject -&gt; Presenter association created? In <b>Subject&gt;&gt;#presenter</b></a></li>
 <li><a href="#org7fa0f1a">10.4.4.3. Where is Presenter -&gt; Subject association created? In the Presenter primary factory method <b>Presenter&gt;&gt;#class Presenter onSubject: aSubject = Fragment</b></a></li>
 </ul>
@@ -292,14 +292,14 @@ categories:
 <li><a href="#org7cbf877">10.7. Summary of <b>Subject</b> and it's model, <b>Presenter</b> and <b>Fragment</b>, their associations, and their lifecycle</a></li>
 <li><a href="#orgefdb0e8">10.8. Back to <b>HopscotchForHTML5</b> and how it relates to <b>HopscotchForHTML5Runtime</b></a>
 <ul>
-<li><a href="#org4cfe1f2">10.8.1. Chapter goal</a></li>
+<li><a href="#org59bb66c">10.8.1. Chapter goal</a></li>
 <li><a href="#orga02c8f9">10.8.2. The <b>HopscotchForHTML5</b> class</a></li>
 <li><a href="#orgf718780">10.8.3. The <b>HopscotchForHTML5Runtime</b> class</a></li>
 </ul>
 </li>
 <li><a href="#orgb3a4bfa">10.9. Using chapters above to write a simple Hopscotch UI App, the <b>CheckedItemApp</b></a>
 <ul>
-<li><a href="#orgbbc3511">10.9.1. Chapter goal</a></li>
+<li><a href="#org00a841d">10.9.1. Chapter goal</a></li>
 <li><a href="#org7ebbfcc">10.9.2. 1. Start coding the Application class <b>CheckedItemApp</b></a></li>
 <li><a href="#orgc9ffbf8">10.9.3. 2. Add code to the <b>CheckedItemApp</b> which allows to "import" the Hopscotch module</a>
 <ul>
@@ -539,29 +539,31 @@ Newspeak is different. This includes terminology that may not be familiar.  Belo
 <li><b>Module Definition</b> or <b>Module class</b> : The class object of a top level class.</li>
 <li><b>Module</b> :   Instance of a top level class. When talking about API, we sometimes use the term <i>module</i> instead of <i>module declaration</i>.</li>
 <li><b>Slot</b> : Equivalent of a member variable or a local variable in other languages.  In Newspeak, everything is a message send, so a slot is a getter (or also a setter, if the slot is mutable).  Slot mutability is clear from the syntax at the line of it's declaration - see below.</li>
-<li><b>Instance slot declaration</b> : Expression between the bars <code>| |</code> located inside the primary factory method body.  The slot name can have <code>=</code>, <code>=::</code> or (nothing) to the right of the slot name.  The syntactical differences determine whether the slot is mutable or immutable.  For example <code>|mySlot =:: 1|</code> is a declaration of a mutable slot named <code>mySlot</code>.  <code>|mySlot = 1|</code> is a declaration of an immutable slot named <code>mySlot</code>, initialized to <code>1</code> at the point of the declaration.  <code>|mySlot|</code>  is a declaration of immutable slot, which can be initialized once in code. The <code>::</code> expresses mutability in Newspeak (the symbol on the left is a setter).</li>
-<li><b>Local slot declaration</b> : Is a local slot inside a method, equivalent of a local variable.  Syntactically a <i>local slot</i> is declared same as an <i>instance slot</i>, except the expression between the bars <code>| |</code> is located inside a method.</li>
+<li><b>Instance slot declaration</b> : Name on the left of an expression between the bars <code>| |</code> located inside the <b>primary factory method</b>.  Instance slot is an <b>equivalent</b> of a member variable in other OO languages, and it's scope is the instance, with some minute but important differences due to nesting. The slot name can have the symbol <code>=</code>, <code>=::</code> or (nothing) to the right of the slot name.  The syntactical differences determine whether the slot is mutable or immutable.  For example <code>|mySlot =:: 1|</code> is a declaration of a mutable slot named <code>mySlot</code>.  <code>|mySlot = 1|</code> is a declaration of an immutable slot named <code>mySlot</code>, initialized to <code>1</code> at the point of the declaration.  <code>|mySlot|</code>  is a declaration of immutable slot, which can be initialized once in code. The <code>::</code> expresses mutability in Newspeak (the symbol on the left is a setter).</li>
+<li><b>Local slot declaration</b> : Same as the <i>instance slot</i> above, except the local slot declaration is located inside the bars <code>| |</code> in the body of instance method or class method (but NOT primary factory method body, that is reserved for <b>instance slots</b>). Local slot is an <b>equivalent</b> of a local variable.</li>
 <li><p>
-<b>Primary factory method</b> : The method that allows to accept parameters (capabilities), declare instance slots, and produce an instance of a class.  In practical terms, looking at code, the primary factory method is the method starting on the same line where the class code starts. Also, the primary factory method is the only place in which we can declare instance slots:
+<b>Primary factory method</b> : The method that allows to accept parameters (capabilities), declare instance slots, and produce an instance of a class.  In practical terms, looking at code, the primary factory method is the method starting on the same line where the class code starts. Also, the <i>primary factory method</i> is the only place in which we can declare instance slots.  An example of a primary factory method named <code>#usingPlatform: p andA1: A1</code> on class <code>A2</code>:
 </p>
-<pre class="example" id="orgd9e34bb">
+<pre class="example" id="org41165e5">
 (* The string "usingPlatform: andA1:" is the primary factory method signature.
    The primary factory method is declared as follows:
 *)
 class A2 usingPlatform: p andA1: A1 =
   (
-    (* 1. Primary factory method slots and body. We can write code below slots *)
+    (* 1. Primary factory method slots and body.*)
     |slots|
+    (* .. instantiation code here .. *)
   )
 </pre></li>
 <li><p>
-<b>Factory method</b> : The method that produces an instance but cannot declare instance slots.   In practical terms, looking at code, the factory method is the method in the class code section after the ":" - in this example, section 3. including the surrounding brackets.  
+<b>Factory method</b> : The method that produces an instance but cannot declare instance slots.   In practical terms, looking at code, the factory method is the method in the class code section after the ":" - in this example, in section 3.  An example of  <i>factory method</i> named <code>#factoryMethod1</code> on class <code>A2</code>:  
 </p>
-<pre class="example" id="org4fb3816">
+<pre class="example" id="org4685bfa">
 class A2 usingPlatform: p andA1: A1 =
   (
-    (* 1. Primary factory method slots and body *)
+    (* 1. Primary factory method slots and body. *)
     |slots|
+    (* .. instantiation code here .. *)
   )
   (
     (* 2. instance methods and nested classes *)
@@ -1205,7 +1207,7 @@ We see something like
 </p>
 
 
-<div id="org4554aee" class="figure">
+<div id="orgdf92b87" class="figure">
 <p><img src="/img/newspeak---a-few-notes.org-local-ide.png" alt="nil"/>
 </p>
 </div>
@@ -1237,7 +1239,7 @@ I the IDE, click on the "Newspeak Source" button. We see the word <b>Root</b> on
 </p>
 
 
-<div id="org64cade0" class="figure">
+<div id="orgf5f09a5" class="figure">
 <p><img src="/img/newspeak---a-few-notes.org-ide-full-page-classes-collapsed.png" alt="nil"/>
 </p>
 </div>
@@ -1370,7 +1372,7 @@ Let us expand each top level class in the "sources" screenshot above.  Well, may
 </p>
 
 
-<div id="orgbb77ea1" class="figure">
+<div id="org001530b" class="figure">
 <p><img src="/img/newspeak---a-few-notes.org-ide-full-page-classes-expanded.png" alt="nil"/>
 </p>
 </div>
@@ -1426,7 +1428,7 @@ We mentioned the messages on top like <code>#packageTestsUsing: manifest</code> 
 <i>primary factory method</i> names on the <i>top level classes</i> have an eerily similar structure.  I was asking myself why, what do they have in common.  So I listed more of the primary factory method names.  Here is the list of the <i>primary factory methods</i> on some top level classes:
 </p>
 
-<pre class="example" id="org88a4004">
+<pre class="example" id="orgf2d35e0">
 class AccessModifierTesting                 usingPlatform:       platform  testFramework: minitest = (| etc
 class AccessModifierTestingConfiguration    packageTestsUsing:   manifest = (| etc
 class ActivationMirrorTesting               usingPlatform:       platform minitest: m = (| etc
@@ -1498,7 +1500,7 @@ ide namespacing manifest
 </pre>
 
 
-<div id="org874fa18" class="figure">
+<div id="org95a337d" class="figure">
 <p><img src="/img/newspeak---a-few-notes.org-ide-namespacing-manifest.png" alt="nil"/>
 </p>
 </div>
@@ -1507,7 +1509,7 @@ ide namespacing manifest
 Drilling into the instance, we can see it is a map, and sorting by the key, we get
 </p>
 
-<pre class="example" id="org6d811dd">
+<pre class="example" id="org4ca37ce">
 at: AccessModifierTesting   AccessModifierTesting
 at: AccessModifierTestingConfiguration   AccessModifierTestingConfiguration
 at: ActivationMirrorTesting
@@ -1566,7 +1568,7 @@ This is little harder than with manifest, so let's cheat a bit.  In Workspace, l
 Drilling into the link "instance of PlatformWithHopscotch`number", we see a list of instances. Sorting the list, we can see it contains <code>instances</code> of a few classes that look like system classes:
 </p>
 
-<pre class="example" id="org7407a9e">
+<pre class="example" id="orgf914702">
 instance of ActorsForPrimordialSoup
 instance of CollectionsForPrimordialSoup
 instance of FontsForHTML5
@@ -2070,8 +2072,8 @@ While perhaps rare, this is the simplest case. If our module does not need any d
 </ul>
 </div>
 
-<div id="outline-container-org9e2e0cb" class="outline-6">
-<h6 id="org9e2e0cb"><span class="section-number-6">6.7.0.1.1.</span> Example:</h6>
+<div id="outline-container-org5b6af35" class="outline-6">
+<h6 id="org5b6af35"><span class="section-number-6">6.7.0.1.1.</span> Example:</h6>
 <div class="outline-text-6" id="text-6-7-0-1-1">
 <pre class="example">
 class RecipyNoDep new = ()
@@ -2116,8 +2118,8 @@ If our module need some other module from IDE, such as collections, you have to 
 </ul>
 </div>
 
-<div id="outline-container-org7abaced" class="outline-6">
-<h6 id="org7abaced"><span class="section-number-6">6.7.0.2.1.</span> Example:</h6>
+<div id="outline-container-org3936d95" class="outline-6">
+<h6 id="org3936d95"><span class="section-number-6">6.7.0.2.1.</span> Example:</h6>
 <div class="outline-text-6" id="text-6-7-0-2-1">
 <pre class="example">
 class RecipyWithDep usingPlatform: platform andModule: translator = (
@@ -2181,8 +2183,8 @@ Note that in this case, <i>#buildUsing: platform</i> must not be added any other
 </p>
 </div>
 
-<div id="outline-container-org7606445" class="outline-6">
-<h6 id="org7606445"><span class="section-number-6">6.7.0.3.1.</span> Example:</h6>
+<div id="outline-container-orgd577cb7" class="outline-6">
+<h6 id="orgd577cb7"><span class="section-number-6">6.7.0.3.1.</span> Example:</h6>
 <div class="outline-text-6" id="text-6-7-0-3-1">
 <p>
 To create a packageble and distributable library module for the above <code>RecipyWithDep</code>, create this library module 
@@ -2315,8 +2317,8 @@ Basically, a Library module and App module play a similar role. However, an App 
 </p>
 </div>
 
-<div id="outline-container-org5b6af35" class="outline-6">
-<h6 id="org5b6af35"><span class="section-number-6">6.7.0.4.1.</span> Example:</h6>
+<div id="outline-container-org50d7da2" class="outline-6">
+<h6 id="org50d7da2"><span class="section-number-6">6.7.0.4.1.</span> Example:</h6>
 <div class="outline-text-6" id="text-6-7-0-4-1">
 <p>
 We will create an App module  <code>RecipyWithDepApp</code>, which is a bit more complex App, in the sense it uses a pre-existing library module, defined in <a href="#org0efa847">3. Library module: API of module that needs to be distributed for use in other modules</a>.
@@ -2417,7 +2419,7 @@ Steps to run Hello World from Workspace
 </ul>
 
 
-<div id="org2a06d8f" class="figure">
+<div id="org54002c7" class="figure">
 <p><img src="/img/newspeak---a-few-notes.org-hello-world-workspace.png" alt="nil"/> 
 </p>
 </div>
@@ -2710,7 +2712,7 @@ TL;DR: This section describes the simplest setup - in fact, this is a "no setup,
 </ul>
 
 
-<div id="org202f1a7" class="figure">
+<div id="org34c9f5f" class="figure">
 <p><img src="/img/newspeak---a-few-notes.org-newspeak-ide-start.png" alt="nil"/>
 </p>
 </div>
@@ -3053,7 +3055,7 @@ A class with exemplar can be found at <a href="https://github.com/newspeaklangua
 There are three exemplars in the code
 </p>
 
-<pre class="example" id="orgec5c875">
+<pre class="example" id="org81611d2">
 (* :exemplar: BankAccount balance: 100 *)
 (* :exemplar: deposit: 100 *)
 (* :exemplar: withdraw: 100 *) 
@@ -3071,7 +3073,7 @@ We can also guess that the <code>:exemplar:</code> code provides a way to instan
 From the source we can also see the <code>:exemplar:</code> comment is placed before the <code>=</code> sign in a factory or method declaration - that is the only place where the parser is looking for exemplars. 
 </p>
 
-<pre class="example" id="orgbdff1ab">
+<pre class="example" id="org7f184a9">
 class BankAccount balance: b &lt;Integer&gt;
 (* :exemplar: BankAccount balance: 100 *) = ( .. factory code .. )
 </pre>
@@ -3080,7 +3082,7 @@ class BankAccount balance: b &lt;Integer&gt;
 To make the :exemplar: stand out more, we can format the code so that the comment with exemplar occupies it's own line. The formatting above is "normative" though.
 </p>
 
-<pre class="example" id="orga92f928">
+<pre class="example" id="org9505108">
 class BankAccount balance: b &lt;Integer&gt;
 (* :exemplar: BankAccount balance: 100 *)
   = ( .. factory code .. )
@@ -3130,7 +3132,7 @@ Viewed inside the IDE, a class that provides an exemplar:
 </p>
 
 
-<div id="orgd6d7478" class="figure">
+<div id="org67066a2" class="figure">
 <p><img src="/img/newspeak---a-few-notes.org-class-with-exemplar.png" alt="nil"/>
 </p>
 </div>
@@ -3165,7 +3167,7 @@ We can still browse the classes - in our case the BankAccount class, by clicking
 </p>
 
 
-<div id="orgb3e91dd" class="figure">
+<div id="org1e158c2" class="figure">
 <p><img src="/img/newspeak---a-few-notes.org-class-with-exemplar-class.png" alt="nil"/>
 </p>
 </div>
@@ -3182,7 +3184,7 @@ To show the contrasting example, this is how the same class looks in the IDE aft
 </p>
 
 
-<div id="org1d2be43" class="figure">
+<div id="orgccf9085" class="figure">
 <p><img src="/img/newspeak---a-few-notes.org-class-without-exemplar-class.png" alt="nil"/>
 </p>
 </div>
@@ -3234,7 +3236,7 @@ There can in fact be multiple exemplar comments. An exemplar comment is one whos
 For example, we can define a method #foo:
 </p>
 
-<pre class="example" id="org66f8ce5">
+<pre class="example" id="org547eea1">
 public foo: x (* :exemplar_1:  foo: 3 *) (* an random comment *)  (:exemplar_2: foo: 'a' *) = (^x)
 </pre>
 
@@ -3256,7 +3258,7 @@ Exemplars must be placed before the method body starts (or for classes, before f
 For a concrete example, let us look at this pseudo-code of primary factory method <code>balance: b</code>, see markings with &lt;== on the right
 </p>
 
-<pre class="example" id="org688ecc6">
+<pre class="example" id="org1a84fbb">
 class BankAccount balance: b &lt;Integer&gt;
 (* :exemplar: BankAccount balance: 100 *) = ( (* &lt;== This, and only this location is parsed for exemplar *)
 	|
@@ -3290,7 +3292,7 @@ I know the second question is open,  but I am now curious how such exemplars are
 You may indeed need to build up the object from multiple parts, much as you might do in the #main:args: method of an application. You would want to define local variables for intermediate results etc.  So you write all this code in a block and call value on it:
 </p>
 
-<pre class="example" id="orgf2afc76">
+<pre class="example" id="orgc1be922">
 class Complicated usingPlatform: p with: s  (* :exemplar: [ | T1 = SomeClass usingPlatform: platform. T2 = AnotherClass with:T1. Complicated usingPlatform: platform with: T2] value *) =  ( .. code here .. )
 </pre>
 </div>
@@ -3312,19 +3314,19 @@ Generally, the exemplar on the primary factory method would call the primary fac
 The overriding purpose of such exemplar is to get an instance whichever way possible, such as getting an instance from the Platform object or from the Ide object.  On top level classes, which expect platform or ide as an argument, such example would be circular.  So, for example, many top level classes have exemplars like this:
 </p>
 
-<pre class="example" id="org98405fd">
+<pre class="example" id="org241a851">
 class CollectionsForPrimordialSoup usingInternalKernel: ik (* :exemplar:  platform collections *) = ( .. slots ..)
 </pre>
 
-<pre class="example" id="org58c0753">
+<pre class="example" id="orgf9d358f">
 class Namespacing usingPlatform: p (* :exemplar:  ide namespacing *) = ( .. slots .. )
 </pre>
 
-<pre class="example" id="org63a3d53">
+<pre class="example" id="org7c47e49">
 class TextModule usingPlatform: p &lt;Platform&gt; (* :exemplar: platform text *) =  ( .. slots .. )
 </pre>
 
-<pre class="example" id="org3457c2f">
+<pre class="example" id="org5df8143">
 class Debugging usingPlatform: platform ide: ide (* :exemplar: ide debugging *) =  ( .. slots .. )
 </pre>
 
@@ -3361,7 +3363,7 @@ The exact mechanism used right now is that Workspace has a number of methods lik
 <p>
 <code>WorkspaceManager&gt;&gt;Workspace&gt;&gt;# doesNotUnderstand: message</code>
 </p>
-<pre class="example" id="org2326052">
+<pre class="example" id="org36c0739">
 protected doesNotUnderstand: message = (
 	^Root
 		at: message selector
@@ -3599,7 +3601,7 @@ This section is a step by step experiment accessibility rules described in slide
 We will use the following class code.  To follow the steps of this section, compile the following class into your IDE.  Save the code in a file on your system, then see the paragraph <a href="#org151c9f3">6</a> how to compile the code into your IDE. 
 </p>
 
-<pre class="example" id="orgb392d8e">
+<pre class="example" id="orgf51988e">
 Newspeak3
 'Root'
 class C1 = () (
@@ -3822,7 +3824,7 @@ From this section onward, the method names we run are all public, defined on <co
 <li><p>
 Examines accessibility using this code: <code>ProtC2</code> in lexical scope of <code>C1</code>, in it's method <code>C1&gt;&gt;#protC2</code>
 </p>
-<pre class="example" id="org9170c7c">
+<pre class="example" id="orgdcc35b8">
 public protC2 = (
     ProtC2.  
     ^ 'ProtC2'
@@ -3844,7 +3846,7 @@ public protC2 = (
 <li><p>
 Examines accessibility using this code: <code>ProtC2 new</code> in lexical scope of <code>C1</code>, in it's method <code>C1&gt;&gt;#protC2New</code>
 </p>
-<pre class="example" id="org3817198">
+<pre class="example" id="orgfa18a14">
 public protC2New = (
     ProtC2 new.
     ^ 'protC2New'
@@ -3867,7 +3869,7 @@ public protC2New = (
 <li><p>
 Examines accessibility using this code: <code>ProtC2 new protM</code> in lexical scope of <code>C1</code>, in it's method <code>C1&gt;&gt;#protC2NewProtm</code>
 </p>
-<pre class="example" id="orgf28de6d">
+<pre class="example" id="orgf7414cd">
 public protC2NewProtM = (
     ProtC2 new protM.
     ^ 'protC2NewProtM'
@@ -3894,7 +3896,7 @@ If we make the method we are calling, the <code>C1&gt;&gt;ProtC2&gt;&gt;#protM</
 <li><p>
 Examines accessibility using this code: <code>ProtC2 new pubM</code> in lexical scope of <code>C1</code>, in it's method <code>C1&gt;&gt;#protC2NewPubM</code>
 </p>
-<pre class="example" id="orgcd1e3ca">
+<pre class="example" id="org78b5eeb">
 public protC2NewPubM = (
     ProtC2 new pubM. 
     ^ 'protC2NewPubM'
@@ -3929,7 +3931,7 @@ Summary: This section <a href="#org0eb3f92">C1 new protC2NewPubM</a> shows how t
 To debug, insert a line like this in code:
 </p>
 
-<pre class="example" id="org1a91799">
+<pre class="example" id="orgee942af">
 break.
 </pre>
 
@@ -3940,7 +3942,7 @@ To debug in the slot declaration section, insert a code like this
 <p>
 to debug in here, 
 </p>
-<pre class="example" id="orge08ec1d">
+<pre class="example" id="orgd27387e">
 | foo = some expression. |
 </pre>
 
@@ -3948,7 +3950,7 @@ to debug in here,
 wrap the expression in a block and call value like this:
 </p>
 
-<pre class="example" id="org068beeb">
+<pre class="example" id="orgb4f76e4">
 | foo = [break. some expression] value. |
 </pre>
 </div>
@@ -3973,7 +3975,7 @@ Snippets of wisdom
 <li><p>
 StringTest&gt;&gt;#testShout is the Smalltalk way of identifying the testShout method of the StringTest class.  When you actually type the code into the browser, you don't have to type the class name or the &gt;&gt;; instead, you just make sure that the appropriate class is selected.  Documentation example in text should show abstract argument names:
 </p>
-<pre class="example" id="org8c01a0d">
+<pre class="example" id="orgec5507a">
 History&gt;&gt;goBackward
   self canGoBackward ifFalse: [self error: 'Already on the first element'].
   stream skip: --2.
@@ -4341,7 +4343,7 @@ The HTML is processed in the following call sequence: <code>AmplefortEmbeddor&gt
 Here is the relevant code:
 </p>
 
-<pre class="example" id="orga1cdfa8">
+<pre class="example" id="org4210096">
 (* AmplefortEmbeddor&gt;&gt;#start *)
 public start = (
   processEvaluators.
@@ -4388,7 +4390,7 @@ We can look in the browser debugger how the result looks after the result div is
 </p>
 
 
-<div id="org092faff" class="figure">
+<div id="org6e36f5c" class="figure">
 <p><img src="/img/newspeak---a-few-notes.org-ampleforth-evaluator-expression-in-debuger.png" alt="nil"/>
 </p>
 </div>
@@ -4416,7 +4418,7 @@ This method that does this work is <code>HopscotchForHTML5&gt;&gt;Presenter#:amp
 Let us look at this method first, before we look at an example of it's application: 
 </p>
 
-<pre class="example" id="orgea8535d">
+<pre class="example" id="org87a7829">
 ampleforth: h &lt;String&gt; mapping: m &lt;Map[String, Fragment]&gt; = (
   ^AmpleforthFragment html: h mapping: m
   )
@@ -4439,7 +4441,7 @@ For the <code>Browsing&gt;&gt;ObjectPresenter</code> to be used, we need a place
 </p>
 
 
-<div id="orgfd4a8b6" class="figure">
+<div id="org7e9628f" class="figure">
 <p><img src="/img/newspeak---a-few-notes.org-workspaces.png" alt="nil"/>
 </p>
 </div>
@@ -4467,7 +4469,7 @@ But we need to start one level above to explore this step by step:
 <li><p>
 It shows clearly the text is the same as the one displayed in the help text above:
 </p>
-<pre class="example" id="org7fbdf33">
+<pre class="example" id="org91116cb">
   helpText ^ &lt;Fragment&gt; = (
   | mapping = Map new. |
   mapping 
@@ -4501,7 +4503,7 @@ If  there are no results to display, the  results list area is blank. Below the 
 <li><p>
 Clearly those class names are keys in the <code>mappings</code> map.
 </p>
-<pre class="example" id="org84fad5d">
+<pre class="example" id="org56958f6">
 mapping 
   at: #hopscotchClearResultsButton put: subject evaluator presenter clearResultsButton;
   at: #classExpander put: classExpansionLink;
@@ -4511,7 +4513,7 @@ mapping
 <li><p>
 We can look at "find references" on this method, and find it is defined by <code>HopscotchForHTML5&gt;&gt;Presenter&gt;&gt;#ampleforth:mapping:</code>
 </p>
-<pre class="example" id="org87a7829">
+<pre class="example" id="orgd6cf4df">
 ampleforth: h &lt;String&gt; mapping: m &lt;Map[String, Fragment]&gt; = (
   ^AmpleforthFragment html: h mapping: m
 )
@@ -4551,7 +4553,7 @@ public processMappings = (
 <li><p>
 The <code>#visual</code> simply calls <code>#createVisual</code> and decorates it. But where is <code>#createVisual</code> defined?  
 </p>
-<pre class="example" id="orge864cbb">
+<pre class="example" id="org30e19bc">
 public visual = (
   visualX isNil ifTrue: [visualX:: decorate: createVisual].
   ^visualX
@@ -4561,7 +4563,7 @@ public visual = (
 <li><p>
 The important item here is
 </p>
-<pre class="example" id="org679ffaf">
+<pre class="example" id="org98b6b22">
 createVisual = (
   subclassResponsibility
 )
@@ -4569,7 +4571,7 @@ createVisual = (
 <li><p>
 which is implemented in a large number of <code>Fragment</code> subclasses, such as:
 </p>
-<pre class="example" id="orgf289778">
+<pre class="example" id="orgbd93791">
 createVisual in CheckboxFragment in HopscotchForHTML5
 createVisual in ColorPickerFragment in HopscotchForHTML5
 createVisual in DatePickerFragment in HopscotchForHTML5
@@ -4583,7 +4585,7 @@ createVisual in RectangleFragment in HopscotchForHTML5
 From the last list, we can see those are all UI elements- checkboxes, pickers, radio buttons etc. Their concrete <code>createVisual</code> implementations use the document object to create a representation of UI elements which are clearly equivalent to DOM object, and can be converted to DOM objects. Let's look at <code>CheckboxFragment#createVisual</code> as an example:
 </p>
 
-<pre class="example" id="orgae9de89">
+<pre class="example" id="orgf1ca98f">
 createVisual = (
     | 
     container &lt;Alien[Div]&gt; = document createElement: 'div'.
@@ -4638,7 +4640,7 @@ Seeing the creation of an Alien DOM &lt;div&gt; equivalent object in this last m
 <li><p>
 The <code>#helpText</code> contains a (almost) pure HTML and <code>mappings</code> of special class names such as <code>hopscotchClearResultsButton</code>, <code>classExpander</code>, etc.
 </p>
-<pre class="example" id="org6699db3">
+<pre class="example" id="orgbae5446">
 mapping 
   at: #hopscotchClearResultsButton put: subject evaluator presenter clearResultsButton;
   at: #classExpander put: classExpansionLink;
@@ -4717,8 +4719,8 @@ and some final comments of this section in <a href="#org7661033">5. Complete cod
 <h3 id="org9cfef77"><span class="section-number-3">10.2.</span> Discovery of the <b>HopscotchForHTML5</b> class basics</h3>
 <div class="outline-text-3" id="text-10-2">
 </div>
-<div id="outline-container-org87b8e2a" class="outline-4">
-<h4 id="org87b8e2a"><span class="section-number-4">10.2.1.</span> Chapter goal</h4>
+<div id="outline-container-orgbbc3511" class="outline-4">
+<h4 id="orgbbc3511"><span class="section-number-4">10.2.1.</span> Chapter goal</h4>
 <div class="outline-text-4" id="text-10-2-1">
 <p>
 <b>Hopscotsch is the Newspeak module used to write UIs in Newspeak.</b> The version of Hopscotch used in today's (year 2021) Newspeak is called <b>Hopscotch for HTML5</b>.  It is implemented in classes nested in the module's class (top level class) named <code>HopscotchForHTML5</code>.
@@ -4762,7 +4764,7 @@ So this chapter makes a reasonable assumption that the <code>Subject</code> and 
 So, enough meta talk, and let us browse the most important code of classes  <code>Subject</code> and <code>Presenter</code> - their <b>primary factory methods</b>. As with any Newspeak class, we should start at the primary factory methods to understand the class. Primary factory method is the only code which defines slots (slots as similar to members in other OO languages). Also we see that Fragment is parent of Presenter. So <code>Fragment</code> must be important; we added it's primary factory method to the constructor summary as well.
 </p>
 
-<pre class="example" id="org00d1eea">
+<pre class="example" id="orgc4150bd">
 public class Subject onModel: aModel = (
   |
 	public model = aModel.
@@ -4855,7 +4857,7 @@ Let us summarize a practical translation of this piece of documentation:
 <b>Any time we write a concrete implementation of <code>Presenter</code>, <code>Subject</code> or <code>Fragment</code>, we must implement two methods.  Suppose a concrete Presenter class is named <code>MyConcretePresenter</code>.  In this class, we have to implement methods <code>#isMyKind: other</code> and <code>#isKindOfMyConcretePresenter</code> as follows:</b>
 </p>
 
-<pre class="example" id="orgf0496c6">
+<pre class="example" id="orgfc62e1c">
 isMyKind: other &lt;Fragment&gt; ^ &lt;Boolean&gt; = (
   ^other isKindOfMyConcretePresenter.
 )
@@ -4894,7 +4896,7 @@ Let us show the code for the <code>Subject</code> class, keeping only the "impor
 <p>
 <code>From class Subject</code>
 </p>
-<pre class="example" id="org4e95003">
+<pre class="example" id="org468603d">
 
 (* 1. The primary factory method *)
 
@@ -4973,7 +4975,7 @@ The full signatures of the unimplemented methods which each concrete Subject imp
 <li><code>Subject&gt;&gt;#isMyKind: otherSubject ^&lt;Boolean&gt;</code>   is repetitive but required. We have a common chapter for this, see <a href="#orgc85ff4d">The formulaic required repetitive methods of #isMyKind: and #isKindOfX</a></li>
 </ul>
 
-<pre class="example" id="org2581936">
+<pre class="example" id="org94ab772">
 public createPresenter ^&lt;Presenter&gt; = (
   subclassResponsibility
 )
@@ -5006,7 +5008,7 @@ We can get some hints about Presenter implementations in existing Subject extens
 <p>
 <code>From class HomeSubject</code>
 </p>
-<pre class="example" id="org55e07d7">
+<pre class="example" id="org6cc8f0e">
 public createPresenter = (
 	^HomePresenter onSubject: self
 )
@@ -5026,8 +5028,8 @@ public createPresenter = (
 <h4 id="orgebfc0c9"><span class="section-number-4">10.4.4.</span> The method <b>Subject&gt;&gt;#presenter</b> creates the subject's presenter by calling the <b>Subject&gt;&gt;#createPresenter</b>, then associate the instances</h4>
 <div class="outline-text-4" id="text-10-4-4">
 </div>
-<div id="outline-container-orgab3f024" class="outline-5">
-<h5 id="orgab3f024"><span class="section-number-5">10.4.4.1.</span> Chapter goal</h5>
+<div id="outline-container-orge2bea4c" class="outline-5">
+<h5 id="orge2bea4c"><span class="section-number-5">10.4.4.1.</span> Chapter goal</h5>
 <div class="outline-text-5" id="text-10-4-4-1">
 <p>
 Goal is to discuss how a <code>Presenter</code> instance is created, and where are the Subject &lt;-&gt; Presenter associations created.
@@ -5049,7 +5051,7 @@ The exact signature is <code>Subject&gt;&gt;#public presenter ^&lt;Presenter&gt;
 <code>Subject</code> holds association to it's <code>Presenter</code> in the <code>Subject&gt;&gt;presenterSlot</code>. This slot is instantiated lazily in <code>Subject&gt;&gt;#presenter</code> by calling <code>Subject&gt;&gt;#createPresenter</code>, then storing the instantiated presenter on the <code>presenterSlot</code>:
 </p>
 
-<pre class="example" id="orgd634b16">
+<pre class="example" id="org5d9c2eb">
 public presenter ^&lt;Presenter&gt; = (
   presenterSlot isNil ifTrue: [presenterSlot:: createPresenter].
   presenterSlot generation &lt; uiGeneration ifTrue: [
@@ -5091,7 +5093,7 @@ b) By looking as a concrete Presenter implementations in the IDE.  Here is an ex
 <p>
 <code>From class HomeSubject</code>
 </p>
-<pre class="example" id="orge9696d3">
+<pre class="example" id="orga9107fc">
 public createPresenter = (
   ^HomePresenter onSubject: self
 )
@@ -5103,7 +5105,7 @@ Clearly the conclusion from both is this: The intent of <code>Subject&gt;&gt;#pu
 <li><p>
 Next, let us study the concrete discovered example of <code>HomePresenter</code>'s primary factory method.
 </p>
-<pre class="example" id="org85614cf">
+<pre class="example" id="org4b70f1f">
 class HomePresenter onSubject: s = Presenter onSubject: s (
 )
 </pre>
@@ -5123,7 +5125,7 @@ Having shown that, we can get back to this line:
 This will cause the call to the "super" <code>Presenter&gt;&gt;#onSubject: subject</code>. This "super" <code>Presenter&gt;&gt;#onSubject: subject</code> call places the passed subject on slot "subject" in the Presenter's primary factory method:
 </p>
 
-<pre class="example" id="orged1234f">
+<pre class="example" id="orgf5aef89">
 public class Presenter onSubject: aSubject &lt;Subject&gt; = Fragment (
   |
   public subject &lt;Subject&gt; ::= aSubject.
@@ -5186,7 +5188,7 @@ Based on the conclusions 1, 2, 3, we can already write some pseudocode for writi
 <p>
 <b>intermediary code - do not use yet</b>
 </p>
-<pre class="example" id="orgff74438">
+<pre class="example" id="org52fb18b">
 |concreteModel concreteSubject concretePresenter|
 concreteModel:: ConcreteModel new.
 concreteSubject:: ConcreteSubject onModel: concreteModel.
@@ -5225,7 +5227,7 @@ So we arrived at a summary conclusion.
 <b>Summary conclusion: Here is the code for a barebones Hopscotch App</b>
 </p>
 
-<pre class="example" id="org0f7b13b">
+<pre class="example" id="orgd42562c">
 |concreteModel concreteSubject concretePresenter|
 concreteModel:: ConcreteModel new.
 concreteSubject:: ConcreteSubject onModel: concreteModel.
@@ -5255,7 +5257,7 @@ This chapter is about the <code>Presenter</code> class, in particular about thre
 Let us show the code for the <code>Presenter</code> class, keeping only the "important parts" - each of them is discussed in subchapters below.
 </p>
 
-<pre class="example" id="org1cf9fa8">
+<pre class="example" id="org26af5cb">
 
 (* The primary factory method.
    The constructor also creates the association from Presenter instance to Subject instance
@@ -5361,7 +5363,7 @@ This method is of core significance when writing UIs.
 The concrete implementations should return the actual "widget" (presentation) - basically, <b>this method returns the widget we want to see in the UI</b>.
 </p>
 
-<pre class="example" id="orga830874">
+<pre class="example" id="orgdc258cf">
 public definition ^&lt;Fragment&gt; = (
   subclassResponsibility
 )
@@ -5405,7 +5407,7 @@ Browse the IDE for more details.
 In addition, from the Presenter factory
 </p>
 
-<pre class="example" id="orgb7b1d8a">
+<pre class="example" id="org560282b">
 public class Presenter onSubject: aSubject &lt;Subject&gt; = Fragment (
   |
   public subject &lt;Subject&gt; ::= aSubject.
@@ -5438,7 +5440,7 @@ From looking at <code>Presenter</code>, we have already seen that <code>Fragment
 Although an important part of HopscotchForHTML5, we will not talk about Fragments beside showing it's slots - reason is we will not need Fragment to write our concrete simple app.
 </p>
 
-<pre class="example" id="org6cd36fc">
+<pre class="example" id="org95c55f2">
 class Fragment = (
 
   |
@@ -5531,8 +5533,8 @@ The above steps should be sufficient to write a basic App with Hopscotch UI, whi
 <h3 id="orgefdb0e8"><span class="section-number-3">10.8.</span> Back to <b>HopscotchForHTML5</b> and how it relates to <b>HopscotchForHTML5Runtime</b></h3>
 <div class="outline-text-3" id="text-10-8">
 </div>
-<div id="outline-container-org4cfe1f2" class="outline-4">
-<h4 id="org4cfe1f2"><span class="section-number-4">10.8.1.</span> Chapter goal</h4>
+<div id="outline-container-org59bb66c" class="outline-4">
+<h4 id="org59bb66c"><span class="section-number-4">10.8.1.</span> Chapter goal</h4>
 <div class="outline-text-4" id="text-10-8-1">
 <p>
 The goal of this chapter is to discover more about <code>HopscotchForHTML5</code> and how it relates to <code>HopscotchForHTML5Runtime</code>.
@@ -5557,7 +5559,7 @@ Looking at the top level, we see two related classes, <code>HopscotchForHTML5</c
 Let us get back for a minute to <code>HopscotchForHTML5</code>. We have seen, that is has a ton of slots and classes we would associate with UI elements, such as
 </p>
 
-<pre class="example" id="org56b6f28">
+<pre class="example" id="orgac0a0cf">
 (* primary factory method *)
 class HopscotchForHTML5 usingPlatform: p images: images ducts: ds = (
   |
@@ -5572,7 +5574,7 @@ class HopscotchForHTML5 usingPlatform: p images: images ducts: ds = (
   |)
 </pre>
 
-<pre class="example" id="org06a35be">
+<pre class="example" id="orgae2d11c">
 (* Selected nested classes *)
 class ButtonFragment
 class DatePickerFragment
@@ -5608,7 +5610,7 @@ Analyzing the class <code>HopscotchForHTML5Runtime</code>, we see that:
 <p>
 <code>HopscotchForHTML5Runtime</code>
 </p>
-<pre class="example" id="org4519d55">
+<pre class="example" id="org93be184">
 (* primary factory method *)
 class HopscotchForHTML5Runtime packageUsing: manifest = (
 	|
@@ -5639,7 +5641,7 @@ The presence of the two methods clearly shows  <code>HopscotchForHTML5Runtime</c
 In addition, we see that the inner class <code>HopscotchForHTML5Runtime&gt;&gt;PlatformWithHopscotch</code> is a convenience class which already pre-creates instance of <code>HopscotchForHTML5</code> in this <code>PlatformWithHopscotch</code> snippet:
 </p>
 
-<pre class="example" id="org93e62ec">
+<pre class="example" id="org7337ae0">
 (* primary factory method *)
 class PlatformWithHopscotch usingPlatform: platform = (
 	|
@@ -5738,8 +5740,8 @@ Summary: In this chapter, we deduced code we need to obtain <code>hopscotch</cod
 <h3 id="orgb3a4bfa"><span class="section-number-3">10.9.</span> Using chapters above to write a simple Hopscotch UI App, the <b>CheckedItemApp</b></h3>
 <div class="outline-text-3" id="text-10-9">
 </div>
-<div id="outline-container-orgbbc3511" class="outline-4">
-<h4 id="orgbbc3511"><span class="section-number-4">10.9.1.</span> Chapter goal</h4>
+<div id="outline-container-org00a841d" class="outline-4">
+<h4 id="org00a841d"><span class="section-number-4">10.9.1.</span> Chapter goal</h4>
 <div class="outline-text-4" id="text-10-9-1">
 <p>
 This chapter goal is to use the intuition and knowledge acquired in the above chapters, to write a sample UI App in Newspeak. 
@@ -5778,7 +5780,7 @@ As a start, we borrow code from the Hello World App to create a top level App cl
 <p>
 <code>class CheckedItemApp</code>
 </p>
-<pre class="example" id="org5c9a4d2">
+<pre class="example" id="org302d583">
 class CheckedItemApp packageUsing: manifest = ()
 (
   public main: platform args: args = (
@@ -5825,7 +5827,7 @@ Note that for the packaged instance to be usable when running the app, we need t
 <p>
 <code>class CheckedItemApp</code>
 </p>
-<pre class="example" id="org2e395cf">
+<pre class="example" id="orgcde4dba">
 class CheckedItemApp packageUsing: manifest = (
   (* Added this 3-line section *)
   |
@@ -5845,7 +5847,7 @@ While we keep the full code listed here, to only paste the added section, find t
 </p>
 
 
-<div id="org8b99585" class="figure">
+<div id="orgab74e80" class="figure">
 <p><img src="/img/newspeak---a-few-notes.org-checked-item-app-step-3.png" alt="nil"/>
 </p>
 </div>
@@ -5876,7 +5878,7 @@ So let us add that code to our <code>CheckedItemApp&gt;&gt;#main:args</code>:
 <p>
 <code>class CheckedItemApp</code>
 </p>
-<pre class="example" id="org6dff5c0">
+<pre class="example" id="org09cbfcc">
 class CheckedItemApp packageUsing: manifest = (
   |
   hopscotchForHTML5Runtime = manifest HopscotchForHTML5Runtime packageUsing: manifest.
@@ -5957,7 +5959,7 @@ At this point, we create only the barenones of our UI, like this:
 <p>
 <code>class CheckedItemUI</code>
 </p>
-<pre class="example" id="orgf8c7d4d">
+<pre class="example" id="org8fc0b16">
 class CheckedItemUI = () ()
 </pre>
 
@@ -5992,7 +5994,7 @@ To support the UI, we need two items in our  model: a string for label, and a Bo
 <p>
 <code>class CheckedItemModel</code>
 </p>
-<pre class="example" id="org3aeace5">
+<pre class="example" id="orgcc44c9c">
 public class CheckedItemModel = (
 |
   public label ::= 'check to complete'.
@@ -6007,7 +6009,7 @@ Add the above code as a nested class of <code>CheckedItemUI</code>, by clicking 
 </p>
 
 
-<div id="org3a400c6" class="figure">
+<div id="org249469d" class="figure">
 <p><img src="/img/newspeak---a-few-notes.org-add-nested-class-checked-item-model.png" alt="nil"/>
 </p>
 </div>
@@ -6050,7 +6052,7 @@ So the code for our concrete Subject <code>CheckedItemSubject</code> which imple
 <p>
 <code>class CheckedItemSubject</code>
 </p>
-<pre class="example" id="orgefc5e71">
+<pre class="example" id="orgd441d23">
 public class CheckedItemSubject onModel: model = Subject onModel: model (
 )(
   createPresenter = (
@@ -6072,7 +6074,7 @@ As with the model, add an inner class of CheckedItemUI by clicking the + beside 
 </p>
 
 
-<div id="org8313618" class="figure">
+<div id="orgca680e8" class="figure">
 <p><img src="/img/newspeak---a-few-notes.org-add-inner-class-checked-item-subject.png" alt="nil"/>
 </p>
 </div>
@@ -6110,7 +6112,7 @@ Add the following code for class <code>CheckedItemPresenter</code>. As with the 
 <p>
 <code>class CheckedItemPresenter</code>
 </p>
-<pre class="example" id="org80d2532">
+<pre class="example" id="org94afea4">
 
 public class CheckedItemPresenter onSubject: subject = Presenter onSubject: subject (
 ) (
@@ -6182,7 +6184,7 @@ The code changes we need to make to achieve the dependency packaging is marked h
 <p>
 <code>class CheckedItemApp</code>
 </p>
-<pre class="example" id="org216bb1f">
+<pre class="example" id="orgfd2b987">
 class CheckedItemApp packageUsing: manifest = (
   |
   hopscotchForHTML5Runtime = manifest HopscotchForHTML5Runtime packageUsing: manifest.
@@ -6213,7 +6215,7 @@ When the <code>CheckedItemApp</code> starts (which we know is in the <code>#main
 In the summary conclusion in <a href="#org42e82ed">Chapter conclusion about principles of writing rudimentary Hopscotch UI</a> we have summarized how a rudimentary Hopscotch UI should be created. Let us repeat it here:
 </p>
 
-<pre class="example" id="org7d5a587">
+<pre class="example" id="orgdf08506">
 |concreteModel concreteSubject concretePresenter|
 concreteModel:: ConcreteModel new.
 concreteSubject:: ConcreteSubject onModel: concreteModel.
@@ -6235,7 +6237,7 @@ We are making this code unnecessarily verbatim and long, to spell out what we di
 <p>
 <code>class CheckedItemApp</code>
 </p>
-<pre class="example" id="org5b33cb0">
+<pre class="example" id="orgebcf606">
 public main: platform args: args = (
    |
    (* WHILE WE DEDUCED HOW THIS BEHAVES IN THE IDE, THE VFUEL BEHAVIOR IS ONLY DESCRIBED HERE.
@@ -6322,7 +6324,7 @@ Replace the <code>#new</code> constructor with the following:
 <p>
 <code>class CheckedItemUI</code>
 </p>
-<pre class="example" id="org49fb7a3">
+<pre class="example" id="org8f7d1bf">
 (* Added this primary factory method and slots for Subject and Presenter *)
 class CheckedItemUI usingPlatform: platformWithHopscotch = (
 |
@@ -6377,7 +6379,7 @@ The last three lines below create the rudimentary Hopscotch UI with a window, an
 <p>
 <code>class CheckedItemApp</code>
 </p>
-<pre class="example" id="orga60c5fa">
+<pre class="example" id="orgea7344e">
 (* Added 3-lines to show steps very verbosely.
    The last line creates a window, instantiates a Presenter
    and it's definition fragments.
@@ -6432,7 +6434,7 @@ Running the app from the IDE, presents the UI we built as in this screenshot.
 </p>
 
 
-<div id="orga19f71f" class="figure">
+<div id="org5f7807a" class="figure">
 <p><img src="/img/newspeak---a-few-notes.org-checked-item-app-ui-running.png" alt="nil"/>
 </p>
 </div>
@@ -6442,7 +6444,7 @@ You can also package it and run the App as a standalone .vfuel file from the IDE
 </p>
 
 
-<div id="orgd663539" class="figure">
+<div id="org270d5fa" class="figure">
 <p><img src="/img/newspeak---a-few-notes.org-deploy-checked-item-app.png" alt="nil"/>
 </p>
 </div>
@@ -6522,7 +6524,7 @@ The first just calls the second
 <p>
 <code>class Subject</code>
 </p>
-<pre class="example" id="org98df750">
+<pre class="example" id="orgfda86d4">
 enterSubject: s = (
 	(* TODO: use sendUp and open a new window if undelivered *)
 	^shell enterSubject: s
