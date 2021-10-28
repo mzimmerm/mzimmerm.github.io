@@ -1899,7 +1899,7 @@ We will use the following class code.  To follow the steps of this section, comp
           ProtC2 new.
           (* Success. 
 
-          Reason: Similar reason as in ~protC2~ in the section above: . There is a fine print reason here we should add (this reason is not spelled out in the slide rules): The rules on member class visibility transfer to their primary factory methods; so the fact that code in ~C1~ can access it's member ~ProtC2~, transforms to ~ProtC2~'s primary constructor, ~new~ in this case. In other words, ~C1~ can access it's member ~ProtC2~, implies that  ~C1~ can access it's member's primary factory (method ~new~, fully described as ~C1>>ProtC2>>#new~).
+          Reason: Similar reason as in ~protC2~ in the section above: . There is a fine print reason here we should add (this reason is not spelled out in the slide rules): The rules on member class visibility transfer to their primary factory methods; so the fact that code in ~C1~ can access it's member ~ProtC2~, transforms to ~ProtC2~'s primary factory, ~new~ in this case. In other words, ~C1~ can access it's member ~ProtC2~, implies that  ~C1~ can access it's member's primary factory (method ~new~, fully described as ~C1>>ProtC2>>#new~).
           *)
           ^ 'protC2New'
       )
@@ -1951,9 +1951,9 @@ Let us describe this class.
 
 Each example we run to test accessibility has the following structure.
 
-- Workspace expression: *Here we can see the expression to type in workspace. In most cases, this is a method (message sent) to instance of class. With a few exceptions in methods 'publicSucceeds' and 'protectedFails', this message sent always succeeds;  we are testing accessibility in the code which is in the method contents - this is the code listed in 'Runs this code:'*
-- Runs this code: *Here we can see the contents of the method - the code we are testing for accessibility*
-- Does: *Here we describe in brief what the code in 'Runs this code:' does* 
+- Workspace expression: *Here we can see the expression to type in workspace. In most cases, this is a method (message sent) to instance of class. With a few exceptions in methods 'publicSucceeds' and 'protectedFails', this message sent always succeeds;  we are testing accessibility in the code which is in the method contents - this is the code listed in 'Examines accessibility using this code:'*
+- Examines accessibility using this code: *Here we can see the contents of the method - the code we are testing for accessibility*
+- Does: *Here we describe in brief what the code in 'Examines accessibility using this code:' does* 
 - Code Result: Success/Fails *Here we describe the result of accessibility experiment in the section*
 - Reason: *Here we describe the reason for the Success/Fails result. In most cases, we tie the reason to the accessibility 'theory', generally in slides 61, 62, 63 in n [[https://00463064267054129163.googlegroups.com/attach/16b8a25058caa/ns-access-control.pdf?part=0.1&view=1&vt=ANaJVrHvttkWPn-fNP95UFKbcCbbp1VaDJlJSx1HzBevq_xhafVpZ4uz1ffKMTvkAxLFnAk2_xurwU-BTi3FIMnPj1FlU7-S-zKgS2y2eNXheQQsxM8mJUY][Can Beautiful Languages Do Access Control?]]*
 
@@ -1962,7 +1962,7 @@ Each example we run to test accessibility has the following structure.
 Go to Workspace and type of paste ~C1~ there, highlight it, and click on 'Evaluate selection' or do Shift+Enter.
 
 - Workspace expression: ~C1~
-- Runs this code: ~C1~
+- Examines accessibility using this code: ~C1~ in lexical scope of workspace.
 - Does: Creates and return a class C1.
 - Code Result: Success
   [[file:img/newspeak---a-few-notes.org-access-C1.png]]
@@ -1971,7 +1971,7 @@ Go to Workspace and type of paste ~C1~ there, highlight it, and click on 'Evalua
 ***** C1 new
 
 - Workspace expression: ~C1 new~
-- Runs this code:  ~C1 new~ 
+- Examines accessibility using this code:  ~C1 new~ in lexical scope of workspace.
 - Does: creates a new instance of class C1.
 - Code Result: Success
   [[file:img/newspeak---a-few-notes.org-access-C1new.png]]
@@ -1980,7 +1980,7 @@ Go to Workspace and type of paste ~C1~ there, highlight it, and click on 'Evalua
 ***** C1 new protectedFails
 
 - Workspace expression: ~C1 new protectedFails~
-- Runs this code: ~C1 new protectedFails~
+- Examines accessibility using this code: ~C1 new protectedFails~ in lexical scope of workspace.
 - Does: Sends a protected message ~protectedFails~ to instance of ~C1~
 - Code Result: Fails
   [[file:img/newspeak---a-few-notes.org-access-C1newProtectedFails.png]]
@@ -1993,7 +1993,7 @@ Note: As a practical result, because we are testing in the workspace, we will ma
 Having realized in the section above that expression ~C1 new protectedFails~ fails accessibility rules on the protected method ~C1>>#protectedFails~, we now test how things change if we call a public method ~C1>>#publicSucceeds~ instead of the protected  ~C1>>#protectedFails~.  The public method ~C1>>#publicSucceeds~ is equivalent to the failing protected method ~C1>>#protectedFails~ except it's name and it's public modifier.
 
 - Workspace expression: C1 new publicSucceeds
-- Runs this code: ~C1 new publicSucceeds~
+- Examines accessibility using this code: ~C1 new publicSucceeds~ in lexical scope of workspace.
   [[file:img/newspeak---a-few-notes.org-access-C1newPublicSuceeds.png]]
 - Does: Sends a public message publicSucceeds to instance of C1.
 - Code Result: Success
@@ -2010,7 +2010,13 @@ From this section onward, the method names we run are all public, defined on ~C1
 
 
 - Workspace expression: ~C1 new protC2~
-- Runs this code: ~ProtC2~
+- Examines accessibility using this code: ~ProtC2~ in lexical scope of ~C1~, in it's method ~C1>>#protC2~
+  #+begin_example
+    public protC2 = (
+        ProtC2.  
+        ^ 'ProtC2'
+    )
+  #+end_example
 - Does: Creates class ProtC2
 - Code Result: Success
   [[file:img/newspeak---a-few-notes.org-access-C1newProtC2.png]]
@@ -2019,18 +2025,32 @@ From this section onward, the method names we run are all public, defined on ~C1
 ***** C1 new protC2New
 
 - Workspace expression: ~C1 new protC2New~
-- Runs this code: ~ProtC2 new~
+- Examines accessibility using this code: ~ProtC2 new~ in lexical scope of ~C1~, in it's method ~C1>>#protC2New~
+  #+begin_example
+    public protC2New = (
+        ProtC2 new.
+        ^ 'protC2New'
+    )
+    
+  #+end_example
 - Does: Creates an instance of class ProtC2 
 - Code Result: Success
   [[file:img/newspeak---a-few-notes.org-access-C1newProtC2New.png]]
-- Reason: Similar reason as in ~protC2~ in the section above: There is a fine print reason here (this reason is not spelled out in the slide rules): The rules on member class visibility transfer to their primary factory methods; so the fact that code in ~C1~ can access it's member ~ProtC2~, transforms to ~ProtC2~'s primary constructor, ~new~ in this case. In other words, if ~C1~ can access it's member ~ProtC2~, implies that  ~C1~ can access it's member's primary factory (method ~new~, fully described as ~C1>>ProtC2>>#new~).
+- Reason: Similar reason as in ~protC2~ in the section above: There is a fine print reason here (this reason is not spelled out in the slide rules): The rules on member class visibility transfer to their primary factory methods; so the fact that code in ~C1~ can access it's member ~ProtC2~, transforms to ~ProtC2~'s primary factory, ~new~ in this case. In other words, if ~C1~ can access it's member ~ProtC2~, implies that  ~C1~ can access it's member's primary factory (method ~new~, fully described as ~C1>>ProtC2>>#new~).
   
 ***** C1 new protC2NewProtM
 
 - Workspace expression: ~C1 new protC2NewProtM~
-- Runs this code: ~ProtC2 new protM~
+- Examines accessibility using this code: ~ProtC2 new protM~ in lexical scope of ~C1~, in it's method ~C1>>#protC2NewProtm~
+  #+begin_example
+    public protC2NewProtM = (
+        ProtC2 new protM.
+        ^ 'protC2NewProtM'
+    )
+    
+  #+end_example
 - Does: Creates an instance of class ~ProtC2~ and attempts to send protected message ~protM~ to it.
-- Code Result: Fails to send message ~protM~
+- Code Result: *Fails* to send message ~protM~
   [[file:img/newspeak---a-few-notes.org-access-C1newProtC2NewProtM.png]]
 - Reason: We showed success all the way before sending ~protM~; sending ~protM~ (fully specified as ~C1>>ProtC2>>#protM~) fails. The code being executed, ~ProtC2 new protM~ is in class ~C1~. Method ~C1>>ProtC2>>#protM~ is a protected member on ~Prot2~, nested in ~C1~. According to *Slide 62 b) Enclosing classes (code in C1) cannot see private or protected members (protected method ~protM~) of nested classes (~ProtC2~).*. Sending message ~ProtM~ in ~ProtC2 new protM~ fails according to this rule, as expected.
 
@@ -2039,7 +2059,14 @@ If we make the method we are calling, the ~C1>>ProtC2>>#protM~,  public, then th
 ***** C1 new protC2NewPubM
 
 - Workspace expression: ~C1 new protC2NewPubM~
-- Runs this code: ~ProtC2 new pubM~
+- Examines accessibility using this code: ~ProtC2 new pubM~ in lexical scope of ~C1~, in it's method ~C1>>#protC2NewPubM~
+  #+begin_example
+    public protC2NewPubM = (
+        ProtC2 new pubM. 
+        ^ 'protC2NewPubM'
+    )
+    
+  #+end_example
 - Does: Creates an instance of class ~ProtC2~ and sends public message ~pubM~ to it
 - Code Result: Succeeds sending public message ~C1>>ProtC2>>#pubM~ from code in ~C1~
   [[file:img/newspeak---a-few-notes.org-access-C1newProtC2NewPubM.png]]
