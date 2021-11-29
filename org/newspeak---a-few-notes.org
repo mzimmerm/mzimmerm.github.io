@@ -35,7 +35,8 @@ Much of this document is collected from existing Newspeak sources:
 | 2021-08-15 |   | Milan Zimmermann |   | Added section [[*Exemplars: Enabling liveliness everywhere][Exemplars: Enabling liveliness everywhere]]                                                                                                                                 |
 | 2021-08-15 |   | Milan Zimmermann |   | Added section [[*Newspeak terminology][Newspeak terminology]]                                                                                                                                                      |
 | 2021-10-25 |   | Milan Zimmermann |   | Added section [[* Access control and access modifiers in Newspeak][Access control and access modifiers in Newspeak]]                                                                                                                           |
-  
+
+Last change 2021-10-25.
 
 * Terminology and notation
 
