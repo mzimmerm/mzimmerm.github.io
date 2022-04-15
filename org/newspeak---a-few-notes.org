@@ -36,7 +36,7 @@ Much of this document is collected from existing Newspeak sources:
 | 2021-08-15 |   | Milan Zimmermann |   | Added section [[*Newspeak terminology][Newspeak terminology]]                                                                                                                                                      |
 | 2021-10-25 |   | Milan Zimmermann |   | Added section [[* Access control and access modifiers in Newspeak][Access control and access modifiers in Newspeak]]                                                                                                                           |
 
-Last change 2021-10-25.
+Last change 2021-10-29.
 
 * Terminology and notation
 
@@ -87,30 +87,32 @@ Newspeak is different. This includes terminology that may not be familiar.  Belo
       *)
       class A2 usingPlatform: p andA1: A1 =
         (
-          (* 1. Primary factory method slots and body.*)
+          (* Section 1. Primary factory method slots and body.*)
           |slots|
           (* .. instantiation code here .. *)
         )
     #+end_example
-- *Factory method* : The method that produces an instance but cannot declare instance slots.   In practical terms, looking at code, the factory method is the method in the class code section after the ":" - in this example, in section 3.  An example of  /factory method/ named ~#factoryMethod1~ on class ~A2~:  
+- *Factory method* : The method that produces an instance but cannot declare instance slots.  Note the distinction from /primary factory method/ above.  In practical terms, looking at code, /factory method/ is the method in the class code section after the ":" - in this example, in section 3.  Below is an example of /factory method/ named ~#factoryMethod1~ on class ~A2~:  
     #+begin_example
       class A2 usingPlatform: p andA1: A1 =
         (
-          (* 1. Primary factory method slots and body. *)
+          (* Section 1. Primary factory method slots and body. *)
           |slots|
           (* .. instantiation code here .. *)
         )
         (
-          (* 2. instance methods and nested classes *)
+          (* Section 2. instance methods and nested classes *)
         )
         :
         (
-          (* 3. factory methods *)
+          (* Section 3. factory methods *)
           factoryMethod1 = ( (* Code returning instance, but cannot declare slots. *) )
         )
     #+end_example 
 - *Class factory object* : The user accessible object that represents the class in the language. This object provides the factory methods (both primary factory methods and factory methods). From user's perspective, the *class factory object*, *class object*, and *class* are all informal names for the same thing!  This is slightly different for the language implementor, for whom the class factory object is distinct from the class - see the section below.  
 
+
+Note on the term *factory*, *primary factory* and *constructor*:  For readers familiar with object oriented languages, can think of the term "factory" or "factory method" as a "constructor" . While the role of a factory in Newspeak is similar to "constructor", Newspeak intentionally chooses to avoid the name "constructor" for several reasons. Perhaps the core reason is that "constructor" suggests constructing (creating) something, which is not always a correct connotation.  For example, a constructor may return an existing object from a cache, for which the name is misleading.  Hence, Newspeak uses the term *factory* instead of *constructor*. 
 
 **** Some terminology differences for language user vs. language implementor 
 
@@ -557,12 +559,12 @@ Next we can ask, why does the Newspeak IDE need a global namespace (Root), while
 
 *** Section TL;DR:
 
-This section starts an IDE-lead step by step discovery of some core aspects we encounter when we first dig into the IDE and the classes on top: Newspeak class structure, app and library API, platform and manifest.
+This section starts an IDE-guided step by step discovery of some core aspects we encounter when we first dig into the IDE and the classes on top: Newspeak class structure, app and library API, platform and manifest.
 
 
 *** Top level classes in the IDE - expanded
 
-Let us expand each top level class in the "sources" screenshot above.  Well, maybe not all.  I expanded two in the screenshot below:
+Let us expand each top level class in the "sources" screenshot above.  We expanded two classes (named ActivationMirrorTestingConfiguration and AliensForV8) in the screenshot below:
 
 [[file:img/newspeak---a-few-notes.org-ide-full-page-classes-expanded.png]]
 
@@ -574,7 +576,7 @@ Continue reading what we can learn from looking at the expanded classes.
 First, we can see, each top level class has 4 sections.  Let's take the ActivationMirrorTestingConfiguration as an example
 
 1.  A collapsible class name section for the class, ~ActivationMirrorTestingConfiguration~ with two sub items
-   - a message to class on top ~#packageTestsUsing: manifest~ in our class.  This message is like a "core" constructor.  It is called the *Primary factory method*. 
+   - a method to class on top ~#packageTestsUsing: manifest~ in our class.  This method can be viewed as the "core" or "primary" constructor.  In Newspeak, the method is called the *Primary factory method*. 
    - a list of ~Slots~.  Slots are like "member variables".  Slots can only be created in the /primary factory method/!
 2.  a list of ~Classes~.  Those are nested classes of the class ActivationMirrorTestingConfiguration
 3.  a list of ~Instance methods~.  Those are instance methods we can call on instances of ActivationMirrorTestingConfiguration
@@ -585,7 +587,7 @@ There is a plus ("+ ") symbol  in the header of some of them.  The reason there 
 
 *** Primary factory methods
 
-We mentioned the messages on top like ~#packageTestsUsing: manifest~ are called the /primary factory methods/.
+We mentioned the methods on top like ~#packageTestsUsing: manifest~ are called the /primary factory methods/.
 
 *The core role of a /primary factory method/ is to create slots AND return instances. The difference between a /primary factory method/ and a /factory method/ or an /instance method/ is that ONLY /primary factory method/ can declare slots!*
 
@@ -1830,8 +1832,9 @@ This slide describes how Newspeak code in a class can access private and protect
 
 **** Corollary on slides 61, 62, 63
 
-Public member on any class is accessible from anywhere.  By "anywhere" we meand "lexically anywhere" - we can write an expression which contains a public member in any code (even if the module where we write the code is different from the module where the public member is declared). 
+Corollary 1: Public member on any class ClC is accessible from anywhere.  By "accessible from anywhere" we mean "any class ClA which can be lexically anywhere" - we can write an expression which contains a public member of ClC in any code in ClA (even if the module where we write the code is different from the module where the public member is declared). 
 
+Corollary 2: Non public member on class ClN is only visible from class ClC, if class ClC is nested in ClN.
 
 *** Worked accessibility examples, using rules from slides 61, 62, 63
 
