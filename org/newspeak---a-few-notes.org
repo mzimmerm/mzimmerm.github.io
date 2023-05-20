@@ -47,9 +47,9 @@ This is a brief introduction to explain a notation used in this document.
 Newspeak is a class based, and message based system.  All runtime operations are message sends (method calls).
 
 - What do we mean by a 'message'?  Think of it as a method or function name with parameter names (method signature). 
-- What do we mean by a 'message send'? Think of it as calling (invoking) the method or function.
+- What do we mean by a 'message send'?  Think of it as calling (invoking) a method on an object.
 
-In fact, we may use 'method name' and 'message name' interchangeably, although it is not quite precise.  We also may use the term 'send a message' and 'call (or invoke) a method' interchangeably.
+In fact, we may use 'method name' and 'message name' interchangeably, although it is not quite precise.  We also may use the terms 'send a message', 'call a method' or 'invoke a method' interchangeably.
 
 Here is the notation we want to introduce: When you see in text, something like ~Rectangle>>#initWidth: width andHeight: height~, it means: "class /Rectangle/ has a method named /initWith:andHeight/, with first parameter named /width/ and second parameter named /height/". 
 
@@ -71,15 +71,16 @@ Examples of this notation:
 
 *** Newspeak terminology
 
+
 Newspeak is different. This includes terminology that may not be familiar.  Below we list terms that are generally used.  This section sort of jumps ahead of the gradual introduction to Newspeak, but should help when reading the text.
 
 - *Top level class* : Class that appears on the top level class list in the IDE. Top level class has no enclosing class. 
 - *Module Declaration* : Source code of a top level class.
 - *Module Definition* or *Module class* : The class object of a top level class.
 - *Module* :   Instance of a top level class. When talking about API, we sometimes use the term /module/ instead of /module declaration/. 
-- *Slot* : Equivalent of a member variable or a local variable in other languages.  In Newspeak, everything is a message send, so a slot is a getter (or also a setter, if the slot is mutable).  Slot mutability is clear from the syntax at the line of it's declaration - see below.   
-- *Instance slot declaration* : Name on the left of an expression between the bars ~| |~ located inside the *primary factory method*.  Instance slot is an *equivalent* of a member variable in other OO languages, and it's scope is the instance, with some minute but important differences due to nesting. The slot name can have the symbol ~=~, ~=::~ or (nothing) to the right of the slot name.  The syntactical differences determine whether the slot is mutable or immutable.  For example ~|mySlot =:: 1|~ is a declaration of a mutable slot named ~mySlot~.  ~|mySlot = 1|~ is a declaration of an immutable slot named ~mySlot~, initialized to ~1~ at the point of the declaration.  ~|mySlot|~  is a declaration of immutable slot, which can be initialized once in code. The ~::~ expresses mutability in Newspeak (the symbol on the left is a setter).
-- *Local slot declaration* : Same as the /instance slot/ above, except the local slot declaration is located inside the bars ~| |~ in the body of instance method or class method (but NOT primary factory method body, that is reserved for *instance slots*). Local slot is an *equivalent* of a local variable. 
+- *Slot* :  Equivalent of an instance variable (instance slot) or a local variable (local slot) in other languages. In Newspeak, everything is a message send, so a slot is a getter (immutable slot) or also a setter (mutable slot). Example:  ~|mySlot =:: 1|~ declares a mutable slot,  ~|mySlot = 1|~ declares an immutable slot. See the local and instance slot sections below for more details.
+- *Instance slot declaration* : Name on the left of an expression between the bars ~| |~ located inside the *primary factory method*.  Instance slot is an *equivalent* of a member variable in other OO languages, and it's scope is the instance, with some small but important context differences due to class nesting. The slot name can have the symbol ~=~, ~=::~ or nothing to the right of the slot name.  ~|mySlot =:: 1|~ is a declaration of a mutable slot named ~mySlot~.  ~|mySlot = 1|~ is a declaration of an immutable slot named ~mySlot~ (in either example, initialized to ~1~ at the point of the declaration).  ~|mySlot|~  is a declaration of an immutable slot, which can be initialized later in code. The ~::~ expresses mutability in Newspeak. Read it as 'the name on the left is set to the value on the right'.
+- *Local slot declaration* : Similar to /instance slot declaration/, except the local slot is declared in (and its scope is) the body of an instance method or a factory method (but NOT in the primary factory method body, that is reserved for *instance slots*). Equivalent of a local variable in other languages. 
 - *Primary factory method* : The method that allows to accept parameters (capabilities), declare instance slots, and produce an instance of a class.  In practical terms, looking at code, the primary factory method is the method starting on the same line where the class code starts. Also, the /primary factory method/ is the only place in which we can declare instance slots.  An example of a primary factory method named ~#usingPlatform: p andA1: A1~ on class ~A2~:
     #+begin_example
       (* The string "usingPlatform: andA1:" is the primary factory method signature.
@@ -112,11 +113,14 @@ Newspeak is different. This includes terminology that may not be familiar.  Belo
 - *Class factory object* : The user accessible object that represents the class in the language. This object provides the factory methods (both primary factory methods and factory methods). From user's perspective, the *class factory object*, *class object*, and *class* are all informal names for the same thing!  This is slightly different for the language implementor, for whom the class factory object is distinct from the class - see the section below.  
 
 
-Note on the term *factory*, *primary factory* and *constructor*:  For readers familiar with object oriented languages, can think of the term "factory" or "factory method" as a "constructor" . While the role of a factory in Newspeak is similar to "constructor", Newspeak intentionally chooses to avoid the name "constructor" for several reasons. Perhaps the core reason is that "constructor" suggests constructing (creating) something, which is not always a correct connotation.  For example, a constructor may return an existing object from a cache, for which the name is misleading.  Hence, Newspeak uses the term *factory* instead of *constructor*. 
+Note on the terms *factory method*, *primary factory method* and *constructor*.  
+  - Readers familiar with object oriented languages can think of the term "factory method" as "constructor". (The short term "factory" is sometimes used instead of the term "factory method"). 
+  - The Newspeak term "primary factory method" may not exist in other OO languages, but it is very important in Newspeak, as it is the only method that can declare instance slots.  A Newspeak class must have exactly one "primary factory method".
+  - While the role of a "primary factory method" in Newspeak is similar to "constructor", Newspeak intentionally chooses to avoid the name "constructor" for several reasons.  Perhaps the core reason is that "constructor" suggests constructing (creating) something, which is not always a correct connotation.  For example, a constructor may return an existing object from a cache, for which the name is misleading.  Hence, Newspeak uses the term *factory method* (*factory* in brief) instead of the term *constructor*. 
 
-**** Some terminology differences for language user vs. language implementor 
+**** Terminology differences for language user vs. language implementor 
 
- In a language implementation, there is likely a representation of the *class*, that probably points to a mixin and a superclass, and may or may not have other things. For the language implementor, this representation of *class* is called a *class factory object*. This object is distinct, from the _user accessible object that represents the *class* in the language_. So the term *class factory object* is used to distinguish it from the *class* itself, but that is a distinction for the implementor, not the user.
+ In a language implementation, there is likely a representation of the *class*, that probably points to a mixin and a superclass. For the language implementor, this representation of *class* is called a *class factory object*. This object is distinct, from the _user accessible object that represents the *class* in the language_. So the term *class factory object* is used to distinguish it from the *class* itself, but that is a distinction for the implementor, not the user.
 
 Informally, when speaking from the language user's perspective, we often refer to this user accessible object as the *class*, or the *class object*, or the *class factory object* (all names for the same thing). 
 
@@ -515,10 +519,10 @@ Lets again quote from [[https://bracha.org/newspeak-modules.pdf][Modules as Obje
 
 /In Newspeak, nor is there a global namespace. Modularity in Newspeak is based exclusively on class nesting. There are no separate modularity constructs such as packages. Top level classes act as module definitions, which are independent, immutable, self-contained parametric namespaces. They can be instantiated into modules which may be stateful and mutually recursive./
 
-Newspeak basically uses the following definitions - see also the section [[*Newspeak terminology][Newspeak terminology]]:
+Newspeak uses the following definitions (from the section [[*Newspeak terminology][Newspeak terminology]]):
 
 - */Module declaration/* is the source code of any top level class
-- */Module definition/* or */Module class object/* is any */top level class object/*.  We will use the terms interchangeably depending on context.
+- */Module definition/* or */Module class/* is any */top level class object/*.  We will use the terms interchangeably depending on context.
 - */Module/* or */Newspeak module/* is an */instance of any top level class/*.
 
 So, an instance of any class shown on the top level in the IDE is a /module/.
@@ -576,7 +580,7 @@ Continue reading what we can learn from looking at the expanded classes.
 First, we can see, each top level class has 4 sections.  Let's take the ActivationMirrorTestingConfiguration as an example
 
 1.  A collapsible class name section for the class, ~ActivationMirrorTestingConfiguration~ with two sub items
-   - a method to class on top ~#packageTestsUsing: manifest~ in our class.  This method can be viewed as the "core" or "primary" constructor.  In Newspeak, the method is called the *Primary factory method*. 
+   - on top the ~#packageTestsUsing: manifest~.  This is a method which can be viewed as the "core" or "primary" constructor.  In Newspeak, the method is called the *Primary factory*. 
    - a list of ~Slots~.  Slots are like "member variables".  Slots can only be created in the /primary factory method/!
 2.  a list of ~Classes~.  Those are nested classes of the class ActivationMirrorTestingConfiguration
 3.  a list of ~Instance methods~.  Those are instance methods we can call on instances of ActivationMirrorTestingConfiguration
@@ -643,26 +647,29 @@ ide namespacing manifest
 
 [[file:img/newspeak---a-few-notes.org-ide-namespacing-manifest.png]]
 
-Drilling into the instance, we can see it is a map, and sorting by the key, we get
+Drilling into the instance, we can see it is a map, and sorting by the key, we can see the map elements:
 
 #+begin_example
 at: AccessModifierTesting   AccessModifierTesting
 at: AccessModifierTestingConfiguration   AccessModifierTestingConfiguration
-at: ActivationMirrorTesting
   etc
 #+end_example
 
-We see that the *manifest is a map containing exactly all top-level classes in the IDE - that is, all module classes known to the IDE!*
+By looking at the IDE, we see that the *manifest is a map containing exactly all top-level classes in the IDE - that is, all module classes known to the IDE!*
 
 So we have a experiment based answer to what the manifest object contains.
+
+But what is the manifest good for?  We discuss that further down, but as a look ahead: the values of the manifest map are classes that can be "imported" and "kept" during packaging of the module! 
 
 
 **** Why is the manifest object significant, and what role does it play in Newspeak?
 
-OK, so we know what is in the ~manifest~ object that is passed to 
+OK, so from the previous chapter we know the ~manifest~ object that is passed to 
 
 - ~#packageUsing: manifest~
 - ~#packageTestsUsing: manifest~ (for tests only)
+
+is a map of all top-level classes in the IDE.
 
 See [[*Common and distinct roles of platform and manifest in modules][Chapter Common and distinct roles of platform and manifest in modules]] for a discussion the significance and role of the /manifest/ object.
 
@@ -709,11 +716,14 @@ See [[*Common and distinct roles of platform and manifest in modules][Chapter Co
 
 *** Common and distinct roles of platform and manifest in modules
 
+TL;DR: ~manifest~ is needed for packaging, ~platform~ is needed at runtime. More details are below, and in the section [[*Modules: Application, library, test, general][Modules: Application, library, test, general]].  
+
+
 Why are the ~platform~ and ~manifest~ objects so important to appear again and again in the /top level classes' factory parameters/, as seen in [[*Primary factory methods][Primary factory methods]] ?
 
 The answer is somewhat common for ~manifest~ and ~platform~, so we describe their role in this common section.
 
-And, the common need for both ~manifest~ and ~platform~ stems from modularity.  But what does that mean?
+The common need for both ~manifest~ and ~platform~ stems from modularity.  But what does that mean?
 
 In [[*Newspeak terminology][Newspeak terminology,]] we saw that the /modules/ are DEFINED AS /instances of top level classes/.
 
@@ -721,17 +731,16 @@ And we saw that there is no global namespace in Newspeak.  Modules need other ob
 
 This is where ~platform~ and ~manifest~ come in.  They are "special" in the sense that they supply objects and classes needed by the module.  But each is needed at a special point of the module lifecycle: 
 
-- The /manifest/ object is needed at packaging step on the system where we create the package: /manifest/ is passed to the module packaging method such as ~#package(Something)Using: manifest~ which packages dependencies that need to be carried over from the system we are packaging on, to the module artifact that is copied to the deployment platform.
-- The /platform/ object is needed on the deployment step on the deployment system, to instantiate the module on the deployment platform, and passed there to the runtime instantiation method such as ~#build(Something)Using: platform~.
+- _The /manifest/ object is needed at packaging step on the system where we create the package_: /manifest/ is passed to the module packaging method such as ~#package(Something)Using: manifest~ which packages dependencies that need to be carried over from the system we are packaging on, to the module artifact that is copied to the deployment platform.
+- _The /platform/ object is needed on the deployment step on the deployment system_, to instantiate the module on the deployment platform, and passed there to the runtime instantiation method such as ~#(buildSomething)usingPlatform: platform~ or ~main: platform args: args~.
 
-This is discussed in much more detail in the section below, [[*Modules: Application, library, test, general][Modules: Application, library, test, general]].
 
 We can reword the above as follows:
 
 We already know that any Newspeak object can have only one "slot defining constructor" (called /primary factory/) in it's API.  But, as a module needs both ~platform~ and ~manifest~, how can we ensure a module has both available?  This is done by *convention methods*, that are either a /primary factory/ or a regular /instance method/, depending whether the module is an /App, Library, and Test configuration module/ OR a /General/ module.
 
-- App, Library, and Test configuration modules (but not "general modules") have a *primary factory* passing a ~manifest~ in it's API. This /primary factory/ is named similar to ~#package(Something)Using: manifest~.  This factory is called on the system where we create the package to "import" objects and/or their classes during packaging (by placing them to the package artifact which can be delivered over to the runtime system).
-- Any "general" modules (not App, Library, or Test configurations) have a *factory* passing a ~platform~ in it's API. This /primary factory/ is named similar to ~#(doSomething)usingPlatform: platform~.  This factory is called on the runtime system for module instantiation.  An App, Library, and Test configuration module (where the /primary factory/ is already taken by presence of method passing platform such as ~#package(Something)Using: manifest~) would typically also have this method in it's API, but NOT as a factory, rather as an instance method.
+- App, Library, and Test configuration modules (but not "General modules") have a *primary factory* passing a ~manifest~ in it's API. This /primary factory/ is named similar to ~#package(Something)Using: manifest~.  This factory is called on the system where we create the package to "import" objects and/or their classes during packaging (by placing them to the package artifact which can be delivered over to the runtime system).
+- Any "General" modules (not App, Library, or Test configurations) have a *factory* passing a ~platform~ in it's API. This /primary factory/ is named similar to ~#(buildSomething)usingPlatform: platform~.  This factory is called on the runtime system for module instantiation.  An App, Library, and Test configuration module (where the /primary factory/ is already taken by presence of method passing platform such as ~#package(Something)Using: manifest~) would typically also have this method in it's API, but NOT as a factory, rather as an instance method.
 
 To read more details about which method is used on which module type, and why, follow the next section [[*Modules: Application, library, test, general][Modules: Application, library, test, general]].
 
@@ -805,18 +814,19 @@ This section is a summary and reference of Application, Library, and Test config
   - Primary factory method ~#packageUsing: manifest~ which performs requirement 3, /packaging/. 
     - Implementations should set pull needed classes from the manifest and place then on slots to package them on the app artifact.  App slots serve as "imports".
   - Instance method ~#main: platform args: args~ which performs requirement 1, /start execution/.
-    - Implementations should instantiate, from slot classes and platform objects, all object needed to run the app, then call methods on them as needed.  Examples of needed objects instantiating:
-      - /Slot1 usingPlatform: platform [and: otherObjects]/ if Slot1 is a General module
-      - /Slot2 buildUsing: platform/ if Slot1 is a Library module   
-      
+    - Implementations should instantiate, from slot classes and platform objects, all object needed to run the app, then call methods on them which perform "running the app".  Examples of needed objects instantiating:
+      - /Slot1 usingPlatform: platform [and: otherObjects]/ if Slot1 is a General module class
+      - /Slot2 buildUsing: platform/ if Slot1 is a Library module class
+
+        todo-00 : finish going over (build) and similar methods
 - *Newspeak Library module* is defined by the presence of:
   - Primary factory method ~#packageLibraryUsing: manifest~ which performs requirement 3, /packaging/.
     - Implementations should put all classes needed to build the distributed module to slots, from manifest.  Needed classes not on manifest should be created by calling A3RdPartyDependdency>>#packageLibraryUsing: manifest 
   - Instance method ~#buildUsing: platform~ which performs requirement 2, /instantiate, load and use by the caller app/.
     - Implementations should build, then return a working instance of the module we want to distribute, NOT the instance on which this #buildUsing is defined!! Building the distributed instance will possibly call other needed dependencies #buildUsing: or #usingPlatform" methods.  Examples of how needed dependencies :
-      - /Slot1 usingPlatform: platform [and: otherObjects]/ if Slot1 is a General module
-      - /Slot2 buildUsing: platform/ if Slot1 is a Library module    
-    - Important note:  *If we want to distribute a module MyModule1 (this may or may not be a library module!), we have to create a separate top level Library Module, MyModule1Library for the purpose of distributing MyModule1*! The #buildUsing: implementation we are talking about here, is the  "MyModule1Lib>>#buildUsing:" method! -  NOT the  "MyModule1>>#buildUsing:" method, as this may not even exist on MyModule1!
+      - /Slot1 usingPlatform: platform [and: otherObjects]/ if Slot1 is a General module class
+      - /Slot2 buildUsing: platform/ if Slot1 is a Library module class
+    - Important note:  *If we want to distribute an existing module MyModule1 (this may or may not be a library module!), we have to create a separate top level Library Module, MyModule1Library for the purpose of distributing MyModule1*! The #buildUsing: implementation we are talking about here, is the  "MyModule1Lib>>#buildUsing:" method! -  NOT the  "MyModule1>>#buildUsing:" method, as this may not even exist on MyModule1!
     
 - *Newspeak Test Configuration module* by convention ends with "Configuration", and is defined by the presence of:
   - Primary factory method ~#packageTestsUsing: manifest~ which performs requirement 3, /packaging/
@@ -847,45 +857,94 @@ See [[*Newspeak modules API summary][Newspeak modules API summary]] for roles of
 
 The table below summarizes APIs of all type of modules 
 
-| Module type                            | Primary factory method. Role=package                | Note       | Sep | Instance method. Role=build or execute          | Note                                                                                                             |
-|----------------------------------------+-----------------------------------------------------+------------+-----+-------------------------------------------------+------------------------------------------------------------------------------------------------------------------|
-| Library                                | #packageLibraryUsing: manifest                      |            | -   | #buildUsing: platform                           |                                                                                                                  |
-| App                                    | #packageUsing: manifest                             |            | -   | #main: platform args: args                      | calls General modules Primary factory methods, and/or Library module method, then appropriate methods to run app |
-| Test Configuration                     | #packageTestsUsing: manifest                        |            | -   | #testModulesUsingPlatform: platform minitest: m | calls Test module Factory method which runs tests                                                                |
-|----------------------------------------+-----------------------------------------------------+------------+-----+-------------------------------------------------+------------------------------------------------------------------------------------------------------------------|
-|----------------------------------------+-----------------------------------------------------+------------+-----+-------------------------------------------------+------------------------------------------------------------------------------------------------------------------|
-|                                        | Primary factory method.                             |            | -   |                                                 |                                                                                                                  |
-|----------------------------------------+-----------------------------------------------------+------------+-----+-------------------------------------------------+------------------------------------------------------------------------------------------------------------------|
-| General, needs platform + other module | similar to #usingPlatform: platform [andModule: m1] |            | -   | Note: name is completely free                   |                                                                                                                  |
-| General, needs other module            | similar to #andModule: m1                           |            | -   | Note: name is completely free                   |                                                                                                                  |
-| General, with no dependencies          | #new                                                |            | -   |                                                 |                                                                                                                  |
-| Test                                   | #usingPlatform: platform testFramework: minitest    | runs tests | -   |                                                 |                                                                                                                  |
+| Module type                            | Primary factory method. Role=package                | Note                          | Sep | Instance method. Role=build(Lib) or execute(App) | Note                                                                                                             |
+|----------------------------------------+-----------------------------------------------------+-------------------------------+-----+--------------------------------------------------+------------------------------------------------------------------------------------------------------------------|
+| Library                                | #packageLibraryUsing: manifest                      |                               | -   | #buildUsing: platform                            |                                                                                                                  |
+| App                                    | #packageUsing: manifest                             |                               | -   | #main: platform args: args                       | calls General modules Primary factory methods, and/or Library module method, then appropriate methods to run app |
+| Test Configuration                     | #packageTestsUsing: manifest                        |                               | -   | #testModulesUsingPlatform: platform minitest: m  | calls Test module Factory method which runs tests                                                                |
+|----------------------------------------+-----------------------------------------------------+-------------------------------+-----+--------------------------------------------------+------------------------------------------------------------------------------------------------------------------|
+|----------------------------------------+-----------------------------------------------------+-------------------------------+-----+--------------------------------------------------+------------------------------------------------------------------------------------------------------------------|
+|                                        | Primary factory method. Role=instantiate            |                               | -   | Instance method.                                 |                                                                                                                  |
+|----------------------------------------+-----------------------------------------------------+-------------------------------+-----+--------------------------------------------------+------------------------------------------------------------------------------------------------------------------|
+| General, needs platform + other module | similar to #usingPlatform: platform [andModule: m1] | Note: name is completely free | -   | as needed                                        |                                                                                                                  |
+| General, needs only other module       | similar to #usingModule: m1                         | Note: name is completely free | -   | as needed                                        |                                                                                                                  |
+| General, with no needs (dependencies)  | #new                                                |                               | -   | as needed                                        |                                                                                                                  |
+| Test                                   | #usingPlatform: platform testFramework: minitest    | runs tests                    | -   | as needed                                        |                                                                                                                  |
 
 Notes:
 
+- If a top level class has an instance method which name starts with "build", "main" or "test", it indicates the class is special in the sense it is an app, a library, or a test. To be precise, the method names must be standard names listed for Library, App and Test Configuration: ~#buildUsing: platform~, ~#main: platform args: args~, or ~#testModulesUsingPlatform: platform minitest: m~.
 - The ~#usingPlatform: platform [andModule: m1]~ is an example of a primary factory method which is passed the platform and a dependency which is module m1. The point is the the start of the method name ~#usingPlatform:~ is fixed, other parameters can be added for dependencies, in any free form.
-- The IDE, when we click [run] to run the App, the IDE calls the App's primary factory method ~#packageUsing: manifest~, then the Instance method (run)
+- For an App module: When we click the [run] button in the IDE, the IDE calls the App's primary factory method ~#packageUsing: manifest~, then the Instance method ~#main: platform args: args~ which runs the app.
+- A Library module and App module play a similar role. However, an App module is intended to be *packaged, distributed and executed* as a standalone App, while an Library module is intended to be *packaged, distributed and included in App modules or other library modules*.
+
+
+**** App module "recipy"
 
 We can provide a "recipy" for how any App module should be written:
 
-- In the primary factory method ~#packageUsing: manifest~, store any "carry along" (imported) classes on the slots
+- In the primary factory method ~#packageUsing: manifest~, store any "carry along" (imported) classes from the manifest map on the slots
 - In the instance method ~#main: platform args: args~
-  - First use all (import) classes on slots to instantiate and build their modules:
-    - For slots that are general modules classes, call their Primary factory methods, named similar to ~#usingPlatform: platform [andModule: m1]~, to build instances of modules (dependencies)
-    - For slots that are library modules classes, call their build instance methods, named similar to ~#buildLibraryUsingPlatform: platform~, to build instances of 3rd party modules (dependencies) 
+  - First use all (imported) classes on slots to instantiate and build their modules:
+    - For each slot which is a general module class, call its primary factory methods, named similar to ~#usingPlatform: platform [andModule: m1]~, to build the module (dependency)
+    - For each slot which is a library module class, call its build instance methods, named similar to ~#buildUsing: platform~, to build the 3rd party module (dependencies) 
   - Next, on the instances created just before, call appropriate methods to run the app
     
 
 *** A recipy to convert a General module to an App or Library module
 
-Often, we start developing a module class (a top level class) for "internal" use, with no need to "ship" it as an App or a Library for others to use. Such module would be built as a General module with methods described above in [[* Newspeak modules API zoo][Newspeak modules API zoo]]. Later, we may decide to make this class available to others as a library or an app. 
+Often, we start developing a module (more precisely, a module declaration, the source of a top level class) for "internal" use, with no need to "ship" it as an App or a Library for others to use. Such module would be built as a General module with methods described above in [[* Newspeak modules API zoo][Newspeak modules API zoo]]. Later, we may decide to make this module available to others as a library or an app. This step of converting a General module available as a library or an app, _requires adding specific API methods_, which identify the General module we started with as an App module or a Library module.  
 
 This section provides a "recipy" to convert a General module to an App or Library module.
 
-From the API naming "convention" in [[* Newspeak modules API zoo][Newspeak modules API zoo]], we can deduce a "recipy" to convert a General module to an App or a Library:
-- If we want to convert a General module to an App,     we need to "move" the primary factory method named similar to ~#usingPlatform: platform:~ to an instance method named ~#main: platform args: args~, and add a primary factory method ~#packageUsing: manifest~.
-- If we want to convert a General module to a  Library, we need to "move" the primary factory method named similar to ~#usingPlatform: platform:~ to an instance method named ~#buildUsing: platform~       and add a primary factory method ~#packageLibraryUsing: manifest~.
+Note that initially, our General module has a primary factory method named similar to ~#usingPlatform: platform:~. From the API naming "convention" in [[* Newspeak modules API zoo][Newspeak modules API zoo]], we can deduce a "recipy" to convert a General module to an App or a Library, as follows:
 
+- App: If we want to convert a General module to an App,     we need to
+  - move the primary factory method to an instance method named ~#main: platform args: args~
+  - add a primary factory method ~#packageUsing: manifest~. The code of this new primary factory method should generally declare a slot for each class that will be needed at runtime, "import" (pull) the class from the manifest, and store it on the slot.
+- Library: If we want to convert a General module to a  Library, we need to
+  - move the primary factory method to an instance method named ~#buildUsing: platform~
+  - add a primary factory method ~#packageLibraryUsing: manifest~.
+
+*** A recipy to wrap a General module to an App or Library module
+
+An alternative to the previous section could be, that the General module class we created remains unchanged, and we add a "wrapper" Library module or a "wrapper" App module. In this situation, our original General module code remains unchanged.
+
+Becaus unlike the previous section, we are adding new top level modules, let's give the modules names. Let us assume the original General module is named ~MyModule~. Recall that, as in the previous section, our General module ~MyModule~ has a primary factory method named similar to ~#usingPlatform: platform:~. 
+
+- If we want to wrap ~MyModule~ as an App, we could add the App class wrapper similar to
+  #+begin_src 
+  class MyModuleApp packageUsing: manifest = (
+    |
+    MyModule = manifest MyModule.
+    |
+  ) 
+  (
+    public main: platform args: args = (
+       |myModule|
+       myModule:: MyModule 
+                      usingPlatform: platform. 
+       .. call a method on myModule that does it's work ..
+    )
+  )
+  #+end_src
+  
+- If we want to wrap ~MyModule~ as a Library, we could add the Library class wrapper similar to
+  #+begin_src 
+  class MyModuleLib packageLibraryUsing: manifest = (
+    |
+    MyModule = manifest MyModule.
+    |
+  ) 
+  (
+    public buildUsing: platform = (
+       |myModule|
+       myModule:: MyModule 
+                      usingPlatform: platform. 
+       ^myModule.
+    )
+  )
+  #+end_src
 
 *** Newspeak platform and manifest objects summary
 
@@ -896,7 +955,7 @@ In a nutshell,
 
 ** Newspeak recipy for writing modules API
 
-Sections above attempted to discover and describe modules API, see [[*Newspeak modules API summary][Newspeak modules API summary]]. This section will attempt to give a "recipy" about method signatures each module type requires.
+Sections above attempted to discover and describe modules API, see [[*Newspeak modules API summary][Newspeak modules API summary]]. This section will attempt to give a "recipy" for the method signatures each module type (Library module, General module, App module) requires.
 
 **** 1. General module with NO dependencies: API of module with no dependencies
 
@@ -967,23 +1026,30 @@ sortListTranslator:: RecipyWithDep  usingPlatform: platform andModule: (RecipyNo
 sortListTranslator translate: {' World'. 'Hello'}.
 #+end_src
 
-Note that the RecipyNoDep class could be passed instead of the instance; obviously the slot translator in RecipyWithDep would have to be a class, instantiated in #translate:
+Note that the RecipyNoDep class could be passed instead of the instance; obviously the slot translator in RecipyWithDep would have to be a class, instantiated in ~#translate:~
 
 
 **** 3. Library module: API of module that needs to be distributed for use in other modules
 
 This next step describes an example of a module which is intended to be distributable as a library. In Newspeak, *this means such module must be both packageble and distributable* - the roles of "packageble" and "distributable" are achieved by implementing the 2 methods below. We call such modules informally /Library modules/.
 
-In the previous section, we introduced a general module ~RecipyWithDep~. If we needed this module to be packagable as a library, add the following:
+In the previous section, we introduced a general module ~RecipyWithDep~. If we needed this module to be used as a library we could
+1. either "convert" ~RecipyWithDep~ into a library,
+2. or add a "wrapper library" which will be the module used for distrubution.
 
-1. Add a *separate module* with a descriptive name (to make clear it is a library), such as ~RecipyWithDepLib~
-2. In this *separate module*, provide the following API:
-  - primary factory method ~#packageLibraryUsing: manifest~, which allows "imports"
-  - Instance method     ~#buildUsing: platform~, which allows dependencies to be pulled at construction time
+In this example, we show the second method - we add a "wrapper library" for ~RecipyWithDep~ in two steps
+
+1. We add a *separate module - the wrapper library* with a descriptive name (to make clear it is a library), ~RecipyWithDepLib~
+2. In the new ~RecipyWithDepLib~, add the following API methods:
+  - primary factory method ~#packageLibraryUsing: manifest~, which allows to "import" the ~RecipyWithDep~ and the other needed dependency ~RecipyNoDep~
+  - Instance method        ~#buildUsing: platform~, which allows dependencies to be pulled at construction time
 
 Note that in this case, /#buildUsing: platform/ must not be added any other arguments. Any "carry along" (imported) classes that may be needed at build time, must be saved on slots in the /#packageLibraryUsing: manifest/ primary factory method.
 
-***** Example:
+
+in [[* Newspeak modules API zoo][Newspeak modules API zoo]]. todo-00
+
+***** Wrapper for RecipyWithDep:
 
 To create a packageble and distributable library module for the above ~RecipyWithDep~, create this library module 
 
@@ -1007,7 +1073,7 @@ class RecipyWithDepLib packageLibraryUsing: manifest = (
 
 Note how the library must store any "carry along" (imported) classes on slots during packaging, then instantiate them during building. 
 
-Also note how the passing of ~platform~ moves from the constructor in the module, to the instance method in the library:
+Also note how the passing of ~platform~ moves from the primary factory in the module, to the instance method in the library:
   - In the module ~RecipyWithDep~ , it is on the /primary factory method/ /#usingPlatform: platform:/ 
   - To the distribution library ~RecipyWithDepLib~, it is on the /instance method/ /#buildUsing: platform/.
 
@@ -1028,11 +1094,11 @@ sortListTranslator translate: {' World'. 'Hello'}.
 
 **** 4. App module: API of module that needs to be distributed as an App
 
-This next step describes an example of a module which is intended to be distributable as an App. In Newspeak, *this means such module must be both packageble and runnable* - the roles of "packageble" and "runnable" are achieved by implementing the 2 methods below. We call such modules informally /App modules/. In addition, this App uses 
+This next step describes an example of a module which is intended to be distributable as an App. In Newspeak, *this means such module must be both packageble and runnable* - the roles of "packageble" and "runnable" are achieved by implementing the 2 methods below. We call such modules informally /App modules/.
 
 If we need our module ~RecipyWithDep~ to be packagable as an App:
 
-1. Generally, add a *separate module* with a descriptive name (to make clear it is a App)
+1. Generally, add a *separate module* with a descriptive name  - to make clear this separate module is an App, end the name with the string 'App'.
 2. In this *separate module*, provide the following API:
   - primary factory method ~#packageUsing: manifest~ 
   - Instance method ~#main: platform args: args~
@@ -1045,20 +1111,22 @@ We sometimes see Newspeak App modules lacking the ~#main: platform args: args~ m
 
 Compare the parallel role between the following methods for a Library module and an App module:
 
-| Library                        |                 | App                        |
-|--------------------------------+-----------------+----------------------------|
-| #packageLibraryUsing: manifest | - has role of - | #packageUsing: manifest    |
-| #buildUsing: platform          | - has role of - | #main: platform args: args |
+| Library module standard method | is              |                     | App module standard method | is              |
+|--------------------------------+-----------------+---------------------+----------------------------+-----------------|
+| #packageLibraryUsing: manifest | primary factory | - role is package - | #packageUsing: manifest    | primary factory |
+| #buildUsing: platform          | instance method | - role is build -   | #main: platform args: args | instance method |
 
-We see that the packaging methods are equivalent. The library "build" method is equivalent to the App "main" method. If an App uses a Library, the library's ~#buildUsing: platform~ will be called in the App's ~#main: platform args: args~ method to build (create) the library's instance.
+The primary factory methods for Library and App have similar names, both serve to package the library or the app on the "source" system.
 
-Basically, a Library module and App module play a similar role. However, an App module is intended to be *packaged, distributed and run* as a standalone App, while an Library module is intended to be *packaged, distributed and included in App modules*.
+The instance methods serve to build (for Library) or execute (for App).
+
+If an App uses a Library, the library's (build) ~#buildUsing: platform~ would be called in the App's ~#main: platform args: args~ method to build (create) the library's instance.
 
 ***** Example:
 
-We will create an App module  ~RecipyWithDepApp~, which is a bit more complex App, in the sense it uses a pre-existing library module, defined in [[*3. Library module: API of module that needs to be distributed for use in other modules][3. Library module: API of module that needs to be distributed for use in other modules]].
+We will create an App module ~RecipyWithDepApp~, which is a bit more complex App, in the sense it uses a pre-existing library module, ~RecipyWithDep~, defined in [[*3. Library module: API of module that needs to be distributed for use in other modules][3. Library module: API of module that needs to be distributed for use in other modules]].
 
-To create a packageble and runnable App module ~RecipyWithDepApp~, it must have methods ~#packageUsing: manifest~ and ~#main: platform args: args~.  The App must also store at it's slots everything the ~RecipyWithDep~ needs for it's instantiation. Here is the code:
+To create a packageble and runnable App module ~RecipyWithDepApp~, it must have a primary factory method ~#packageUsing: manifest~ and an instance method ~#main: platform args: args~.  The App must also store at it's slots everything the ~RecipyWithDep~ needs for it's instantiation. Here is how the code may look:
 
 #+begin_src 
 class RecipyWithDepApp packageUsing: manifest = (
@@ -1083,7 +1151,7 @@ Note how the App stores any "carry along" (imported) classes from the manifest o
 
 Also note when we converted the General module to an App:
   - In the General module ~RecipyWithDep~, the ~platform~ object is passed to the /primary factory method/ ~#usingPlatform: platform:~. 
-  - In the App            ~RecipyWithDepApp~, the ~platform~ object is passed to the /instance method/ ~#main: platform args: args~.
+  - In the App module     ~RecipyWithDepApp~, the ~platform~ object is passed to the /instance method/ ~#main: platform args: args~.
 
 See the section [[* A recipy to convert a General module to an App or Library module][A recipy to convert a General module to an App or Library module]] for a general recipy to convert a General module such as  ~RecipyWithDep~ to an App such as ~RecipyWithDepApp~.
 
@@ -2187,7 +2255,7 @@ Text below provides an additional example introduced by Gilad Bracha on the News
 Imagine a convention whereby *every library intended for distribution is sent out as a class which:*
 
  - has a factory (or in general, class method) method ~#packageLibraryUsingManifest: manifest~ - 
- - has a ~#buildUsing: platform~ method - this method, given a platform object, produces a working instance of the module we actually want to distribute
+ - has a (build) ~#usingPlatform: platform~ method - this method, given a platform object, produces a working instance of the module we actually want to distribute
 
 Now developer A (Alice) intends to distribute a module MyMod1.
 It depends on some other code she developed, say, MyMod2, which in turn depends on a 3rd party library from developer B (Bob).

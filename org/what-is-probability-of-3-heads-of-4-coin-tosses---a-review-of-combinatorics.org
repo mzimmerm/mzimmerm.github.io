@@ -11,20 +11,26 @@
 
 * Motivation
 
-Purely self directed combinatorics review with some sketches of proofs. This musing started with a simple question on the Bruce trail walk on 4th line, while talking to Jitka about probability that mRNA vaccines can also cause the CVST blood clots, as the vector vaccines do. That was around 2021-04-05, just after CVST was first reported. Much more is known today.
+Purely self directed combinatorics review with some sketches of proofs. This musing started with a simple question on the Bruce trail walk on 4th line, while talking to Jitka whether there is some non zero probability that mRNA vaccines can also cause the CVST blood clots, as the vector vaccines do, in a very limited set of cases. That was around 2021-04-05, just after CVST was first reported. Much more is known today.
 
-This blog is purely about combinatorics, sets, and probabilities, not about vaccines.
+This post is purely about combinatorics, sets, and probabilities, not about vaccines.
 
-A simple follow model lead to a question: "What is the probability of 3 heads in 4 coin tosses". In turn, it lead to my recaping the combinatorics basis, during the next few days walks. All with no Wikipedia access :) (but references are inserted here where helpful)
+A simple follow model lead to a question: "What is the probability of 3 heads in 4 coin tosses". In turn, it lead to recaping the combinatorics basis, during the next many walks. All with no Wikipedia access :) (but references are inserted here where helpful)
 
 * The basic formulation of combinatorics
 
-** Somewhat abstract and vague formulation
+** A vague formulation of combinatorics
 
-Imagine
-- an object that can only be in certain set of states (the state implicitly defines an *identity* of the object).
-- an experiment: select randomly one of the object's state. The result of the experiment is one state.  
+Consider an object that can only be in one of `n` *states*. Consider having `k` of these objects in a cup, each in a different state. The subject of combinatorics is to form a 
 
+Consider two scenarios of taking the objects out of the cup, one after another, forming either an object sequence or placing objects in a bag. 
+
+- Scenario 1:  Lay out objects taken out of the cup on a line, forming a sequence.
+- Scenario 2:  Lay out objects taken out of the cup on a or in a bag. Also consider that the cup may be a magic cup, which can 
+
+(a concrete state implicitly defines *identity* of the object).
+- 
+  
 Combinatorics deals with this question:
 
 Given a countable set of possible *states* of an object 
@@ -35,14 +41,16 @@ and given an experiment which randomly selects one state
 
 and a countable set of possible *independent repetitions of the experiment* (repetition index implicitly defines *identity* of the experiment)
 
-`X = { e_1, .. e_x }`.
+`K = { e_1, .. e_k }`.
 
-If we define *combined experiment* as the experiment repeated `x` times, the core question of combinatorics: How many possible *combined experiment* *results* exist, when we do experiments `e_1, .. e_x`? (That is, we repeat experiment `x` times, each experiment with some state from `N`).
+(sometimes, x is used instead of k)
+
+If we define a *combined experiment* as the experiment repeated `x` times, the core question of combinatorics: How many possible *combined experiment results* exist, when we do experiments `e_1, .. e_k`? (That is, we repeat experiment `k` times, each experiment with some state from `N`).
 
 *** Notes on formulation and results constraints:
 
 From the formulation, we take for granted, that the following statements are true (they serve for illustration - they are not mutually exclusive)
-- there are exactly `x` experiments
+- there are exactly `k` experiments
 - each experiment result contains exactly one state from `N`
 - there can be no experiments without a result, or with a result not from `N`
 
@@ -80,7 +88,7 @@ In the multiple results set, the there are obviously:
 
 todo
 
-** Formulation using balls and boxes
+** Formulation of combinatorics using balls and boxes
 
 In this formulation
 
@@ -92,7 +100,7 @@ In other words, this formulation imagines that `N`, is a set of distinquishable 
 
 `N = { ball_1, .., ball_n }`
 
-and `X = { box_1, .., box_x }` is a set of boxes, to which each experiment places the numbered balls.
+and `K = { box_1, .., box_k }` is a set of boxes, to which each experiment places the numbered balls.
 
 
 *** Example
@@ -101,9 +109,9 @@ todo
 
 ** Formulation using building a number from digits
 
-Similar to balls and boxes, we can imagine we are building a number out of digits `1, .., n`. We do not restrict the number of digits in any way - we can use for example one Unicode point to one digit. But to make things simple, we simply imagine digits 0 to 9 or less.
+Similar to balls and boxes, we can imagine we are building a number out of digits `1, .., n`. We do not restrict the number of digits in any way - we can use for example one Unicode point to one digit. But to make things simple, we only use digits 0 to 9 (or less).
 
-Everything from the [[*Formulation using balls and boxes]]
+Everything from [[*Formulation using balls and boxes]]
 
 
 *** Example
@@ -119,6 +127,7 @@ todo
 ** Unused notes
 
 Note: In the abstract: We can do either
-- one experiment with `x` states from `N` or
-- `x` independent experiments with any state from `N`
+- one experiment with `k` states from `N` or
+- `k` independent experiments with any state from `N`
+
 

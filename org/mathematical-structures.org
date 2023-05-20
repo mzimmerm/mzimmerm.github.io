@@ -1,0 +1,56 @@
+#+STARTUP: showall
+#+STARTUP: hidestars
+#+OPTIONS: H:2 num:nil tags:t toc:nil timestamps:t
+#+LAYOUT: post
+#+AUTHOR: mzimmerm
+#+DATE: 2023-05-20 Tue 16:20
+#+TITLE: Mathematical structures
+#+DESCRIPTION: This musing started with a simple question on the Bruce trail walk on 4th line. It started by talking about probability that mRNA vaccines also cause the VITT blood clots. That was around 2021-04-05, just after CVST was first reported. Much more is known today. This blog is purely about combinatorics, sets, and probabilities.   
+#+TAGS: math walk-musings combinatorics
+#+CATEGORIES: category-math category-walk-musings category-combinatorics
+
+* Mathematical structures
+
+Mostly based on late-night Wikipedia reading.
+
+- L Homomorphism [map on sets w struct]  (structure preserving map between sets S and R - so detail of definition depend on structure)
+- D Isomorphism [map on set w struct]= Homomorphism which is bijective (so, bijective, structure preserving map between sets S and R - so detail of definition depend on structure)
+- D Automorphism [map on set w struct] (Isomorphism on the same set S with structure). Further core process: Set of all automorphisms on object is a group, the automorphism groups, or loosely, the symmetry group on object). How is the automorhism group defined? As automorphism is a map, we can define a set of all such maps, and a define a group operation   between the maps as the map coomposition - see below! It is often denoted as Aut(S).
+- Symmetric group [map on set w struct] (same as above defined Aut(S)??? - yes, uses map composition as operation.) So Sym(S) = Aut(S)
+- Group action [map from group elm to group's map: G->Aut(G)]  : It starts with abstract definitionof group action: GxX->G, but based on properties it concludes: 
+    - Therefore, one may equivalently define a group action of G on X as a group homomorphism from G into the symmetric group Sym(X) of all bijections from X to itself. [so if X=G, group action is group homomorphism - NOT automorhism -  G->Sym(G)
+    - Is the set of group actions a group??? probably but not sure
+    - The above may be related to https://en.wikipedia.org/wiki/Cayley%27s_theorem 
+- https://en.wikipedia.org/wiki/Rotations_and_reflections_in_two_dimensions : The rotations + reflections around O form Orthogonal group O2. I worked out that the rotation matrix preserve angle (dot product). do the same for reflections 
+- Summary of examples of everything in finite group: read https://en.wikipedia.org/wiki/Dihedral_group_of_order_6 
+- Algebraic structure
+- Affine space (quick, little understanding)
+- Linear space
+- Dual space
+- Linear form
+- Linear map
+- Noether's isomorphism theorems + Noether's (conservation) theorems
+
+- morphism, although meaning 'shape', should be called 'mapping', or map-morphism 
+
+- term homomorphism  is used as an equivalent of term 'map', 'mapping' if the sets mapped are algebraic structures (groups, rings, fields)
+
+- automorphism should be called autoisomorphism or autoisomap-morphism
+
+- There is also term homeomorphism:  This term is used in topological spaces where one of the properties preserved is continuity (of the topological space elements, which are functions)
+
+
+To notes:
+
+- given sets S and R, there is always a map m S-> R between them!!
+   - this is profound, because:
+   -  we can define a set (of maps) from the S->R (either all maps, or maps with some properties)
+   - Notation: Denote the set of maps S->R Msr.. If S=R, denote the set of maps S->S as Mss
+  
+   - IF (AND ONLY IF?) S=R, THEN: we can DEFINE a binary operation on Mss AS FUNCTION COMPOSITION as follows Mss x Mss -> Mss) '.' as 'pointwise composition of maps from Mss as follows:
+    - For any two m1, m2 from Mss, define dot '.' binary operation
+       m1.m2 : Mss -> Mss such that, from any s in S
+       m1.m2 (s) -> m1(m2(s))
+    - It can be proven that set Mss equiped with the binary '.' is a Group ?????? YES  IF WE CONSIDER ONLY A SUBSET OF Mss that only contains bijective maps (so Mss can be denoted as BMss - set of bijective fuctions S->S) 
+
+

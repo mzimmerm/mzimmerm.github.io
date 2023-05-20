@@ -314,7 +314,7 @@ This experiment shows how the =dir property= is used.
 * Tags                                                       :bb:aa:
 Are labels for context (context = category)
 
-* TODO Properies and columns
+* TODO Properties and columns
 
 :PROPERTIES:
 :COLUMNS:       %30ITEM %9Approved(Approved?){X} %Owner %11Status %10Time_Estimate{:} %CLOCKSUM %CLOCKSUM_T
@@ -382,22 +382,25 @@ Note: The *file:* type changes actually allow NOT NEEDING the *img:* type at all
 
 *** The image export solution - testing
 
-Below are test of *file:* (changes only) *img:*,  *post-jekyll:* link types
+Below are tests of link types *file:*, *img:*, and *post-jekyll:*:
 
 1. Test *img:*                   : ~[[img:a-test-blog.org_test-image.png]]~ after html conversion: /*expected in html not in org:* a small image just after the dash/ - [[img:a-test-blog.org_test-image.png]].
 2. Test *file:* (BEST SOLUTION)  : ~[[file:img/a-test-blog.org_test-image.png]]~ after html conversion: /*expected:* a small image just after the dash/ - [[file:img/a-test-blog.org_test-image.png]].
 3. Test *file:*                  : ~file:img/a-test-blog.org_test-image.png~ after html conversion: /*expected in html not in org:* a small image just after the dash/ - file:img/a-test-blog.org_test-image.png.
+
 4. Test my *post-jekyll:*        : ~[[post-jekyll:blog-in-org-2-jekyll---1.-motivation.org][a short series about writing in org mode]]~ after html conversion, /*expected:* a working link just to another post after the dash/ - [[post-jekyll:blog-in-org-2-jekyll---1.-motivation.org][a short series about writing in org mode]]
    - The precondition is the post must be already org2-published
-5. Test non-image *file:* links  : ~[[file:img/a-test-blog.org-test-file.txt]]~ after html conversion, /*expected in html not in org:* a working link to text file after the dash/ - file:img/a-test-blog.org-test-file.txt
-   
-   Notes:
 
-6. Both *img:* on image and *file:* on image generate:
+5. Test non-image *file:* links  : ~[[file:img/a-test-blog.org-test-file.txt]]~ after html conversion, /*expected in html not in org:* a working link to text file after the dash/ - file:img/a-test-blog.org-test-file.txt
+
+   
+Notes:
+
+1. Both *img:* on image and *file:* on image generate:
    #+BEGIN_SRC html
    <img src="/img/a-test-blog.org_test-image.png" alt="nil"/>
    #+END_SRC
-7. *file:* on non-image generates:
+2. *file:* on non-image generates:
    #+BEGIN_SRC html
    <a href="/img/a-test-page.pdf">/img/a-test-page.pdf</a>
    #+END_SRC
