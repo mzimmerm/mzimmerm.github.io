@@ -12,16 +12,18 @@
 
 * This document: Introduction to Newspeak on Webassembly (Wasm)
 
-TL;DR: Newspeak is a modern, principled platform and language: dynamic, reflective, modular.  It supports both object-oriented and functional styles.  But having reached here, you probably already know that much.  The purpose of this document is to help starting with Newspeak version 3 (year 2021, runs on Webassembly).  Hopefully reduce reader's start time a bit.
+TL;DR: The purpose of this document is to help /myself/ starting with *Newspeak version 3 (year 2021-2023, runs on Webassembly)*. Newspeak is a modern, principled platform and language: dynamic, reflective, modular.  It supports both object-oriented and functional styles.  But having reached here, you probably already know that much.  Hopefully this document can help other reader's as well.
 
-Much of this document is collected from existing Newspeak sources:
+Much of this document is collected from Newspeak sources listed below. Any errors, misunderstandings or potential misrepresentations are mine.
 
 - The Newspeak google groups posts at https://groups.google.com/g/newspeaklanguage
 - The Newspeak core site at https://newspeaklanguage.org/
 - Gilad Bracha's Room 101 blog at https://gbracha.blogspot.com/
+- Newspeak code on Github https://github.com/newspeaklanguage/newspeak
+- Primordialsoup (the VM) code on Github https://github.com/newspeaklanguage/primordialsoup. Only needed if we want to build the VM, not necessary for Newspeak development.
+  
 
-
-* Changelog - last change 2021-10-25
+* Changelog: last change 2023-09-28
 
 |       Date |   | Author           |   | Change                                                                                                                                                                                  |
 |------------+---+------------------+---+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -35,9 +37,46 @@ Much of this document is collected from existing Newspeak sources:
 | 2021-08-15 |   | Milan Zimmermann |   | Added section [[*Exemplars: Enabling liveliness everywhere][Exemplars: Enabling liveliness everywhere]]                                                                                                                                 |
 | 2021-08-15 |   | Milan Zimmermann |   | Added section [[*Newspeak terminology][Newspeak terminology]]                                                                                                                                                      |
 | 2021-10-25 |   | Milan Zimmermann |   | Added section [[* Access control and access modifiers in Newspeak][Access control and access modifiers in Newspeak]]                                                                                                                           |
+| 2023-09-21 |   | Milan Zimmermann |   | Added sections [[* 2023 Update]  [[* Newspeak: Script which builds deployable vfuel files]  [[* Ampleforth and HTML documents in Newspeak]  todo-00 finish and double-text the headings                                                                                                    |
 
-Last change 2021-10-29.
 
+
+* Todos todo-00
+
+ - change begin_example to begin_src??
+
+ - above, add ".ns" to class names
+   
+ - clarify - throughout the document, we should clarify that 'deploy' means 'create deployable artifact' - a file that can be deployed!! Also go over all text talking about 'deploy'
+
+ - Look  for "Module type", and come up with a /term for it/ - maybe just /module type/.
+
+ - Look for App, replace with Application, except code . Same for Lib -> Library.
+
+ - Look for Application, Library, TestConfiguration, Test
+   
+ - generally replace 'are called' 'abc is called' with 'are termed', 'abc is termed'
+     
+ - In [[* Newspeak modules API zoo][Newspeak modules API zoo]]:
+   - research the roles /build/ and /instantiate/ : Role=build(Library), execute(Application) in ~#buildUsing: platform~
+   - todo-00 : add this somewhere, and use investigation in Zoo : Instances and their production: Clarify that class declarations create an object termed 'class factory object' that provides the means of producing instances of the class. The factory object supports at least one message that produces new instances (of the class). This message on the 'class factory object' is termed the 'primary factory method'.  The 'class factory object' in code, is referenced using the uppercase class name. 
+     - So code such as ~AMyApp packageUsing: manifest~ invokes the factory method ~#packageUsing~ on the 'class factory object' ALSO named ~AMyApp~, and it produces an instance of the ~class AMyApp~.  We can use use it in code also as ~myAppInstance = AMyApp packageUsing: manifest~
+     - todo-00 : *Specifically for modules (Application, Test, Library)*:
+       - 1. invoking ~#packageUsing manifest~ and similar named primary factory methods: They are TYPICALLY called to produce instances, but somethimes MAYBE ??? for side effects??? (the side effect would be creation of a deployable artifact).
+         - Examples producing instance:
+           - Here we just produce instance of hopscotchIDE on slot (note: instance, despite the often used uppercase name on slots, here HopscotchIDE)
+             #+begin_example
+               class Ampleforth packageUsing: manifest = (
+                 |
+                 private AmpleforthEmbedder = manifest AmpleforthEmbedder.
+                 private HopscotchIDE = manifest HopscotchWebIDE packageUsing: manifest.
+                 |
+               ) 
+             #+end_example
+           
+       - 2. invoking ~#buildUsing: platform~ and similar named instance methods: Are they ususally called to return instances? Often they seem to do, returning ~SomeConcreteExtension>>#buildUsing: platform~ But we should NOT call the role /instantiate/!!! 
+
+   
 * Terminology and notation
 
 *** Notation: In the text, how do we express a class name, a message (function, method) name, or a slot name?
@@ -146,7 +185,7 @@ This document is both a personal experience of learning Newspeak, an an attempt 
 
 * Newspeak: A quickstart.  Explore the IDE.  Then develop CounterApp, package it and deploy it
 
-TL;DR: This quickstart section attempts to provide an incremental introduction to Newspeak.  First, we introduce the Newspeak online IDE, then we build and deploy a sample Newspeak app called ~CounterApp~.  A spoiler: we can look ahead and run the app we will be building - the ~CounterApp~ - online at https://newspeaklanguage.org/samples/primordialsoup.html?snapshot=CounterApp.vfuel. 
+TL;DR: This quickstart section provides an incremental introduction to Newspeak.  First, we introduce the Newspeak online IDE, then we build and deploy a sample Newspeak app called ~CounterApp~.  A spoiler: we can look ahead and run the app we will be building - the ~CounterApp~ - online at https://newspeaklanguage.org/samples/primordialsoup.html?snapshot=CounterApp.vfuel. 
 
 
 ** Run the online version of the Newspeak IDE.  Read docs, watch videos
@@ -181,7 +220,7 @@ In more detail, let us try the following:
 - To run some simple one-liner code, type for example "1+2" into the text field, and press keyboard *Shift + ENTER*.  This will evaluate the expression and print a result "3"
   - Result: expression "1+2" was evaluated to "3"
     [[file:img/newspeak---a-few-notes.org-workspaces-expression.png]]
-- To run multi-line Newspeak code, type the code line by line.  Press keyboard *ENTER* to open new lines.  When ready to run the code, *highlight all lines, then press keyboard Shift + ENTER* to run the code.  Another term for running code like this, is "evaluating all highlighted lines").  The image below shows the Workspace after the *Shift + ENTER* was pressed, showing the evaluated code, and the result of the evaluated code: ~2~.
+- To run multi-line Newspeak code, type the code line by line.  Press keyboard *ENTER* to open new lines.  When ready to run the code, *highlight all lines, then press keyboard Shift + ENTER* to run the code.  Another term for running code like this, is "evaluating all highlighted lines".  The image below shows the Workspace after the *Shift + ENTER* was pressed, showing the evaluated code, and the result of the evaluated code: ~2~.
       [[file:img/newspeak---a-few-notes.org-workspaces-multiline-expression.png]]
   - The image above uses a white-mode image, as the dark-mode pages do not show highlight too well.
   - When running multi-line code, we can paste it from outside, instead of typing it.
@@ -239,21 +278,22 @@ Prerequisites:
  
 Notes: 
 
-- To deploy the ~CounterApp~, this section uses the online Newspeak at https://newspeaklanguage.org/samples/primordialsoup.html?snapshot=HopscotchWebIDE.vfuel
+- We deploy the ~CounterApp~, in this section using the online Newspeak at https://newspeaklanguage.org/samples/primordialsoup.html?snapshot=HopscotchWebIDE.vfuel
 - However, a local Newspeak webserver could be used instead.
   - If we wanted to deploy the ~CounterApp~ in "production", we would need a local Newspeak - because there is no way to deploy the app to the online Newspeak site.
   - Deployment of the  ~CounterApp~ to "production" requires our "own" Newspeak, such as the local Newspeak webserver.  See [[Download, install, and start a local Newspeak webserver]] for how to install Newspeak locally.
 - We may ask, "what is an app in Newspeak"? In a nutshell, an "app" is an instance of a class - obviously.  But which class, and what does the class need, to be able to "live" or "run" inside a Newspeak IDE or Newspeak runtime? Read on for details (actually, the coding details are todo).
 
-*Steps: To create and run the ~CounterApp~ (from existing code that we borrow from Newspeak Github), follow the Action/Result steps below:*
+
+*** Steps: To create and run the ~CounterApp~ (from existing code that we borrowed from Github), follow the Action/Result steps below:
 
 - Action: In a new browser tab, open the online Newspeak IDE at https://newspeaklanguage.org/samples/primordialsoup.html?snapshot=HopscotchWebIDE.vfuel
 - Result: The Newspeak IDE opens, similar to [[file:img/newspeak---a-few-notes.org-newspeak-ide-start.png]]
   - Note: The "Did you know" section is a ever-changing hint system
 - Action: Click "Newspeak Source" in [[file:img/newspeak---a-few-notes.org-go-to-newspeak-source.png]] 
 - Result: A new page opens, showing Newspeak classes, similar to [[file:img/newspeak---a-few-notes.org-newspeak-source.png]]
-  - Note on the result: In the result, you should NOT see classes named ~CounterApp~ or ~CounterUI~.  If you do, you have most likely run through this tutorial before, and the classes are already in your browser local storage.  To clean any local changes saved locally for the online Newspeak, you can clean them in the browser local storage.  See 
-- *Motivation for the next action: We want to build the sample app ~CounterApp~.  We choose to build it simply by downloading and compiling two files from the existing source from the Newspeak github repo.*
+  - Note on the result: In the result, you should NOT see classes named ~CounterApp~ or ~CounterUI~.  If you do, you have most likely run through this tutorial before, and the classes are already in your browser local storage.  To clean any local changes saved locally for the online Newspeak, you can clean them in the browser local storage.  See todo-00
+- *Motivation for the next action: We want to build the sample app ~CounterApp~.  We choose to build it simply by downloading and compiling existing source files in the Newspeak github repo.*
 - Action:  <<compile-files>> In the top right of the page (in the same line where we see "Root +") [[file:img/newspeak---a-few-notes.org-3-vertical-dots.png]], click the *vertical 3-dot* button on the far right.
 - Result: A popup  [[file:img/newspeak---a-few-notes.org-compile-files.png]] shows
 
@@ -264,11 +304,11 @@ Notes:
   - Note 1: We have loaded the code of the  ~CounterApp.ns~ and
     ~CounterUI.ns~ classes into Newspeak by running "Compile
     file".  Alternatively, we could have added the classes through the IDE by
-    clicking the "+" button
+    clicking the "Root-+" button
     [[file:img/newspeak---a-few-notes.org-root-plus-button.png]] and typing or pasting the code in.
     Instead, we choose to load pre-existing files at the moment to concentrate on the process, not the code.   
   - Note 2: click the ~CounterApp~ or ~CounterUI~ link.  This shows the corresponding class. 
-  - Note 3: The ~CounterApp~ shows links to ~[deploy] [configuration] [run] [debug]~.  Why do only the "app" classes such as ~CounterApp~ (and no other classes) show the ~[deploy] [configuration] [run] [debug]~ links in the Newspeak IDE? The IDE decides to show those links based on the presence of a convention method ~#packageUsing: manifest~.  See [[*Newspeak modules API summary][Newspeak modules API summary]] for what makes a module an App, a Library, or a Test Configuration, and how the IDE handles the API.
+  - Note 3: The ~CounterApp~ shows links to ~[deploy] [configuration] [run] [debug]~.  Why do only the "app" classes such as ~CounterApp~ (and no other classes) show the ~[deploy] [configuration] [run] [debug]~ links in the Newspeak IDE? The IDE decides to show those links based on the presence of a convention method ~#packageUsing: manifest~.  See [[*Newspeak modules API summary][Newspeak modules API summary]] for what makes a module an App, a Library, or a TestConfiguration, and how the IDE handles the API.
 - Action: To save the classes we added, (~CounterApp~ or ~CounterUI~) in the browser local storage explicitly "now", click the diskette "Save" button [[file:img/newspeak---a-few-notes.org-save-button.png]]
 - Result: The two classes are stored in the browser local storage.  To read more about details of the browser local storage, see [[*Saving changes in Newspeak][Chapter Saving changes in Newspeak]].
 - Action: click the *[run]* link beside the  ~CounterApp~.  This runs the code in the app (specifically, the ~CounterUI~ code). 
@@ -355,7 +395,7 @@ Next: [[*Deploy CounterApp as standalone app into local Newspeak webserver][Chap
 TL;DR: This section describes 
 
 - How to create and deploy the ~CounterApp~ into the local version of Newspeak.
-- That the deployment is achieved by creating a deployable file, ~CounterApp.vfuel~, in the online Newspeak at https://newspeaklanguage.org/samples/primordialsoup.html?snapshot=HopscotchWebIDE.vfuel and placing it in the running local Newspeak webserver.
+- That the deployment is achieved by creating a deployable file, ~CounterApp.vfuel~, in the online Newspeak at https://newspeaklanguage.org/samples/primordialsoup.html?snapshot=HopscotchWebIDE.vfuel and placing the created ~CounterApp.vfuel~ in the running local Newspeak webserver.
 - How to run the ~CounterApp~ from the local Newspeak webserver, by accessing the  ~CounterApp.vfuel~ from the local HTTP server.
 
 Prerequisites: 
@@ -365,7 +405,7 @@ Prerequisites:
      - In the earlier section  [[*Build, run, and debug the CounterApp in Newspeak (in the online version)]], the two classes, ~CounterApp~ and ~CounterUI~, were saved to the browser local storage. 
      - In this current section, we re-attach to online Newspeak at https://newspeaklanguage.org/samples/primordialsoup.html?snapshot=HopscotchWebIDE.vfuel. 
      - As explained in [[*Saving changes in Newspeak][Chapter Saving changes in Newspeak]], the changes we made in the online version are still stored locally in the browser local storage. 
-     - So, when we re-attach to online Newspeak in this section, the classes ~CounterApp~ and ~CounterUI~ are still available.  We use them to "create the CounterApp" (by saving it "as victory fuels" - that is, as file ~CounterApp.vfuel~) which is the app. 
+     - So, when we re-attach to online Newspeak in this section, the classes ~CounterApp~ and ~CounterUI~ are still available.  We use them to "create the CounterApp" (by saving it "as victory fuel" - that is, as file ~CounterApp.vfuel~) which is the app. 
      - This app - the  file ~CounterApp.vfuel~ - can then be copied to the serving directory of local Newspeak, and can be opened from there.
 2.  We have installed the local version of Newspeak by following the section [[*Download, install, and start a local Newspeak webserver]].*
 
@@ -475,10 +515,10 @@ As a look ahead summary we can say that
 - Every computation in Newspeak starts at an instance of a top level class. Instances of top level classes are called modules.
 - Modules can be packaged and distributed.
 - Dependencies are also modules (which some distributed module depends on).
-- The ~manifest~ and ~platform~ objects are the vehicles of bringing dependencies to objects at runtime by passing them to some "convention" API methods to modules.
+- The ~manifest~ and ~platform~ objects are the vehicles of bringing dependencies to objects at runtime by passing them to modules' "convention methods".
 - From modules, the dependencies are also available to the distributed module's nested classes and objects. 
 
-Later sections decribe the process of bringing dependencies into a Newspeak programs. We use the /manifest/ passed to module APIs, from the manifest, dependency classes are stored on slots ("imported"), later picked up from slots when needed to instantiate.  [[*Modules: Application, library, test, general][Modules: Application, library, test, general]], the recipy section [[*Newspeak recipy for writing modules API][Newspeak recipy for writing modules API]], and the [[*Hello World in Newspeak][Hello World in Newspeak]] and other sections are largely about bringing dependencies into modules and objects.
+Later sections decribe the process of bringing dependencies into a Newspeak programs. We use the /manifest/ passed to module APIs, from the manifest, dependency classes are stored on slots ("imported"), later picked up from slots when needed to instantiate.  [[*Modules: Application, Library, TestConfiguration, General][Modules: Application, Library, TestConfiguration, General]], the recipy section [[*Newspeak recipy for writing modules API][Newspeak recipy for writing modules API]], and the [[*Hello World in Newspeak][Hello World in Newspeak]] and other sections are largely about bringing dependencies into modules and objects.
 
 
 ** Starting the journey
@@ -498,7 +538,7 @@ Each paragraph below is devoted to a feature that was surprising (to me) or unus
 
 *** Top level classes in the IDE
 
-Top level classes in the IDE are crucial because their instances are Newspeak modules. A Module can play a role of an App or Library.
+Top level classes in the IDE are crucial because their instances are Newspeak modules. A Module can play a role of an Application or Library.
 
 I the IDE, click on the "Newspeak Source" button. We see the word *Root* on top left, and below, a list of class names. 
 
@@ -546,8 +586,8 @@ Creates an instance of "org.apache.SomeClass" at runtime by finding it on CLASSP
 The Newspeak language does not have a /global namespace/ but the Newspeak IDE does have a /global namespace/ - the /Root/ on top of the IDE we have seen in the previous chapter. There is some discussion regarding why that is in [[*Namespaces and existence of global namespace in the IDE][Namespaces and existence of global namespace in the IDE]].
 
 The consequence of /no global namespace in the language/ is that, at runtime (outside of IDE), a Newspeak module class must declare it's dependency on another module class (or module) explicitly, by storing the dependency module definition (or dependency module) on it's module slot! This storing of a dependency on a slot can be looked at as "importing" the dependency.  See how all classes needed at runtime are "imported" by holding on to them on module slots in code samples, including:
-- In [[*4. Hello World App using 3rd party dependency][4. Hello World App using 3rd party dependency]] the ~HelloTranslatorLib~ holds on to the ~HelloTranslator~
-- In [[4. App module: API of module that needs to be distributed as an App][4. App module: API of module that needs to be distributed as an App]] ~RecipyWithDepApp~ holds on to the ~RecipyWithDep~, and ~RecipyNoDep~. 
+- In [[*4. Hello World Application using 3rd party dependency][4. Hello World Application using 3rd party dependency]] the ~HelloTranslatorLib~ holds on to the ~HelloTranslator~
+- In [[4. Application module: API of module that needs to be distributed as an App][4. Application module: API of module that needs to be distributed as an App]] ~RecipyWithDepApp~ holds on to the ~RecipyWithDep~, and ~RecipyNoDep~. 
 
 For the more complete language discussion of what a namespace is, and why a global namespace is not needed in the Newspeak language, see https://gbracha.blogspot.com/2008/12/living-without-global-namespaces.html. 
 
@@ -591,13 +631,15 @@ There is a plus ("+ ") symbol  in the header of some of them.  The reason there 
 
 *** Primary factory methods
 
-We mentioned the methods on top like ~#packageTestsUsing: manifest~ are called the /primary factory methods/.
+We mentioned the methods on the first line of the class declaration such as ~class MyClass packageTestsUsing: manifest~ are termed the /primary factory methods/.
 
-*The core role of a /primary factory method/ is to create slots AND return instances. The difference between a /primary factory method/ and a /factory method/ or an /instance method/ is that ONLY /primary factory method/ can declare slots!*
+*The core role of a /primary factory method/ is to produce instances (and declare and initialize their slots). The difference between a /primary factory method/ and a /factory method/ or an /instance method/ is that ONLY /primary factory method/ can declare in initialize slots!*
 
-*The platform objects (objects that represent the Newspeak system), and / or the dependencies objects or classes (classes that need to be "imported" from the manifest) are passed to the primary factory method and held on slots.  From there, they are available to all nested classes and nested objects of the top level instance!*
+Newspeak language implementation detail: We also mentioned that the /primary factory methods/ are methods on special objects, the 'class factory object'(s).  One such special object is created for each class declaration: for example, when a class declaration ~AMyClass new = ()()~ is loaded or saved in the IDE, one instance of the 'class factory object' named ~AMyClass~ is created.  The role of the special object ~AMyClass~ is to produce instances of ~class AMyClass~
 
-/primary factory method/ names on the /top level classes/ have an eerily similar structure.  I was asking myself why, what do they have in common.  So I listed more of the primary factory method names.  Here is the list of the /primary factory methods/ on some top level classes:
+*The platform objects (objects that represent the Newspeak system), or the dependencies objects or classes (classes that need to be "imported" from the manifest) are passed to the primary factory method and held on slots.  From there, they are available to all nested classes and nested objects of the top level instance!*
+
+The /primary factory method/ names on the /top level classes/ have eerily similar signatures.  I was asking myself why, what do they have in common.  So I listed examples of the primary factory method names.  Here is the list of the /primary factory methods/ on some top level classes:
 
 #+BEGIN_EXAMPLE
 class AccessModifierTesting                 usingPlatform:       platform  testFramework: minitest = (| etc
@@ -619,11 +661,11 @@ We can see that the primary factory methods accept, at first position, one of 2 
 - ~platform~
 - ~manifest~
 
-If the constructor first argument is ~platform~, the constructor name always /starts with/
+If the constructor first argument is ~platform~, the constructor name *always starts with*
 
 - ~#usingPlatform: platform~
 
-If the constructor first argument is ~manifest~, the constructor name is always *exactly* one of
+If the constructor first argument is ~manifest~, the constructor name is *always one of*
 
 - ~#packageUsing: manifest~
 - ~#packageTestsUsing: manifest~ (for tests only)
@@ -716,8 +758,7 @@ See [[*Common and distinct roles of platform and manifest in modules][Chapter Co
 
 *** Common and distinct roles of platform and manifest in modules
 
-TL;DR: ~manifest~ is needed for packaging, ~platform~ is needed at runtime. More details are below, and in the section [[*Modules: Application, library, test, general][Modules: Application, library, test, general]].  
-
+TL;DR: ~manifest~ is needed for packaging, ~platform~ is needed at runtime. More details are below, and in the section [[*Modules: Application, Library, TestConfiguration, General][Modules: Application, Library, TestConfiguration, General]].  
 
 Why are the ~platform~ and ~manifest~ objects so important to appear again and again in the /top level classes' factory parameters/, as seen in [[*Primary factory methods][Primary factory methods]] ?
 
@@ -727,12 +768,12 @@ The common need for both ~manifest~ and ~platform~ stems from modularity.  But w
 
 In [[*Newspeak terminology][Newspeak terminology,]] we saw that the /modules/ are DEFINED AS /instances of top level classes/.
 
-And we saw that there is no global namespace in Newspeak.  Modules need other objects (dependencies) to do useful work.  In Newspeak, for a module to "contain" ANY dependency, such dependency must be on the module instance slot (slot is like a member variable).  Also, at the point of the module construction we MUST supply such dependency.  Because only the /primary factory/ can define slots, the *module factory must be passed everything the module needs from outside*.  
+And we saw that there is no global namespace in Newspeak.  Modules need other objects (dependencies) to do useful work.  In Newspeak, for a module to "contain" ANY dependency, such dependency must be on the module instance slot (slot is like a member variable).  Also, at the point of the module construction we MUST supply such dependency.  Because only the /primary factory/ can define slots, the *module primary factory must be passed everything the module needs from outside*.  
 
 This is where ~platform~ and ~manifest~ come in.  They are "special" in the sense that they supply objects and classes needed by the module.  But each is needed at a special point of the module lifecycle: 
 
 - _The /manifest/ object is needed at packaging step on the system where we create the package_: /manifest/ is passed to the module packaging method such as ~#package(Something)Using: manifest~ which packages dependencies that need to be carried over from the system we are packaging on, to the module artifact that is copied to the deployment platform.
-- _The /platform/ object is needed on the deployment step on the deployment system_, to instantiate the module on the deployment platform, and passed there to the runtime instantiation method such as ~#(buildSomething)usingPlatform: platform~ or ~main: platform args: args~.
+- _The /platform/ object is needed on the deployment step on the deployment system_, to instantiate the module by ~#(buildSomething)usingPlatform: platform~ or perform the module work and passed there to the runtime method such as or ~main: platform args: args~.
 
 
 We can reword the above as follows:
@@ -742,64 +783,74 @@ We already know that any Newspeak object can have only one "slot defining constr
 - App, Library, and Test configuration modules (but not "General modules") have a *primary factory* passing a ~manifest~ in it's API. This /primary factory/ is named similar to ~#package(Something)Using: manifest~.  This factory is called on the system where we create the package to "import" objects and/or their classes during packaging (by placing them to the package artifact which can be delivered over to the runtime system).
 - Any "General" modules (not App, Library, or Test configurations) have a *factory* passing a ~platform~ in it's API. This /primary factory/ is named similar to ~#(buildSomething)usingPlatform: platform~.  This factory is called on the runtime system for module instantiation.  An App, Library, and Test configuration module (where the /primary factory/ is already taken by presence of method passing platform such as ~#package(Something)Using: manifest~) would typically also have this method in it's API, but NOT as a factory, rather as an instance method.
 
-To read more details about which method is used on which module type, and why, follow the next section [[*Modules: Application, library, test, general][Modules: Application, library, test, general]].
+To read more details about which method is used on which module type, and why, follow the next section [[*Modules: Application, Library, TestConfiguration, General][Modules: Application, Library, TestConfiguration, General]].
 
 
-** Modules: Application, library, test, general
+*** Newspeak platform and manifest objects summary
 
-This chapter is in a way the core why I started writing this whole big chapter [[Newspeak is different.  An ide-driven journey around the Newspeak platform]]
+In a nutshell, 
+- We need /manifest/ classes for packaging.  Manifest provides the classes needed to "bring along" (import) in the package.  Those "bring along" or "import" classes may not exist on the end-user system, so they need to be added to the package!
+- We need /platform/ for execution.  Platform provides instances of "system classes".  Those "system classes instances" are assumed to exist on the end-user system, so we do not need to bring them along in the package!
+
+
+** Modules: Application, Library, TestConfiguration, General
+
+TL;DR: This section is the core reason why I started writing the top section [[Newspeak is different.  An ide-driven journey around the Newspeak platform]].  It exploits the /role/s (aka /abilities/, aka /requirements/) any program in most languages on most Operating systems performs: a program must be able to *start execution*, then *instantiate, load or link libraries, then use them*. In addition, any program should be *packageable* for distribution.  Libraries are shareable artifacts.  In Newspeak, programs, libraries, even tests, are instances of top level classes (modules).  In Newspeak, each /role/ a particular module performs, is enabled by providing the module with a "convention method" which performs the /role/.  This section is about the /role/s and the "convention method" signatures for Newspeak modules.
+
+Terminology: We use the name /role/s for what is above described as /role/s (aka /abilities/, aka /requirements/).
 
 *** Application and library in computing
 
-In computing, a program may be an Application (App) or a Library.  This looks arbitrary, but not without merit.  On a high level, we have the following general requirements for an App, and a Library:
+In computing, any program in most languages on most Operating systems must be able to *start execution*, then *instantiate, load or link libraries, then use them*; in addition,  any program should be *packageable* for distribution.  We term each such ability a /role/.  In computing, we tend to separate artifacts into (executable) Application and (linked) Libraries.  We can itemize such roles as follows.
 
-1. An App must be able to *start execution* on the platform to which it is targeted (here, platform in the sense of "Linux platform", "Android platform", "Windows platform", and in our situation, the "Newspeak platform). 
-2. A Library must be able to be *instantiated, loaded or linked, then used*, at least in principle, by the caller App or another Library on that platform.  The library /used/ by an App or another Library is often called a dependency.  The term /used/ implies that the Library is *found* and *connected* to the App or Library which is using it.
-3. In addition, we should be able to *package* both the App and the Library for distribution.
+1. An Application must be able to *start execution* on the platform to which it is targeted (here, platform in the sense of "Linux platform", "Android platform", "Windows platform", and in our situation, the "Newspeak platform"). 
+2. A Library must be able to be *instantiated, loaded or linked, then used*, at least in principle, by the caller Application or another Library on that platform.  The library /used/ by an Application or another Library is often called a dependency.  The term /used/ implies that the Library is *found* and *connected* to the Application or Library which is using it.
+3. In addition, we should be able to *package* both the Application and the Library for distribution (deployment).
 
-So an App needs to provide a facility (API, method) to perform item 1 and 3.  A Library needs to provide a facility to perform item 2 and 3.
 
-From the generic requirements above, App and Library need some way to perform the requirements.  Methods perform requirements, so we need some "convention" methods to perform the requirements 1, 2, 3.  Such convention methods represent an API, are are described in the following section.
+So an Application needs to provide a facility (API, method) to perform /role/s 1 and 3.  A Library needs to provide a facility to perform /role/s 2 and 3.
+
+From the generic /role/s above, both Application and Library need some way to perform the /role/s.  Methods perform /role/s, so we need some "convention methods" to perform the roles 1, 2, 3.  Such "convention methods" represent a public API, described in the following section.
 
 
 *** Application and library API in computing
 
-Following the basic requirements from the previous section [[*Application and library in computing]] in mainstream computing, we need methods such as those below.  The names are arbitrary, but conventional, and represent the APIs understood on the platform:
+Following the basic /role/s from the previous section [[*Application and library in computing]] in mainstream computing, we need  "convention methods" to perform the /role/s 1, 2, 3 in the previous section.  We choose to name such "convention methods" as follows:  (the names are arbitrary, but conventional, and represent the APIs understood on the platform)
 
 - For an App:
-  - To perform requirement 3, /packaging/, let's call the method ~#package~.
-  - To perform requirement 1, /start execution/, let's call the method ~#main~
+  - To perform /role/ 3, /packaging/, let's call the method ~#package~.
+  - To perform /role/ 1, /start execution/, let's call the method ~#main~
 - For a Library:
-  - To perform requirement 3, /packaging/, let's call the method ~#packageLibrary~
-  - To perform requirement 2, /instantiate, load and use by the caller app/, let's call the method ~#build~
+  - To perform /role/ 3, /packaging/, let's call the method ~#packageLibrary~
+  - To perform /role/ 2, /instantiate, load and use by the caller app/, let's call the method ~#build~
 
 A mainstream system has the advantage of access to a global namespace - generally a filesystem via a PATH, CLASSPATH, PYTHONPATH or similar.  We discussed that earlier as well.  Inside any of these methods, during execution, the program can look and find various artifacts it needs on the platform.  If we start the method equivalent to "#main" in Python, inside #main there may be a line of code such as ~from graphics import Rectangle~.  So we need the Rectangle class.  No problem, we go to the classpath, find the namespace /graphics/, there lives the module /graphics/, and the class /Rectangle/ is there.  We load it and continue. 
 
 
 *** Application and library modules in Newspeak
 
-In Newspeak, everything is done via objects.  So App and Library must be an object.  Further, Newspeak starts all operations on the instances of top level classes, that is, on modules. For terminology, see [[*Newspeak terminology][Newspeak terminology]], also [[*Discussion of Modules][Discussion of Modules]].
+In Newspeak, everything is done via objects.  So Application and Library must be an object.  Further, Newspeak starts all operations on the instances of top level classes, that is, on modules. For terminology, see [[*Newspeak terminology][Newspeak terminology]], also [[*Discussion of Modules][Discussion of Modules]].
 
-But Newspeak cannot load anything globally.  If the API for the App and library was as defined above in [[*Application and library API in computing][Application and library API in computing]], applications would not run as there would be no way to bring anything from a construct such as the CLASSPATH.  In more detail if the App's ~#main~ method defined above was to run, and Newspeak would discover the equivalent of "import" (which is slot creation in primary factory methods), it would not be able to find the "imported" dependency module.  It does not have the global namespace or access to the  PATH, CLASSPATH, PYTHONPATH or similar. 
+But Newspeak cannot load anything globally.  If the API for the Application and library was as defined above in [[*Application and library API in computing][Application and library API in computing]], applications would not run as there would be no way to bring anything from a construct such as the CLASSPATH.  In more detail if the App's ~#main~ method defined above was to run, and Newspeak would discover the equivalent of "import" (which is slot creation in primary factory methods), it would not be able to find the "imported" dependency module.  It does not have the global namespace or access to the  PATH, CLASSPATH, PYTHONPATH or similar. 
 
 *The solution is, in Newspeak, all the runtime dependencies (or rather their classes) must be passed to the /primary factory methods/*  
 
 But, how is the solution implemented, in more details? Well, we simply add some objects to the Module primary factory methods.  But which objects? 
 
 - *To build (instantiate) a Library or execute and App*, we need to supply the capabilities of the Newspeak platform.  This IS provided by the /platform object/ analyzed in [[*The platform object][The platform object]].  So _we will pass the /platform/ object to the execution or instantiating methods_.
-- *To package     a Library or an App*, we need to supply all classes the Library or App needs to "carry along" in it's package.  Such "carried along" classes become slots on the module object (the "carried along" classes play the role of "imported classes" in mainstream).  In the IDE, during development of the module we are packaging, we may have been creating our own top level classes (and their nested classes obviously) needed by the module we are packaging.  Those classes do not exist on the end-user system where we will send the package for building or execution.  So all those added classes have to be "carried along" in the package.  We have seen all available classes in the IDE, including those we may have added, are supplied by [[*The manifest object][The manifest object]].  So _we will pass the /manifest/ object to the packaging methods_.
+- *To package     a Library or an App*, we need to supply all classes the Library or Application needs to "carry along" in it's package.  Such "carried along" classes become slots on the module object (the "carried along" classes play the role of "imported classes" in mainstream).  In the IDE, during development of the module we are packaging, we may have been creating our own top level classes (and their nested classes obviously) needed by the module we are packaging.  Those classes do not exist on the end-user system where we will send the package for building or execution.  So all those added classes have to be "carried along" in the package.  We have seen all available classes in the IDE, including those we may have added, are supplied by [[*The manifest object][The manifest object]].  So _we will pass the /manifest/ object to the packaging methods_.
 
 
-So, Newspeak, to supply dependencies, (due to intentional lack of global namespace), extends the signatures of requirements 1, 2, 3 from previous chapter. To provide "carry over" (imported) classes from ~manifest~, and system classes from ~platform~, Newspeak uses the following signature names:
+So, Newspeak, to supply dependencies, (due to intentional lack of global namespace), extends the signatures of /role/s 1, 2, 3 from previous chapter. To provide "carry over" (imported) classes from ~manifest~, and system classes from ~platform~, Newspeak uses the following signature names:
 
 - *For an App*:
-  - To perform requirement 3, /packaging/, Newspeak uses the primary factory method ~#packageUsing: manifest~.
-  - To perform requirement 1, /start execution/, Newspeak uses the instance method ~#main: platform args: args~
+  - To perform /role/ 3, /packaging/, Newspeak uses the primary factory method ~#packageUsing: manifest~.
+  - To perform /role/ 1, /start execution/, Newspeak uses the instance method ~#main: platform args: args~
 - *For a Library*:
-  - To perform requirement 3, /packaging/, Newspeak uses the primary factory method ~#packageLibraryUsing: manifest~
-  - To perform requirement 2, /instantiate, load and use by the caller app/, Newspeak uses the instance method ~#buildUsing: platform~
+  - To perform /role/ 3, /packaging/, Newspeak uses the primary factory method ~#packageLibraryUsing: manifest~
+  - To perform /role/ 2, /instantiate, load and use by the caller app/, Newspeak uses the instance method ~#buildUsing: platform~
 
-These four methods are core "convention" methods for all Newspeak modules which we want to behave as either Apps or Libraries.
+These four methods are core "convention methods" for all Newspeak modules which we want to behave as either Apps or Libraries.
 
 
 *** Newspeak modules API summary
@@ -808,40 +859,42 @@ This section is a summary and reference of Application, Library, and Test config
 
 *As explained in the previous section, in Newspeak, compared to a mainstream platform which has access to global namespace, we have to change the API signatures described in [[*Application and library API in computing][Application and library API in computing]] by passing the /platform/ and the /manifest/ object.*  We also change the signatures to match actual Newspeak names.
 
-*Here are the APIs which define whether a Newspeak module is an App, a Library, a Test Configuration, or a General module*.  The requirements 1, 2, 3 refer to the requirements (roles) in  [[*Application and library API in computing][Application and library API in computing]]. Please note that Newspeak is not using the terms "App module", "Library module", "General module", or "Test Configuration module". I find such classification of modules useful though.
+*Here are the APIs which define whether a Newspeak module is an App, a Library, a TestConfiguration, or a General module*.  The /role/s 1, 2, 3 refer to the /role/s (roles) in  [[*Application and library API in computing][Application and library API in computing]]. Please note that Newspeak is not using the terms "App module", "Library module", "General module", or "TestConfiguration module". I find such classification of modules useful though.
 
-- *Newspeak App module* is defined by the presence of:
-  - Primary factory method ~#packageUsing: manifest~ which performs requirement 3, /packaging/. 
-    - Implementations should set pull needed classes from the manifest and place then on slots to package them on the app artifact.  App slots serve as "imports".
-  - Instance method ~#main: platform args: args~ which performs requirement 1, /start execution/.
+- *Newspeak Application module* is defined by the presence of:
+  - Primary factory method ~#packageUsing: manifest~ which performs /role/ 3, /packaging/. 
+    - Implementations should set pull needed classes from the manifest and place then on slots to package them on the app artifact.  Application slots serve as "imports".
+  - Instance method ~#main: platform args: args~ which performs /role/ 1, /start execution/.
     - Implementations should instantiate, from slot classes and platform objects, all object needed to run the app, then call methods on them which perform "running the app".  Examples of needed objects instantiating:
       - /Slot1 usingPlatform: platform [and: otherObjects]/ if Slot1 is a General module class
       - /Slot2 buildUsing: platform/ if Slot1 is a Library module class
 
         todo-00 : finish going over (build) and similar methods
 - *Newspeak Library module* is defined by the presence of:
-  - Primary factory method ~#packageLibraryUsing: manifest~ which performs requirement 3, /packaging/.
+  - Primary factory method ~#packageLibraryUsing: manifest~ which performs /role/ 3, /packaging/.
     - Implementations should put all classes needed to build the distributed module to slots, from manifest.  Needed classes not on manifest should be created by calling A3RdPartyDependdency>>#packageLibraryUsing: manifest 
-  - Instance method ~#buildUsing: platform~ which performs requirement 2, /instantiate, load and use by the caller app/.
-    - Implementations should build, then return a working instance of the module we want to distribute, NOT the instance on which this #buildUsing is defined!! Building the distributed instance will possibly call other needed dependencies #buildUsing: or #usingPlatform" methods.  Examples of how needed dependencies :
+  - Instance method ~#buildUsing: platform~ which performs /role/ 2, /instantiate, load and use by the caller app/.
+    - Implementations should build, then return a working instance of the module we want to distribute, NOT the instance on which this #buildUsing is defined!! Building the distributed instance will possibly call other needed dependencies ~#buildUsing: platform~ or ~#usingPlatform: platform~ methods.  Examples of how needed dependencies :
       - /Slot1 usingPlatform: platform [and: otherObjects]/ if Slot1 is a General module class
       - /Slot2 buildUsing: platform/ if Slot1 is a Library module class
-    - Important note:  *If we want to distribute an existing module MyModule1 (this may or may not be a library module!), we have to create a separate top level Library Module, MyModule1Library for the purpose of distributing MyModule1*! The #buildUsing: implementation we are talking about here, is the  "MyModule1Lib>>#buildUsing:" method! -  NOT the  "MyModule1>>#buildUsing:" method, as this may not even exist on MyModule1!
+    - Important note:  *If we want to distribute an existing module MyModule1 (this may or may not be a library module!), we have to either*:
+      - Convert MyModule1 to MyLibrary1 
+      - create a separate top level Library Module, MyModule1Lib for the purpose of distributing MyModule1. The #buildUsing: implementation we are talking about here, is the  "MyModule1Lib>>#buildUsing:" method! -  NOT the  "MyModule1>>#buildUsing:" method, as this may not even exist on MyModule1!
     
-- *Newspeak Test Configuration module* by convention ends with "Configuration", and is defined by the presence of:
-  - Primary factory method ~#packageTestsUsing: manifest~ which performs requirement 3, /packaging/
+- *Newspeak TestConfiguration module* by convention ends with "Configuration", and is defined by the presence of:
+  - Primary factory method ~#packageTestsUsing: manifest~ which performs /role/ 3, /packaging/
     - Implementations should put on slot the class of the Module being tested.
-  - Instance method ~#testModulesUsingPlatform: p minitest: m~  which performs requirement 2, /instantiate/, 
+  - Instance method ~#testModulesUsingPlatform: p minitest: m~  which performs /role/ 2, /instantiate/, 
     - Implementations should call return instance of the tested class.  Example: ~^{AccessModifierTesting usingPlatform: platform testFramework: minitest}~
-  - *Note:* Tests, by convention, need two classes to be created. If class MyTestModule has the test methods, MyTestModuleConfiguration must be created.  This is the class we are talking about in this section. There are no "convention" methods on the test module MyTestModule. 
+  - *Note:* Tests, by convention, need two classes to be created. If class MyTestModule has the test methods, MyTestModuleConfiguration must be created.  This is the class we are talking about in this section. There are no "convention methods" on the test module MyTestModule. 
       
 - *Newspeak General module* is /any other module/ - any module that does not have any of the above API.  General modules *do not have any convention API name*.
   - However, we often find they have a /primary factory method/ named *similar to* ~#usingPlatform: platform [and: otherObjects]~ which create a working instance. Note that the [and: otherObjects] portion is completely free, it can be named differently.  
     - These modules can for example be 
       - modules we distribute using the /Library Distribution module/ 
-      - tests we run using the /Test Configuration module/
+      - tests we run using the /TestConfiguration module/
 
-Note that on App and Library modules, the methods which *perform the packaging*, are /primary factory methods/ (~manifest~ is passed to them), while the methods which perform *execution or build* are /instance methods/ (~platform~ is passed to them).  The reason is, a /primary factory method/ is the only method which can store stuff in slots! So any classes needed to be "carried along" for packaging (pulled from manifest then "imported" on the target platform during construction), must be placed on slots during the primary factory method call.
+Note that on Application and Library modules, the methods which *perform the packaging*, are /primary factory methods/ (~manifest~ is passed to them), while the methods which perform *execution or build* are /instance methods/ (~platform~ is passed to them).  The reason is, a /primary factory method/ is the only method which can store stuff in slots! So any classes needed to be "carried along" for packaging (pulled from manifest then "imported" on the target platform during construction), must be placed on slots during the primary factory method call.
 
 Note that the IDE uses the presence of certain methods to show appropriate action links.  For example,
 
@@ -849,70 +902,79 @@ Note that the IDE uses the presence of certain methods to show appropriate actio
 - If the method ~#packageTestsUsing: manifest~ exists in the module, IDE shows links to *[run tests] [show tests]*
 
 
-*** Newspeak modules API zoo 
+*** Newspeak modules API zoo
 
-This section shows a terse list of "convention" API for various module types, with the role of the API. 
+TL;DR: This section shows a table of Newspeak "Module type"s in rows, and "convention method" signatures each "Module type" must provide.  Given a "convention method" signature, we know the /role/ or /role/s the method performs.  The table is a summary of conclusions of the above section [[*Newspeak modules API summary][Newspeak modules API summary]].  For motivation of the need for "convention methods", see the top section [[Newspeak is different.  An ide-driven journey around the Newspeak platform]], in particular it's subsection [[*Modules: Application, Library, TestConfiguration, General][Modules: Application, Library, TestConfiguration, General]],
 
-See [[*Newspeak modules API summary][Newspeak modules API summary]] for roles of the API methods. For motivation of the APIs, see earlier sections such as [[*Modules: Application, library, test, general][Modules: Application, library, test, general]] and the whole section [[Newspeak is different.  An ide-driven journey around the Newspeak platform]].
+In general computing there are artifacts, performing /role/s of *applications*, *libraries*, and *tests*.  In Newspeak, equivalents of such artifacts are uniform: they are all instances of a specific module.  We say that a module instance has a "Module type" in Newspeak, if the module instance has all required "convention method"s for all /role/(s) required by the "Module type".
 
-The table below summarizes APIs of all type of modules 
+Terminology: "Module type" is not a formal term in Newspeak.  We use the term "Module type" to group module instances according to their "convention methods" - in other words, according to their /role/s.  Also, in text, we use the brief /Application module/ instead of /Application module type/, /General module/ instead of /General module type/ etc.
 
-| Module type                            | Primary factory method. Role=package                | Note                          | Sep | Instance method. Role=build(Lib) or execute(App) | Note                                                                                                             |
-|----------------------------------------+-----------------------------------------------------+-------------------------------+-----+--------------------------------------------------+------------------------------------------------------------------------------------------------------------------|
-| Library                                | #packageLibraryUsing: manifest                      |                               | -   | #buildUsing: platform                            |                                                                                                                  |
-| App                                    | #packageUsing: manifest                             |                               | -   | #main: platform args: args                       | calls General modules Primary factory methods, and/or Library module method, then appropriate methods to run app |
-| Test Configuration                     | #packageTestsUsing: manifest                        |                               | -   | #testModulesUsingPlatform: platform minitest: m  | calls Test module Factory method which runs tests                                                                |
-|----------------------------------------+-----------------------------------------------------+-------------------------------+-----+--------------------------------------------------+------------------------------------------------------------------------------------------------------------------|
-|----------------------------------------+-----------------------------------------------------+-------------------------------+-----+--------------------------------------------------+------------------------------------------------------------------------------------------------------------------|
-|                                        | Primary factory method. Role=instantiate            |                               | -   | Instance method.                                 |                                                                                                                  |
-|----------------------------------------+-----------------------------------------------------+-------------------------------+-----+--------------------------------------------------+------------------------------------------------------------------------------------------------------------------|
-| General, needs platform + other module | similar to #usingPlatform: platform [andModule: m1] | Note: name is completely free | -   | as needed                                        |                                                                                                                  |
-| General, needs only other module       | similar to #usingModule: m1                         | Note: name is completely free | -   | as needed                                        |                                                                                                                  |
-| General, with no needs (dependencies)  | #new                                                |                               | -   | as needed                                        |                                                                                                                  |
-| Test                                   | #usingPlatform: platform testFramework: minitest    | runs tests                    | -   | as needed                                        |                                                                                                                  |
+The table below summarizes, for each "Module type" in Newspeak, the "convention methods" names and the /role/(s) each such method performs.
+
+
+| Module type                              | Convention primary factory method.                    | Note                          | Sep | Convention instance method.                     | Notes: What the code in column "Instance method" typically does |
+|                                          | Roles=instantiate + package(import dependencies)      |                               |     | Role=build(Library), execute(Application),      |                                                                 |
+|------------------------------------------+-------------------------------------------------------+-------------------------------+-----+-------------------------------------------------+-----------------------------------------------------------------|
+| Library (no example in code)             | #packageLibraryUsing: manifest                        |                               | -   | #buildUsing: platform                           |                                                                 |
+| Application                                      | #packageUsing: manifest                               |                               | -   | #main: platform args: args                      | instantiates classes on slots then calls methods to run app     |
+| TestConfiguration                       | #packageTestsUsing: manifest                          |                               | -   | #testModulesUsingPlatform: platform minitest: m | instantiates Test classes and returns their list (does not run) |
+|------------------------------------------+-------------------------------------------------------+-------------------------------+-----+-------------------------------------------------+-----------------------------------------------------------------|
+|------------------------------------------+-------------------------------------------------------+-------------------------------+-----+-------------------------------------------------+-----------------------------------------------------------------|
+| Module type                              | Convention primary factory method.                    |                               | -   | Convention instance method                      |                                                                 |
+|                                          | Role=instantiate                                      |                               | -   | is not required, so no defined role             |                                                                 |
+|------------------------------------------+-------------------------------------------------------+-------------------------------+-----+-------------------------------------------------+-----------------------------------------------------------------|
+| General, needs platform + [other module] | #usingPlatform: platform [andModule: m1] (or similar) | Note: name is completely free | -   | not required                                    |                                                                 |
+| General, needs only other module         | #usingModule: m1                         (or similar) | Note: name is completely free | -   | not required                                    |                                                                 |
+| General, with no needs (dependencies)    | #new                                                  |                               | -   | not required                                    |                                                                 |
+| Test                                     | #usingPlatform: platform testFramework: minitest      | runs tests                    | -   | not required                                    |                                                                 |
 
 Notes:
 
-- If a top level class has an instance method which name starts with "build", "main" or "test", it indicates the class is special in the sense it is an app, a library, or a test. To be precise, the method names must be standard names listed for Library, App and Test Configuration: ~#buildUsing: platform~, ~#main: platform args: args~, or ~#testModulesUsingPlatform: platform minitest: m~.
-- The ~#usingPlatform: platform [andModule: m1]~ is an example of a primary factory method which is passed the platform and a dependency which is module m1. The point is the the start of the method name ~#usingPlatform:~ is fixed, other parameters can be added for dependencies, in any free form.
-- For an App module: When we click the [run] button in the IDE, the IDE calls the App's primary factory method ~#packageUsing: manifest~, then the Instance method ~#main: platform args: args~ which runs the app.
-- A Library module and App module play a similar role. However, an App module is intended to be *packaged, distributed and executed* as a standalone App, while an Library module is intended to be *packaged, distributed and included in App modules or other library modules*.
+- The headings for "Module type" Library, App, and TestConfiguration are separated from the headings for "Module type" General, and Test as the /role/s differ:
+  - The modules of type Library, App, TestConfiguration  require multiple /roles/, provided by two required "convention method"s for each type.
+  - The modules of type General and Test only requires the /role/=instantiate, provided by only one required "convention method" for each type.
+- For any Application module: When we click the [run] button in the IDE, the IDE calls the Application's primary factory method ~#packageUsing: manifest~, then the instance method ~#main: platform args: args~ which runs the app in the IDE.   Similarly, when we click on the [deploy] button in the IDE, the same methods are (eventually) called, followed by calling serialization methods, which serialize the instance to bytes and save them as ~.vfuel~ file.
+- A Library module and an Application module play a similar role.  However, an Application module is intended to be *packaged, distributed and executed* as a standalone App, while an Library module is intended to be *packaged, distributed and included in Application modules or other library modules*.
+- For any General module: The method signatures ARE NOT FIXED BY CONVENTION, they are only *softly conventional*. That helps humans to distinquish their invocations from nested classes. The signature ~#usingPlatform: platform [andModule: m1]~ is an example of a primary factory method which is passed the platform and an import (dependency) which is module m1.
+- ~TestRunner.ns~ is later packaged(instantiated), then called ~main:args:~ which runs Test instances returned from ~#testModulesUsingPlatform: platform minitest: m~
 
 
-**** App module "recipy"
+*** Recipies for modules creation and conversion, by module type
 
-We can provide a "recipy" for how any App module should be written:
+TL;DR: This section provides some guidance of how to code each module type, and convert between them.  Conversion is sometimes needed when a General module grows useful and we want to convert it to an Application or Library module.
+
+**** Application module recipy
+
+We can provide a "recipy" for how any Application module should be written:
 
 - In the primary factory method ~#packageUsing: manifest~, store any "carry along" (imported) classes from the manifest map on the slots
 - In the instance method ~#main: platform args: args~
-  - First use all (imported) classes on slots to instantiate and build their modules:
-    - For each slot which is a general module class, call its primary factory methods, named similar to ~#usingPlatform: platform [andModule: m1]~, to build the module (dependency)
-    - For each slot which is a library module class, call its build instance methods, named similar to ~#buildUsing: platform~, to build the 3rd party module (dependencies) 
-  - Next, on the instances created just before, call appropriate methods to run the app
+  - First use all (imported) classes on slots to instantiate them:
+    - For each slot which is a General module class, call its primary factory methods, to build the module (dependency). The General module primary factory signature may be similar to ~#usingPlatform: platform [andModule: m1]~, or ~#usingModule: m1~, or just ~#new~.
+    - For each slot which is a Library module class, call its build instance methods, named similar to ~#buildUsing: platform~, to build the 3rd party module (dependencies) 
+  - Next, on the instances created just before, call appropriate methods to run the Application.  If the application has a UI, it usually needs to instantiate its Model and Subject, then invoke code similar to ~platform hopscotch HopscotchWindow openSubject: subjectInstance~. See, for example, [[* When the app runs in the *#main:args:* method, instantiate the *CheckedItemUI*][When the app runs in the *#main:args:* method, instantiate the *CheckedItemUI*]].
     
 
-*** A recipy to convert a General module to an App or Library module
+**** A recipy to convert a General module to an Application or Library module
 
-Often, we start developing a module (more precisely, a module declaration, the source of a top level class) for "internal" use, with no need to "ship" it as an App or a Library for others to use. Such module would be built as a General module with methods described above in [[* Newspeak modules API zoo][Newspeak modules API zoo]]. Later, we may decide to make this module available to others as a library or an app. This step of converting a General module available as a library or an app, _requires adding specific API methods_, which identify the General module we started with as an App module or a Library module.  
+Often, we start developing a module (more precisely, a module declaration, the source of a top level class) for "internal" use, with no need to "ship" it as an Application or a Library for others to use. Such module would be built as a General module with methods described above in [[* Newspeak modules API zoo][Newspeak modules API zoo]]. Later, we may decide to make this module available to others as a library or an app. This step of converting a General module available as a Library or an Application, _requires adding specific API methods_, which identify the General module we started with as an Application module or a Library module.  
+Note that initially, our General module has a primary factory method named similar to ~#usingPlatform: platform:~. From the API naming "convention" in [[* Newspeak modules API zoo][Newspeak modules API zoo]], we can deduce a "recipy" to convert a General module to an Application or a Library, as follows:
 
-This section provides a "recipy" to convert a General module to an App or Library module.
-
-Note that initially, our General module has a primary factory method named similar to ~#usingPlatform: platform:~. From the API naming "convention" in [[* Newspeak modules API zoo][Newspeak modules API zoo]], we can deduce a "recipy" to convert a General module to an App or a Library, as follows:
-
-- App: If we want to convert a General module to an App,     we need to
-  - move the primary factory method to an instance method named ~#main: platform args: args~
-  - add a primary factory method ~#packageUsing: manifest~. The code of this new primary factory method should generally declare a slot for each class that will be needed at runtime, "import" (pull) the class from the manifest, and store it on the slot.
-- Library: If we want to convert a General module to a  Library, we need to
+- App: If we want to convert a General module to an Application, we need to
+  - move the primary factory method from the General module to an instance method ~#main: platform args: args~.
+  - add a primary factory method ~#packageUsing: manifest~ and store any needed classes from manifest. The code of this new primary factory method should generally declare a slot for each class that will be needed at runtime, "import" (pull) the class from the manifest, and store it on the slot.
+- Library: If we want to convert a General module to a Library, we need to
   - move the primary factory method to an instance method named ~#buildUsing: platform~
   - add a primary factory method ~#packageLibraryUsing: manifest~.
 
-*** A recipy to wrap a General module to an App or Library module
+**** A recipy to wrap a General module to an Application or Library module
 
-An alternative to the previous section could be, that the General module class we created remains unchanged, and we add a "wrapper" Library module or a "wrapper" App module. In this situation, our original General module code remains unchanged.
+An alternative to the previous section could be, that the General module class we created remains unchanged, and we add a "wrapper" Library module or a "wrapper" Application module. In this situation, our original General module code remains unchanged.
 
-Becaus unlike the previous section, we are adding new top level modules, let's give the modules names. Let us assume the original General module is named ~MyModule~. Recall that, as in the previous section, our General module ~MyModule~ has a primary factory method named similar to ~#usingPlatform: platform:~. 
+Becaus unlike the previous section, we are adding new top level modules, let's give the modules names. Let us assume the original General module is named ~MyModule~ and has a primary factory method, named ~#usingPlatform: platform:~, and instance method ~#doWork~ which performs work for some role useful for client applications. 
 
-- If we want to wrap ~MyModule~ as an App, we could add the App class wrapper similar to
+- If we want to wrap ~MyModule~ as an App, we could add the Application class wrapper similar to
   #+begin_src 
   class MyModuleApp packageUsing: manifest = (
     |
@@ -924,7 +986,7 @@ Becaus unlike the previous section, we are adding new top level modules, let's g
        |myModule|
        myModule:: MyModule 
                       usingPlatform: platform. 
-       .. call a method on myModule that does it's work ..
+       myModule doWork.
     )
   )
   #+end_src
@@ -946,16 +1008,10 @@ Becaus unlike the previous section, we are adding new top level modules, let's g
   )
   #+end_src
 
-*** Newspeak platform and manifest objects summary
-
-In a nutshell, 
-- We need /manifest/ classes for packaging.  Manifest provides the classes needed to "bring along" (import) in the package.  Those "bring along" or "import" classes may not exist on the end-user system, so they need to be added to the package!
-- We need /platform/ for execution.  Platform provides instances of "system classes".  Those "system classes instances" are assumed to exist on the end-user system, so we do not need to bring them along in the package!
-
 
 ** Newspeak recipy for writing modules API
 
-Sections above attempted to discover and describe modules API, see [[*Newspeak modules API summary][Newspeak modules API summary]]. This section will attempt to give a "recipy" for the method signatures each module type (Library module, General module, App module) requires.
+Sections above attempted to discover and describe modules API, see [[*Newspeak modules API summary][Newspeak modules API summary]]. This section will attempt to give a "recipy" for the method signatures each module type (Library module, General module, Application module) requires.
 
 **** 1. General module with NO dependencies: API of module with no dependencies
 
@@ -1044,10 +1100,7 @@ In this example, we show the second method - we add a "wrapper library" for ~Rec
   - primary factory method ~#packageLibraryUsing: manifest~, which allows to "import" the ~RecipyWithDep~ and the other needed dependency ~RecipyNoDep~
   - Instance method        ~#buildUsing: platform~, which allows dependencies to be pulled at construction time
 
-Note that in this case, /#buildUsing: platform/ must not be added any other arguments. Any "carry along" (imported) classes that may be needed at build time, must be saved on slots in the /#packageLibraryUsing: manifest/ primary factory method.
-
-
-in [[* Newspeak modules API zoo][Newspeak modules API zoo]]. todo-00
+Note that in this case, /#buildUsing: platform/ must not be added any other arguments. Any "carry along" (imported) classes that may be needed at build time, must be saved on slots in the /#packageLibraryUsing: manifest/ primary factory method.  See also [[* Newspeak modules API zoo][Newspeak modules API zoo]].
 
 ***** Wrapper for RecipyWithDep:
 
@@ -1092,7 +1145,7 @@ sortListTranslator translate: {' World'. 'Hello'}.
 #+end_src
 
 
-**** 4. App module: API of module that needs to be distributed as an App
+**** 4. Application module: API of module that needs to be distributed as an App
 
 This next step describes an example of a module which is intended to be distributable as an App. In Newspeak, *this means such module must be both packageble and runnable* - the roles of "packageble" and "runnable" are achieved by implementing the 2 methods below. We call such modules informally /App modules/.
 
@@ -1105,28 +1158,28 @@ If we need our module ~RecipyWithDep~ to be packagable as an App:
 
 *Note 1:*
 
-We sometimes see Newspeak App modules lacking the ~#main: platform args: args~ method. Such modules are used as library modules.
+We sometimes see Newspeak Application modules lacking the ~#main: platform args: args~ method. Such modules are used as library modules.
 
 *Note 2:*
 
-Compare the parallel role between the following methods for a Library module and an App module:
+Compare the parallel role between the following methods for a Library module and an Application module:
 
-| Library module standard method | is              |                     | App module standard method | is              |
+| Library module standard method | is              |                     | Application module standard method | is              |
 |--------------------------------+-----------------+---------------------+----------------------------+-----------------|
 | #packageLibraryUsing: manifest | primary factory | - role is package - | #packageUsing: manifest    | primary factory |
 | #buildUsing: platform          | instance method | - role is build -   | #main: platform args: args | instance method |
 
-The primary factory methods for Library and App have similar names, both serve to package the library or the app on the "source" system.
+The primary factory methods for Library and Application have similar names, both serve to package the library or the app on the "source" system.
 
 The instance methods serve to build (for Library) or execute (for App).
 
-If an App uses a Library, the library's (build) ~#buildUsing: platform~ would be called in the App's ~#main: platform args: args~ method to build (create) the library's instance.
+If an Application uses a Library, the library's (build) ~#buildUsing: platform~ would be called in the App's ~#main: platform args: args~ method to build (create) the library's instance.
 
 ***** Example:
 
-We will create an App module ~RecipyWithDepApp~, which is a bit more complex App, in the sense it uses a pre-existing library module, ~RecipyWithDep~, defined in [[*3. Library module: API of module that needs to be distributed for use in other modules][3. Library module: API of module that needs to be distributed for use in other modules]].
+We will create an Application module ~RecipyWithDepApp~, which is a bit more complex App, in the sense it uses a pre-existing library module, ~RecipyWithDep~, defined in [[*3. Library module: API of module that needs to be distributed for use in other modules][3. Library module: API of module that needs to be distributed for use in other modules]].
 
-To create a packageble and runnable App module ~RecipyWithDepApp~, it must have a primary factory method ~#packageUsing: manifest~ and an instance method ~#main: platform args: args~.  The App must also store at it's slots everything the ~RecipyWithDep~ needs for it's instantiation. Here is how the code may look:
+To create a packageble and runnable Application module ~RecipyWithDepApp~, it must have a primary factory method ~#packageUsing: manifest~ and an instance method ~#main: platform args: args~.  The Application must also store at it's slots everything the ~RecipyWithDep~ needs for it's instantiation. Here is how the code may look:
 
 #+begin_src 
 class RecipyWithDepApp packageUsing: manifest = (
@@ -1147,15 +1200,15 @@ class RecipyWithDepApp packageUsing: manifest = (
 )
 #+end_src
 
-Note how the App stores any "carry along" (imported) classes from the manifest on slots during packaging in the ~packageUsing: manifest~ factory, then instantiate the "carry along" classes in ~#main: platform args: args~ at runtime. For a library, this happ build time). 
+Note how the Application stores any "carry along" (imported) classes from the manifest on slots during packaging in the ~packageUsing: manifest~ factory, then instantiate the "carry along" classes in ~#main: platform args: args~ at runtime. For a library, this happ build time). 
 
 Also note when we converted the General module to an App:
   - In the General module ~RecipyWithDep~, the ~platform~ object is passed to the /primary factory method/ ~#usingPlatform: platform:~. 
-  - In the App module     ~RecipyWithDepApp~, the ~platform~ object is passed to the /instance method/ ~#main: platform args: args~.
+  - In the Application module     ~RecipyWithDepApp~, the ~platform~ object is passed to the /instance method/ ~#main: platform args: args~.
 
-See the section [[* A recipy to convert a General module to an App or Library module][A recipy to convert a General module to an App or Library module]] for a general recipy to convert a General module such as  ~RecipyWithDep~ to an App such as ~RecipyWithDepApp~.
+See the section [[* A recipy to convert a General module to an Application or Library module][A recipy to convert a General module to an Application or Library module]] for a general recipy to convert a General module such as  ~RecipyWithDep~ to an Application such as ~RecipyWithDepApp~.
 
-Also note, as you add the App class ~RecipyWithDepApp~ in the IDE, (using the "+ " button ), the IDE shows  *[deploy] [configurations] [run] [debug]* links beside it, recognizing the top level class as an App. 
+Also note, as you add the Application class ~RecipyWithDepApp~ in the IDE, (using the "+ " button ), the IDE shows  *[deploy] [configurations] [run] [debug]* links beside it, recognizing the top level class as an App. 
 
 
 **** TODO 5. Test module: TODO 
@@ -1189,7 +1242,7 @@ Steps to run Hello World from Workspace
 
 *** 2. Hello World from general module
 
-In this section, we will build a Hello World which is a /module/ (a /instance of top level class/ as we know already).  The [[*Newspeak modules API summary][Newspeak modules API summary]] section would classify this as "General" module, because it does not have any of the special convention methods in it's API.  The only method of this class is it's default /primary factory method/ ~#new~.
+In this section, we will build a Hello World which is a /module/ (a /instance of top level class/ as we know already).  The [[*Newspeak modules API summary][Newspeak modules API summary]] section would classify this as "General" module, because it does not have any of the special "convention methods" in it's API.  The only method of this class is it's default /primary factory method/ ~#new~.
 
 Steps to create the Hello World general module in the Newspeak IDE's
 
@@ -1222,11 +1275,11 @@ For a more complex example of a general module, see [[*1. General module with NO
 
 *** 3. Hello World App
 
-By now, we know that /modules/ are /instances of top level classes/, see [[*Discussion of Modules][Discussion of Modules]].  In [[*Newspeak modules API summary][Newspeak modules API summary]] we have shown that providing modules with convention API methods understood by tools such as the IDE, modules can behave as Apps, Libraries, or Tests.
+By now, we know that /modules/ are /instances of top level classes/, see [[*Discussion of Modules][Discussion of Modules]].  In [[*Newspeak modules API summary][Newspeak modules API summary]] we have shown that when modules are given "convention methods", modules can uniformly behave as Apps, Libraries, or TestConfigurations - on behalf of other modules, and IDEs.  This is enabled by uniform understanding of the "convention methods" by the Newspeak ecosystem.
 
-The [[*Newspeak modules API summary][Newspeak modules API summary]] describes the API for a module to be able to behave as an App on the Newspeak platform. 
+The [[*Newspeak modules API summary][Newspeak modules API summary]] describes the API for a module to be able to behave as an Application on the Newspeak platform. 
 
-So to create a Newspeak App (as opposed to a general module or a library), we need different API. Here are the steps to create the ~HelloWorldApp~ *application* in the Newspeak IDE's
+So to create a Newspeak Application (as opposed to a general module or a library), we need different API. Here are the steps to create the ~HelloWorldApp~ *application* in the Newspeak IDE's
 
 - As shown in the previous section, click the "+ ", paste the following class to the IDE, and click the "Accept" button.
   #+begin_src 
@@ -1237,20 +1290,20 @@ So to create a Newspeak App (as opposed to a general module or a library), we ne
     )
   )
   #+end_src
-- You should see the class in the top classes list.  However, (as opposed to previous section ~HelloWorldGeneralModule~), our class has the links *[deploy] [configurations] [run] [debug]* beside it.  This is because the presence of ~#packageUsing: manifest~ factory makes the class an App by convention.  The tools (the IDE) understand this message and use it to show actions that can be done with an App: run, debug, deploy, show available configurations.  In addition, the presence of another method, the ~#main: platform args: args~ makes the module runnable as a standalone App. 
+- You should see the class in the top classes list.  However, (as opposed to previous section ~HelloWorldGeneralModule~), our class has the links *[deploy] [configurations] [run] [debug]* beside it.  This is because the presence of ~#packageUsing: manifest~ factory makes the class an Application by convention.  The tools (the IDE) understand this message and use it to show actions that can be done with an App: run, debug, deploy, show available configurations.  In addition, the presence of another method, the ~#main: platform args: args~ makes the module runnable as a standalone App. 
 - Click the *[run]* link to run the app inside the IDE.  The IDE calls first the ~#packageUsing: manifest~, then the ~#main: platform args: args~ which runs, and the text 'Hello World from HelloWorldApp' will be appended after the page body.
   [[file:img/newspeak---a-few-notes.org-hello-world-app-output.png]]
 
 
 *Next, we will show how to deploy our ~HelloWorldApp~ as a standalone App.*
 
-From the section [[*Deploy CounterApp as standalone app into local Newspeak webserver]] we know an App can be packaged and deployed standalone into a local Newspeak webserver.
+From the section [[*Deploy CounterApp as standalone app into local Newspeak webserver]] we know an Application can be packaged and deployed standalone into a local Newspeak webserver.
 
 Follow steps below to create a deployable app ~HelloWorldApp.vfuel~, then deploy it in a local Newspeak installation.
 
 - Action: In the class list, find the ~HelloWorldApp~ again, and click the [deploy] to the right.
 - Result: a popup showing deployment options, starting with ~asVictoryFuel~: [[file:img/newspeak---a-few-notes.org-click-deploy-on-counter-app.png]]
-- Action: Select ~asVictoryFuel~.  We choose the faster option 'asVictoryFuel' because our App does not have GUI.  Otherwise, we would select 'asVictoryFuelWithMirrors'
+- Action: Select ~asVictoryFuel~.  We choose the faster option 'asVictoryFuel' because our Application does not have GUI.  Otherwise, we would select 'asVictoryFuelWithMirrors'
 - Result: After a long wait, a file named ~HelloWorldApp.vfuel~ is created, and asked to be saved.
 - Action: Save the file ~HelloWorldApp.vfuel~ on our disk to the directory where local Newspeak was deployed - for example ~$HOME/software/newspeak/my-serve-http/servable~
 - Result: *Assuming you installed you local Newspeak webserver as in e [[Download, install, and start a local Newspeak webserver]], the app is now deployed to the local Newspeak webserver!*
@@ -1258,16 +1311,16 @@ Follow steps below to create a deployable app ~HelloWorldApp.vfuel~, then deploy
 - Result: We see the output of the standalone-running app
   [[file:img/newspeak---a-few-notes.org-hello-world-app-standalone-output.png]]
   
-This concludes the section on App Module class.  We have shown how to create an App, run it in IDE, create a deployable .vfuel file, then deploy the App standalone in local Newspeak webserver.
+This concludes the section on Application Module class.  We have shown how to create an App, run it in IDE, create a deployable .vfuel file, then deploy the Application standalone in local Newspeak webserver.
 
-For a more complex example of an App module, see [[4. App module: API of module that needs to be distributed as an App][4. App module: API of module that needs to be distributed as an App]]
+For a more complex example of an Application module, see [[4. Application module: API of module that needs to be distributed as an App][4. Application module: API of module that needs to be distributed as an App]]
 
 
-*** 4. Hello World App using 3rd party dependency
+*** 4. Hello World Application using 3rd party dependency
 
 This section builds on previous sections to create an App, ~HelloWorldAppUsingLib~  which depend on a 3rd party library module. 
 
-Let's pretend our App can use a Newspeak module produced by a 3rd party (3rd party to us). Call the 3rd party the /TranslatorCorp/. Let's pretend /TranslatorCorp/ provides the module ~HelloTranslator~, packaged as ~HelloTranslatorLib~.
+Let's pretend our Application can use a Newspeak module produced by a 3rd party (3rd party to us). Call the 3rd party the /TranslatorCorp/. Let's pretend /TranslatorCorp/ provides the module ~HelloTranslator~, packaged as ~HelloTranslatorLib~.
 
 /TranslatorCorp/ would implement and package their modules as follows:
 
@@ -1338,9 +1391,9 @@ class HelloTranslatorLibWithMoreDependencies packageLibraryUsing: manifest = (
 #+end_src
 
 
-Either way, we would develop our App by packaging the 3rd party dependency and storing it on slot as ~helloTranslatorLib~, then at runtime, build instance of the ~helloTranslator~ using the packaged ~helloTranslatorLib~, and last, calling the method on ~helloTranslator~ which performs the translation:
+Either way, we would develop our Application by packaging the 3rd party dependency and storing it on slot as ~helloTranslatorLib~, then at runtime, build instance of the ~helloTranslator~ using the packaged ~helloTranslatorLib~, and last, calling the method on ~helloTranslator~ which performs the translation:
 
-This is how the App ~HelloWorldAppUsingLib~ would look. 
+This is how the Application ~HelloWorldAppUsingLib~ would look. 
 
 #+begin_src 
 class HelloWorldAppUsingLib packageUsing: manifest = (
@@ -1358,12 +1411,12 @@ class HelloWorldAppUsingLib packageUsing: manifest = (
 )
 #+end_src
 
-As shown in the previous section [[*3. Hello World App][3. Hello World App]], we can both run the App from the IDE, or package it a ".vfuel" file, and distribute to run as a standalone App from a local Newspeak webserver (or as an Electon based on Android, iOS, or desktop, but this is not shown yet).
+As shown in the previous section [[*3. Hello World App][3. Hello World App]], we can both run the Application from the IDE, or package it a ".vfuel" file, and distribute to run as a standalone Application from a local Newspeak webserver (or as an Electon based on Android, iOS, or desktop, but this is not shown yet).
 
 This concludes the 'Hello World' section, as well as the broader section [[*Newspeak is different.  An ide-driven journey around the Newspeak platform][Newspeak is different.  An ide-driven journey around the Newspeak platform]].
 
 
-* Newspeak: Using it and installing it.  Online vs.  local installation
+* Newspeak: Using it online or installing it locally
 
 TL;DR There are several ways of using Newspeak:
 - Using Newspeak online web version from browser.  No installation required, see [[install-method-1][Installation method 1 (online, no local installation)]]
@@ -1494,6 +1547,107 @@ It seems easier to build, but I'm putting it out there.
 
 
 
+
+* Newspeak: Script which builds deployable vfuel files
+
+TL;DR: This section provides a script which builds both the Wasm VM and deployable ~.vfuel~  files from source ~.ns~ files (builds ~.vfuel~ files for any Newspeak application as well as the NewspeakIDE, called ~HopscotchWebIDE.vfuel~).  All ~.vfuel~ files are created in Step 7 of the script. Step 7.  Step 7 is typically run any time we make a code change in a Newspeak ~.ns~ file and want to redeploy it.
+
+** Script to build ~.vfuel~ files for Newspeak IDE, and any Newspeak app
+
+The script in this section installs software packages, which enable building ~.vfuel~ deployable files from source ~.ns~ files (for the Newspeak IDE, as well as tools, and any Newspeak app).
+
+*Warning: This script should NOT be run directly, it should be used as a step-by-step process followed manually.  Running portions of this script, or in full, as any user WILL OVERRIDE files in the ~$HOME/software/emsdk~ and ~$HOME/software/newspeak-wasm-build~ directories. In addition, if the user is "root" on OpenSUSE, it will, install some ~gcc~ ~gpp~ or ~c++~ libraries.*
+
+*Steps 1. to 6. are one-time (provided they succeed). They provide prerequisits, then build the "primordialsoup" - the executable VM for Newspeak. Primordialsoup is used in step 7 to compile the Newspeak source ~.ns~ files into the browser-loaded ~.vfuel~ extension files.*
+
+*Step 7. is intended for repeat. It runs the ~newspeak/build.sh~, which creates deployable ~.vfuel~ files. It should be run any time we make a code change in any Newspeak ~.ns~ file and want to redeploy it as ~.vfuel~.  For example, if we creats a Newspeak app we want to deploy, run only this step.* 
+
+#+begin_src bash
+
+    ## 1. Prerequisits: This script downloads projects from github. For this script to work, we need:
+    #    1.1. A github account with our ssh public key downloaded.
+    #    1.2. The shell session's ssh keyring loaded with corresponding ssh private key;
+    #         for example, this can be done as follows:
+    #            $ ssh-add ~/.ssh/milan.zimmermann_at_gmail.com_id_rsa\:generated-by-ssh
+    #    Notes:
+    #    1.3. The ~primordialsoup/SConstruct~ is the configuration file for
+    #         the scons ~build~ used in primordialsoup.
+    #
+    #
+
+    ## 2. Installing emscripten from github into the directory assumed by primordialsoup/build.
+    #     If you have emsdk in a different directory, you have to change this, and also primordialsoup/build.
+
+    # Assuming this directory for Emscripten SDK
+    EMSDK_HOME=~/software/emsdk
+
+    # Cloning emsdk which creates the emsdk directory
+    mkdir --parent $EMSDK_HOME
+    cd $EMSDK_HOME/..
+    git clone https://github.com/emscripten-core/emsdk.git
+
+    ## 3. Creating the directory structure for the Newspeak Wasm build,
+    #     and cloning Newspeak and PrimordialSoup from github
+
+    # Assuming this directory for the Newspeak build
+    NEWSPEAK_WASM_BUILD_DIR=$HOME/software/newspeak-wasm-build
+    mkdir --parent $NEWSPEAK_WASM_BUILD_DIR
+    cd $NEWSPEAK_WASM_BUILD_DIR
+
+    # Cloning newspeak and primordialsoup github, which creates
+    #   directories newspeak and primordialsoup
+    git clone git@github.com:newspeaklanguage/newspeak.git
+    git clone git@github.com:newspeaklanguage/primordialsoup.git
+
+    # Checking out the appropriate branch from primordialsoup
+    cd primordialsoup
+    git checkout extraRevs
+
+    ## 4. Downloading CodeMirror in the top directory of newspeak
+    cd $NEWSPEAK_WASM_BUILD_DIR
+    cd newspeak
+    curl https://codeload.github.com/codemirror/dev/zip/refs/heads/main/dev-main.zip  --output dev-main.zip
+    unzip dev-main.zip # creates dir dev-main
+    mv dev-main CodeMirror
+
+    ## 4. Installing Opensuse specific libraries supporting the primordialsoup 32 bit build
+
+    zypper install -t pattern devel_basis   devel_C_C++   32bit # !! but maybe we need 32bit-devel which does not exist? So more added below
+    zypper install glibc-32bit glibc-devel-32bit glibc-devel-static-32bit glibc-locale-base-32bit glibc-profile-32bit
+    zypper install gcc-32bit gcc-c++-32bit
+
+
+    ## 6. Building primordialsoup using "build". This creates the "out" directory.
+    #     If we encounter errors during build, other OS-level packages may need
+    #     to be installed, depending on your distro.
+
+    cd $NEWSPEAK_WASM_BUILD_DIR/primordialsoup
+    ./build
+
+    ## 7. Building newspeak using "build.sh". It places output in the "newspeak/out" directory.
+    #
+    #     Running the ~build.sh~ builds the psoup VM as well as deployable ~.vfuel~ file
+    #     for each app listed in ~build.sh~.  
+    #     Currently listed in ~build.sh~ are the Newspeak IDE, the CounterApp, and a few more. Add your app there.
+    #    
+    #     This step 7. is typically run any time we make a code change in any Newspeak ~.ns~ file and want to redeploy it.
+    #     For example, if we code a Newspeak app which we want to deploy, we run this step.
+
+    cd $NEWSPEAK_WASM_BUILD_DIR/newspeak
+    source ./build.sh
+
+    # Error: bash: RuntimeForCroquet: command not found
+
+    # HopscotchWebIDE.vfuel should now exist in the ./out subdirectory of the newspeak repository.
+
+    # You can access it by running a web server, using the serve.sh script:
+
+    # source serve.sh
+
+
+#+end_src
+
+
 * IN-PROGRESS Programming in Newspeak
 
 ** The Newspeak IDE
@@ -1531,7 +1685,7 @@ To describe a concrete (somewhat artificial) situation: Let's say that on Github
 
 ** Saving changes in Newspeak
 
-TL;DR: Changes can be saved either /inside the browser/ in the browser's local storage, or, /outside the browser/ on the filesystem.  Any changes you make (for example: you add a class, change a class, evaluate something in the workspace) are stored in the browser local storage in two entries: *lastSaved* and *backup*.  Clicking the "Accept" button  [[file:img/newspeak---a-few-notes.org-accept-image.png]] saves the changes in local storage under the key /backup/, while clicking the "Save" button [[file:img/newspeak---a-few-notes.org-save-button.png]], at any time after "Accept", saves the changes under the key /lastSaved/.  Alternatively, you can `export` code by clicking the "three dot menu" button to the right of the class, then clicking the "Save to file" item in the popup menu.  You can `import` code by clicking the "three dot menu" on the top, to the right of "Root +", then selecting the "Compile File(s)" in the popup menu.
+TL;DR: Changes can be saved either /inside the browser/ in the browser's local storage, or, /outside the browser/ on the filesystem.  Any changes you make (for example: you add a class, change a class, evaluate something in the workspace) are stored in the browser local storage in two entries: *lastSaved* and *backup*.  Clicking the "Accept" button  [[file:img/newspeak---a-few-notes.org-accept-image.png]] saves the changes in the local storage under the key /backup/, while clicking the "Save" button [[file:img/newspeak---a-few-notes.org-save-button.png]], at any time after "Accept", saves the changes under the key /lastSaved/.  Alternatively, you can `export` code by clicking the "three dot menu" button to the right of the class, then clicking the "Save to file" item in the popup menu.  You can `import` code back to the browser IDE by clicking the "three dot menu" on the top, to the right of "Root +", then selecting the "Compile File(s)" in the popup menu.
 
 *** Saving changes inside the browser
 
@@ -1554,16 +1708,19 @@ How is the browser local storage handled, and how is /lastSaved/ different from 
 
 - Caveats: There are a few caveats - a few classes are exempt from this "backup" and "lastSaved" method, due to bootstrap issues (things like KernelForPrimordialSoup and HopscotchWebIDE).  If you tamper with these - save the class explicitly! Also, web storage can surprise you on mobile platforms, where things can be thrown out after a certain amount of time (7 days on iOS?) and the system as a whole may exhibit bugs.
 
-*** Saving changes outside the browser:
+*** Saving changes outside the browser as text files
 
-Apart from the /lastSaved/ and /backup/ in-browser changes management, you can save changes outside the browser.  This is typically needed for development.
+During development, any code additions and changes we make, are saved in-browser in the browser local storage, as described in [[* Saving changes inside the browser]]. But if we do clear the browser local storage, our changes will be lost.  While the browser local storage can be backed up as part of browser configuration, restoring it is cumbersome.
 
+Consequently, saving our work (/source code/) outside the browser as text files is valuable.
 
-- If you do clear your browser local storage, your changes will be lost, so saving outside the browser is valuable.
-    
-- During development in Newspeak, you will want to save your work.  Until source control is integrated into the IDE, the current approach is to `export` ("Save to file") all classes you changed in a directory on your system as *.ns* files, and potentially create a code repository in that directory.  If we later want for Newspeak to use the repository version, we ("Compile File(s)") the *.ns* files back to Newspeak.  For how to access the "Save to file" and "Compile File(s)" buttons, see TL;DR in section [[*Saving changes in Newspeak][Chapter Saving changes in Newspeak]]
+*Current approach to saving our work during development (as text files)*
 
+Until source control is integrated into the IDE, the current approach is to `export` ("Save to file") each class we changed into a directory on your system as a file with ~.ns~ extension.  We can also create a code repository in the directory with the ~.ns~ files.  
 
+How For how to access the "Save to file" and "Compile File(s)" buttons, see TL;DR in section [[*Saving changes in Newspeak][Chapter Saving changes in Newspeak]]
+
+Note: To 'import' the saved text ~*.ns~ files back to the Newspeak IDE, click on the "Compile File(s)", as also described above.
 
 
 ** Exemplars: Enabling liveliness everywhere
@@ -2174,6 +2331,150 @@ wrap the expression in a block and call value like this:
 #+end_example
 
 
+** Ampleforth and HTML documents in Newspeak
+
+TL;DR: We can create HTML Documents in Newspeak. More precisely, we can create a Document object in Newspeak using the *"Add Document"* popup action on the "Root-+" button. Such object is a true Newspeak object; it can contain HTML along with Newspeak-defined actions.  The document can be saved (exported) to a HTML file using the *Download* popup action on the "document-3-dot" button. The exported document can be loaded (imported) back the the IDE using the *"Load Document(s)"* popup action on the "root-3-dot" button.  Ampleforth is a framework that allows HTML documents to perform actions, implemented as Newspeak methods .
+
+The chapters below show the steps in detail.
+
+*** Ampleforth and HTML documents in Newspeak: Creating the document and adding it to the IDE
+
+From the IDE:
+- in "Newspeak Source"
+- click on the "+" beside Root, in the popup, choose "Add Document"
+- give the document a name
+- click the "Accept" checkbox.
+
+So far this is equivalent to creating and adding a class, except here we choose "Add Document" rather than "Add Class".
+
+*** Ampleforth and HTML documents in Newspeak: Editing the document and exporting it as HTML
+
+The newly created document named *AMyDocument* may look similar to this
+
+[[file:img/newspeak---a-few-notes.org-document-html-example.png]]
+
+Above is the state *after we clicked the ">" widget just above the document text* - this revealed an editor line:
+
+[[file:img/newspeak---a-few-notes.org-document-html-example-editor-line.png]]
+
+To save the document HTML, click on the "download" button [[file:img/newspeak---a-few-notes.org-downloadImage.png]] in the above line.
+
+
+The document ~AMyDocument~ will save an HTML file with the document contents stored in a top-level ~<div>~ element. The top-level div class name "ampleforthDocumentClass" is known to Newspeak, which can use it to convert this html back to a Newspeak object, from the top-level div attribute "classBody".
+
+The contents of *AMyDocument.html* is shown below:
+
+#+begin_src html
+  <!-- this first div with class ampleforthDocumentClass does not display anything : it contains code for the class AMyDocument.
+       It has no methods, but it could have.
+    -->
+  <div class = "ampleforthDocumentClass" name = "AMyDocument" classBody = "() (
+  ) : (
+  )
+  "
+  </div>
+
+  <!-- this second div with class ampleforthDocumentBody displays the document -->
+  <div class = "ampleforthDocumentBody">
+    <body>
+      <div class="self_ampleforth" contenteditable="true" style="border: 2px solid blue; resize: horizontal; overflow: auto; overflow-wrap: break-word; width: 40em;" onkeyup="updateRawHTML()">
+        <h1>This is a blank document - testing saving as HTML.</h1>
+        <div><br></div>
+        <div>Body here.</div>
+        <div><br></div>
+        <div>- item 1</div>
+        <div>- item 2</div><div>
+        <br>
+        </div>
+        <div>The list above is just a bunch of divs.</div>
+      </div>
+    </body>
+  </div>
+
+  <!-- the remaining script elements contain support for loading this file if converted to vfuel (??) -->
+  <script type="text/javascript">
+        function scheduleTurn(timeout) {
+          if (timeout >= 0) {
+            setTimeout(function() {
+              var timeout = Module._handle_message();
+              scheduleTurn(timeout);
+            }, timeout);
+          }
+        }
+
+        var Module = {
+          noInitialRun: true,
+          noExitRuntime: true,
+          onRuntimeInitialized: function() {
+            var url = new URLSearchParams(window.location.search);
+            var request = new XMLHttpRequest();
+            request.open("GET", url.get("snapshot"), true);
+            request.responseType = "arraybuffer";
+            request.onload = function (event) {
+              var jsBuffer = new Uint8Array(request.response);
+              var cBuffer = _malloc(jsBuffer.length);
+              writeArrayToMemory(jsBuffer, cBuffer);
+              Module._load_snapshot(cBuffer, jsBuffer.length);
+              _free(cBuffer);
+              scheduleTurn(0);
+            };
+            request.send();
+          },
+          print: function(text) {
+            if (arguments.length > 1) {
+              text = Array.prototype.slice.call(arguments).join(" ");
+            }
+            console.log(text);
+          },
+          printErr: function(text) {
+            if (arguments.length > 1) {
+              text = Array.prototype.slice.call(arguments).join(" ");
+            }
+            console.error(text);
+          },
+          setStatus: function(text) {
+            console.log(text);
+          },
+        };
+      </script>
+      <script async type="text/javascript" src="primordialsoup.js"></script>
+      <script src="CodeMirror/lib/codemirror.js"></script>
+      <link rel="stylesheet" href="CodeMirror/lib/codemirror.css"></link>
+      <script src="CodeMirror/addon/display/autorefresh.js"></script>
+#+end_src
+
+Opening the file *AMyDocument.html* straight in a browser tab (as Ctrl-O, NOT in the contents of Newspeak IDE), displays the pure HTML contents correctly - assuming any resources it references are available. It would not display any "live" elements that would require calling methods
+
+[[file:img/newspeak---a-few-notes.org-document-html-open-exported-html-file.png]]
+
+The file *AMyDocument.html*:
+
+- contains the document class and methods - but using the methods requires a running Newspeak system, NOT just the browser which only displayes the HTML.
+- can be fully instantiated as a Newspeak Document by loading it (compiling it) into a running IDE (which does NOT contain the class ~AMyDocument~). This can be done by clicking the "Load document(s)" on the 3-dot menu in
+  [[file:img/newspeak---a-few-notes.org-load-document-object-saved-as-html.png]]
+  which puts the document class back to the IDE
+  [[file:img/newspeak---a-few-notes.org-loaded-document-object-saved-as-html.png]]
+- also somehow, can be instantiated and run by creating a vfuel from it??
+
+
+
+
+*** Ampleforth examples
+
+Blogs
+- sourced on https://github.com/gbracha/gbracha.github.io
+- run URL on https://blog.bracha.org/
+
+| Title                          | URL                                                                       | Github Dir            | Is HTML Empty (like primordialsoup.html)? |
+|--------------------------------+---------------------------------------------------------------------------+-----------------------+-------------------------------------------|
+| What You Want                  |  https://blog.bracha.org/WYWIWYG/out/WYWIWYG.html?snapshot=WYWIWYGApp.vfuel                        | WYWIWYG/out           | Y                                         |
+| Ampleforth: A Live Literate    |  https://blog.bracha.org/Ampleforth-Live22/out/primordialsoup.html?snapshot=Live22Submission.vfuel | Ampleforth-Live22/out | Y                                         |
+| Programmer Like a Pathologist? |  https://blog.bracha.org/exemplarDemo/exemplar2021.html?snapshot=BankAccountExemplarDemo.vfuel     | exemplarDemo          | N                                         |
+| Odersky (no contents)          |  https://blog.bracha.org/OderskyFestschrift23/primordialsoup.html?snapshot=Telescreen.vfuel        | OderskyFestschrift23  | Y                                         |
+|                                |                                                                           |                       |                                           |
+
+
+
 ** IN-PROGRESS-NOW Snippets of wisdom from various sources
 
 *Sources are rarely listed by URL BUT are generally those in [[*This document: Introduction to Newspeak on Webassembly (Wasm)][This document: Introduction to Newspeak on Webassembly (Wasm)]]: Newspeak website, Room 101 and Newspeak user group.*
@@ -2333,34 +2634,27 @@ IDE concludes a class is an app based on a convention: the presence of the metho
 For details see [[*Newspeak modules API summary][Newspeak modules API summary]].
 
 
-** How would I create and distribute a Newspeak App to run on the web, on mobile, or on desktop?
+** How would I create and distribute a Newspeak Application to run on the web, on mobile, or on desktop?
 
-TL;DR: For a detail description of developing, packaging, running and deploying a concrete Newspeak app, read the section [[Newspeak: A quickstart.  Explore the IDE.  Then develop CounterApp, package it and deploy it]]. This process is also described more succintly in the 'Hello World' programs section [[*3. Hello World App][3. Hello World App]].
+TL;DR: We can code an app, then produce it's deployable package (a ~.vfuel~ file) in Newspeak, then deploy the ~.vfuel~ on the desktop, on the web, and on mobile.  
 
-The text below is a general introduction of how a Newspeak App can be made ready for deployment.
+*** Code the app
+The process of coding (creating) an app is described in [[*  Build, run, and debug the CounterApp in Newspeak (in the online version)][ Build, run, and debug the CounterApp in Newspeak (in the online version)]]. This process is also described more succintly in the 'Hello World' programs section [[*3. Hello World App][3. Hello World App]].
 
-How would I go about building and running a "Hello world" application? I know I can create a class, in the browser IDE ..  ok ..  but from there, how to I "create and deploy the application" so I end up with something like the Todo app ...  any high level notes on that?
+*** Produce the app's deployable package (a ~.vfuel~ file)
+Once the app is "coded", *There are two options of producing the app's deployable package (a ~.vfuel~ file)* 
 
-*There are two options to build an app*
+1) From the IDE: There is a 'deploy' option that the IDE displays for apps.  This option is slow but simple, and we can deploy small apps that way.  The process of building an app, the creating a deployable ~.vfuel~ package.  This process is described fully in  [[Deploy CounterApp as standalone app into local Newspeak webserver][Chapter Deploy CounterApp as standalone app into local Newspeak webserver]].
+   
+2) From a script: Slightly more complex to install, but works faster.  You use a script that runs the C version of the PSoup VM to do  the deployment.  This is faster, more reliable and produces smaller deployments. This is done by Step 7 of the script in [[* Newspeak: Script which builds deployable vfuel files][Newspeak: Script which builds deployable vfuel files]].
+   
+In either case, ~.vfuel~ file is produced.  We can then serve that file in a webserver, and run your app.
 
-1) Easy but flaky.  There is a 'deploy' option that the IDE displays
-   for apps.  It's buggy and slow, but mostly works if you are
-   prepared to wait a ridiculous amount of time, and tolerate the fact
-   that the app will be too large due to bugs in the serialization
-   code :-(.  We need to fix that, but you can deploy apps that way,
-   especially if they are small.  You choose the option
-   'asVictoryFuelWithMirrors' if your app uses the GUI (there's some, probably gratuitous, mirror dependency in the UI)  and 'asVictoryFuel' otherwise.
-   - Details:  where is the [deploy] button.  Go to "Newspeak source".  Look at HopscotchWebIDE class (it's the one app pre-loaded in the system).  You'll see the deploy link in two places.  In the Root namespace itself - if your window is wide enough, it will show on the same line as the link for the class.  If you open the class, it will be at the top, to the right of the class name.
+*** Deploy the app's package (the ~.vfuel~ file)
 
-2) Slightly more complex, but works better.  You use a script that runs the C version of the PSoup VM to do  the deployment.  This is faster, more reliable and produces smaller deployments. 
+This .vfuel can then be deployed into a locally installed or a globally installed webserver.
 
-In either case, .vfuel file is produced.  Assuming you are running Newspeak using option 1 (a local server, [[install-method-1]]), you can then serve that file and run your app.
-
-*Deployment of the app*
-
-This .vfuel can then be deployed into a (locally installed) Newspeak server.
-
-- For instructions on how to install the server see [[install-method-1]]
+- For instructions on how to install the server see [[* Simple methods to install and run Newspeak][Simple methods to install and run Newspeak]]
 - For instructions on how to deploy a sample app, in particular the ~CounterApp~, see [[Deploy CounterApp as standalone app into local Newspeak webserver]].
   
 
@@ -2375,7 +2669,7 @@ TL;DR: Newspeak has a module which allows to present the Newspeak objects (the I
 
 The last link also shows instructions on how to create an emacs org mode document which, after export to HTML (C-c C-e), supports such lively HTML interaction.
 
-*Having provided a TL;DR:, let's describe this in more details.*
+*Let's describe the TL;DR: in more details.*
 
 The module providing the experience a live document and a literate Newspeak program is called ~Ampleforth~.
 
@@ -2663,6 +2957,8 @@ See [[*Exemplars: Enabling liveliness everywhere][Exemplars: Enabling liveliness
 
 * The Newspeak UI, *HopscotchForHTML5*: Analysing it by code browsing; Discovering *Subject*, *Model*, *Presenter*, *Fragment*; Writing *CheckedItemApp* sample App
 
+TL;DR: This section is a code-browsing tour which discovers Hopscotch, discovering the Hopscotch MVC: the *Subject*, *Model*, *Presenter*, as well as *Fragment*, the class that translates Hopscotch classes to HTML. At the end, in [[* Using chapters above to write a simple Hopscotch UI App, the *CheckedItemApp*][we use the acquired insights to write a sample App, the *CheckedItemApp*]]. 
+
 ** If you wish to start at the end: Full code of HopscotchForHTML5 sample app
 
 If you wish to start at the end, look at the full code of HopscotchForHTML5 sample app
@@ -2671,7 +2967,6 @@ https://github.com/mzimmerm/newspeak-doc/tree/main/newspeak---a-few-notes-code/c
 
 and some final comments of this section in [[*5. Complete code and UI of the *CheckedItemApp*][5. Complete code and UI of the *CheckedItemApp*]].
 
- 
 ** Discovery of the *HopscotchForHTML5* class basics
 
 *** Chapter goal
@@ -2680,7 +2975,7 @@ and some final comments of this section in [[*5. Complete code and UI of the *Ch
 
 The intent of this chapter is to discover things about ~HopscotchForHTML5~ mostly by browsing it's code in the IDE, plus some previously developed intuition :)
 
-I am trying to make the process of this chapter to be like discovering things about nature by observation. In our discovery, observation = browsing code only the Newspeak IDE. By observing, we should be able to extract knowledge and make generalizations and predictions.  In our discovery, extract knowledge = understand the core API;  make generalizations and predictions = be able to write a simple UI App of our own.
+I am trying to make the process of this chapter to be like discovering things about nature by observation. In our discovery, observation = browsing code only the Newspeak IDE. By observing, we should be able to extract knowledge and make generalizations and predictions.  In our discovery, extract knowledge = understand the core API;  make generalizations and predictions = be able to write a simple UI Application of our own.
 
 Note: One important discovery tool is missing - in the current Newspeak, debugging anything in the UI is impossible, due to some known bugs.
 
@@ -2688,7 +2983,7 @@ In other words, during our discovery process in this chapter:
 
 - Most of the information should come from browsing through the Newspeak IDE in the top level class ~HopscotchForHTML5~.
 
-- The end goal of our process is to write a simple Newspeak App with UI in Hopscotch. This simple Newspeak App is developed in chapter [[*Using chapters above to write a simple Hopscotch UI App, the *CheckedItemApp*][Using chapters above to write a simple Hopscotch UI App, the *CheckedItemApp*]].
+- The end goal of our process is to write a simple Newspeak Application with UI in Hopscotch. This simple Newspeak Application is developed in chapter [[*Using chapters above to write a simple Hopscotch UI App, the *CheckedItemApp*][Using chapters above to write a simple Hopscotch UI App, the *CheckedItemApp*]].
 
 - There was also the benefit of previously looking at the ~CounterApp~ (aka cheating), but as much as possible, we are trying to extract everything we need from the "first principles" of browsing the Newspeak IDE top level class ~HopscotchForHTML5~.
 
@@ -2831,9 +3126,22 @@ This is the code which creates instances, and should be called from implementati
 
 Concrete implementations of Subject, should (in fact must, it is enforced) invoke the Subject's factory as 
 
- ~public class MyConcreteSubject onModel: model = Subject onModel: aModel ()~  
+~public class MyConcreteSubject onModel: aModel = Subject onModel: aModel (|pseudeSlots|) (pseudoInstanceMethods) : (pseudoClassMethods)~  
 
- This should be sufficient for most concrete implementations of Subject.
+This should be sufficient for most concrete implementations of Subject.
+
+**** Note on extending a Newspeak class
+
+The syntax above shows how to *extend* a class in Newspeak. Here is how we read (parse) the syntax
+
+~public class MyConcreteSubject onModel: aModel = Subject onModel: aModel (|pseudeSlots|) (pseudoInstanceMethods) : (pseudoClassMethods)~  
+
+1. The section ~public class MyConcreteSubject onModel: aModel =~ defines the *primary factory* as usual, with name ~MyConcreteSubject>>onModel:~
+2. However, the "inserted" section ~Subject onModel: aModel~ defines:
+   - The *superclass* of ~MyConcreteSubject~ to be ~Subject~
+   - The *primary factory* of ~Subject~
+   - That at runtime, when the  *primary factory* of ~MyConcreteSubject~ (the  ~MyConcreteSubject>>#onModel:~) is invoked, Newspeak will *first invoke the 'superclass primary factory'*, the ~Subject>>#onModel:~.
+3. The last section ~(|pseudeSlots|) (pseudoInstanceMethods) : (pseudoClassMethods)~ is the usual syntax which continues with the definition of the slots, instanceMethods, and classMethods of ~MyConcreteSubject~.
 
  
 *** The unimplemented (abstract) methods: *Subject>>#createPresenter* and *Subject>>#isMyKind: otherSubject*
@@ -2890,6 +3198,7 @@ The exact signature is ~Subject>>#public presenter ^<Presenter>~.
 
 ~Subject~ holds association to it's ~Presenter~ in the ~Subject>>presenterSlot~. This slot is instantiated lazily in ~Subject>>#presenter~ by calling ~Subject>>#createPresenter~, then storing the instantiated presenter on the ~presenterSlot~:
 
+~Subject~
 #+begin_example
   public presenter ^<Presenter> = (
     presenterSlot isNil ifTrue: [presenterSlot:: createPresenter].
@@ -2967,7 +3276,7 @@ In this chapter [[*The *Subject* class: primary factory method, instance methods
 
 *Conclusion 2: So, when creating UIs, our code must invoke the ~Subject>>#presenter~ method, directly, or indirectly by calling some other method that ends up calling ~Subject>>#presenter~.*
 
-*Conclusion 3: Model can be any object.  ~ConcreteSubject~ must extend the ~Subject~.  Also the ~ConcreteSubject~ primary factory method must call the parent ~Subject~ primary factory method - see [[*The primary factory method *public class Subject onModel: aModel = (..)*][The primary factory method *public class Subject onModel: aModel = (..)*]] ; chapters below come to the equivalent conclusion for ~ConcretePresenter~.*
+*Conclusion 3: Model can be any object.  ~ConcreteSubject~ must extend the ~Subject~.  Also the ~ConcreteSubject~ primary factory method must declare the primary factory method on the superclass ~Subject~ - see [[*The primary factory method *public class Subject onModel: aModel = (..)*][The primary factory method *public class Subject onModel: aModel = (..)*]] ; chapters below come to the equivalent conclusion for ~ConcretePresenter~.*
 
 Based on the conclusions 1, 2, 3, we can already write some pseudocode for writing core UI:
 
@@ -3002,7 +3311,7 @@ concreteSubject:: ConcreteSubject onModel: concreteModel.
 hopscotchWindow openSubject: concreteSubject.
 #+end_example
 
-The last line will create instance of ConcretePresenter by calling ~ConcreteSubject>>#presenter~ and open it in a new window where the App will live! This snippet does not show definitions of ~ConcreteModel~ ~ConcreteSubject~ ~ConcretePresenter~, or how we obtain the ~hopscotchWindow~. We will get to that when creating a concrete App in [[*Using chapters above to write a simple Hopscotch UI App, the *CheckedItemApp*][Using chapters above to write a simple Hopscotch UI App, the *CheckedItemApp*]]
+The last line will create instance of ConcretePresenter by calling ~ConcreteSubject>>#presenter~ and open it in a new window where the Application will live! This snippet does not show definitions of ~ConcreteModel~ ~ConcreteSubject~ ~ConcretePresenter~, or how we obtain the ~hopscotchWindow~. We will get to that when creating a concrete Application in [[*Using chapters above to write a simple Hopscotch UI App, the *CheckedItemApp*][Using chapters above to write a simple Hopscotch UI App, the *CheckedItemApp*]]
 
 
 ** The *Presenter* class: primary factory method, instance methods, how Presenter knows Subject
@@ -3175,7 +3484,7 @@ Let us summarize the core classes of Hopscotch: *Subject* and it's model, *Prese
  
 4. We established that associations between ~*Subject* and it's model, *Presenter* and *Fragment*~ are as follows:
    - *Presenter -> Subject -> Model*
-   - *Presenter <- Subject <-w Model* (-> and <- means association, <-w means weak association- my not exist)
+   - *Presenter <- Subject <-w Model* (-> and <- means association, <-w means weak association- may not exist in some implementations)
    - Both directions in the *Presenter <-> Subject* association are established by calling the ~Subject>>#presenter~ method
    - The *Subject -> Model* association is established in the Subject primary factory method ~Subject class>>#onModel: aModel~.
    
@@ -3193,7 +3502,7 @@ Let us summarize the core classes of Hopscotch: *Subject* and it's model, *Prese
    - Write rudimentary code in [[*Chapter conclusion about principles of writing rudimentary Hopscotch UI][Chapter conclusion about principles of writing rudimentary Hopscotch UI]]
 
      
-The above steps should be sufficient to write a basic App with Hopscotch UI, which we will do in later chapter [[*Using chapters above to write a simple Hopscotch UI App, the *CheckedItemApp*][Using chapters above to write a simple Hopscotch UI App, the *CheckedItemApp*]].
+The above steps should be sufficient to write a basic Application with Hopscotch UI, which we will do in later chapter [[*Using chapters above to write a simple Hopscotch UI App, the *CheckedItemApp*][Using chapters above to write a simple Hopscotch UI App, the *CheckedItemApp*]].
 
 
 
@@ -3246,7 +3555,7 @@ We alreary concluded that we will need an instance of ~HopscotchForHTML5~ if we 
 
 Analyzing the class ~HopscotchForHTML5Runtime~, we see that:
 
-- It has the primary factory method ~#packageUsing: manifest~. From the Api chapters, for example  [[*4. App module: API of module that needs to be distributed as an App][4. App module: API of module that needs to be distributed as an App]] we know that such top level classes are apps, but, lacking the ~#main: platform args: args~ method, such module is used as library module.
+- It has the primary factory method ~#packageUsing: manifest~. From the Api chapters, for example  [[*4. Application module: API of module that needs to be distributed as an App][4. Application module: API of module that needs to be distributed as an App]] we know that such top level classes are apps, but, lacking the ~#main: platform args: args~ method, such module is used as library module.
   
 - It packages the UI class, ~HopscotchForHTML5~, on it's slot
 
@@ -3340,22 +3649,25 @@ Summary: In this chapter, we deduced code we need to obtain ~hopscotch~, an inst
 
 *** Chapter goal
 
-This chapter goal is to use the intuition and knowledge acquired in the above chapters, to write a sample UI App in Newspeak. 
+This chapter goal is to use the intuition and knowledge acquired in the above chapters, to write a sample UI Application in Newspeak. 
 
 Let us name the app class ~CheckedItemApp~. The reason for the name is clarified in [[*3. Write code for *CheckedItemUI*, the class showing the UI][3. Write code for *CheckedItemUI*, the class showing the UI]].
 
-We will do our best by deducting the App structure and UI and code just by browsing and applying the knowledge developed by browsing the ~HopscotchForHTML5~ in chapters above - without looking at the pre-existing ~CounterApp~ sample app, see [[*Build, run, and debug the CounterApp in Newspeak (in the online version)][Build, run, and debug the CounterApp in Newspeak (in the online version)]].
+We will do our best by deducting the Application structure and UI and code just by browsing and applying the knowledge developed by browsing the ~HopscotchForHTML5~ in chapters above - without looking at the pre-existing ~CounterApp~ sample app, see [[*Build, run, and debug the CounterApp in Newspeak (in the online version)][Build, run, and debug the CounterApp in Newspeak (in the online version)]].
 
-The App and it's UI are built step by step in the subchapters below.
+The Application and it's UI are built step by step in the subchapters below.
 
 Note that only Step 3, [[*3. Write code for *CheckedItemUI*, the class showing the UI][3. Write code for *CheckedItemUI*, the class showing the UI]] will be using the knowledge from this chapter.  The rest of the steps use the knowledge about APIs needed to write a Newspeak App. This knowledge was developed in 
 
 
 *** 1. Start coding the Application class *CheckedItemApp*
 
-We will use information about APIs that define a Newspeak App from chapter  [[*4. App module: API of module that needs to be distributed as an App][4. App module: API of module that needs to be distributed as an App]]  and  [[*3. Hello World App][3. Hello World App]]  to create the application class ~CheckedItemApp~.
+We will use information about APIs that define a Newspeak Application from chapter [[*4. Application module: API of module that needs to be distributed as an App][4. Application module: API of module that needs to be distributed as an App]]  and [[*3. Hello World App][3. Hello World App]] to create the application class ~CheckedItemApp~.
 
-As a start, we borrow code from the Hello World App to create a top level App class:
+First, we create the class for a top level Application module.  We can create this class in the IDE, or create the class in a text file, then [[compile-files]["Compile file(s)"]].  We start with a text file.
+
+Regarding the methods the ~CheckedItemApp~ class should have, there should be a primary factory ~#packageUsing: manifest~ and an instance method ~#main: platform args: args~. This makes the class a packageble, distributable, and runnable Newspeak app (an Application module).  See [[* Newspeak modules API zoo][Newspeak modules API zoo]] for Newspeak "convention methods" signatures.
+
 
   ~class CheckedItemApp~
   #+begin_example 
@@ -3366,83 +3678,7 @@ As a start, we borrow code from the Hello World App to create a top level App cl
     )
   )
   #+end_example
-
-  To recap, the methods ~#packageUsing: manifest~ and ~#main: platform args: args~ make this top level class a packageble, distributable, and runnable Newspeak app.
-
-
-*** 2. Add code to the *CheckedItemApp* which allows to "import" the Hopscotch module
-
-**** Add the packaging of the HopscotchForHTML5 module
-
-In this chapter, we to progress the code of the app we want to build by adding things that allow us to build a UI.
-
-We start with renaming ~HelloWorldApp~ to ~CheckedItemApp~, that is simple.
-
-In chapter  [[*4. App module: API of module that needs to be distributed as an App][4. App module: API of module that needs to be distributed as an App]]  and modularity chapters earlier, we saw that an App must package (bring along) all classes and instances that it will need to create the deployment artifact. Packaging is done in primary factory methods of Apps - the ~#packageUsing: manifest~.
-
-We need to package the HopscotchForHTML5 module. We use Conclusion 2 at the end of chapter [[*The *HopscotchForHTML5Runtime* class][The *HopscotchForHTML5Runtime* class]] to package an instance of ~HopscotchForHTML5Runtime~. (This will will carry the ~HopscotchForHTML5~ instance in it, as discussed there).
-
-Note that for the packaged instance to be usable when running the app, we need to keep the packaged instance ~hopscotchForHTML5Runtime~ on a slot (as a member). So we also need to add the slots section | .. |. 
-
-
-~class CheckedItemApp~
-#+begin_example 
-class CheckedItemApp packageUsing: manifest = (
-  (* Added this 3-line section *)
-  |
-  hopscotchForHTML5Runtime = manifest HopscotchForHTML5Runtime packageUsing: manifest.
-  |
-)
-(
-  public main: platform args: args = (
-    
-    'Hello World from HelloWorldApp' out.
-  )
-)
-#+end_example
-
-While we keep the full code listed here, to only paste the added section, find the ~CheckedItemApp>>#packageUsing: manifest~ method in the IDE, and paste the 3-line section there.
-
-[[file:img/newspeak---a-few-notes.org-checked-item-app-step-3.png]]
-
-
-**** Add the hopscotchForHTML5 module that will allow us to build UI
-
-Next, we know that in the ~main: platform args: args~ method where the App starts, we will need to obtain or create an instance of ~HopscotchForHTML5~ to be able to build any UI. 
-
-In the conclusion of chapter [[*The *HopscotchForHTML5Runtime* class][The *HopscotchForHTML5Runtime* class]], we saw that we can get at instance of the UI creating object hopscotchForHTML5, as follows:
-
-~hopscotchForHTML5Runtime using: platform.~ <== this is instance of PlatformWithHopscotch
-~(hopscotchForHTML5Runtime using: platform) hopscotch.~ <== hopscotch is the slot on PlatformWithHopscotch. It is instance of HopscotchForHTML5
-
-So let us add that code to our ~CheckedItemApp>>#main:args~:
-
-~class CheckedItemApp~
-#+begin_example 
-class CheckedItemApp packageUsing: manifest = (
-  |
-  hopscotchForHTML5Runtime = manifest HopscotchForHTML5Runtime packageUsing: manifest.
-  |
-)
-(
-  public main: platform args: args = (
-    (* Added this 5-line section *)
-    |
-    platformWithHopscotch = platform isKindOfPlatformWithHopscotch ifTrue: [platform]
-                                                                   ifFalse: [hopscotchForHTML5Runtime using: platform].   
-    hopscotchForHTML5 = platformWithHopscotch hopscotch.
-    |
-    
-    'Hello World from HelloWorldApp' out.
-  )
-)
-#+end_example
-
-In the IDE, find the already created method ~CheckedItemApp>>#main: platform args: args~ and paste the added 5-line section there. If you skipped the chapter where ~#main:args:~ was first created, in the IDE, use + to add an instance method to ~CheckedItemApp~ (make sure it is an instance method, not a constructor).
-
-The expression defining the ~platformWithHopscotch~ is perhaps the only thing we did not fully explain in this exploration. We did explain the "true" branch but not the "false" branch. There is a detail description in the final code, see [[* 5. Complete code and UI of the *CheckedItemApp*][ 5. Complete code and UI of the *CheckedItemApp*]].
-
-
+  
 *** 3. Write code for *CheckedItemUI*, the class showing the UI
 
 Chapter introduction and goal: In this chapter, we will write the core of the UI for the application. This code will be added as several nested classes to a top level class we will name ~CheckedItemUI~.  To write this UI, we will use the knowledge discovered and summarized in chapter [[*Summary of *Subject* and it's model, *Presenter* and *Fragment*, their associations, and their lifecycle][Summary of *Subject* and it's model, *Presenter* and *Fragment*, their associations, and their lifecycle]].   We will need to create concrete classes for the *Model, Subject and Presenter*, then we will need to instantiate those classes (in that order) to form the UI.
@@ -3451,29 +3687,27 @@ The UI will be extremely simple: a label with text "check this", and one check b
 
 Note that we will not write any *Fragment* (Widget) classes, we only use some preexisting fragment-creation methods discovered by browsing ~HopscotchForHTLM5>>Presenter~ such as ~#row:~, ~#label:~ and ~#checkbox:~.
 
-Chapters below describe writing the code step by step.
+Chapters below describe writing the code for *CheckedItemUI* step by step.
 
 **** Class CheckedItemUI
 
 Let's add a new top level class ~CheckedItemUI~.
 
-Note: We recall, instances of top level classes are called modules, and behave that way.  The top level class ~CheckedItemUI~, provides a natural namespace, so the classes' naming prefix ~CheckedItem~ in ~CheckedItemModel~ and other nested classes introduced in this chapter is not needed. We will keep the class names prefix for the purpose of clarity of the text.
-
 We plan for the new top level class ~CheckedItemUI~ to contain:
 
 1. Slots needed to create elements in the instance of this class. 
   
-2. Nested classes ~CheckedItemModel~, ~CheckedItemSubject~ and ~CheckedItemPresenter~ which we will create below. Important: Notice that these classes are nested in the top level class ~CheckedItemUI~.  This is a natural modularization we would use in Newspeak. Also notice this nesting mimics the nesting of ~Subject~ and ~Presenter~ in the module ~HopscotchForHTML5~.
+2. Nested classes ~CheckedItemModel~, ~CheckedItemSubject~ and ~CheckedItemPresenter~ which we will create below. Important: Notice that these classes are nested in the top level class (module) ~CheckedItemUI~.  This is a natural modularization we would use in Newspeak; so the classes' naming prefix ~CheckedItem~ in ~CheckedItemModel~ and other nested classes introduced in this chapter is not needed. We will keep the class names prefix for the purpose of clarity of the text.  Also notice this nesting mimics the nesting of ~Subject~ and ~Presenter~ in the module ~HopscotchForHTML5~.
 
 
-At this point, we create only the barenones of our UI, like this:
+We can start only with the barenones of our UI, like this:
 
 ~class CheckedItemUI~
 #+begin_example
   class CheckedItemUI = () ()
 #+end_example
 
-We will add it's primary factory method, slots, and it's nested classes along the way in later chapters, describing why each such element is needed.  In particular we will add:
+We will add it's primary factory method, slots, and it's nested classes along the way in later chapters.  In particular we will add:
 
 - The nested classes will be added naturally by adding them inside ~CheckedItemUI~ in the IDE. This happens in chapters [[*Class CheckedItemModel][Class CheckedItemModel]],  [[*Class CheckedItemSubject][Class CheckedItemSubject]],  and [[*Class CheckedItemPresenter][Class CheckedItemPresenter]] .
   
@@ -3486,24 +3720,19 @@ As discussed in [[*Summary of *Subject* and it's model, *Presenter* and *Fragmen
 
 Let's name the model class ~CheckedItemModel~.
 
-To support the UI, we need two items in our  model: a string for label, and a Boolean representing if the checkbox was selected. Our model class extends Object by default; it's primary factory method is the default ~#new~ method. Neither the default parent class Object nor the default primary factory method ~#new~ need to be specified in Newspeak. 
+To support the UI, we need two slots in our model: a string for the ~itemText~, and a Boolean ~isChecked~, representing if the checkbox was selected. We also add a third slot ~itemTextWithStatus~ for tracking the ~isChecked~ as text.  Our model class extends Object by default; it's primary factory method is the default ~#new~ method. Neither the default parent class Object nor the default primary factory method ~#new~ need to be specified in Newspeak. 
 
 ~class CheckedItemModel~
 #+begin_example
 public class CheckedItemModel = (
 |
-  public label ::= 'check to complete'.
+  public itemText = 'Not Editable Todo itemText: '.
+  public itemTextWithStatus ::= itemText, ' : STILL TODO'.
   public isChecked ::= false.
   |
+) (
 )
-()
 #+end_example
-
-Add the above code as a nested class of ~CheckedItemUI~, by clicking the + beside "Classes" inside CheckedItemUI, and pasting the code in the text area.
-
-[[file:img/newspeak---a-few-notes.org-add-nested-class-checked-item-model.png]]
-
-Click the "Accept" button [[file:img/newspeak---a-few-notes.org-accept-image.png]] to save the added class.
 
 
 
@@ -3515,7 +3744,7 @@ Recall from [[*The *Subject* class: primary factory method, instance methods, ho
 
 We will also use the knowledge from the same chapter regarding it's primary factory method and abstract methods we need to implement. Let us summarize it here again: 
 
-- The primary factory method of our ~CheckedItemSubject~ will call the primary factory method of it's parent, ~Subject>>#onModel: model~.  This is expressed by the signature ~public class CheckedItemSubject onModel: model = Subject onModel: model~ where our new class calls the super constructor ~Subject>>#onModel: model~.
+- The primary factory method of our ~CheckedItemSubject~ will call the primary factory method of it's parent, ~Subject>>#onModel: model~.  This is expressed by the signature ~public class CheckedItemSubject onModel: model = Subject onModel: model~ where our new class calls the super primary factory ~Subject>>#onModel: model~.
 
 - ~Subject~ class has an abstract method ~#createPresenter~ (indicated by "subclassResponsibility") which should return a presenter. In the same link, we saw that ~#createPresenter~ should create an instance of Presenter (the yet-to-be-created ~CheckedItemPresenter~). The instance should then be returned. 
 
@@ -3526,26 +3755,24 @@ So the code for our concrete Subject ~CheckedItemSubject~ which implements the d
 ~class CheckedItemSubject~
 #+begin_example
 public class CheckedItemSubject onModel: model = Subject onModel: model (
-)(
-  createPresenter = (
+) (
+(* Important override: Creates Presenter. Called by the framework in openSubject called
+   from ~CheckedItemApp>>#main:args:~ when calling ~HopscotchWindow openSubject: checkedItemSubject.~
+   Framework also associates Subject -> Presenter via Subject>>#presenterSlot:: ^createPresenter
+*)
+createPresenter = (
     ^CheckedItemPresenter onSubject: self.
   )
-
-  (* required isMyKind and isKindOfX formulaic methods *)
-  isMyKind: other = (
+(* required isMyKind and isKindOfX formulaic methods *)
+isMyKind: other = (
     ^ other isKindOfCheckedItemSubject.
   )
-  isKindOfCheckedItemSubject = (
+isKindOfCheckedItemSubject = (
     ^ true.
   )
 )
 #+end_example
 
-As with the model, add an inner class of CheckedItemUI by clicking the + beside Classes inside CheckedItemUI, then paste the code above in the text area:
-
-[[file:img/newspeak---a-few-notes.org-add-inner-class-checked-item-subject.png]]
-
-Click the "Accept" button [[file:img/newspeak---a-few-notes.org-accept-image.png]] to save the added class.
 
 
 **** Class CheckedItemPresenter
@@ -3558,26 +3785,33 @@ For a concrete UI, method which creates the UI view is ~#definition~. It does th
 
 Also, we will need [[*The formulaic required repetitive methods of #isMyKind: and #isKindOfX][The formulaic required repetitive methods of #isMyKind: and #isKindOfX]].
 
-Add the following code for class ~CheckedItemPresenter~. As with the model and presenter, we make the ~CheckedItemPresenter~ an inner class of CheckedItemUI, by clicking the + beside Classes inside CheckedItemUI.
+As with the model and subject, we make the ~CheckedItemPresenter~ an inner class of ~CheckedItemUI~, by clicking the + beside Classes inside CheckedItemUI.
+
 
 ~class CheckedItemPresenter~
 #+begin_example
-
 public class CheckedItemPresenter onSubject: subject = Presenter onSubject: subject (
 ) (
 public definition = (
 
     ^column: {
-      label: 'column label: Rudiments of Todo list.'.
-      (checkbox: subject model label
-       value: subject model isChecked
-       action: [  :aaachecked | updateGUI: 
+      (* Note: #label: and #checkbox:value:action: are methods on presenter *)
+      label: 'Rudimentary TODO App'.
+      checkbox: subject model itemTextWithStatus
+      value: subject model isChecked
+      action: [  :aaachecked | updateGUI:
                            [  (subject model isChecked)
-                                  ifTrue: [subject model isChecked: false]
-                                  ifFalse: [subject model isChecked: true]
+                                  ifTrue: [
+                                    subject model isChecked: false.
+                                    subject model itemTextWithStatus: subject model itemText, ' : STILL TODO'.
+                                    ]
+                                  ifFalse: [
+                                    subject model isChecked: true.
+                                    subject model itemTextWithStatus: subject model itemText, ' : DONE'.
+                                  ]
                             ]
                         ]
-      ).
+      .
     }. 
   )
 
@@ -3593,22 +3827,21 @@ public definition = (
 #+end_example
 
 
-
 *** 4. Integrate the *CheckedItemUI* into the *CheckedItemApp*
 
 So far we have prepared two separate classes:
 
-1. ~CheckedItemApp~: We added this class in [[*Add the hopscotchForHTML5 module that will allow us to build UI][Add the hopscotchForHTML5 module that will allow us to build UI]], as a the top level class. We equipped the class with API methods that make the class instance an application. We also added the ~hopscotchForHTML5~ object on a slot with the same name in the ~#main:args~ method. The ~hopscotchForHTML5~ object has everything we need to write our simple UI - but of course we also need to write code for the UI.  We did that as well - see next item on the list
+1. ~CheckedItemApp~: We created this class as a (so far almost empty) top level class in [[* 1. Start coding the Application class *CheckedItemApp*][1. Start coding the Application class *CheckedItemApp*]]. We equipped the class with API methods that make the class instance an application.
 2. ~CheckedItemUI~: We added this class in step [[*3. Write code for *CheckedItemUI*, the class showing the UI][3. Write code for *CheckedItemUI*, the class showing the UI]]. In that step, we also added the code that creates a row of widgets (fragments) in the ~CheckedItemUI>>#define~ method.
 
 
-In the rest of this chapter, we finish integrating the ~CheckedItemUI~ into the ~CheckedItemApp~ by creating an instance of ~CheckedItemUI~.  This instance creation will perform the process of showing our UI, defined in the ~CheckedItemUI>>#define~ method.
+In the rest of this chapter, we finish integrating the ~CheckedItemUI~ into the ~CheckedItemApp~ by creating an instance of ~CheckedItemUI~ in the main method of the ~CheckedItemApp~.  This instance creation will perform the process of showing our UI, defined in the ~CheckedItemUI>>#define~ method.
 
 **** Package the *CheckedItemUI* class into the *CheckedItemApp*
 
 As we know, Newspeak must explicitly package all dependencies that may not exist on the target system where we deploy our ~CheckedItemApp~ app.
 
-The packaging is done inside the IDE in convention named method ~CheckedItemApp>>#packageUsing: manifest~.
+The packaging is done inside the IDE in "convention method" named ~CheckedItemApp>>#packageUsing: manifest~.
 
 The code changes we need to make to achieve the dependency packaging is marked here:
 
@@ -3616,16 +3849,15 @@ The code changes we need to make to achieve the dependency packaging is marked h
 #+begin_example
 class CheckedItemApp packageUsing: manifest = (
   |
-  hopscotchForHTML5Runtime = manifest HopscotchForHTML5Runtime packageUsing: manifest.
   (* Added 1-line to package the CheckedItemUI class on slot with same name *)
   CheckedItemUI = manifest CheckedItemUI.
   |
 )
 #+end_example
 
-The ~CheckedItemUI~ class is pulled (from manifest) and stored on a slot named ~CheckedItemUI~ (this is customary, to name the slot same as the class name, but does not have to be). This is similar to importing ~CheckedItemUI~ into ~CheckedItemApp~ in other languages.
+The ~CheckedItemUI~ class is pulled (from manifest) and stored on a slot named ~CheckedItemUI~ (this is customary, to name the slot same as the class name, but does not have to be). This is similar to importing the class ~CheckedItemUI~ into ~CheckedItemApp~ in other languages.
 
-However, packaging in Newspeak performed by placing some object or class on slot does more.  Apart from declaring the dependency of ~CheckedItemApp~ on ~CheckedItemUI~, the actual class  ~CheckedItemUI~ will be serialized and shipped with the  ~CheckedItemApp~.
+However, packaging in Newspeak performed by placing some object or class on slot does more.  Apart from declaring the dependency of ~CheckedItemApp~ on ~CheckedItemUI~, the actual CODE for the class ~CheckedItemUI~ will be serialized and shipped with the ~CheckedItemApp~, when it is serialized as ~CheckedItemApp.vfuel~.
 
 **** When the app runs in the *#main:args:* method, instantiate the *CheckedItemUI*
 
@@ -3640,42 +3872,30 @@ concreteSubject:: ConcreteSubject onModel: concreteModel.
 hopscotchWindow openSubject: concreteSubject.
 #+end_example
 
-So let us use this snippet in our core UI code (instead of starting names with /Concrete/ start them with /CheckedItem/).
-
-Add the "3-lines" section on the bottom of ~#main:args:~, so it looks like this:
-
-We are making this code unnecessarily verbatim and long, to spell out what we discussed:
+So let us expand this snippet to the full UI code that will run when the app starts.  Instead of the above snippet names starting with /Concrete/ start them with /CheckedItem/.
 
  ~class CheckedItemApp~
  #+begin_example
- public main: platform args: args = (
+  public main: platform args: args = (
     |
     (* WHILE WE DEDUCED HOW THIS BEHAVES IN THE IDE, THE VFUEL BEHAVIOR IS ONLY DESCRIBED HERE.
        In IDE: When main is invoked by clicking [run] or [debug] in the IDE,
-         we just return platform. Because in the IDE, platform is already created
-         by the IDE by 'hopscotchForHTML5Runtime using: platform' (returns PlatformWithHopscotch).
-         so calling 'platform hopscotch' returns hopscotchForHTML5.
+         we just pass it the platform. Note that calling 'platform hopscotch' returns hopscotchForHTML5.
          
-       Electron: platform behaves same as IDE platform.
-         
-       In vfuel: When main is invoked in the vfuel app, the passed platform
-                 does not contain hopscotch. It is constructed so that
-                 isKindOfPlatformWithHopscotch returns false.
-                 We need to re-create hopscotchForHTML5Runtime,
-                 by calling 'hopscotchForHTML5Runtime using: platform' (returns PlatformWithHopscotch);
-                 This will be same PlatformWithHopscotch as in the IDE.
-    *)
-    platformWithHopscotch = platform isKindOfPlatformWithHopscotch ifTrue: [platform]
-                                                                   ifFalse: [hopscotchForHTML5Runtime using: platform].   
+       Electron and vfuel: platform behaves same as IDE platform.
 
-    hopscotchForHTML5 = platformWithHopscotch hopscotch.
+       LEGACY vfuel note: When main was invoked in the vfuel app, the passed platform
+                 did not contain hopscotch. That is why the legacy primary factory
+                 App>#packageUsing: manifest had to package slot hopscotchForHTML5Runtime, then use it here.
+                 This is no longer needed. 
+    *)
+
     (* Added 1-line to instantiate CheckedItemUI from the platform - which has hopscotch available *)
-    checkedItemUI = CheckedItemUI usingPlatform: platformWithHopscotch.
+    checkedItemUI = CheckedItemUI usingPlatform: platform.
 
     (* Added 3 temporary slots to verbosely process *)
     checkedItemModel
     checkedItemSubject
-    checkedItemPresenter
     |
 
     (* Added 3-lines to show steps very verbosely.
@@ -3684,62 +3904,72 @@ We are making this code unnecessarily verbatim and long, to spell out what we di
     *)
     checkedItemModel:: checkedItemUI CheckedItemModel new.
     checkedItemSubject:: checkedItemUI CheckedItemSubject onModel: checkedItemModel.
-    hopscotchForHTML5 HopscotchWindow openSubject: checkedItemSubject.
+    platform hopscotch HopscotchWindow openSubject: checkedItemSubject.
 
+    (* Note that the above code does NOT EXPLICITLY instantiate the Presenter here -
+       that is already done implicitly by the super Subject,
+       during ~checkedItemSubject:: checkedItemUI CheckedItemSubject onModel: checkedItemModel~
+       by the super calling the ~Subject#createPresenter~
+    *)
+       
     (* also removed: 'Hello World from HelloWorldApp' out. *)
   )
  #+end_example
 
+ See [[HopscotchWindow-openSubject-core-code]] for how  ~Subject#createPresenter~ is implicitly invoked.
+
+
 Let's go over the added lines, and why they were added this way.
 
 
-***** Why did we add the line calling primary primary factory method of CheckedItemUI? Also, this leads to a change in CheckedItemUI.
+***** Why did we add, in CheckedItemApp, the line calling primary factory method of CheckedItemUI?
 
 So, why did we add this line to the ~CheckedItemApp>>#main:args:~ method:
 
-~checkedItemUI = CheckedItemUI usingPlatform: platformWithHopscotch.~?
+~checkedItemUI = CheckedItemUI usingPlatform: platform.~?
 
 Explanation:
 
-- The CheckedItemApp is merely an application wrapper around the module CheckedItemUI. This is how modules are distributed and run. Our module (top level class instance) CheckedItemUI needs a /primary factory method/ which is passed a platform object.  At runtime, instances of top level classes "import" dependencies from the ~platform~.  All top level classes that are general modules need such /primary factory method/. It was discussed at length in the early sections, around and after section [[*Application and library modules in Newspeak][Application and library modules in Newspeak]].
-
-- So from above links, we know our CheckedItemUI will need a primary factory method such as ~CheckedItemUI>>#usingPlatform: platformWithHopscotch.~ This is what the added line expresses: It creates an instance of CheckedItemUI and stores it on a local variable.
+- The Application module ~CheckedItemApp~ is merely a (packagable) wrapper around the general module ~CheckedItemUI~. The ~CheckedItemUI~ needs a /primary factory method/ such as  ~CheckedItemUI>>#usingPlatform: platform.~  which is passed a platform object.  At runtime, during their instantiation, instances of top level classes "import" dependencies from the ~platform~.  All top level classes that are general modules need such /primary factory method/. It was discussed at length in the early sections, around and after section [[*Application and library modules in Newspeak][Application and library modules in Newspeak]] and summarized in [[* Newspeak modules API zoo][Newspeak modules API zoo]]. This is what the added line expresses: It creates an instance of CheckedItemUI and stores it on a local variable.
 
 - Looking back to chapter [[*Class CheckedItemUI][Class CheckedItemUI]], we did not add any slots or constructors for the top level class ~CheckedItemUI~ so far.  Our ~CheckedItemUI~ will definitely need to "import" and "hold on" classes or instances of ~Subject~ and ~Presenter~ for use in it's nested classes ~CheckedItemSubject~ and ~CheckedItemPresenter~.
 
-This explanation also leads to the need to beef up the ~CheckedItemUI~ by adding both a /primary factory method/ and /slots/ for classes needed by nested children.
+This explanation also leads to the need to beef up the module ~CheckedItemUI~ by adding both a /primary factory method/ and /slots/ for classes needed by nested children.
 
 So as discussed in the explanation, let's add the /primary factory method/ and it's slots to ~CheckedItemUI~.
 
-Replace the ~#new~ constructor with the following:
+Replace the ~CheckedItemUI>>#new~ constructor with the following:
 
 ~class CheckedItemUI~
 #+begin_example
+class CheckedItemUI usingPlatform: platform = (
 (* Added this primary factory method and slots for Subject and Presenter *)
-class CheckedItemUI usingPlatform: platformWithHopscotch = (
 |
-Subject   = platformWithHopscotch hopscotch Subject.
-Presenter = platformWithHopscotch hopscotch Presenter.
+Subject   = platform hopscotch Subject.
+Presenter = platform hopscotch Presenter.
 |
 )
 #+end_example
 
-Also, we recall from [[*Add the hopscotchForHTML5 module that will allow us to build UI][Add the hopscotchForHTML5 module that will allow us to build UI]] that
+~platform hopscotch~ returns instance of HopscotchForHTML5 which has access to the ~HopscotchForHTML5>>#Subject~ and ~HopscotchForHTML5>>#Presenter~ nested classes (among others).  The added code above just stores them on slots of ~CheckedItemUI~ with same names.
 
-~platformWithHopscotch hopscotch~
-
-returns instance of HopscotchForHTML5 which has access to the ~Subject~ and ~Presenter~ nested classes (among others).  The added code above just stores them on slots of ~CheckedItemUI~ with same names.
-
-To recap, the slots are needed in the ~CheckedItemUI~ for use by its nested classes, the  ~CheckedItemPresenter~ and  ~CheckedItemSubject~.  When the nested classes refer to ~Subject~ and ~Presenter~ in their code - for example in the constructor line ~CheckedItemSubject onModel: model = Subject onModel:~ - the ~Subject~ can only be found if it is on a slot of either the CheckedItemSubject or the parent CheckedItemUI. As always, all dependencies must be found somewhere in the slot scope going up.
+To recap, the classes stored on slots ~Subject~ and ~Presenter~ are needed in the ~CheckedItemUI~ for use by its nested classes, the ~CheckedItemPresenter~ and  ~CheckedItemSubject~.  When the nested classes refer to ~Subject~ and ~Presenter~ in their code - for example in the constructor line ~CheckedItemSubject onModel: model = Subject onModel:~ - the ~Subject~ can only be found if it is on a slot of either the CheckedItemSubject or the owner CheckedItemUI. *As always in Newspeak, all dependencies must be found somewhere in the slot scope going up*.
 
 A note: The need to put ~Subject~ on slot of ~CheckedItemUI~ rather than (for example) on the ~CheckedItemSubject~ is due to the fact that any element used in the constructor of ~CheckedItemSubject~ must be available in the scope of slots in nesting classes all the way up, when the contructor is called.
 
-In summary, as the ~#main:args:~ is called, it first uses it's instance slot ~hopscotchForHTML5Runtime~ to create local variables ~platformWithHopscotch~, ~hopscotchForHTML5~ (unused), and ~checkedItemUI~.
+In summary, as the ~CheckedItemApp>>#main:args:~ is called, it should:
+- instantiate the class on it's slot ~CheckedItemUI~ and store instance on local slot ~checkedItemUI~
+- declare some local variables checkedItemModel/Subject/Presenter for their instances
+- create model instance using   ~checkedItemModel:: checkedItemUI CheckedItemModel new~. Note how inner class ~CheckedItemModel~ is referred to from instance ~checkedItemUI~
+- create subject instance using ~checkedItemSubject:: checkedItemUI CheckedItemSubject onModel: checkedItemModel~.
+- open hopsotch window on the subject using ~platform hopscotch HopscotchWindow openSubject: checkedItemSubject~.
+- See [[HopscotchWindow-openSubject-core-code]] on how Presented is instantiated and Subject -> Presenter associated
+
 
 The local variable ~checkedItemUI~ will be used to create and show the UI in the code detailed in the next chapter.
 
 
-***** What are the lines at the of *#main:args*?
+***** What are the lines at the end of *CheckedItemApp#main:args*?
 
 This is the last step we need to discuss!
 
@@ -3753,14 +3983,14 @@ The last three lines below create the rudimentary Hopscotch UI with a window, an
     *)
     checkedItemModel:: checkedItemUI CheckedItemModel new.
     checkedItemSubject:: checkedItemUI CheckedItemSubject onModel: checkedItemModel.
-    hopscotchForHTML5 HopscotchWindow openSubject: checkedItemSubject.
+    platform hopscotch HopscotchWindow openSubject: checkedItemSubject.
 #+end_example
 
-Notice this code is at the very end of the method ~CheckedItemApp>>#main:args:~ which we know is a convention API called to run the app.  The line
+Notice this code is at the very end of the method ~CheckedItemApp>>#main:args:~ which we know as the "convention method" that executes the Application.  The line
 
-~hopscotchForHTML5 HopscotchWindow openSubject: checkedItemSubject.~
+~platform hopscotch HopscotchWindow openSubject: checkedItemSubject.~
 
-is the last line of our application. In this method, Hopscotch takes over, creates the UI and starts interaction with user's input devices. 
+is the last line of our application. *Executing this line, Hopscotch takes over, creates the UI and starts interaction with user's input devices*. 
 
 In the last chapter, we merely summarize code for all classes we created for our App, the ~CheckedItemApp~.
 
@@ -3773,26 +4003,26 @@ https://github.com/mzimmerm/newspeak-doc/tree/main/newspeak---a-few-notes-code/c
 
 If you prefer not to follow all the detail steps of buiding the ~CheckedItemApp~, you can just install the complete code from there.
 
-To install the complete code to Newspeak, download the ".ns" files from there, then, from your Newspeak IDE (local or online) use the "Compile file(s)" link to import the files into your IDE. If you are not sure what that means, read the section around [[compile-files]["Compile file(s)"]].
+To install the complete code to Newspeak, download the ~.ns~ files from the above link, then, from your Newspeak IDE (local or online) use the "Compile file(s)" link to import the files into your IDE. If you are not sure what that means, read the section around [[compile-files]["Compile file(s)"]].
 
 Running the app from the IDE, presents the UI we built as in this screenshot. 
 
 [[file:img/newspeak---a-few-notes.org-checked-item-app-ui-running.png]]
 
-You can also package it and run the App as a standalone .vfuel file from the IDE, by clicking the *[deploy]* link beside the class name, then selecting "As VictoryFuel with Mirrors".
+You can also package it and run the Application as a standalone .vfuel file from the IDE, by clicking the *[deploy]* link beside the class name, then selecting "As VictoryFuel with Mirrors".
 
 [[file:img/newspeak---a-few-notes.org-deploy-checked-item-app.png]]
 
-More details on deployment for another sample App is in the intro section around [[make-deployment-file][Make deployment file for CounterApp]]
+More details on deployment for another sample Application is in the intro section around [[make-deployment-file][Make deployment file for CounterApp]]
 
 
-Note: The code for the *CheckedItemApp* built here is as simple as it can be, to focus on understanding ~HopscotchForHTML5~. The App should be improved in the future. The main weakness of the current version is that it exposes model publicly - model functions should be wrapped in Subject.
+Note: The code for the *CheckedItemApp* built here is as simple as it can be, to focus on understanding ~HopscotchForHTML5~. The Application should be improved in the future. The main weakness of the current version is that it exposes model publicly - model functions should be wrapped in Subject.
 
 This concludes the chapter that explores ~HopscotchForHTML5~.
 
 
 
-* Some of the more boring details
+* Analyzing classes HopscotchForHTML5, Browsing, etc
 
 ** HopscotchForHTML5: Analyzing senders of *Subject>>#presenter* and why *HopscotchWindow>>#openSubject: subject* should be invoked instead
 
@@ -3809,7 +4039,7 @@ But do we know whether:
 
 Well that is a good detective story. Let us take a wild assumption that item 2 is the intended method.
 
-There is a vague weak supporting reason for possibility 2. An App will have to create something like a Window, a Frame, or some such object into which our app will be presented. So maybe, a good place to look for a method our application should invoke (instead of ~Subject>>#presenter~, is some kind of Window creation in HopscotchForHTML5 (where we would expect ~Subject#presenter~ to be invoked).
+There is a vague weak supporting reason for possibility 2. An Application will have to create something like a Window, a Frame, or some such object into which our app will be presented. So maybe, a good place to look for a method our application should invoke (instead of ~Subject>>#presenter~, is some kind of Window creation in HopscotchForHTML5 (where we would expect ~Subject#presenter~ to be invoked).
 
 Let us investigate that direction.
 
@@ -3868,7 +4098,7 @@ is promising.
 
 ~HopscotchWindow>>#openSubject: subject~ looks like may be the method that we should invoke in our app to eventually create the Presenter.
 
-The invocations sequence would be
+The invocations sequence would be <<HopscotchWindow-openSubject-core-code>>
 
 ~HopscotchWindow>>#openSubject: subject~ invokes ->
 ~HopscotchWindow>>#into: container openSubject: subject~  invokes ->
@@ -3886,3 +4116,170 @@ The last method creates and returns the presenter; which is then entered and pla
 *this invocation will do the work of creating the Presenter for the Subject, and entering the presenter into the appropriate place in the container body.*
 
 We will use this conclusion as a core conclusion when writing our sample Application.
+
+
+
+** Browsing.ns: Analysing how a vfuel file is created by clicking the [deploy] link on an App.
+
+TL;DR: Application is a top level class supporting the message ~#packageUsing: manifest~, as explained in 
+This section browses code following code execution after we click [deploy] on an 
+
+Creates Application package instance, runs it's main: to initialize it, then calls serialization on the initialized instance
+- this is definitely NOT calling primary factory for side effects as I thought!!!
+
+~Browsing.ns~
+#+begin_src
+
+class Browsing usingPlatform: p ide: webIde = (
+  |
+  ..
+  ide = webIde. (* ide BECOMES HopscotchWebIDE *)
+  ..
+  |
+)
+
+public deployAction = (
+        subject isApplicationConfiguration ifFalse: [^nothing].
+        ^(link: '[deploy]' action: [
+                        openMenu:: menuWithLabelsAndActions: {
+                                {'as VictoryFuel'. [deployAsVictoryFuel]}.
+                                {'as VictoryFuel with Mirrors'. [deployAsVictoryFuelWithMirrors]}.                              
+                                {'as Web Page'. [deployAsWebPage]}.
+                                {'as Web Page with Mirror Builders'. [deployAsWebPageWithMirrorBuilders]}.   
+                        }
+                ]).             
+)
+)
+
+deployAsVictoryFuelWithMirrors = (
+      | bytes = subject bytesForVictoryFuelWithMirrors. |
+        ide webFiles downloadFileName: subject name, '.vfuel' fromBytes: bytes.
+)                               
+
+public bytesForVictoryFuelWithMirrors ^ <ByteArray> = (
+  (* this becomes: bytesForVictoryFuelWithRuntime: (HopscotchWebIDE RuntimeWithMirrorsForPrimordialSoup)
+     .. which does not make much sence ...
+  *)
+  ^bytesForVictoryFuelWithRuntime: ide psoupWithMirrorsDeploymentRuntime
+)       
+
+public bytesForVictoryFuelWithRuntime: runtimeClass ^ <ByteArray> = (
+        | appDef <Class> =  ide namespacing Root at: name. |
+        (* ****** This is where low-level serialization happens for the app that has "packageUsing: manifest".
+           THIS CALLS THE PRIMARY FACTORY ON appDef, which creates instance, then converts to bytes - this is the .vfuel file created 
+         *)
+        ^ide deployment PSoupPackager packageApplicationConfiguration: appDef withRuntimeConfiguration: runtimeClass  usingNamespace: ide namespacing Root
+)   
+
+ALSO
+
+public runApp = (
+        | appDef <Class> app <Object> |
+        appDef:: ide namespacing Root at: name.
+        app:: appDef packageUsing: ide namespacing manifest.
+        app main: cachedPlatform args: {}
+)
+
+#+end_src
+
+Also see
+
+~NewspeakBrowsing.ns~
+#+begin_src 
+public deployAsVictoryFuel = (          
+        | appDef app bytes |
+        appDef:: Root at: model simpleName.
+        app:: appDef packageUsing: ide namespacing manifestForSqueak.
+        bytes:: ByteArray streamContents:
+                [:stream |      
+                | ser = VFSerializer over: stream withGlobals: Smalltalk globals. |
+                ser serialize: app].
+        FileStream      
+                forceNewFileNamed: appDef name, '.vfuel'
+                do: [:stream | stream nextPutAll: bytes].
+)               
+
+#+end_src
+
+~DeploymentManager.ns~
+
+#+begin_src 
+public class PSoupPackager = (
+) (
+public packageApplicationConfiguration: appDef <Class> withRuntimeConfiguration: runtimeClass <Class> usingNamespace: ns  ^ <ByteArray> = (
+        | 
+    app <Object> 
+    runtime <Object>
+    accessedResources <List> = List new. 
+    |  
+    
+    runtime:: runtimeClass packageRuntimeUsing:
+                (RecordingManifest namespace: ns accessedResources: List new).
+        (* THIS INSTANCE SEEMS JUST LOST ... *)        
+        appDef packageUsing:
+                (RecordingManifest namespace: ns accessedResources: accessedResources).
+
+        (* THE PACKAGING OF appDef - the application class - is done here *)
+        (* THIS IS IN out/WebCompiler.ns : HERE THE Preloader DOES FIRST CREATE PACKAGE INSTANCE, THEN CALLS THE PACKAGE MAIN:
+           WHICH RUNS THE PACKAGE , THEN THE MAIN RETURNS THE PACKAGE INSTANCE (!! BY DEFAULT) - THE MAIN: ALSO INITIALIZES THE PACKAGE INSTANCE (??)
+
+               ~^(applicationConfiguration packageUsing: manifest) main: platform args: args~
+
+          THE RESULT (THE PACKAGE INSTANCE INITIALIZED) IS SET ON app:
+        *)
+        app:: Preloader
+                resources: (Array withAll: accessedResources)
+                applicationConfiguration: appDef.
+
+
+        (* The app == initialized package instance IS SNAPSHOTTED TO BYTES, AND THE BYTES RETURNED.
+           BYTES GO BACK TO bytesForVictoryFuelWithRuntime
+         *)
+
+        ^Snapshotter new snapshotApp: app withRuntime: runtime keepSource: runtimeClass keepsSources.
+)
+
+#+end_src
+
+
+~out/WebCompiler.ns~
+#+begin_src 
+class Preloader resources: r <Array[{String. String. String | Class}]> applicationConfiguration: a <Class> = ( 
+(* Given a list of resources and an app, this class creates a wrapper for the app that converts the resources  
+    into actual objects and feeds them to the app so it can be instantiated.
+*)
+        |
+        protected resources <Array[{String. String. String | Class}]> = r.
+        protected applicationConfiguration <Class> = a.
+        |
+) (
+public main: platform args: args ^ <Object> = (
+        | namespace <Map[String, Class | String | Alien]> manifest <Manifest> |
+        namespace:: platform collections Map new.
+        resources do:
+                [:resource <{String. String. String | Class}> |
+                | name <String> type <String> payload <String | Class> |
+                 name:: resource at: 1.
+                 type:: resource at: 2.
+                 payload:: resource at: 3.
+                 namespace
+                        at: name
+                        put: (unpackResourceType: type payload: payload platform: platform)].
+        manifest:: Manifest forNamespace: namespace.
+         
+        ^(applicationConfiguration packageUsing: manifest) main: platform args: args
+)
+
+#+end_src
+
+~HopscotchWebIDE.ns~
+#+begin_src 
+class HopscotchWebIDE usingPlatform: p = (
+  |
+  ..
+  public browsing = Browsing usingPlatform: p ide: self.
+  .. 
+  public psoupWithMirrorsDeploymentRuntime = RuntimeWithMirrorsForPrimordialSoup.
+  ..
+  |
+#+end_src
