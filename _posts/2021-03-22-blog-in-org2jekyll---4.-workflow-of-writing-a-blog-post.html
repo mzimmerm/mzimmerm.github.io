@@ -10,15 +10,15 @@ categories:
 comments: true
 ---
 
-<div id="outline-container-org87966e0" class="outline-2">
-<h2 id="org87966e0"><span class="section-number-2">1</span> Blog in Org2jekyll - 4. Workflow of writing a blog post</h2>
+<div id="outline-container-org995c0bf" class="outline-2">
+<h2 id="org995c0bf"><span class="section-number-2">1.</span> Blog in Org2jekyll - 4. Workflow of writing a blog post</h2>
 <div class="outline-text-2" id="text-1">
 <p>
 This post is part 4 of  <a href="{% post_url 2017-04-08-blog-in-org-2-jekyll---1.-motivation %}">a short series about writing in org mode</a>, using org2jekyll.
 </p>
 
 <p>
-TL;DR: If you do not want to read this, go to <a href="#org1e75ab5">1.1</a>
+TL;DR: If you do not want to read this, go to <a href="#org9920930">1.1</a>
 </p>
 
 
@@ -104,8 +104,8 @@ Notes:
 </div>
 
 
-<div id="outline-container-org1e75ab5" class="outline-3">
-<h3 id="org1e75ab5"><span class="section-number-3">1.1</span> Conclusion</h3>
+<div id="outline-container-org9920930" class="outline-3">
+<h3 id="org9920930"><span class="section-number-3">1.1.</span> Conclusion</h3>
 <div class="outline-text-3" id="text-1-1">
 <p>
 Assuming our Jekyll is configured the serve settings to "watch" (to pick up and rebuild changed files), this 6-step workflow of creating and publishing a post all the way to github.io:
@@ -146,12 +146,11 @@ Assuming our Jekyll is configured the serve settings to "watch" (to pick up and 
 <li>The blog index is built from all <code>html</code> files in the <code>_posts</code> directory</li>
 </ul></li>
 </ul></li>
-<li><b>The Jekyll auto-watch will then copy all "special" dirs from _posts to _site, in detail</b>: 
+<li><b>The Jekyll auto-watch will then copy all "special" dirs from _posts to _site, but also converts html files, in detail</b>: 
 <ul class="org-ul">
-<li>Copies <code>$BLOG/_posts/2021-04-20-a-test-blog.html</code> to <code>$BLOG/_site/2021/04/20/a-test-blog.html</code>
-<ul class="org-ul">
-<li>Note: This probably includes some additional building from the first to the second html.</li>
-</ul></li>
+<li>Despite being called "html", the first file contains markdown for Jekyll</li>
+<li>During this step, Jekyll <b>also edits some markdown</b> tags on top of the first file to html in second html, so the two html files contents differ.</li>
+<li>Edits, then copies <code>$BLOG/_posts/2017-04-08-a-test-blog.html</code> to <code>$BLOG/_site/2021/04/a-test-blog.html</code></li>
 <li>Copies directory <code>$BLOG/img/</code> to <code>$BLOG/_site/img</code></li>
 <li>Copies directory <code>$BLOG/css/</code> to <code>$BLOG/_site/css</code></li>
 <li>Copies directory <code>$BLOG/js/</code>  to <code>$BLOG/_site/js</code></li>

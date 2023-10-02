@@ -33,7 +33,7 @@ disqus: 'https-mzimmerm-github-io'
 
 # Permaling
 permalink: /:year/:month/:title
-paginate: 3
+  # mz removed 2023-10-02 paginate: 3
 
 highlighter: rouge
 markdown: kramdown

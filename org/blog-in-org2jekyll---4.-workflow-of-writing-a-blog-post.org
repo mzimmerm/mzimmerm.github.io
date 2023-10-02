@@ -86,7 +86,7 @@ Notes:
      - Categories (space separated) e.g.: category-math category-walk-musings category-combinatorics
    - Creates an empty blog post, with today's date, e.g. ~$BLOG/a-test-blog.org~
 3) *Edit the post content* in org mode : Add the blog text.
-4) ~M-x: org2jekyll-publish~ (an emacs command, step 3 in text)
+4) ~M-x: org2jekyll-publish~ (an emacs command, step 3 in text). If document is large, it may ask to open temp org file starting with date. Answer yes.
    - *Locally publishes the post which is being edited*. Details of this local publishing step: 
      - Copies directory ~$BLOG/org/img/~ to ~$BLOG/img~
      - Copies directory ~$BLOG/org/css/~ to ~$BLOG/css~
@@ -96,9 +96,10 @@ Notes:
      - Notes:
        - If you want to rename a blog, remove the html from the ~_posts~ directory.
        - The blog index is built from all ~html~ files in the ~_posts~ directory
-   - *The Jekyll auto-watch will then copy all "special" dirs from _posts to _site, in detail*: 
-     - Copies ~$BLOG/_posts/2021-04-20-a-test-blog.html~ to ~$BLOG/_site/2021/04/20/a-test-blog.html~
-       - Note: This probably includes some additional building from the first to the second html.
+   - *The Jekyll auto-watch will then copy all "special" dirs from _posts to _site, but also converts html files, in detail*: 
+     - Despite being called "html", the first file contains markdown for Jekyll
+     - During this step, Jekyll *also edits some markdown* tags on top of the first file to html in second html, so the two html files contents differ.
+     - Edits, then copies ~$BLOG/_posts/2017-04-08-a-test-blog.html~ to ~$BLOG/_site/2021/04/a-test-blog.html~
      - Copies directory ~$BLOG/img/~ to ~$BLOG/_site/img~
      - Copies directory ~$BLOG/css/~ to ~$BLOG/_site/css~
      - Copies directory ~$BLOG/js/~  to ~$BLOG/_site/js~
