@@ -23,7 +23,8 @@
 
     <div class="container-fluid">
       <div class="row-fluid">
-        <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <!-- mz-changed-2023-10-02: removed the navbar--fixed--top and added double dashes to remove from grep : div class="navbar navbar-inverse navbar--fixed--top" role="navigation"-->
+        <div class="navbar navbar-inverse" role="navigation">
           <div class="navbar-header">
             <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
               <span class="sr-only">Toggle navigation</span>
@@ -41,7 +42,7 @@
               <li class="active"><a href="{{ site.baseurl }}/about.html">About</a></li>
               <li class="active"><a href="{{ site.baseurl }}/feed.xml">RSS</a></li>
               {% if site.github != '' %}
-              <li class="active"><a href="https://github.com/{{ site.github }}">Github</a></li>
+              <li class="active"><a href=" https://github.com/mzimmerm/{{ site.github }}">Github</a></li>
               {% endif %}
             </ul>
           </div>

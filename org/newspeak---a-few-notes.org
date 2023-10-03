@@ -3,7 +3,7 @@
 #+OPTIONS: H:5 num:t tags:t toc:t timestamps:t
 #+LAYOUT: post
 #+AUTHOR: mzimmerm
-#+DATE: 2021-05-02 Sun 12:51
+#+DATE: 2023-10-03 Tue 00:01
 #+TITLE: Newspeak - a few notes
 #+DESCRIPTION: Running, notes on Newspeak
 #+TAGS: newspeak programming
@@ -46,7 +46,7 @@ Much of this document is collected from Newspeak sources listed below. Any error
 
 *** Newspeak code example
 
-First to show some code, simplified from https://raw.githubusercontent.com/newspeaklanguage/newspeak/master/CounterUI.ns.
+A snippet of Newspeak code.  Simplified from https://raw.githubusercontent.com/newspeaklanguage/newspeak/master/CounterUI.ns.
 
 The comments obscure the code but provide syntax guidence.
 
@@ -2532,13 +2532,13 @@ Blogs
 - sourced on https://github.com/gbracha/gbracha.github.io
 - run URL on https://blog.bracha.org/
 
-| Title                          | URL                                                                       | Github Dir            | Is HTML Empty (like primordialsoup.html)? |
-|--------------------------------+---------------------------------------------------------------------------+-----------------------+-------------------------------------------|
-| What You Want                  |  https://blog.bracha.org/WYWIWYG/out/WYWIWYG.html?snapshot=WYWIWYGApp.vfuel                        | WYWIWYG/out           | Y                                         |
-| Ampleforth: A Live Literate    |  https://blog.bracha.org/Ampleforth-Live22/out/primordialsoup.html?snapshot=Live22Submission.vfuel | Ampleforth-Live22/out | Y                                         |
-| Programmer Like a Pathologist? |  https://blog.bracha.org/exemplarDemo/exemplar2021.html?snapshot=BankAccountExemplarDemo.vfuel     | exemplarDemo          | N                                         |
-| Odersky (no contents)          |  https://blog.bracha.org/OderskyFestschrift23/primordialsoup.html?snapshot=Telescreen.vfuel        | OderskyFestschrift23  | Y                                         |
-|                                |                                                                           |                       |                                           |
+| Title                          | URL                                                                                               | Github Dir            | Is HTML Empty (like primordialsoup.html)? |
+|--------------------------------+---------------------------------------------------------------------------------------------------+-----------------------+-------------------------------------------|
+| What You Want                  | https://blog.bracha.org/WYWIWYG/out/WYWIWYG.html?snapshot=WYWIWYGApp.vfuel                        | WYWIWYG/out           | Y                                         |
+| Ampleforth: A Live Literate    | https://blog.bracha.org/Ampleforth-Live22/out/primordialsoup.html?snapshot=Live22Submission.vfuel | Ampleforth-Live22/out | Y                                         |
+| Programmer Like a Pathologist? | https://blog.bracha.org/exemplarDemo/exemplar2021.html?snapshot=BankAccountExemplarDemo.vfuel     | exemplarDemo          | N                                         |
+| Odersky (no contents)          | https://blog.bracha.org/OderskyFestschrift23/primordialsoup.html?snapshot=Telescreen.vfuel        | OderskyFestschrift23  | Y                                         |
+|                                |                                                                                                   |                       |                                           |
 
 
 
