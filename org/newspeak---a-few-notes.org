@@ -2762,32 +2762,36 @@ I will drop the word "type" below, and use lowercase for objects, Uppercase for 
 
 The lifecycle of a library ~alicesModuleLib~ providing the module ~alicesModule~ would be:
 
-1. In IDE of Alice:
-1.1  -> Alice writes code for AlicesModule, and ~AlicesModuleLib~, providing on ~AlicesModuleLib~ the factory ~packageLibraryUsing: manifest~ and the instance method ~buildUsing: platform~ which returns ~alicesModule~.
-1.2  -> ~AlicesModuleLib~ shows up in the IDE and in manifest
-1.3  -> Alice clicks [deploy] (alternatively, this section can be done is a build script)
-1.4    ->   ~AlicesModuleLib #packageLibraryUsing:manifest~ (build-like step) is invoked
-1.5    ->   above produces ~alicesModuleLib~, the library object with AlicesModule and other classes needed by ~AlicesModuleLib~ on slots
-1.6    ->   serialization is invoked for ~alicesModuleLib~
-1.7    ->   alicesModuleLib.vfuel is produced and saved from ~alicesModuleLib~
-2.   -> Alice sends vfuel to a public repository
-3.   -> Bob downloads alicesModuleLib.vfuel from the public repository
-4. In IDE of Bob:
-4.1  -> Bob clicks the (todo not-existing?) button which calls code to deserialize alicesModuleLib.vfuel to an object and loads the object (todo mechanism?) into Bobs IDE
-4.2  -> ~alicesModuleLib~ is now held in Bobs IDE
-4.3  -> ~AlicesModuleLib~ shows up in Bobs IDE and is placed on Bob IDEs manifest (todo mechanism? probably from ~AlicesModuleLib~ class deserialized along with ~alicesModuleLib~ ?)
-4.4  -> Bob, in his IDE starts writing ~BobsApp~.
-4.5      - in ~BobsApp>>#packageUsing: manifest~, he writes code to store ~alicesModuleLib~ on a slot : ~|alicesModuleLib = manifest AlicesModuleLib packageUsing: manifest|~
-4.6      - in ~BobsApp>>#main:args: platform~ he writes code to instantiate ~alicesModule~ :  ~alicesModule:: alicesModuleLib buildUsing: platform~ . This yields the alicesModule instance that provides good service to ~BobsApp~ in the following lines.
-4.7    -> Bob can now click [deploy] on ~BobsApp~, with steps equivalent to 1.3 to 1.7
+|   1. |   | In the IDE of Alice:                                                                                                                                                                                 |
+|------+---+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| 1.1. |   | Alice writes code for AlicesModule, and ~AlicesModuleLib~: on ~AlicesModuleLib~ adds the factory ~packageLibraryUsing: manifest~ and the instance method ~buildUsing: platform~ which returns ~alicesModule~. |
+| 1.2. |   | ~AlicesModuleLib~ shows up in the IDE and in manifest                                                                                                                                                |
+| 1.3. |   | Alice clicks [deploy] (alternatively, this section can be done in a build script)                                                                                                                    |
+| 1.4. |   | ~AlicesModuleLib #packageLibraryUsing:manifest~ (build-like step) is invoked                                                                                                                         |
+| 1.5. |   | The above produces ~alicesModuleLib~, the library object with AlicesModule and other classes needed by ~AlicesModuleLib~ on slots                                                                    |
+| 1.6. |   | Serialization is invoked for ~alicesModuleLib~                                                                                                                                                       |
+| 1.7. |   | The alicesModuleLib.vfuel is produced and saved from the ~alicesModuleLib~                                                                                                                           |
+| 1.8. |   | Alice pushes the vfuel to a public Newspeak libraries repository (using a button from IDE? Does Alice need to certify self? Who creates the public repository and how is it propagated?)             |
+|------+---+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+|   2. |   | In the IDE of Bob:                                                                                                                                                                                   |
+|------+---+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| 2.1. |   | Bob pulls alicesModuleLib.vfuel from the public repository (by clicking a IDE button?). This also calls code to deserialize alicesModuleLib.vfuel to an object and loads the object (todo mechanism?) into Bobs IDE |
+| 2.2. |   | Instance ~alicesModuleLib~ is now held in Bobs IDE                                                                                                                                                   |
+| 2.3. |   | Class ~AlicesModuleLib~ shows up in Bobs IDE and is placed on Bob IDEs manifest (todo mechanism? probably from ~AlicesModuleLib~ class deserialized along with ~alicesModuleLib~ ?)                  |
+| 2.4. |   | Bob, in his IDE starts writing ~BobsApp~, and adds the following methods and code:                                                                                                                   |
+| 2.5. |   | : in ~BobsApp>>#packageUsing: manifest~, he writes code to store ~alicesModuleLib~ on a slot : ~alicesModuleLib = manifest AlicesModuleLib packageUsing: manifest~                                   |
+| 2.6. |   | : in ~BobsApp>>#main:args: platform~ he writes code to instantiate ~alicesModule~ :  ~alicesModule:: alicesModuleLib buildUsing: platform~ . This yields the alicesModule instance that provides good service to ~BobsApp~ in the following lines. |
+| 2.7. |   | Bob can now click [deploy] on ~BobsApp~, with steps equivalent to 1.3 to 1.7                                                                                                                         |
 
 
 
 I only have questions on
-  - for 2. and 3.: is this in principle intended as a sharing mechanism of serialized artifacts?
-  - for 4.1 : is such button intended? I do not need to understand the mechanism, just that it may be like that in principle.
-  - for 4.2 and 4.3 : I speculate this is just a result of 4.1, but maybe int is not so
-I do not have questions on the other items, in fact I would be unhappy if I got those items wrong :)
+
+  - Items 1.8. and 2.1. : Would this be in principle intended as a sharing mechanism of libraries?  Or a different peer to peer method?
+  - Items 2.1 (again), 2.2 and 2.3. and 2.3 : How are object deserialized from vfuel instantiated and included in IDE?  Are there examples in the Newspeak IDE code?
+
+
+  I do not have any questions on the other items, in fact I would be unhappy if I got those other items wrong :) but would be happy to know I got those wrong.
 
 
 Thanks todo-00-last - ask the above on newspeak list, also comment on conflicting naming as mentioned above.
