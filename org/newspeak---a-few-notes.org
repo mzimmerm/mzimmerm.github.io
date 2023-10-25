@@ -23,7 +23,7 @@ Much of this document is collected from Newspeak sources listed below. Any error
 - Primordialsoup (the VM) code on Github https://github.com/newspeaklanguage/primordialsoup. Only needed if we want to build the VM, not necessary for Newspeak development.
   
 
-* Changelog: last change 2023-10-03
+* Changelog: last change 2023-10-23
 
 |       Date |   | Author           |   | Change                                                                                                                                                                                                                                       |
 |------------+---+------------------+---+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -32,7 +32,7 @@ Much of this document is collected from Newspeak sources listed below. Any error
 | 2021-06-07 |   | Milan Zimmermann |   | Wording changes and clarifications in several sections                                                                                                                                                                                       |
 | 2021-07-05 |   | Milan Zimmermann |   | Reworked the saving paragraph:  "lastSaved" vs "backup" in [[Saving changes in Newspeak]]                                                                                                                                                        |
 | 2021-07-16 |   | Milan Zimmermann |   | Added section [[*Newspeak: An ide-driven journey leading to Hello World][Newspeak: An ide-driven journey leading to Hello World]]                                                                                                                                                                         |
-| 2021-07-28 |   | Milan Zimmermann |   | Added sections [[How does Ampleforth work to create live literate Newspeak demos such as http://bracha.org/Literate/literate.html?][How does Ampleforth work to create live literate Newspeak demos such as http://bracha.org/Literate/literate.html?]] and [[How does Newspeak displays itself in DOM and HTML?][How does Newspeak displays itself in DOM and HTML?]]                                                      |
+| 2021-07-28 |   | Milan Zimmermann |   | Added sections [[How does Ampleforth work to create live literate Newspeak demos such as http://bracha.org/Literate/literate.html?][How does Ampleforth work to create live literate Newspeak demos such as http://bracha.org/Literate/literate.html?]] and [[How does Newspeak display something in DOM and HTML?][How does Newspeak display something in DOM and HTML?]]                                                      |
 | 2021-08-10 |   | Milan Zimmermann |   | Added section [[*The Newspeak UI, *HopscotchForHTML5*: Analysing it by code browsing; Discovering *Subject*, *Model*, *Presenter*, *Fragment*; Writing *CheckedItemApp* sample App][The Newspeak UI, *HopscotchForHTML5*: Analysing it by code browsing; Discovering *Subject*, *Model*, *Presenter*, *Fragment*; Writing *CheckedItemApp* sample App]]                                                              |
 | 2021-08-15 |   | Milan Zimmermann |   | Added section [[*Exemplars: Enabling liveliness everywhere][Exemplars: Enabling liveliness everywhere]]                                                                                                                                                                                      |
 | 2021-08-15 |   | Milan Zimmermann |   | Added section [[*Newspeak terminology][Newspeak terminology]]                                                                                                                                                                                                           |
@@ -52,16 +52,17 @@ The comments obscure the code but provide syntax guidence.
 
 #+begin_src
 
-(* This is a comment in Newspeak. It can spread across lines *)
+(* This is a comment in Newspeak. It can span across many lines *)
 
 (* Declaration of a top level class "CounterUI"
-   ALONG WITH it's primary factory method (constructor in other OO) method "usingPlatform: p".
+   ALONG WITH it's primary factory method (constructor in other OO) method "usingPlatform: platform".
 *)
 class CounterUI usingPlatform: platform  = (
-  (* Slot (instance methods) section is inside bars | .. |
+  (* Slots are declared inside bars | .. |.
+     A Slot is like a instance member in other OO, in Newspeak it is always a getter, potentially setter (if slot is mutable).
   *)
 	|
-  (* "Subject" and "Presenter" are immutable slots (instance members)
+  (* "Subject" and "Presenter" are immutable slots
   *)
 	private Subject = platform hopscotch Subject.
 	private Presenter = platform hopscotch Presenter.
@@ -70,7 +71,7 @@ class CounterUI usingPlatform: platform  = (
   (* "Counter" class is an inner class of "CounterUI"
   *)
   public class Counter = (
-    (* Counter is a mutable slot. It also defines a type Integer. Type is optional. *)
+    (* count is a mutable slot. It also defines it as type Integer. Type is optional. *)
   	| public count <Integer> ::= 0. |
   ) (
   )
@@ -118,7 +119,7 @@ class CounterUI usingPlatform: platform  = (
 
 
     
-*** Notation: In the text, how do we express a class name, a message (function, method) name, or a slot name?
+*** Notation used in this document: how do we express a class name, a message (function, method) name, or a slot name?
 
 This is a brief introduction to explain a notation used in this document.
 
@@ -158,12 +159,12 @@ Newspeak is different. Below we list terms that are generally used in documentat
 - *Slot* :  Equivalent of an instance variable (instance slot) or a local variable (local slot) in other languages. In Newspeak, everything is a message send, so a slot is a getter (immutable slot) or also a setter (mutable slot). Example:  ~|mySlot =:: 1|~ declares a mutable slot,  ~|mySlot = 1|~ declares an immutable slot. See the local and instance slot sections below for more details.
 - *Instance slot declaration* : Name on the left of an expression between the bars ~| |~ located inside the *primary factory method*.  Instance slot is an *equivalent* of a member variable in other OO languages, and it's scope is the instance, with some small but important context differences due to class nesting. The slot name can have the symbol ~=~, ~=::~ or nothing to the right of the slot name.  ~|mySlot =:: 1|~ is a declaration of a mutable slot named ~mySlot~.  ~|mySlot = 1|~ is a declaration of an immutable slot named ~mySlot~ (in either example, initialized to ~1~ at the point of the declaration).  ~|mySlot|~  is a declaration of an immutable slot, which can be initialized later in code. The ~::~ expresses mutability in Newspeak. Read it as 'the name on the left is set to the value on the right'.
 - *Local slot declaration* : Similar to /instance slot declaration/, except the local slot is declared in (and its scope is) the body of an instance method or a factory method (but NOT in the primary factory method body, that is reserved for *instance slots*). Equivalent of a local variable in other languages. 
-- *Primary factory method* : The method that allows to accept parameters (capabilities), declare instance slots, and produce an instance of a class.  In practical terms, looking at code, the primary factory method is the method starting on the same line where the class code starts. Also, the /primary factory method/ is the only place in which we can declare instance slots.  The 'class factory object' in code, is referenced using the uppercase class name. An example of a primary factory method named ~#usingPlatform: p andA1: A1~ on class ~A2~:
+- *Primary factory method* : The method that allows to accept parameters (capabilities), declare instance slots, and produce an instance of a class.  In practical terms, looking at code, the primary factory method is the method starting on the same line where the class code starts. Also, the /primary factory method/ is the only place in which we can declare instance slots.  The 'class factory object' in code, is referenced using the uppercase class name. An example of a primary factory method named ~#usingPlatform: platform andA1: A1~ on class ~A2~:
     #+begin_example
       (* The string "usingPlatform: andA1:" is the primary factory method signature.
          The primary factory method is declared as follows:
       *)
-      class A2 usingPlatform: p andA1: A1 =
+      class A2 usingPlatform: platform andA1: A1 =
         (
           (* Section 1. Primary factory method slots and body.*)
           |slots|
@@ -555,7 +556,7 @@ As a look ahead summary we can say that
 - Every computation in Newspeak starts at an instance of a top level class. Instances of top level classes are called modules.
 - Modules can be packaged and distributed.
 - Dependencies are also modules (which some distributed module depends on).
-- The ~manifest~ and ~platform~ objects are the vehicles of bringing dependencies to objects at runtime by passing them to modules' "convention methods".
+- The ~manifest~ and ~platform~ objects are the vehicles of bringing dependencies to objects by passing them to modules' "convention methods".
 - From modules, the dependencies are also available to the distributed module's nested classes and objects. 
 
 Later sections decribe the process of bringing dependencies into a Newspeak programs. We use the /manifest/ passed to module APIs, from the manifest, dependency classes are stored on slots ("imported"), later picked up from slots when needed to instantiate.  [[*Modules: Application, Library, TestConfiguration, General][Modules: Application, Library, TestConfiguration, General]], the recipy section [[*Newspeak recipy for writing modules API][Newspeak recipy for writing modules API]], and the [[*Hello World in Newspeak - several versions][Hello World in Newspeak - several versions]] and other sections are largely about bringing dependencies into modules and objects.
@@ -645,7 +646,7 @@ Next we can ask, why does the Newspeak IDE need a global namespace (Root), while
 
 *** Section TL;DR:
 
-This section starts an IDE-guided step by step discovery of some core aspects we encounter when we first dig into the IDE and the classes on top: Newspeak class structure, app and library API, platform and manifest.
+This section starts an IDE-guided step by step discovery of some core aspects we encounter when we first dig into the IDE and the classes on top: Newspeak class structure, app and library API, *platform* and *manifest*.
 
 *** Top level classes in the IDE - expanded
 
@@ -658,27 +659,35 @@ Continue reading what we can learn from looking at the expanded classes.
 
 *** Newspeak class structure
 
-First, we can see, each top level class has 4 sections.  Let's take the ActivationMirrorTestingConfiguration as an example
+Let's examine the structure of top level classes in the ~Root~ list
+[[file:img/newspeak---a-few-notes.org-root-namespace-top-level-classes.png]]
+etc.
 
-1.  A collapsible class name section for the class, ~ActivationMirrorTestingConfiguration~ with two sub items
-   - on top the ~#packageTestsUsing: manifest~.  This is a method which can be viewed as the "core" or "primary" constructor.  In Newspeak, the method is called the *Primary factory*. 
+Let's drill into the ~ActivationMirrorTestingConfiguration~ as an example.  Clicking on the module name link, an ~ObjectPresenter~ presents an instance of the class. Why to present an instance, and not a class?  The motivation is liveliness, spoken about in many places here.  Anyway, this is what we are shown:
+[[file:img/newspeak---a-few-notes.org-activation-mirror-testing-configuration-class-detail.png]]
+
+The structure is described below:
+
+1. The line starting with *self* shows the instance. 
+2. There is a collapsible class name section for the class, ~ActivationMirrorTestingConfiguration~ with two sub items
+   - on top there is the ~#packageTestsUsing: manifest~.  This is a method which can be viewed as the "core" or "primary" constructor.  In Newspeak, the method is called the */Primary factory method/*, or short */Primary factory/*. 
    - a list of ~Slots~.  Slots are like "member variables".  Slots can only be created in the /primary factory method/!
-2.  a list of ~Classes~.  Those are nested classes of the class ActivationMirrorTestingConfiguration
-3.  a list of ~Instance methods~.  Those are instance methods we can call on instances of ActivationMirrorTestingConfiguration
-4.  a list of ~Class methods~.  Those are class methods we can call on the class ActivationMirrorTestingConfiguration.  They are "alternative constructors".
+3. a list of ~Classes~.  Those are *nested classes* of the class ~ActivationMirrorTestingConfiguration~
+4. a list of ~Instance methods~.  Those are methods we can call on instances of ActivationMirrorTestingConfiguration
+5. a list of ~Class methods~.  Those are methods we can call on the class ActivationMirrorTestingConfiguration.  They are called */factory methods/*, and they serve as "alternative constructors".
 
 There is a plus ("+ ") symbol  in the header of some of them.  The reason there is no plus ("+ ") symbol beside slots, is that slots can only be added in the code of the /primary factory method/.  Add a slot from the  /primary factory method/ code, and the added slot name will show in the IDE.
 
 
 *** Primary factory methods
 
-We mentioned the methods on the first line of the class declaration such as ~class MyClass packageTestsUsing: manifest~ are termed the /primary factory methods/.
+We mentioned the methods on the first line of the class declaration such as ~class ActivationMirrorTestingConfiguration packageTestsUsing: manifest~ are termed the /primary factory methods/.
 
 *The core role of a /primary factory method/ is to produce instances (and declare and initialize their slots). The difference between a /primary factory method/ and a /factory method/ or an /instance method/ is that ONLY /primary factory method/ can declare in initialize slots!*
 
-Newspeak language implementation detail: We also mentioned that the /primary factory methods/ are methods on special objects, the 'class factory object'(s).  One such special object is created for each class declaration: for example, when a class declaration ~AMyClass new = ()()~ is loaded or saved in the IDE, one instance of the 'class factory object' named ~AMyClass~ is created.  The role of the special object ~AMyClass~ is to produce instances of ~class AMyClass~
+Newspeak language implementation detail: We also mentioned that the /primary factory methods/ are methods on special objects, the 'class factory object'(s).  One such special object is created for each class declaration: for example, when a class declaration ~AMyClass new = ()()~ is loaded or saved in the IDE, one instance of the 'class factory object' named ~AMyClass~ is created.  The role of the special object ~AMyClass~ is to produce instances of ~class AMyClass~.
 
-*The platform objects (objects that represent the Newspeak system), or the dependencies objects or classes (classes that need to be "imported" from the manifest) are passed to the primary factory method and held on slots.  From there, they are available to all nested classes and nested objects of the top level instance!*
+*The platform objects (objects that represent the Newspeak system), and possibly the dependencies (classes that need to be "imported" from the manifest) are passed to the primary factory method and held on slots.  From there, they are available to all nested classes and nested objects of the top level instance!*
 
 The /primary factory method/ names on the /top level classes/ have eerily similar signatures.  I was asking myself why, what do they have in common.  So I listed examples of the primary factory method names.  Here is the list of the /primary factory methods/ on some top level classes:
 
@@ -730,7 +739,11 @@ ide namespacing manifest
 
 [[file:img/newspeak---a-few-notes.org-ide-namespacing-manifest.png]]
 
-Drilling into the instance, we can see it is a map, and sorting by the key, we can see the map elements:
+Drilling into the instance, we can see it is a map:
+[[file:img/newspeak---a-few-notes.org-manifest-instance.png]]
+etc
+
+Sorting the map entries by the key, we can see the map elements:
 
 #+begin_example
 at: AccessModifierTesting   AccessModifierTesting
@@ -738,19 +751,19 @@ at: AccessModifierTestingConfiguration   AccessModifierTestingConfiguration
   etc
 #+end_example
 
-By looking at the IDE, we see that the *manifest is a map containing exactly all top-level classes in the IDE - that is, all module classes known to the IDE!*
+By looking at the IDE, we see that the *manifest is a map containing all top-level classes in the IDE - that is, all module classes known to the IDE!*
 
 So we have a experiment based answer to what the manifest object contains.
 
-But what is the manifest good for?  We discuss that further down, but as a look ahead: the values of the manifest map are classes that can be "imported" and "kept" during packaging of the module! 
+But what is the manifest good for?  We discuss that further down, but as a look ahead: the values of the manifest map are classes that can be "imported" and "kept" during packaging of a module! 
 
 
 **** Why is the manifest object significant, and what role does it play in Newspeak?
 
-OK, so from the previous chapter we know the ~manifest~ object that is passed to 
+OK, so from the previous chapter we know the ~manifest~ object that is passed to "convention methods"
 
 - ~#packageUsing: manifest~
-- ~#packageTestsUsing: manifest~ (for tests only)
+- ~#packageTestsUsing: manifest~ (for tests)
 
 is a map of all top-level classes in the IDE.
 
@@ -761,30 +774,94 @@ See [[*Common and distinct roles of platform and manifest in modules][Chapter Co
 
 **** What is in the platform object?
 
-As in manifest, we can ask: what is in the platform, why it is significant, and what role does it play in Newspeak?
+We can ask, as we did for manifest: What is in the platform, why it is significant, and what role does it play in Newspeak?
 
-We can look at the code, and ask what Newspeak passes into the ~platform~ parameter when calling, for example, ~#usingPlatform: platform~.
+We can look at the code, and ask what Newspeak passes into the ~platform~ parameter when passing it to the often-present top level classes' primary factory ~#usingPlatform: platform~.
 
-This is little harder than with manifest, so let's cheat a bit.  In Workspace, let us evaluate ~platform~
+This is little harder than with manifest, so let's cheat a bit.  In a *Workspace*, let us evaluate ~platform~
 [[file:img/newspeak---a-few-notes.org-workspace-eval-platform.png]]
-Drilling into the link "instance of PlatformWithHopscotch`number", we see a list of instances. Sorting the list, we can see it contains ~instances~ of a few classes that look like system classes:
+Drilling into the link "instance of Platform`number", we see a list of instances.
 
+[[file:img/newspeak---a-few-notes.org-platform-instance.png]]
+
+The slots hold instances of objects that sound "important", system like.  The slots list sorted:
+
+#+name: platform-slots
 #+BEGIN_EXAMPLE
-instance of ActorsForPrimordialSoup
-instance of CollectionsForPrimordialSoup
-instance of FontsForHTML5
-instance of GraphicsForHTML5
-instance of HopscotchForHTML5
-instance of JSForPrimordialSoup
-instance of Kernel
-instance of MirrorsForPrimordialSoup
-instance of PrimordialFuel
-instance of TextModule
+ 1 kernel       instance of Kernel
+ 2 collections  instance of CollectionsForPrimordialSoup
+ 3 mirrors      instance of MirrorsForPrimordialSoup
+ 4 victoryFuel  instance of PrimordialFuel
+ 5 actors       instance of ActorsForPrimordialSoup
+ 6 js           instance of JSForPrimordialSoup
+ 7 fonts        instance of FontsForHTML5
+ 8 graphics     instance of GraphicsForHTML5
+ 9 text         instance of TextModule
+10 local        instance of Platform`3009904088663661495
+11 hopscotch    instance of HopscotchForHTML5
 #+END_EXAMPLE
 
-Classes of all of those instances also exist in the ~manifest~ object. 
+*All the instances in slots are modules (instances of other top level classes) which the ~platform~ provides for other modules when other modules are constructed using the ~platform~!*
 
-From the above, we have a good indication as to what does the platform object contain: *the platform object contains instances of system classes from the manifest!*
+Classes of those ~platform~ slots also exist in the ~manifest~ object.  But ~manifest~ has many more classes!  The ~platform~ object only *contains slots with instances of top classes which can be considered available on any Newspeak system* - whether it is Newspeak in the browser, Newspeak as an application on Windows, Linux, MacOS, Newspeak on top of Squeak, or perhaps directly on the metal.  We can term those classes informally *system classes* or *platform classes* - hence the name ~platform~ for the object containing slots with the "system" or "platform" class instances.
+
+A ~platform~ object is an instance of a class ~Platform~ which we can expand, and see that ~Platform~ is an inner class in ~RuntimeForHopscotchForHTML~:
+[[file:img/newspeak---a-few-notes.org-platform-class.png]]
+
+**** The class Platform in RuntimeForHopscotchForHTML
+
+Drilling into the ~Platform in RuntimeForHopscotchForHTML~
+
+[[file:img/newspeak---a-few-notes.org-platform-class-detail.png]]
+we see the slots declarations, which values we have already seen in the ~platform~ instance in the ~platform~ instance section.
+
+For searchability, here are the slot declarations sorted as text:
+
+#+begin_src
+public class Platform internalKernel: ik = (
+  |
+   1 public actors = Actors usingPlatform: self.
+   2 public collections = Collections usingInternalKernel: ik.
+   3 public fonts = Fonts usingPlatform: self.
+   4 public graphics = Graphics usingPlatform: self.
+   5 public hopscotch = HopscotchForHTML5 usingPlatform: self images: (Images usingPlatform: self) ducts: (Ducts usingPlatform: self).
+   6 public js = JS usingPlatform: self.
+   7 public kernel = Kernel wrapping: ik.
+   8 public local = self.
+   9 public mirrors = Mirrors usingPlatform: self internalKernel: ik namespace: outer RuntimeForHopscotchForHTML.
+  10 public text = TextModule usingPlatform: self.
+  11 public victoryFuel = PrimordialFuel usingPlatform: self internalKernel: ik.
+  |
+)
+#+end_src
+
+
+**** Other Platform classes (apart from class Platform in RuntimeForHopscotchForHTML)
+
+If we search the Newspeak code, we would find multiple ~Platform~ classes in Newspeak. Usually, they are a subclasses of modules which name starts with the word ~Runtime~ or ~DeploymentManager~:
+
+#+name: platform-classes
+#+begin_src 
+./out/BootstrapRuntimeForSqueak.           ns: class Platform usingVmMirror: vmm = (
+./out/DeploymentManager.                   ns: ^'public class Platform internalKernel: ik = (|
+./out/DeploymentManager.                   ns: ^'public class Platform usingVmMirror: vmmirror = (
+./out/RuntimeForCroquet.                   ns: public class Platform internalKernel: ik = (
+./out/RuntimeForElectron.                  ns: public class Platform internalKernel: ik = (|
+./out/RuntimeForHopscotchForHTML.          ns: public class Platform internalKernel: ik = (
+./out/RuntimeForJS.                        ns: class Platform usingVmMirror: vmmirror = (
+./out/RuntimeForJSWithMirrorBuilders.      ns: class Platform usingVmMirror: vmmirror = (
+./out/RuntimeForPrimordialSoup.            ns: public class Platform internalKernel: ik = (|
+./out/RuntimeForSqueak.                    ns: class Platform usingVmMirror: vmm = (
+./out/RuntimeWithMirrorsForPrimordialSoup. ns: public class Platform internalKernel: ik = (|
+#+end_src
+
+- The section above analyzed ~RuntimeForHopscotchForHTML>>Platform~
+   - this class has primary factory ~#internalKernel:~ which defines slots which are instances such as:
+   - kernel, collections, actors, js etc
+   - Instance of such platform is passed to module factory methods ~usingPlatform: platform~. From there, modules can pull and create their own slots for collections classes, js classes, etc!!
+
+     
+All top level classes with name starting with ~Runtime~ have an inner class ~Platform~.  Each such inner class has a primary factory ~Runtime(etc)>>Platform#internalKernel~ OR ~Runtime(etc)>>Platform#usingVmMirror~  which pulls from the internalKernel something like the following (example from evaluating ~platform~ in the top ~Workspace~) which yields Platform in ~RuntimeForHopscotchForHTML~
 
 
 
@@ -799,8 +876,11 @@ See [[*Common and distinct roles of platform and manifest in modules][Chapter Co
 
 *** Common and distinct roles of platform and manifest in modules
 
-TL;DR: Recall that module is instance of a top level class in IDE.  ~manifest~ is needed during Applications and Libraries instance creation for packaging for distribution, to pull from it (include) all class declarations instance depends on; ~platform~ is needed any time a module  requires an instance of another module (top level class) - the only way for module to gain another module is through platform. More details are below, and in the section [[*Modules: Application, Library, TestConfiguration, General][Modules: Application, Library, TestConfiguration, General]].  
+TL;DR: Recall that a module is an instance of a top level class in IDE.  A module can be classified ad General, Application, or Library module - see the [[* Newspeak modules API zoo][Newspeak modules API zoo]].
+- ~manifest~ is used by Application and Library modules for packaging (creation and serialization for distribution).  The manifest is passed to the Application and Library primary factory.  The primary factory pulls (imports) from the ~manifest~ all class declarations the instance depends on. All imported classes are stored on the Application and Library instance slots, in which they are serialized and distributed.  This allows any Newspeak Application or Library to be a self-contained package (serialized instance), which includes everything it depends on.
+- ~platform~ is needed at runtime whenever an instance needs access to another module (top level class).  In Newspeak, the only way for module to gain another module is through platform.  Also see the section [[*Modules: Application, Library, TestConfiguration, General][Modules: Application, Library, TestConfiguration, General]].  
 
+  
 Why are the ~platform~ and ~manifest~ objects so important to appear again and again in the /top level classes' factory parameters/, as seen in [[*Primary factory methods][Primary factory methods]] ?
 
 The answer is somewhat common for ~manifest~ and ~platform~, so we describe their role in this common section.
@@ -819,7 +899,7 @@ This is where ~platform~ and ~manifest~ come in.  They are "special" in the sens
 
 We can reword the above as follows:
 
-We already know that any Newspeak object can have only one "slot defining constructor" (called /primary factory/) in it's API.  But, as a module needs both ~platform~ and ~manifest~, how can we ensure a module has both available?  This is done by *convention methods*, that are either a /primary factory/ or a regular /instance method/, depending whether the module is an /App, Library, and Test configuration module/ OR a /General/ module.
+We already know that any Newspeak object can have only one "slot declaring constructor" (called /primary factory/) in it's API.  But, as a module needs both ~platform~ and ~manifest~, how can we ensure a module has both available?  This is done by *convention methods*, that are either a /primary factory/ or a regular /instance method/, depending whether the module is an /App, Library, and Test configuration module/ OR a /General/ module.
 
 - App, Library, and Test configuration modules (but not "General modules") have a *primary factory* passing a ~manifest~ in it's API. This /primary factory/ is named similar to ~#package(Something)Using: manifest~.  This factory is called on the system where we create the package to "import" objects and/or their classes during packaging (by placing them to the package artifact which can be delivered over to the runtime system).
 - Any "General" modules (not App, Library, or Test configurations) have a *factory* passing a ~platform~ in it's API. This /primary factory/ is named similar to ~#(buildSomething)usingPlatform: platform~.  This factory is called on the runtime system for module instantiation.  An App, Library, and Test configuration module (where the /primary factory/ is already taken by presence of method passing platform such as ~#package(Something)Using: manifest~) would typically also have this method in it's API, but NOT as a factory, rather as an instance method.
@@ -986,7 +1066,7 @@ TL;DR: This section provides some guidance of how to code each module type, and 
 
 We can provide a "recipy" for how any Application module should be written:
 
-- In the primary factory method ~#packageUsing: manifest~, store any "carry along" (imported) classes from the manifest map on the slots
+- In the primary factory method ~#packageUsing: manifest~, store all needed "carry along" classes from the manifest map on the slots (those slots are "imports")
 - In the instance method ~#main: platform args: args~
   - First use all (imported) classes on slots to instantiate them:
     - For each slot which is a General module class, call its primary factory methods, to build the module (dependency). The General module primary factory signature may be similar to ~#usingPlatform: platform [andModule: m1]~, or ~#usingModule: m1~, or just ~#new~.
@@ -1260,7 +1340,7 @@ Also note, as you add the Application class ~RecipyWithDepApp~ in the IDE, (usin
 
 This section will show several versions of a 'Hello World' program in Newspeak.  Each version uses a different method.  The initial versions are due to Gilad Bracha's answer on the Newspeak group https://groups.google.com/g/newspeaklanguage/c/Cq2Ej0_THew
 
-All Hello World programs are created by starting the Newspeak online IDE at https://newspeaklanguage.org/samples/primordialsoup.html?snapshot=HopscotchWebIDE.vfuel, then following the steps.
+All 'Hello World' programs are created in the Newspeak online IDE at https://newspeaklanguage.org/samples/primordialsoup.html?snapshot=HopscotchWebIDE.vfuel, then following the steps.
 
 
 *** 1. Hello World from Workspace
@@ -1631,85 +1711,97 @@ The script in this section installs software packages, which enable building ~.v
 
 #+begin_src bash
 
-    ## 1. Prerequisits: This script downloads projects from github. For this script to work, we need:
-    #    1.1. A github account with our ssh public key downloaded.
-    #    1.2. The shell session's ssh keyring loaded with corresponding ssh private key;
-    #         for example, this can be done as follows:
-    #            $ ssh-add ~/.ssh/milan.zimmermann_at_gmail.com_id_rsa\:generated-by-ssh
-    #    Notes:
-    #    1.3. The ~primordialsoup/SConstruct~ is the configuration file for
-    #         the scons ~build~ used in primordialsoup.
-    #
-    #
+  ## 1. Prerequisits: This script downloads projects from github. For this script to work, we need:
+  #    1.1. A github account with our ssh public key downloaded.
+  #    1.2. The shell session's ssh keyring loaded with corresponding ssh private key;
+  #         for example, this can be done as follows:
+  #            $ ssh-add ~/.ssh/milan.zimmermann_at_gmail.com_id_rsa\:generated-by-ssh
+  #    Notes:
+  #    1.3. The ~primordialsoup/SConstruct~ is the configuration file for
+  #         the scons ~build~ used in primordialsoup.
+  #
+  #
 
-    ## 2. Installing emscripten from github into the directory assumed by primordialsoup/build.
-    #     If you have emsdk in a different directory, you have to change this, and also primordialsoup/build.
+  ## 2. Installing emscripten from github into the directory assumed by primordialsoup/build.
+  #     If you have emsdk in a different directory, you have to change this, and also primordialsoup/build.
 
-    # Assuming this directory for Emscripten SDK
-    EMSDK_HOME=~/software/emsdk
+  # Assuming this directory for Emscripten SDK
+  EMSDK_HOME=~/software/emsdk
 
-    # Cloning emsdk which creates the emsdk directory
-    mkdir --parent $EMSDK_HOME
-    cd $EMSDK_HOME/..
-    git clone https://github.com/emscripten-core/emsdk.git
+  # Cloning emsdk which creates the emsdk directory
+  mkdir --parent $EMSDK_HOME
+  cd $EMSDK_HOME/..
+  git clone https://github.com/emscripten-core/emsdk.git
 
-    ## 3. Creating the directory structure for the Newspeak Wasm build,
-    #     and cloning Newspeak and PrimordialSoup from github
+  # Fetch the latest version of the emsdk (not needed the first time you clone)
+  git pull
+   
+  # Download and install the latest SDK tools.
+  ./emsdk install latest
+   
+  # Make the "latest" SDK "active" for the current user. (writes .emscripten file)
+  ./emsdk activate latest
+   
+  # Activate PATH and other environment variables in the current terminal
+  source ./emsdk_env.sh
+    
+  ## 3. Creating the directory structure for the Newspeak Wasm build,
+  #     and cloning Newspeak and PrimordialSoup from github
 
-    # Assuming this directory for the Newspeak build
-    NEWSPEAK_WASM_BUILD_DIR=$HOME/software/newspeak-wasm-build
-    mkdir --parent $NEWSPEAK_WASM_BUILD_DIR
-    cd $NEWSPEAK_WASM_BUILD_DIR
+  # Assuming this directory for the Newspeak build
+  NEWSPEAK_WASM_BUILD_DIR=$HOME/software/newspeak-wasm-build
+  mkdir --parent $NEWSPEAK_WASM_BUILD_DIR
+  cd $NEWSPEAK_WASM_BUILD_DIR
 
-    # Cloning newspeak and primordialsoup github, which creates
-    #   directories newspeak and primordialsoup
-    git clone git@github.com:newspeaklanguage/newspeak.git
-    git clone git@github.com:newspeaklanguage/primordialsoup.git
+  # Cloning newspeak and primordialsoup github, which creates
+  #   directories newspeak and primordialsoup
+  git clone git@github.com:newspeaklanguage/newspeak.git
+  git clone git@github.com:newspeaklanguage/primordialsoup.git
 
-    # Checking out the appropriate branch from primordialsoup
-    cd primordialsoup
-    git checkout extraRevs
+  # Checking out the appropriate branch from primordialsoup
+  cd primordialsoup
+  git checkout extraRevs
 
-    ## 4. Downloading CodeMirror in the top directory of newspeak
-    cd $NEWSPEAK_WASM_BUILD_DIR
-    cd newspeak
-    curl https://codeload.github.com/codemirror/dev/zip/refs/heads/main/dev-main.zip  --output dev-main.zip
-    unzip dev-main.zip # creates dir dev-main
-    mv dev-main CodeMirror
+  ## 4. Downloading CodeMirror in the top directory of newspeak
+  cd $NEWSPEAK_WASM_BUILD_DIR
+  cd newspeak
+  curl https://codeload.github.com/codemirror/dev/zip/refs/heads/main/dev-main.zip  --output dev-main.zip
+  unzip dev-main.zip # creates dir dev-main
+  mv dev-main CodeMirror
 
-    ## 4. Installing Opensuse specific libraries supporting the primordialsoup 32 bit build
+  ## 4. Installing Opensuse specific libraries supporting the primordialsoup 32 bit build
 
-    zypper install -t pattern devel_basis   devel_C_C++   32bit # !! but maybe we need 32bit-devel which does not exist? So more added below
-    zypper install glibc-32bit glibc-devel-32bit glibc-devel-static-32bit glibc-locale-base-32bit glibc-profile-32bit
-    zypper install gcc-32bit gcc-c++-32bit
+  zypper install -t pattern devel_basis   devel_C_C++   32bit # !! but maybe we need 32bit-devel which does not exist? So more added below
+  zypper install glibc-32bit glibc-devel-32bit glibc-devel-static-32bit glibc-locale-base-32bit glibc-profile-32bit
+  zypper install gcc-32bit gcc-c++-32bit
 
 
-    ## 6. Building primordialsoup using "build". This creates the "out" directory.
-    #     If we encounter errors during build, other OS-level packages may need
-    #     to be installed, depending on your distro.
+  ## 6. Building primordialsoup using "build". This creates the "out" directory.
+  #     If we encounter errors during build, other OS-level packages may need
+  #     to be installed, depending on your distro.
 
-    cd $NEWSPEAK_WASM_BUILD_DIR/primordialsoup
-    ./build
+  cd $NEWSPEAK_WASM_BUILD_DIR/primordialsoup
+  ./build
 
-    ## 7. Building newspeak using "build.sh". It places output in the "newspeak/out" directory.
-    #
-    #     Running the ~build.sh~ builds the psoup VM as well as deployable ~.vfuel~ file
-    #     for each app listed in ~build.sh~.  
-    #     Currently listed in ~build.sh~ are the Newspeak IDE, the CounterApp, and a few more. Add your app there.
-    #    
-    #     This step 7. is typically run any time we make a code change in any Newspeak ~.ns~ file and want to redeploy it.
-    #     For example, if we code a Newspeak app which we want to deploy, we run this step.
+  ## 7. Building newspeak using "build.sh". It places output in the "newspeak/out" directory.
+  #
+  #     Running the ~build.sh~ builds the psoup VM as well as deployable ~.vfuel~ file
+  #     for each app listed in ~build.sh~.  
+  #     Currently listed in ~build.sh~ are the Newspeak IDE, the CounterApp, and a few more. Add your app there.
+  #    
+  #     This step 7. is typically run any time we make a code change in any Newspeak ~.ns~ file and want to redeploy it.
+  #     For example, if we code a Newspeak app which we want to deploy, we run this step.
 
-    cd $NEWSPEAK_WASM_BUILD_DIR/newspeak
-    source ./build.sh
+  cd $NEWSPEAK_WASM_BUILD_DIR/newspeak
+  source ./build.sh
 
-    # Error: bash: RuntimeForCroquet: command not found
+  # Error: bash: RuntimeForCroquet: command not found
 
-    # HopscotchWebIDE.vfuel should now exist in the ./out subdirectory of the newspeak repository.
+  # HopscotchWebIDE.vfuel should now exist in the ./out subdirectory of the newspeak repository.
 
-    # You can access it by running a web server, using the serve.sh script:
+  # You can access it by running a web server, using the serve.sh script:
 
-    # source serve.sh
+  # source serve.sh
 
 
 #+end_src
@@ -1752,15 +1844,16 @@ To describe a concrete (somewhat artificial) situation: Let's say that on Github
 
 ** Saving changes in Newspeak
 
-TL;DR: Changes can be saved either /inside the browser/ in the browser's local storage, or, /outside the browser/ on the filesystem.  Any changes you make (for example: you add a class, change a class, evaluate something in the workspace) are stored in the browser local storage in two entries: *lastSaved* and *backup*.  Clicking the "Accept" button  [[file:img/newspeak---a-few-notes.org-accept-image.png]] saves the changes in the local storage under the key /backup/, while clicking the "Save" button [[file:img/newspeak---a-few-notes.org-save-button.png]], at any time after "Accept", saves the changes under the key /lastSaved/.  Alternatively, you can `export` code by clicking the "three dot menu" button to the right of the class, then clicking the "Save to file" item in the popup menu.  You can `import` code back to the browser IDE by clicking the "three dot menu" on the top, to the right of "Root +", then selecting the "Compile File(s)" in the popup menu.
+TL;DR: By "saving changes" we mean that changes survive browser reload.  Changes can be saved either /inside the browser/ in the browser's local storage, or, /outside the browser/ on the filesystem.  Any changes you make (for example: you add a class, change a class, evaluate something in the workspace) are stored in the browser local storage in two entries: *lastSaved* and *backup*.  Clicking the "Accept" button  [[file:img/newspeak---a-few-notes.org-accept-image.png]] saves the changes in the local storage under the key /backup/, while clicking the "Save" button [[file:img/newspeak---a-few-notes.org-save-button.png]], at any time after "Accept", moves the changes from the key /backup/ to key /lastSaved/ and saves the changes there.  Alternatively, you can `export` code by clicking the "three dot menu" button to the right of the class, then clicking the "Save to file" item in the popup menu.  You can `import` code back to the browser IDE by clicking the "three dot menu" on the top, to the right of "Root +", then selecting the "Compile File(s)" in the popup menu.
 
 *** Saving changes inside the browser
 
 How is the browser local storage handled, and how is /lastSaved/ different from /backup/? Here is a detail description of how changes are saved and restored:
 
-- After making any code change or addition, to keep your changes, you have to click the "Accept" button [[file:img/newspeak---a-few-notes.org-accept-image.png]].  Clicking "Accept" saves the changes in local storage under the key /backup/.
+- After making a code change or addition, to keep your change, you have to click the "Accept" button [[file:img/newspeak---a-few-notes.org-accept-image.png]].  Clicking "Accept" saves the changes in local storage under the key /backup/.
 - while
-- Clicking the "Save" button [[file:img/newspeak---a-few-notes.org-save-button.png]], at any time after "Accept", saves the changes under the key /lastSaved/ (the changes under /backup/ are added and merged in to the changes under /lastSaved/).  Once saved using the "Save" button, changes are stored "forever", unless you reset browser local storage for the site.  We need to clarify, that making a change, followed by just clicking "Save" without a previous "Accept", nothing is saved.  So "Accept" and "Save" are sort of like two phase commit.
+- Clicking the "Save" button [[file:img/newspeak---a-few-notes.org-save-button.png]], at any time *after "Accept"* [[file:img/newspeak---a-few-notes.org-accept-image.png]], saves the changes under the key /lastSaved/ (the changes under /backup/ are added and merged in to the changes under /lastSaved/).  Once saved using the "Save" button, changes are stored "forever", unless you reset browser local storage for the site.  So the steps "Accept" [[file:img/newspeak---a-few-notes.org-accept-image.png]], and "Save" [[file:img/newspeak---a-few-notes.org-save-button.png]] are sort of like two phase commit.
+- *We need to clarify, that making a change, followed by just clicking "Save" without a previous "Accept", nothing is saved.*   
 - You can view the changes made, in the browser debugger.  For example, in Chrome or Chromium:
   - Press F12 to open Chrome debuger. 
   - Then click the "Application" tab.
@@ -1771,7 +1864,7 @@ How is the browser local storage handled, and how is /lastSaved/ different from 
   - This message tells us, we did make code changes, then clicked "Accept" [[file:img/newspeak---a-few-notes.org-accept-image.png]], without pressing "Save" [[file:img/newspeak---a-few-notes.org-save-button.png]], and reloaded the page.  In other words, changes are stored under the key /backup/ but not(yet) under /lastSaved/.  In most situations, pressing *Restore from backup* is the best choice.  Your code will load the changes from the /backup/ key, and contain all your changes.  At any time, you can click "Save" and merge the /backup/ changes to /lastSaved/.  After, the question above will not be asked until you made new changes and "Accepted" them.
   - For search purposes, here is the text of the message: "You have backup changes that are newer than your last save.  Do you want to restore these changes, or load from the last save?"
 
-- Note: There is a fine point we should make.  Crudely, we can say that "the Newspeak IDE is the file ~HopscotchWebIDE.vfuel~ interpreted by the browser when pointing to the URL https://newspeaklanguage.org/samples/primordialsoup.html?snapshot=HopscotchWebIDE.vfuel.  However, we need to realize that the browser immediately downloads and caches this file.  Changing anything in Newspeak (adding a class, typing to the Workspace), causes the changes to be saved locally.  If we close the browser, and visit the same online URL again, we will see the site as we left it - with the local changes "added" to the vanilla Newspeak IDE! Which local changes are "added" (/backup/ or /lastSaved/ or both), is determined by your answer to the dialog above.
+- Note: There is a fine point we should make.  Crudely, we can say that "the Newspeak IDE is the file ~HopscotchWebIDE.vfuel~ interpreted by the browser when pointing to the URL https://newspeaklanguage.org/samples/primordialsoup.html?snapshot=HopscotchWebIDE.vfuel.  This is the default "vanilla" Newspeak IDE available online on a server. However, we need to realize that the browser immediately downloads and caches this file.  Changing anything in Newspeak (adding a class, typing to the Workspace), causes the changes to be saved locally in the browser.  As long as we accept changes, closing the browser, and visiting the same online URL again, will display the site as we left it - with the local changes "added" to the vanilla Newspeak IDE on the server! Which local changes are "added" (/backup/ or /lastSaved/ or both), is determined by your answer to the dialog above.
 
 - Caveats: There are a few caveats - a few classes are exempt from this "backup" and "lastSaved" method, due to bootstrap issues (things like KernelForPrimordialSoup and HopscotchWebIDE).  If you tamper with these - save the class explicitly! Also, web storage can surprise you on mobile platforms, where things can be thrown out after a certain amount of time (7 days on iOS?) and the system as a whole may exhibit bugs.
 
@@ -1792,7 +1885,12 @@ Note: To 'import' the saved text ~*.ns~ files back to the Newspeak IDE, click on
 
 ** Exemplars: Enabling liveliness everywhere
 
-What are "examplars"? Exemplars are Newspeak code examples, placed inside comments.  Their role is to provide live code for browsing, as well as document typical use of a class and it's methods.
+TL;DR: Exemplar is a snippet of Newspeak code in a comment; the snippet starts with the String ~:exemplar:~. The string ~:exemplar:~ is metadata which allows the parser to identify the comment innards as a code example. Exemplar's role is to provide live code for browsing, as well as document typical use of a class primary factory or it's methods.
+
+An example
+#+begin_example
+(* :exemplar: BankAccount balance: 100 *)
+#+end_example
 
 *** Exemplars motivation
 
@@ -1801,7 +1899,7 @@ We often ask "how is this class used"? "What is the result of calling one of it'
 - Reading the class code and deriving a result (in our head).
 - Finding a test for the class and the method and analyzing it's code and results.
 - Writing a simple example program using the class and method.  In Smalltalk and Newspeak, this is done by navigating to "Workspaces" and writing some code - instantiating the class, passing it's factory some arguments, and calling the method you are interested in.
-- *Exemplars provide a class-author supplied mechanism to instantiate the class and run it's methods, as if a user was doing that in the Workspace*
+- *Right in code: Exemplars provide a class-author supplied mechanism to instantiate the class and run it's methods, as if a user was doing that in the Workspace*
 
 
 *** Exemplars documentation
@@ -1815,7 +1913,7 @@ Gilad Bracha's BankAccount video https://www.youtube.com/watch?v=qKWPSvcF0zA
 
 A class with exemplar can be found at [[https://github.com/newspeaklanguage/newspeak/blob/master/BankAccount.ns][BankAccount]] in Newspeak sources.
 
-There are three exemplars in the code
+There are several exemplars pulled from the code link above:
 
 #+begin_example
 (* :exemplar: BankAccount balance: 100 *)
@@ -1823,11 +1921,13 @@ There are three exemplars in the code
 (* :exemplar: withdraw: 100 *) 
 #+end_example
 
-From the source and the pulled comments, we can see that an exemplar is a piece of metadata inside comments. The metadata is expected to be valid Newspeak code after the text marked as ~:exemplar:~.
+The string after ~:exemplar~ is expected to be valid Newspeak code.
 
 We can also guess that the ~:exemplar:~ code provides a way to instantiate the class and run some methods on it - basically mimicking what we would do in a workspace if we wanted to explore the class instance's behavior.
 
-From the source we can also see the ~:exemplar:~ comment is placed before the ~=~ sign in a factory or method declaration - that is the only place where the parser is looking for exemplars. 
+From the source we can also see *the ~:exemplar:~ comment is placed before the ~=~ sign in a factory or method declaration* - that is the only place where the parser is looking for exemplars.
+
+A sample code with an exemplar:
 
 #+begin_example
 class BankAccount balance: b <Integer>
@@ -1854,7 +1954,7 @@ The role of exemplars is two-fold:
 
 *** How does the BankAccount class look in the IDE with and without an exemplar?
 
-If a class such as the ~BankAccount~ provides exemplars (at least an exemplar for the primary factory method), *an instance of the BankAccount is presented in the IDE UI; the BankAccount class presenter is also shown, embedded in the instance*. 
+If a class such as the ~BankAccount~ provides an exemplar for the primary factory method, *an instance of the BankAccount is presented in the IDE UI; the BankAccount class presenter is also shown, embedded in the instance*. 
 
 Inclusion of an exemplar allows the IDE to create a live instance, present it's browser, and allows the user to interact with the live instance.
 
@@ -1942,13 +2042,13 @@ class BankAccount balance: b <Integer>
 )
 #+end_example
 
-Exemplar comments are just an instance of the general notion of metadata comments. You can have metadata comments everywhere, but there are general rules for what AST node a metadata comment applies to. Metadata must apply to the correct AST nodes. The mirror system looks for metadata  for methods and classes in these places. You can look at the methods #metadata and #parseMetadata in MethodMirror and ClassHeaderMirror, to see how this works; also the class MetadataParsing.
+Exemplar comments are just an instance of the general notion of metadata comments. You can have metadata comments everywhere, but there are general rules for what AST node a metadata comment applies to. Metadata must apply to the correct AST nodes. The mirror system looks for metadata  for methods and classes in these places. You can look at the methods ~#metadata~ and ~#parseMetadata~ in ~MethodMirror~ and ~ClassHeaderMirror~, to see how this works; also the class ~MetadataParsing~.
 
 
 
-**** Examplars using block and value: How would an examplar for a more complex object look like?
+**** Exemplars using block and value: How would an exemplar for a more complex object look like?
 
-How do examplars look in general (for factories or methods), if a parameter is a "complex" object? ( rather than an object for which we can create a literal (Number, String, Boolean, List of the above etc) directly in the :examplar: text like in the BankAccount)
+How do exemplars look in general (for factories or methods), if a parameter is a "complex" object? (rather than an object for which we can create a literal (Number, String, Boolean, List of the above etc) directly in the :exemplar: text like in the BankAccount)
 
 I know the second question is open,  but I am now curious how such exemplars are done. I can imagine if a parameter can be constructed from literals, then we just provide those parameter constructions as part of the exemplar. But if it goes deeper?
 
@@ -1971,6 +2071,8 @@ The overriding purpose of such exemplar is to get an instance whichever way poss
   class CollectionsForPrimordialSoup usingInternalKernel: ik (* :exemplar:  platform collections *) = ( .. slots ..)
 #+end_example
 
+todo-00-last above, where does "platform" come from? How can I get "platform" in the IDE? 
+
 #+begin_example
   class Namespacing usingPlatform: p (* :exemplar:  ide namespacing *) = ( .. slots .. )
 #+end_example
@@ -1988,17 +2090,17 @@ These examples show how to get an instance from the platform, the ide, or simila
 Note: In fact, whether to use this style is still an open question. Do we want the exemplar to be the same object we use in the system, or a distinct copy? What semantic effects might we see in either case as the user experiments with the exemplar?
 Using the IDE's own instance makes the system more live, but may allow users to easily shoot themselves in the foot. It was just the easiest thing to do right now. It also has exposed a bug. Changing methods in this case seems to have no effect, unclear why yet.
 
-**** The examplars are evaluated "as if in a Workspace"
+**** The exemplars are evaluated "as if in a Workspace"
 
-The IDE is the metadata interpreter for exemplar comments, and it uses the same namespace similar to what it creates for workspaces to evaluate them.
+The IDE is the metadata interpreter for comments containing exemplars ~:examplar:~ strings, and it uses the same namespace similar to what it creates for workspaces to evaluate them.
  
-This ~namespace~ includes top level classes in the root namespace (Root) as well as things like platform and ide, sort of like the
+This ~namespace~ includes top level classes in the root namespace (Root) as well as objects like ~platform~ and ~ide~, sort of like the
 
 ~manifest object + platform object + ide object~
 
-The exact mechanism used right now is that Workspace has a number of methods like #ide, #platform and others, and has a  #doesNotUnderstand: method that looks up names in the root namespace. The code for it looks like this:
+The exact mechanism used right now is that Workspace has a number of methods like ~#ide~, ~#platform~ and others, and has a ~#doesNotUnderstand:~ method that looks up names in the root namespace. The code for it looks like this:
 
-~WorkspaceManager>>Workspace>># doesNotUnderstand: message~
+~WorkspaceManager>>Workspace>>#doesNotUnderstand: message~
 #+begin_example
 protected doesNotUnderstand: message = (
 	^Root
@@ -2582,7 +2684,7 @@ Snippets of wisdom
   So this is a module (termed General, see zoo):
   #+begin_src
     class HelloBraveNewWorld usingPlatform: platform = (
-      (* This works *)
+      (* This works ONLY in the Newspeak on Squeak version *)
       platform squeak Transcript open show: 'Hello, Oh Brave new world'.
     )
   #+end_src
@@ -2715,7 +2817,7 @@ The platform is something that gives you the only connections to the world outsi
 
 - Q: At which step of the lifecycle would the ~AnApplication>>#packageUsing: manifest~ and ~ALibrary>>#packageUsing: manifest~ method be used (invoked), where, by whom?
 
-  - A: Those "convention methods" should be given to Applications and Libraries to be given special way to instantiate for packaging.  They would be invoked as a step to build an Application or Library object for distribution (answering lifecycle), by the IDE (answering by whom) on the source system (answering where).  Their invocation would be followed by serializing the object, which would be saved as a .vfuel file for distribution. We could serialize the object in different serialization and distribution formats, and different assumptions about presence of dependencies on the target system. .vfuel file is the main format. The IDE uses the presence of this method (solely) to determine the module is an Application, and displayes on the class line, the [run][debug][deploy] actions.  The action code after clicking on [deploy] -> asVictoryFuel(WithMirrors) starts with invoking this method, followed by serialization of the Application object this method creates.
+  - A: Those "convention methods" should be given to Applications and Libraries to enable a instantiation for packaging.  They would be invoked as a step to build an Application or Library object for distribution (answering lifecycle), by the IDE (answering by whom) on the source system (answering where).  Their invocation would be followed by serializing the object, which would be saved as a .vfuel file for distribution. We could serialize the object in different serialization and distribution formats, and different assumptions about presence of dependencies on the target system. .vfuel file is the main format. The IDE uses the presence of this method (solely) to determine the module is an Application, and displayes on the class line, the [run][debug][deploy] actions.  The action code after clicking on [deploy] -> asVictoryFuel(WithMirrors) starts with invoking this method, followed by serialization of the Application object this method creates.
 
 - During creation of a software artifact, all the dependencies of the artifact have to be made available by getting them to the *development site* or *build site* (where the *build scripts* will run). This is *commonly addressed by package managers* (mz - e.g. zypper install, apt, flutter pub get, pull dependencies from the web to the "build site" - my system - where I want to create and build my newly-coded package). That much is true in Smalltalk as well. In Smalltalk you put these in your image, which provides a global namespace; in most other systems you put them in the file system, which again, is a global namespace.  In Newspeak, you put them in the IDE, which as a global namespace as well. I am hoping to avoid the plague of package managers; the IDE should be able to do this based on some metadata conventions.
 
@@ -3048,7 +3150,7 @@ We can look in the browser debugger how the result looks after the result div is
 Not only that, clicking on the 33 link leads to Newspeak class presenting the instance of 33! See TL;DR for links.
 
 
-** How does Newspeak displays itself in DOM and HTML?
+** How does Newspeak display something in DOM and HTML?
 
 In addition to the ~Ampleforth~ class which can "insert" Newspeak elements live in any HTML page, there is a method that does a similar work for the purpose of presenting Newspeak IDE elements in the browser (when we run the IDE).
 
@@ -3224,7 +3326,7 @@ But we need to start one level above to explore this step by step:
   
   #+end_example
 
-Seeing the creation of an Alien DOM <div> equivalent object in this last method, we conclude our discovery of "How does Newspeak displays itself in DOM and HTML?"
+Seeing the creation of an Alien DOM <div> equivalent object in this last method, we conclude our discovery of this section, [[* How does Newspeak display something in DOM and HTML?][How does Newspeak display something in DOM and HTML?]].
   
 *Summary of the discovery:*
 
@@ -3239,7 +3341,7 @@ Seeing the creation of an Alien DOM <div> equivalent object in this last method,
 - During creation, in it's factory ~HopscotchForHTML5>>AmpleforthFragment class>>#html:mapping:~ applies on each value from ~mapping~ the ~HopscotchForHTML5>>Fragment>>#createVisual~ at the end of the chain - building the DOM-like objects (called Fragments). Those visual instances are then inserted in the DOM, putting together the Newspeak IDE!. 
 
 
-*Conclusion of sequence of calls from the "Help button" click to create DOM elements with Help contents*
+*Conclusion of sequence of calls from the "Help button" click to creation of DOM elements with Help contents*
 
 We followed the sequence of method calls after the "Help button" was clicked:
 
@@ -3366,6 +3468,8 @@ Comments in ~Fragment~ and ~Subject~ talk about this:
 
 Because ~Presenter~ is a subclass of ~Fragment~, the equivalent of the above statement applies to ~Presenter~.
 
+Also, the statement indicates that ~#isKindOfX~ must be also implemented, as it should be called from ~#isMyKind:~.
+
 Let us summarize a practical translation of this piece of documentation:
 
 *Any time we write a concrete implementation of ~Presenter~, ~Subject~ or ~Fragment~, we must implement two methods.  Suppose a concrete Presenter class is named ~MyConcretePresenter~.  In this class, we have to implement methods ~#isMyKind: other~ and ~#isKindOfMyConcretePresenter~ as follows:*
@@ -3382,7 +3486,7 @@ Let us summarize a practical translation of this piece of documentation:
 
 Similar code needs to be added to any concrete implementation of ~Fragment~ or ~Subject~. Just replace the "Presenter" with "Fragment" or "Subject".
 
-In the chapters below, we will not come back to this in too much detail, and always add such methods in our code.
+In the chapters below, we will always add such methods in our code.
 
 
 ** The *Subject* class: primary factory method, instance methods, how Subject knows Presenter
@@ -3626,7 +3730,7 @@ concreteSubject:: ConcreteSubject onModel: concreteModel.
 hopscotchWindow openSubject: concreteSubject.
 #+end_example
 
-The last line will create instance of ConcretePresenter by calling ~ConcreteSubject>>#presenter~ and open it in a new window where the Application will live! This snippet does not show definitions of ~ConcreteModel~ ~ConcreteSubject~ ~ConcretePresenter~, or how we obtain the ~hopscotchWindow~. We will get to that when creating a concrete Application in [[*Using Hopscotch discovery a Model-Presenter-Subject Application, the *CheckedItemApp*][Using Hopscotch discovery a Model-Presenter-Subject Application, the *CheckedItemApp*]]
+The last line will create instance of ConcretePresenter by calling ~ConcreteSubject>>#presenter~ and open it in a new window where the Application will live! This snippet does not show code of ~ConcreteModel~ ~ConcreteSubject~ ~ConcretePresenter~, or how we obtain the ~hopscotchWindow~. We will get to that when creating a concrete Application in [[*Using Hopscotch discovery a Model-Presenter-Subject Application, the *CheckedItemApp*][Using Hopscotch discovery a Model-Presenter-Subject Application, the *CheckedItemApp*]]
 
 
 ** The *Presenter* class: primary factory method, instance methods, how Presenter knows Subject
@@ -3654,7 +3758,8 @@ public class Presenter onSubject: aSubject <Subject> = Fragment (
   
   
   (* The unimplemented (abstract) method "definition"
-     which a concrete Presenter implementation must provide
+     which a concrete Presenter implementation must provide.
+     Implementations should return a Fragment - something that shows a UI.
   *)
   
   public definition ^<Fragment> = (
@@ -4594,6 +4699,20 @@ class HopscotchWebIDE usingPlatform: p = (
 
 * Todos todo-00
 
+- todo-00-last-last : PlatformWithHopscotch disappeared. The only lines remaining are isKindOfPlatformWithHopscotch which are probably all obsolete.  Go over the document, investigate and change.
+  
+- todo-00-last : Document ~WorkspaceManager~ = module created from ~platform~ (instance of ~RuntimeWithMirrorsForPrimordialSoup>>Platform~) and ~ide~ (instance of ~HopscotchWebIDE~) both available in the IDE Workspace as objects by this name - *both ~platform~ and ~ide~ are instance methods on ~WorkspaceManager>>Workspace~*
+  
+- todo-00-last where does "platform" come from? How can I get "platform" or "ide" in the IDE?
+
+  #+begin_example
+    class CollectionsForPrimordialSoup usingInternalKernel: ik (* :exemplar:  platform collections *) = ( .. slots ..)
+  #+end_example
+
+- todo-00-last : For the Zoo, there is also a Runtime module, identified by primary factory :  ~#packageRuntimeUsing:~ in ~RuntimeWithMirrorsForPrimordialSoup#packageRuntimeUsing:~. investigate it, ask, add to docs.
+
+- todo-00-last: In Workspace, evaluate: ~ide namespacing manifest~ and ~Root~ . They are both maps. They seem the same, but are not =. What are the diffs? Where is Root member of?
+
 - read https://newspeaklanguage.org/ns101/ns101.html 
 
 - Reactivity: Hudak's book The Haskell School of Expression
@@ -4623,3 +4742,38 @@ class HopscotchWebIDE usingPlatform: p = (
 -  Check where in code the class names  ampleforthDocumentBody, and ampleforthDocumentClass and self_ampleforth are used.
 -  Figure out how servable.zip is built. 
     
+
+
+* IN-PROGRESS-NOW Current work : Classes of objects available in Workspace
+
+| object                     | is instance of class (from top)                  | class has slots (only important)                                                                                    |
+|----------------------------+--------------------------------------------------+---------------------------------------------------------------------------------------------------------------------|
+| platform                   | RuntimeForHopscotchForHTML>>Platform             | RuntimeForHopscotchForHTML>>Platform #slots# kernel, hopscotch, collections, mirrors, js, etc                       |
+| ,   cont                   |                                                  | RuntimeForHopscotchForHTML           #slots# Kernel, HopscotchForHTML5, Collections, Mirrors, JS, etc               |
+|----------------------------+--------------------------------------------------+---------------------------------------------------------------------------------------------------------------------|
+| platform hopscotch         | HopscotchForHTML5  (UI framework)                | HopscotchForHTML5                    #slots# Color, window_slot, DOMParser_slot                                     |
+| hopscotch                  | same object as above                             | as above                                                                                                            |
+| hopscotch core             | same object as above                             | as above                                                                                                            |
+| hopscotch HopscotchWindow  | HopscotchForHTML5>>HopscotchWindow               | HopscotchForHTML5>>HopscotchWindow   #slots# NONE but see super HopscotchShell                                      |
+| ,    cont                  | , cont extends HopscotchForHTML5>>HopscotchShell | HopscotchForHTML5>>HopscotchShell    #slots# navigator, currentPresenterX, toolbarHolder, contentHolder, activeMenu |
+|----------------------------+--------------------------------------------------+---------------------------------------------------------------------------------------------------------------------|
+| ide                        | HopscotchWebIDE>>HopscotchWebIDE (top is App)    | HopscotchWebIDE>>HopscotchWebIDE     #slots# namespacing, browsing, localStorage                                    |
+| ,   cont                   |                                                  | HopscotchWebIDE                      #slots# Namespacing, Browsing                                                  |
+| ide namespacing            | Namespacing                                      | Namespacing                          #slots# manifest, Root (is Map with all classes in IDE Root)                   |
+| ide namespacing manifest   | Namespacing>>Manifest                            | Namespacing>>Manifest                #slots# namespace (private back to owner Namespacing>>Namespace)               |
+| ide namespacing Root       | Map                                              | N/A, but contains all classes visible in IDE Root namespace                                                         |
+| ide namespacing Categories | Namespacing>>Namespace                           | Namespacing>>Namespace               #slots# _dictionary                                                            |
+
+
+Where are some selected classes instantiated?
+
+| class                              | primary                                                                                             | where instantiated?                                                                                                 |
+|------------------------------------+-----------------------------------------------------------------------------------------------------+---------------------------------------------------------------------------------------------------------------------|
+| HopscotchForHTML5                  | HopscotchForHTML5          usingPlatform: self images: ducts:                                       | inside primary  of: RuntimeForHopscotchForHTML>>Platform#internalKernel: ik                                         |
+| HopscotchForHTML5>>HopscotchWindow | HopscotchWindow            into: container openSubject: s = HopscotchShell new (call shell methods) |                                                                                                                     |
+| RuntimeForHopscotchForHTML         | RuntimeForHopscotchForHTML packageRuntimeUsing: manifest                                            | inside instance of: DeploymentManager>>PsoupPackager#packageApplicationConfiguration: appDef <Class> withRuntimeConfiguration: runtimeClass <Class> usingNamespace: ns |
+| ,   cont                           | cont                                                                                                | ,  also primary of: PrimordialSoupTracer packageUsing: manifest = runtime = manifest RuntimeForPrimordialSoup packageRuntimeUsing: manifest. |
+| HopscotchWebIDE                    | HopscotchWebIDE            packageUsing: manifest                                                   | inside primary  of: AmpleforthEditorApp                                                                             |
+| ,   cont                           |                                                                                                     | ,  also primary of: Ampleforth                                                                                      |
+| ,   cont                           |                                                                                                     | ,  ALSO I THINK MUST INSTANTIATE IN NEWSPEAK IN BROWSER LOAD OF HopscotchWebIDE.vfuel, BUT WHERE? maybe vfuel is just a serialized HopscotchWebIDE instance? |
+|                                    |                                                                                                     |                                                                                                                     |

@@ -1,7 +1,10 @@
-.emacs.d/
-.emacs.d-psession/
-.emacs.d-desktop/
-.projectile
+/.emacs.d/
+/.emacs.d-psession/
+/.emacs.d-desktop/
+/.emacs.desktop
+/.emacs.desktop.lock
+/.project.el
+/.projectile
 .gnupg/
 _cache
 _site
