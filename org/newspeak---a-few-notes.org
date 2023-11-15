@@ -628,7 +628,7 @@ The Newspeak language does not have a /global namespace/ but the Newspeak IDE do
 
 The consequence of /no global namespace in the language/ is that, at runtime (outside of IDE), a Newspeak module class must declare it's dependency on another module class (or module) explicitly, by storing the dependency module definition (or dependency module) on it's module slot! This storing of a dependency on a slot can be looked at as "importing" the dependency. Example of code where showing all classes needed at runtime are "imported" by holding on to them on module slots:
 - In [[*4. Hello World Application using 3rd party dependency][4. Hello World Application using 3rd party dependency]] the ~HelloTranslatorLib~ holds on to the ~HelloTranslator~
-- In [[4. Application module: API of module that needs to be distributed as an App][4. Application module: API of module that needs to be distributed as an App]] ~RecipyWithDepApp~ holds on to the ~RecipyWithDep~, and ~RecipyNoDep~.
+- In [[4. Application module: API of module that needs to be distributed as an App][4. Application module: API of module that needs to be distributed as an App]] ~TranslatorWithDepApp~ holds on to the ~TranslatorWithDep~, and ~TranslatorNoDep~.
 
 *The dependency management goes deeper: A distributable module (Application or Library object), when instantiated and serialized on the source system, 'carries along', ALL imported dependencies on it's module slots - classes or instances of other classes from it's slots. After deserialization on the target system, it has all the code and objects it needs to work on the target system. (The Platform object is an exception: it is assumed to exist on both the source the target platform with same API, and it is not a part of the serialized artifact.)*
 
@@ -1133,14 +1133,16 @@ Sections above attempted to discover and describe modules API, see [[*Newspeak m
 
 **** 1. General module with NO dependencies: API of module with no dependencies
 
-While perhaps rare, this is the simplest case. If our module does not need any dependencies, not even from common classes such as collection:
+General module is the most simple case. If our module does not need any dependencies, not even from common classes such as collection:
+
+We need to:
 
 - provide a /primary factory method/ ~#new~
 
 ***** Example:
 
 #+begin_src 
-class RecipyNoDep new = ()
+class TranslatorNoDep new = ()
 (
     public translate: text = (
       text = 'Hello World' ifTrue: [^ 'Hallo Welt'.].
@@ -1153,7 +1155,7 @@ class RecipyNoDep new = ()
 Note: Because ~#new~ is default, no need to name it. An equivalent would be 
 
 #+begin_src 
-class RecipyNoDep = ()
+class TranslatorNoDep = ()
 (
     public translate: text = (
       text = 'Hello World' ifTrue: [^ 'Hallo Welt'.].
@@ -1166,15 +1168,17 @@ class RecipyNoDep = ()
 
 **** 2. General module with dependencies: API of module with dependencies
 
-If our module need some other module from IDE, such as collections, you have to pass it the ~platform~ object, and potentially other objects or classes our module depends on
+If our module need some other module from IDE, such as collections, we have to pass it the ~platform~ object, and potentially other objects or classes our module depends on.
+
+We need to:
 
 - provide a /primary factory method/ ~#usingPlatform: platform~
 - OR if another module is needed, provide a /primary factory method/ such as ~#usingPlatform: platform andModule: translator~
 
-***** Example:
+***** Example: TranslatorWithDep
 
 #+begin_src
-class RecipyWithDep usingPlatform: platform andModule: translator = (
+class TranslatorWithDep usingPlatform: platform andModule: translator = (
   |
   List = platform collections List.
   translator = translator.
@@ -1196,47 +1200,47 @@ and we can use this in workspace as:
 
 #+begin_src 
 |sortListTranslator|
-sortListTranslator:: RecipyWithDep  usingPlatform: platform andModule: (RecipyNoDep new).
+sortListTranslator:: TranslatorWithDep  usingPlatform: platform andModule: (TranslatorNoDep new).
 sortListTranslator translate: {' World'. 'Hello'}.
 #+end_src
 
-Note that the RecipyNoDep class could be passed instead of the instance; obviously the slot translator in RecipyWithDep would have to be a class, instantiated in ~#translate:~
+Note that the TranslatorNoDep class could be passed instead of the instance; obviously the slot translator in TranslatorWithDep would have to be a class, instantiated in ~#translate:~
 
 
 **** 3. Library module: API of module that needs to be distributed for use in other modules
 
-This next step describes an example of a module which is intended to be distributable as a library. In Newspeak, *this means such module must be both packageble and distributable* - the roles of "packageble" and "distributable" are achieved by implementing the 2 methods below. We call such modules informally /Library modules/.
+API for a module intended to be distributable as a library: In Newspeak, *this means such module must be both packageble and distributable* - the roles of "packageble" and "distributable" are achieved by implementing the 2 methods below. We call such modules informally /Library modules/.
 
-In the previous section, we introduced a general module ~RecipyWithDep~. If we needed this module to be used as a library we could
-1. either "convert" ~RecipyWithDep~ into a library,
-2. or add a "wrapper library" which will be the module used for distrubution.
+In the previous section, we introduced a general module ~TranslatorWithDep~. If we needed this module to be used as a library we could use one of two methods:
+1. we either "convert" ~TranslatorWithDep~ into a library,
+2. or we add a "wrapper library", ~TranslatorWithDepLib~, which will be the module used for distribution.
 
-In this example, we show the second method - we add a "wrapper library" for ~RecipyWithDep~ in two steps
+In this example, we show the second method - we add a "wrapper library", ~TranslatorWithDepLib~ for ~TranslatorWithDep~ in two steps
 
-1. We add a *separate module - the wrapper library* with a descriptive name (to make clear it is a library), ~RecipyWithDepLib~
-2. In the new ~RecipyWithDepLib~, add the following API methods:
-  - primary factory method ~#packageLibraryUsing: manifest~, which allows to "import" the ~RecipyWithDep~ and the other needed dependency ~RecipyNoDep~
+1. We add a *separate module - the wrapper library* with a descriptive name (to make clear it is a library), ~TranslatorWithDepLib~
+2. In the new ~TranslatorWithDepLib~, add the following API methods:
+  - primary factory method ~#packageLibraryUsing: manifest~, which allows to "import" the ~TranslatorWithDep~ and the other needed dependency ~TranslatorNoDep~
   - Instance method        ~#buildUsing: platform~, which allows dependencies to be pulled at construction time
 
-Note that in this case, /#buildUsing: platform/ must not be added any other arguments. Any "carry along" (imported) classes that may be needed at build time, must be saved on slots in the /#packageLibraryUsing: manifest/ primary factory method.  See also [[* Newspeak modules API zoo][Newspeak modules API zoo]].
+Note that in this case, ~TranslatorWithDepLib#buildUsing: platform~ must not be added any other arguments. Any "carry along" (imported) classes that may be needed at build time, must be saved on slots in the ~TranslatorWithDepLib#packageLibraryUsing: manifest~ primary factory method.  See also [[* Newspeak modules API zoo][Newspeak modules API zoo]].
 
-***** Wrapper for RecipyWithDep:
+***** Example: TranslatorWithDepLib, a library wrapper for TranslatorWithDep:
 
-To create a packageble and distributable library module for the above ~RecipyWithDep~, create this library module 
+To create a packageble and distributable library module for the above ~TranslatorWithDep~, create this library module 
 
 #+begin_src 
-class RecipyWithDepLib packageLibraryUsing: manifest = (
+class TranslatorWithDepLib packageLibraryUsing: manifest = (
   |
-  RecipyWithDep = manifest RecipyWithDep.
-  RecipyNoDep   = manifest RecipyNoDep.
+  TranslatorWithDep = manifest TranslatorWithDep.
+  TranslatorNoDep   = manifest TranslatorNoDep.
   |
 ) 
 (
   public buildUsing: platform = (
      |revertedTranslator|
-     revertedTranslator:: RecipyWithDep 
+     revertedTranslator:: TranslatorWithDep 
                     usingPlatform: platform 
-                    andModule: (RecipyNoDep new).
+                    andModule: (TranslatorNoDep new).
      ^revertedTranslator.
   )
 )
@@ -1245,15 +1249,15 @@ class RecipyWithDepLib packageLibraryUsing: manifest = (
 Note how the library must store any "carry along" (imported) classes on slots during packaging, then instantiate them during building. 
 
 Also note how the passing of ~platform~ moves from the primary factory in the module, to the instance method in the library:
-  - In the module ~RecipyWithDep~ , it is on the /primary factory method/ /#usingPlatform: platform:/ 
-  - To the distribution library ~RecipyWithDepLib~, it is on the /instance method/ /#buildUsing: platform/.
+  - In the module ~TranslatorWithDep~ , it is on the /primary factory method/ /#usingPlatform: platform:/ 
+  - To the distribution library ~TranslatorWithDepLib~, it is on the /instance method/ /#buildUsing: platform/.
 
 Although intended for distribution, for testing this process, the library can be used in workspace as 
 
 #+begin_src 
 |sortListTranslatorLib sortListTranslator |
 (* this would run on the developer's packaging system *)
-sortListTranslatorLib:: RecipyWithDepLib packageLibraryUsing: ide namespacing manifest.
+sortListTranslatorLib:: TranslatorWithDepLib packageLibraryUsing: ide namespacing manifest.
 
 (* this would run on end-user runtime system *)
 sortListTranslator:: sortListTranslatorLib buildUsing: platform.
@@ -1267,7 +1271,7 @@ sortListTranslator translate: {' World'. 'Hello'}.
 
 This next step describes an example of a module which is intended to be distributable as an App. In Newspeak, *this means such module must be both packageble and runnable* - the roles of "packageble" and "runnable" are achieved by implementing the 2 methods below. We call such modules informally /App modules/.
 
-If we need our module ~RecipyWithDep~ to be packagable as an App:
+If we need our module ~TranslatorWithDep~ to be packagable as an App:
 
 1. Generally, add a *separate module* with a descriptive name  - to make clear this separate module is an App, end the name with the string 'App'.
 2. In this *separate module*, provide the following API:
@@ -1295,23 +1299,23 @@ If an Application uses a Library, the library's (build) ~#buildUsing: platform~ 
 
 ***** Example:
 
-We will create an Application module ~RecipyWithDepApp~, which is a bit more complex App, in the sense it uses a pre-existing library module, ~RecipyWithDep~, defined in [[*3. Library module: API of module that needs to be distributed for use in other modules][3. Library module: API of module that needs to be distributed for use in other modules]].
+We will create an Application module ~TranslatorWithDepApp~, which is a bit more complex App, in the sense it uses a pre-existing library module, ~TranslatorWithDep~, defined in [[*3. Library module: API of module that needs to be distributed for use in other modules][3. Library module: API of module that needs to be distributed for use in other modules]].
 
-To create a packageble and runnable Application module ~RecipyWithDepApp~, it must have a primary factory method ~#packageUsing: manifest~ and an instance method ~#main: platform args: args~.  The Application must also store at it's slots everything the ~RecipyWithDep~ needs for it's instantiation. Here is how the code may look:
+To create a packageble and runnable Application module ~TranslatorWithDepApp~, it must have a primary factory method ~#packageUsing: manifest~ and an instance method ~#main: platform args: args~.  The Application must also store at it's slots everything the ~TranslatorWithDep~ needs for it's instantiation. Here is how the code may look:
 
 #+begin_src 
-class RecipyWithDepApp packageUsing: manifest = (
+class TranslatorWithDepApp packageUsing: manifest = (
   |
-  RecipyWithDep = manifest RecipyWithDep.
-  RecipyNoDep   = manifest RecipyNoDep.
+  TranslatorWithDep = manifest TranslatorWithDep.
+  TranslatorNoDep   = manifest TranslatorNoDep.
   |
 ) 
 (
   public main: platform args: args = (
      |revertedTranslator|
-     revertedTranslator::  RecipyWithDep 
+     revertedTranslator::  TranslatorWithDep 
                     usingPlatform: platform 
-                    andModule: (RecipyNoDep new).
+                    andModule: (TranslatorNoDep new).
 
     (revertedTranslator translate: {' World'. 'Hello'}) out.
   )
@@ -1321,12 +1325,12 @@ class RecipyWithDepApp packageUsing: manifest = (
 Note how the Application stores any "carry along" (imported) classes from the manifest on slots during packaging in the ~packageUsing: manifest~ factory, then instantiate the "carry along" classes in ~#main: platform args: args~ at runtime. For a library, this happ build time). 
 
 Also note when we converted the General module to an App:
-  - In the General module ~RecipyWithDep~, the ~platform~ object is passed to the /primary factory method/ ~#usingPlatform: platform:~. 
-  - In the Application module     ~RecipyWithDepApp~, the ~platform~ object is passed to the /instance method/ ~#main: platform args: args~.
+  - In the General module ~TranslatorWithDep~, the ~platform~ object is passed to the /primary factory method/ ~#usingPlatform: platform:~. 
+  - In the Application module     ~TranslatorWithDepApp~, the ~platform~ object is passed to the /instance method/ ~#main: platform args: args~.
 
-See the section [[* A recipy to convert a General module to an Application or Library module][A recipy to convert a General module to an Application or Library module]] for a general recipy to convert a General module such as  ~RecipyWithDep~ to an Application such as ~RecipyWithDepApp~.
+See the section [[* A recipy to convert a General module to an Application or Library module][A recipy to convert a General module to an Application or Library module]] for a general recipy to convert a General module such as  ~TranslatorWithDep~ to an Application such as ~TranslatorWithDepApp~.
 
-Also note, as you add the Application class ~RecipyWithDepApp~ in the IDE, (using the "+ " button ), the IDE shows  *[deploy] [configurations] [run] [debug]* links beside it, recognizing the top level class as an App. 
+Also note, as you add the Application class ~TranslatorWithDepApp~ in the IDE, (using the "+ " button ), the IDE shows  *[deploy] [configurations] [run] [debug]* links beside it, recognizing the top level class as an App. 
 
 
 **** TODO 5. Test module: TODO 
@@ -4744,28 +4748,39 @@ class HopscotchWebIDE usingPlatform: p = (
     
 
 
-* IN-PROGRESS-NOW Current work : Classes of objects available in Workspace
+* IN-PROGRESS-NOW Current work : Classes of objects available in Workspace. Add to a new Zoo
 
-| object                     | is instance of class (from top)                  | class has slots (only important)                                                                                    |
-|----------------------------+--------------------------------------------------+---------------------------------------------------------------------------------------------------------------------|
-| platform                   | RuntimeForHopscotchForHTML>>Platform             | RuntimeForHopscotchForHTML>>Platform #slots# kernel, hopscotch, collections, mirrors, js, etc                       |
-| ,   cont                   |                                                  | RuntimeForHopscotchForHTML           #slots# Kernel, HopscotchForHTML5, Collections, Mirrors, JS, etc               |
-|----------------------------+--------------------------------------------------+---------------------------------------------------------------------------------------------------------------------|
-| platform hopscotch         | HopscotchForHTML5  (UI framework)                | HopscotchForHTML5                    #slots# Color, window_slot, DOMParser_slot                                     |
-| hopscotch                  | same object as above                             | as above                                                                                                            |
-| hopscotch core             | same object as above                             | as above                                                                                                            |
-| hopscotch HopscotchWindow  | HopscotchForHTML5>>HopscotchWindow               | HopscotchForHTML5>>HopscotchWindow   #slots# NONE but see super HopscotchShell                                      |
-| ,    cont                  | , cont extends HopscotchForHTML5>>HopscotchShell | HopscotchForHTML5>>HopscotchShell    #slots# navigator, currentPresenterX, toolbarHolder, contentHolder, activeMenu |
-|----------------------------+--------------------------------------------------+---------------------------------------------------------------------------------------------------------------------|
-| ide                        | HopscotchWebIDE>>HopscotchWebIDE (top is App)    | HopscotchWebIDE>>HopscotchWebIDE     #slots# namespacing, browsing, localStorage                                    |
-| ,   cont                   |                                                  | HopscotchWebIDE                      #slots# Namespacing, Browsing                                                  |
-| ide namespacing            | Namespacing                                      | Namespacing                          #slots# manifest, Root (is Map with all classes in IDE Root)                   |
-| ide namespacing manifest   | Namespacing>>Manifest                            | Namespacing>>Manifest                #slots# namespace (private back to owner Namespacing>>Namespace)               |
-| ide namespacing Root       | Map                                              | N/A, but contains all classes visible in IDE Root namespace                                                         |
-| ide namespacing Categories | Namespacing>>Namespace                           | Namespacing>>Namespace               #slots# _dictionary                                                            |
+| object                            | is instance of class (from top)                  | class has slots (only important)                                                                                    |
+|-----------------------------------+--------------------------------------------------+---------------------------------------------------------------------------------------------------------------------|
+| platform                          | RuntimeForHopscotchForHTML>>Platform             | RuntimeForHopscotchForHTML>>Platform #slots# kernel, hopscotch, collections, mirrors, js, etc                       |
+| ,   cont                          |                                                  | RuntimeForHopscotchForHTML           #slots# Kernel, HopscotchForHTML5, Collections, Mirrors, JS, etc               |
+|-----------------------------------+--------------------------------------------------+---------------------------------------------------------------------------------------------------------------------|
+| platform hopscotch                | HopscotchForHTML5  (UI framework)                | HopscotchForHTML5                    #slots# Color, window_slot, DOMParser_slot                                     |
+| hopscotch                         | same object as above                             | as above                                                                                                            |
+| hopscotch core                    | same object as above                             | as above                                                                                                            |
+| hopscotch HopscotchWindow         | HopscotchForHTML5>>HopscotchWindow               | HopscotchForHTML5>>HopscotchWindow   #slots# NONE but see super HopscotchShell                                      |
+| ,    cont                         | , cont extends HopscotchForHTML5>>HopscotchShell | HopscotchForHTML5>>HopscotchShell    #slots# navigator, currentPresenterX, toolbarHolder, contentHolder, activeMenu |
+|-----------------------------------+--------------------------------------------------+---------------------------------------------------------------------------------------------------------------------|
+| ide                               | HopscotchWebIDE>>HopscotchWebIDE (top is App)    | HopscotchWebIDE>>HopscotchWebIDE     #slots# namespacing, browsing, localStorage                                    |
+| ,   cont                          |                                                  | HopscotchWebIDE                      #slots# Namespacing, Browsing                                                  |
+| ide namespacing                   | Namespacing                                      | Namespacing                          #slots# manifest, Root (is Map with all classes in IDE Root)                   |
+| ide namespacing manifest          | Namespacing>>Manifest                            | Namespacing>>Manifest                #slots# namespace (private back to owner Namespacing>>Namespace)               |
+| ide namespacing Root              | Map                                              | N/A, but contains all classes visible in IDE Root namespace                                                         |
+| ide namespacing Categories        | Namespacing>>Namespace                           | Namespacing>>Namespace               #slots# _dictionary                                                            |
+| ide browsing                      | Browsing                                         | Browsing                             #slots# currentWindow, body, localStorage, compiler, Snapshotter etc           |
+| ide browsing ProgrammingPresenter | Browsing>>ProgrammingPresenter                   | Browsing>>ProgrammingPresenter       #slots# see Presenter slots, none added                                        |
+| ide minitest                      |                                                  |                                                                                                                     |
+
+todo-00-last : add rows above on testing, minitest
+todo-00-last : add whole section on testing, minitest. Notes on that:
+
+- minitest = testFramework (in naming methods, look for it and explain more)
+- TestingConfiguration is like App (has [run tests] instead of [run])
 
 
-Where are some selected classes instantiated?
+
+
+Where are some of the above classes instantiated?
 
 | class                              | primary                                                                                             | where instantiated?                                                                                                 |
 |------------------------------------+-----------------------------------------------------------------------------------------------------+---------------------------------------------------------------------------------------------------------------------|
@@ -4777,3 +4792,28 @@ Where are some selected classes instantiated?
 | ,   cont                           |                                                                                                     | ,  also primary of: Ampleforth                                                                                      |
 | ,   cont                           |                                                                                                     | ,  ALSO I THINK MUST INSTANTIATE IN NEWSPEAK IN BROWSER LOAD OF HopscotchWebIDE.vfuel, BUT WHERE? maybe vfuel is just a serialized HopscotchWebIDE instance? |
 |                                    |                                                                                                     |                                                                                                                     |
+
+* IN-PROGRESS-NOW HopscotchForHTML5 API notes
+
+In this chapter, items marked by ~BB -> AA~ nesting indicates inheritence: ~BB inherits from AA~. Items without the ~->~ indicate members. All classes listed are nested just under ~HopscotchForHTML5~.
+
+~HopscotchForHTML5~
+- ~Fragment~
+  - ~public width: w elasticity: e = ( size: w )~
+    - ~width~ is ~size~ by default.
+    - But, if ~size~ is part of ~BlankFragment~ which live blank:
+  - -> ~LeafFragment~
+    - -> ~BlankFragment~
+      - ~size~
+      - 
+
+~HopscotchForHTML5>>Presenter~
+- Instance Methods: They just instantiate and return UI classes nested in ~HopscotchForHTML5~. Instance Method examples:
+  - ~blank: 2.~ creates a padding rectangle size 2; size is horizontal (width) if in ~row:~ but somehow becomes vertical (height) if in ~column:~
+  - Fragment combinators:  
+  - ~elastic: fragment.~ - makes its argument stretchable to fill up the available space
+  - ~row: {fragments}~
+  - ~column: {fragments}~
+  - ~collapsed: blockAnsweringCollapsedFragment expanded: blockAnsweringExpandedFragment initiallyExpanded: bool~
+  - 
+  

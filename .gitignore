@@ -1,11 +1,13 @@
-/.emacs.d/
-/.emacs.d-psession/
-/.emacs.d-desktop/
-/.emacs.desktop
-/.emacs.desktop.lock
-/.project.el
-/.projectile
-.gnupg/
+# Ignore these dirs hierarchically
+/**/backups/
+/**/rejected/
+/**/.emacs.d/
+/**/.emacs.desktop
+/**/.emacs.desktop.lock
+/**/.project.el
+/**/.projectile
+/**/.gnupg
+/**/*cache*/
 _cache
 _site
 tmp
