@@ -4771,11 +4771,369 @@ class HopscotchWebIDE usingPlatform: p = (
 | ide browsing ProgrammingPresenter | Browsing>>ProgrammingPresenter                   | Browsing>>ProgrammingPresenter       #slots# see Presenter slots, none added                                        |
 | ide minitest                      |                                                  |                                                                                                                     |
 
-todo-00-last : add rows above on testing, minitest
-todo-00-last : add whole section on testing, minitest. Notes on that:
+todo-00-last IN-PROGRESS-NOW : add rows above on testing, minitest
+todo-00-last IN-PROGRESS-NOW : add whole section on testing, minitest. Notes on that:
 
 - minitest = testFramework (in naming methods, look for it and explain more)
 - TestingConfiguration is like App (has [run tests] instead of [run])
+
+  
+todo-00-last IN-PROGRESS-NOW : add section on how Help is presented
+
+To add the Help (the ?  on aneed the following things in MyComponentPresenter#definition:
+
+1. Adding (to the ~#definition~ row) the ? imageButton, with Action code for clicking on it. Simply by calling the default ~Presenter#helpButton~ from ~MyComponentPresenter#definition~.
+   
+   #+begin_src smalltalk
+     public definition = (
+       ^ row: {
+         (image: ide images classIcon)
+                  height: styleButtonSize.
+         row: coreOfThisSectionLine.
+         saveButtonWithAction: [respondToSave].
+         refreshButton.
+         helpButton.
+         dropDownMenu: [classActionsMenu].
+       }
+     )
+   #+end_src
+2. Note only: the default ~Presenter#helpButton~ code which adds the ~#imageButton:action:~. Normally, it does not need to change.
+   #+begin_src smalltalk
+     helpButton = (
+         ^(imageButton: helpImage  action: [helpHolder content: helpContents])
+              height: styleButtonSize
+     )
+   #+end_src
+3. Implementing ~#helpText~ which is called from default ~#helpContents~ above.
+   #+begin_src smalltalk
+     helpText ^ <Fragment> = (
+         |mapping = Map new.|
+         mapping
+         at: #classTestActions put: classActions testActions;  
+     
+         ^ampleforth: 'A class presenter for Simple IDE Browser.' mapping: mapping
+     )
+   #+end_src
+
+   
+Class ~Help~ *appears unused*
+
+
+#+begin_src smalltalk
+  class Help contentBlock: blk <[AmpleforthFragment | HTMLFragment]> = (
+          | 
+          helpHolder <HolderFragment> = holder: nothing. 
+          helpBlock<[AmpleforthFragment | HTMLFragment]> = blk.
+          |
+      )
+#+end_src
+
+- When we add a ~Presenter#helpSection~ Fragment in ~#definition~ of a presenter, the ~HolderComposer~ Fragment is returned by this sequence of calls
+  - Calling ~helpSection~
+    #+name: Presenter#helpSection
+    #+begin_src smalltalk
+      (* returns HolderComposer extends Composer extends Fragment *)
+      public helpSection ^ <HolderComposer> = (
+        ^helpHolder
+    #+end_src
+    - calls:
+      #+name: Presenter#helpHolder
+      #+begin_src smalltalk
+        holder: def <Fragment | [Fragment]> = (
+            ^HolderComposer withContent: def
+        )
+      #+end_src
+      - calls:
+        #+begin_src smalltalk
+          class HolderComposer withContent: definition <Fragment | [Fragment]> = Composer (|
+            contentSource <Fragment | [Fragment]> ::= definition.
+            actualContent <Fragment>
+          |)
+        #+end_src
+
+
+Next, when the ~HolderComposer#definitions~ are called, either the ~contentSource~ or the ~actualContent value~ Fragment is shown. 
+
+
+todo-00-last IN-PROGRESS-NOW : add section on UI building:
+- ~Fragment~ -> ~Composer~ -> ~HolderComposer,SequenceComposer,etc~ : implements ~#definitions <List<Fragment>~
+- ~Fragment~ -> ~Presenter~                                         : implements ~#definition <Fragment>~
+- todo : find where ~Composer#definitions~ and ~Presenter#definition~ are called in UI to create UI.
+- todo : describe what ~Presenter,HopscotchShell,etc~ ~#enterSubject:subject~ is doing: Looks like makes itself the presented Fragment on the new subject! Either way, the presenter or shell show themselves in the UI!
+
+
+
+todo-00-last IN-PROGRESS-NOW : add section on popup menus:
+
+When we want to add a popup menu attached to an image to UI:
+1. In ~#definition~ add call to ~#Presenter#dropDownMenu:[#Presenter#menuWithLabelsAndActions: {{'Save'.[respondToSave]}}]~, for example:
+   #+name: MyWidgetPresenter#definition
+   #+begin_src smalltalk
+     definition = (
+         ^ row {
+           someFragments.
+           dropDownMenu: [classActionsMenu].        
+         }
+         )
+   #+end_src
+   1. The passed menu item -> action may look like this
+     #+name: MyWidgetPresenter#classActionsMenu
+     #+begin_src smalltalk
+     classActionsMenu = (
+         ^ menuWithLabelsAndActions: {
+	         	{'Save to File'. [respondToSave]}.
+	        	 #separator.
+	        	{'Inspect Mirror'. [inspectObject: subject classMirror]}.
+	        	{'Inspect Presenter'. [respondToInspectPresenter]}.
+	        	#separator.
+	        	{'Delete'. [respondToDelete]}.
+	          }
+     #+end_src   
+2. Add the respond actions, for example:
+   #+name: MyWidgetPresenter#respondToSave
+   #+begin_src smalltalk
+     respondToSave = (
+	    ide webFiles downloadFileName: subject name, '.ns' fromString: subject compilationUnitSource. 
+     )
+   #+end_src
+
+
+What happens during the UI creation and composition?
+
+1. During UI composition, this is the Fragment that is created by the call to ~#definition~ which calls ~dropDownMenu: [classActionsMenu]~
+   #+begin_src smalltalk
+     dropDownMenu: menu <[Menu]> ^ <DropDownMenuFragment> = (
+	     ^DropDownMenuFragment menu: menu
+     )
+   #+end_src
+2. Which adds a ~DropDownMenuFragment~ into the UI
+   #+begin_src smalltalk
+       class DropDownMenuFragment menu: ms image: img <Image> alignment: side <Symbol> = ImageButtonFragment  (
+        |
+        menuSupplier <[Tuple[Symbol | Tuple[String, []]]]> = ms.
+        alignment <String>  = side asString.
+           image = img.
+           action = [].
+           width = styleButtonSize.
+           height = styleButtonSize.
+           isActive ::= false.
+        |
+       )
+   #+end_src
+   which extends
+   #+begin_src smalltalk
+     class ImageButtonFragment = LeafFragment (
+       (* A button displayed as an image; or an image that acts as a button. *)
+       |
+       	public action <[]>
+       	public image <Image>
+       |)
+   #+end_src
+3. The above ties to the Fragment an ~image~ and empty ~action~; I do NOT know when they are set.
+
+
+*When the UI is composed as a Newspeak object graph of the ~Fragment~ s instances, AT SOME POINT (which point??) THE NEWSPEAK Fragment graph is converted to Javascript DOM document (Javascript objects graph). This process calls ~#createVisual~ on every ~Fragment~ (How and where in code does this composition and calling createVisual happens??)* During this process, each ~Fragment#createVisual~ does BOTH create a DOM elements from the Fragment AND adds listeners to them, as directed by the code in ~#createVisual~.
+
+For the ~DropDownMenuFragment#createVisual~ this is executed:
+
+1. ~DropDownMenuFragment~ is converted to DOM element and DOM element Listeners are created on 'click', 'mousedown', mouseup etc :
+
+   #+name: DropDownMenuFragment#createVisual
+   #+begin_src smalltalk
+     createVisual ^ <Alien[Element]> = (
+       | menu = super createVisual. | (* calls ImageButtonFragment which creates an img element *)
+
+       (* If DropDownMenuFragment isActive, and received (another) click, close the menu, otherwise delay call to updateContent.
+          The updateContent shows the popup menu: 
+        *)                             
+       menu addEventListener: 'click' action: [:event | 
+           isActive 
+             ifTrue: [isActive: false. shell closeActiveMenu] 
+             ifFalse: [updateContent].  (* HERE, SELF=VISUAL=button=DropDownMenuFragment *)
+           nil
+         ].
+       (menu at: 'style')
+         at: 'cursor' put: 'pointer'.
+
+         image
+             addEventListener: 'mousedown' action:
+             [:event | (image at: 'style') at: 'filter' put: 'brightness(130%)'. nil];
+             addEventListener: 'mouseover' action:
+             [:event | (image at: 'style') at: 'filter' put: 'brightness(50%)'. nil];
+             addEventListener: 'mouseout' action:
+           [:event | (image at: 'style') at: 'filter' put: ''. nil].
+
+       ^menu
+     )
+   #+end_src
+
+
+*Now the DOM UI is ready, and waits for user interaction with the elements created from the ~DropDownMenuFragment~*. The following may happen:
+
+1. User clicks on the ~DropDownMenuFragment#image~
+2. The 'click' event listener installed above in ~DropDownMenuFragment#createVisual~ is executed. This code is (again)
+   #+begin_src smalltalk
+      [:event | 
+           isActive 
+             ifTrue: [isActive: false. shell closeActiveMenu] 
+             ifFalse: [updateContent]. (* HERE, SELF=VISUAL=button=DropDownMenuFragment *)
+           nil
+         ].
+   #+end_src
+   We show and describe what happens in terms of the original Newspeak code. If the DropDownMenuFragment isActive, and received (another) click, close the menu, otherwise call to updateContent.
+3. The  ~DropDownMenuFragment#updateContent~ is executed (again described in Newspeak code, although this runs in JS DOM). *This is the core leaf process that happens after the image click.*
+     #+name: DropDownMenuFragment#updateContent
+     #+begin_src smalltalk
+       updateContent ^ <Alien[Element]> = (
+         | menu <Alien[Div]> = computeContentForMenu: menuSupplier. |
+         isActive: true.
+         showMenu: menu forShell: shell inVisual: visual.
+         (* HERE:
+             menu = the popup menu DOM element created by computeContentForMenu: menuSupplier 
+             visual = the button = aDropDownMenuFragment visualX = the result of DropDownMenuFragment#createVisual
+         ,*)
+         ^menu.
+       )
+     #+end_src
+   - The code explained in summary below, in detail in items 4. and 5. 
+     - creates and returns ~menu~, the DOM element for the menu with child elements one for each menu item - this is in ~HopscotchForHTML5#computeContentForMenu: menuSupplier~
+     - attaches the ~menu~ to the ~DropDownMenuFragment~ ~visual~ which was previously created in the ~DropDownMenuFragment#createVisual~ - this attachement is done in  ~HopscotchForHTML5#showMenu:forShell:inVisual:visual~
+4. The code that *creates the menu DOM element with child item elements*
+   #+name: HopscotchForHTML5#computeContentForMenu:menuSupplier
+   #+begin_src smalltalk
+     computeContentForMenu: menuSupplier <[Menu]> ^ <Alien[Div]> = (
+         |  dropDownContent = document createElement: 'div'. |
+         (dropDownContent at: 'style')
+             at: 'backgroundColor' put: styleMenuBackgroundColor;
+             at: 'position' put: 'absolute';
+             at: 'z-index' put: 10;
+             at: 'padding-top' put: '8px';
+             at: 'padding-bottom' put: '8px';
+             at: 'border' put: styleMenuBorderColor, ' solid 1px';
+             at: 'border-radius' put: styleDefaultRadius;
+             at: 'box-shadow' put: '0px 0px 15px ', styleMenuShadowColor;
+     		     at: 'display' put: 'inline-block';
+             at: 'outline' put: 0;
+             at: 'cursor' put: 'default'.
+     
+     	menuSupplier value do: 
+     		[:menuItem <MenuItem | Symbol> |
+     		 | itemContent <Alien[Element]> |
+     		 itemContent:: contentFor: menuItem within: dropDownContent. (* This is another huge DOM creation, only described below *)
+     		 dropDownContent appendChild: itemContent].
+     
+     	^dropDownContent
+     )
+   #+end_src
+5. The code that *shows the menu (the visual=aDropDownMenuFragment) in shell and positions it in the shell*. 
+   #+name: HopscotchForHTML5#showMenu:forShell:inVisual:visual
+   #+begin_src smalltalk
+      showMenu: menu <Alien[Div]> 
+   		forShell: s <HopscotchShell> 
+   		inVisual: v <Visual> = (
+         v appendChild: menu.
+   	     positionMenu: menu at: (v at: 'offsetTop') forShell: s.
+   	     menu focus.
+         s activeMenu: menu.
+         s activeMenuParent: v.
+   )
+   #+end_src
+   - In detail:   
+   - ~menu~ element is appended as child of the ~visual~, which is instance of the ~DropDownMenuFragment~!!
+   - ~menu~ element is positioned in the DOM (the ~shell~)
+   - ~menu~ element is set as activeMenu on ~shell~
+   - ~visual~ is set as parent of the active menu in ~shell~  
+
+
+*Now, the menu ~DropDownMenuFragment~ DOM element is poped up, and waiting for another user click, this time on one of the menu items*
+
+We recall that the menu items are DOM elements created in  method ~HopscotchForHTML5#contentFor:within:~
+
+#+name: HopscotchForHTML5#contentFor:menuItem_within:dropDownContent
+#+begin_src smalltalk
+contentFor: menuItem < MenuItem | Symbol> within: dropDownContent ^ <Alien[Element]> = (
+	| 
+	entry 
+	separator <Alien[Element]>
+	|
+	menuItem = #separator ifTrue: [
+		separator:: document createElement: 'hr'.		
+		(separator at: 'style')
+			at: 'height' put: '1px';
+			at: 'background-color' put: styleBorderColor;
+			at: 'border' put: 'none';
+			at: 'margin-left' put: styleMenuInset;
+			at: 'margin-right' put: styleMenuInset.
+		^separator
+	].
+	entry:: document createElement: 'div'.
+	entry at: 'textContent' put: menuItem first.
+	(entry at: 'style')
+		at: 'color' put: styleDefaultInterfaceTextColor;
+		at: 'font-family' put: styleFontFamilySansSerif;
+		at: 'font-size' put: styleFontSizeMenu;
+		at: 'padding-left' put: styleMenuInset;
+		at: 'padding-right' put: styleMenuInset;
+		at: 'height' put: styleMenuItemHeight;
+		at: 'line-height' put: styleMenuItemHeight;
+		at: 'white-space' put: 'nowrap'.
+   entry
+		addEventListener: 'mouseover' action:
+			[:event | (entry at: 'style') at: 'background-color' put: '#C8C8C8'. nil];
+	     addEventListener: 'mouseout' action:
+			[:event | (entry at: 'style') at: 'background-color' put: '#F6F6F6'. nil];
+		addEventListener: 'click' action:
+			[:event | menuItem last value. nil].
+	^entry
+)
+#+end_src
+
+That code have run already in ~#computeContentForMenu~ and have created the popup menu, menu items, and added listener on mouse 'click' with action from the ~Presenter#menuWithLabelsAndActions~ 
+
+*So now, if user clicks on one of the menu items, the action from  ~Presenter#menuWithLabelsAndActions~ runs. THIS CONCLUDE THE WHOLE LIFECYCLE OF MENUS!!!!*
+
+
+
+
+
+todo-00-last IN-PROGRESS-NOW : add section on Mirrors
+
+- classes with *DeclarationMirror* as part of their name, reflect *source code* except MethodMirror which is misnamed, should be MethodDeclarationMirror
+- ~Class~ extends ~Behavior~
+- ~MirrorGroup~ extends ~Collection~
+- *We have the following Mirror classes:*
+  - ~ClassMirror~ (defines structure: slots, nestedClasses, methods) AND ~ClassDeclarationMirror~ (defines source and access for class and mixin)
+  - ONLY ~SlotDeclarationMirror~ NOT SlotMirror
+  - ONLY ~MethodMirror~ NOT MethodDeclarationMirror BUT *MethodMirror functions as MethodDeclarationMirror*
+  - ONLY ~MixinMirror~ NOT MixinDeclarationMirror. MixinMirror is equivalent to ClassMirror
+  - *So we can say that Class has ClassMirror and ClassDeclarationMirror, but slots, methods, and nested classes have only DeclarationMirror*   
+- If I create a ~Mirror~ (e.g. of class), everything I can pull from it is ~DeclarationMirrors~ (e.g. of slots, nestedClasses, methods)
+- ~ClassMirror reflecting: klass <Behavior>~
+  - reflects Class
+  - has members:
+    - ~slots~ <Collection[SlotDeclarationMirror]> = <MirrorGroup[SlotDeclarationMirror]>
+    - ~nestedClasses~ <Collection[ClassDeclarationMirror]> = <MirrorGroup[ClassDeclarationMirror]> *why not Collection[ClassMirror]>??*
+    - ~methods~ <Collection[MethodMirror]> = <MirrorGroup[MethodMirror]> 
+- ~ClassDeclarationMirror reflecting: mixin <InstanceMixin>~
+  - reflects mixin's code
+- There is NO ClassDeclaration or MixinDeclaration or SlotDeclaration, only ClassDeclarationMirror, SlotDeclarationMirror
+- *THERE IS A SORT-OF-CIRCULARITY BETWEEN  ~ClassMirror~ AND ~ClassDeclarationMirror~, WE CAN GET ONE FROM THE OTHER AS FOLLOWS*
+  - ~aClassMirror            mixin declaration   => ClassDeclarationMirror~ 
+  - ~aClassDeclarationMirror instanceSide        => MixinMirror similar to ClassMirror~ *MixinMirror has similar API to ClassMirror, it provides slots <MirrorGroup>, nestedClasses <MirrorGroup>, methods <MirrorGroup>* .. *note there is also ~#definingMixin~ method which results in the enclosing instance.* 
+
+    
+todo-00-last IN-PROGRESS-NOW : add TO section on namespacing
+- Namespacing>>Manifest class has only 1 method, ~doesNotUnderstand~, yet, we can do ~ide namespacing manifest MyClass~ and it shows ~MyClass~, how?
+  #+doesNotUnderstand
+  #+begin_src smalltalk
+    protected doesNotUnderstand: message <Message> = (
+	  ^namespace at: message selector ifAbsent: [
+		(namespace at: 'Icons' ifAbsent: [super doesNotUnderstand: message]) 
+		   at: message selector ifAbsent: [super doesNotUnderstand: message]
+		]
+   )
+  #+end_src
+  ~namespace~ is a private map with key = class name, value = class,
 
 
 
