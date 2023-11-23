@@ -40,7 +40,11 @@ Much of this document is collected from Newspeak sources listed below. Any error
 | 2023-10-02 |   | Milan Zimmermann |   | Added sections [[* Newspeak: Script which builds deployable vfuel files][Newspeak: Script which builds deployable vfuel files]]  [[* Ampleforth and HTML documents in Newspeak][Ampleforth and HTML documents in Newspeak]]. [[* Newspeak: The price of being principled. The hard parts: *namespace*, *manifest*, *platform*, *module*, *convention methods*, *packaging*. What are these things?][Newspeak: The price of being principled. The hard parts: *namespace*, *manifest*, *platform*, *module*, *convention methods*, *packaging*. What are these things?]]  Lots of cleanup |
 |            |   |                  |   |                                                                                                                                                                                                                                              |
 
+* TODOs
 
+- change this document: The class ~HopscotchForHTML5Runtime~ no longer exists, replaced with ~RuntimeForHopscotchForHTML~. Go over any places referring to it, simplify, and fix.
+- distinguish "General Module" (does not need platform) and "General Module Using Platform" with factory GM usingPlatform: platform
+- Add a HelloWorld using Subject and Presenter like the one in Newspeak on Squeak and add code to https://github.com/mzimmerm/newspeak-doc/tree/main/newspeak---a-few-notes-code/hello-world/6-as-general-module-with-GUI-using-platform similar to https://github.com/mzimmerm/newspeak-doc/tree/main/newspeak---a-few-notes-code/hello-world/5-as-general-module-to-dom
    
 * Terminology and notation
 
@@ -3979,31 +3983,32 @@ We alreary concluded that we will need an instance of ~HopscotchForHTML5~ if we 
 
 Analyzing the class ~HopscotchForHTML5Runtime~, we see that:
 
-- It has the primary factory method ~#packageUsing: manifest~. From the Api chapters, for example  [[*4. Application module: API of module that needs to be distributed as an App][4. Application module: API of module that needs to be distributed as an App]] we know that such top level classes are apps, but, lacking the ~#main: platform args: args~ method, such module is used as library module.
-  
-- It packages the UI class, ~HopscotchForHTML5~, on it's slot
+- It has the primary factory method ~#packageUsing: manifest~. From the Api chapters, for example  [[*4. Application module: API of module that needs to be distributed as an App][4. Application module: API of module that needs to be distributed as an App]] we know that such top level classes are apps, but, lacking the ~#main: platform args: args~ method, such module is used as library module. The primary factory which packages the UI class, ~HopscotchForHTML5~, on it's slot ~Hopscotch~ along with other UI-required classes ~Fonts~, ~Graphics~, etc:
+  #+name: HopscotchForHTML5Runtime#packageUsing:manifest
+  #+begin_example
+  (* primary factory method *)
+  class HopscotchForHTML5Runtime packageUsing: manifest = (
+  	|
+  	private Fonts = manifest FontsForHTML5.
+    private Graphics = manifest GraphicsForHTML5.
+  	private TextModule = manifest TextModule.
+  	private Hopscotch = manifest HopscotchForHTML5.
+    private Ducts = manifest Ducts.
+  	private images = Images packageUsing: manifest.
+  	|
+  )
+  #+end_example
 
-- It has a instance method ~#using: platform~, which calls the primary factory method of ~PlatformWithHopscotch~ and returns it's instance.
+- It also has an instance method ~#using: platform~, which calls the primary factory method of ~PlatformWithHopscotch~ and returns it's instance. *When running the web-based Newspeak, the returned instance is the ~platform <PlatformWithHopscotch>~ object, passed to any primary factory of any module that needs a platform,*
 
-~HopscotchForHTML5Runtime~
-#+begin_example
-(* primary factory method *)
-class HopscotchForHTML5Runtime packageUsing: manifest = (
-	|
-	private Fonts = manifest FontsForHTML5.
-  private Graphics = manifest GraphicsForHTML5.
-	private TextModule = manifest TextModule.
-	private Hopscotch = manifest HopscotchForHTML5.
-  private Ducts = manifest Ducts.
-	private images = Images packageUsing: manifest.
-	|
-)
+  #+name: HopscotchForHTML5Runtime#using:platform
+  #+begin_example
+    public using: platform = (
+	    ^PlatformWithHopscotch usingPlatform: platform
+    )
+  #+end_example
 
-(* instance method *)
-public using: platform = (
-	^PlatformWithHopscotch usingPlatform: platform
-)
-#+end_example
+
 
 The presence of the two methods clearly shows  ~HopscotchForHTML5Runtime~ packages all three classes (HopscotchForHTML5, Ducts, images) that we will need to create ~HopscotchForHTML5~ using its primary factory method ~HopscotchForHTML5>>#usingPlatform: p images: images ducts: ds~.
 
@@ -4011,9 +4016,10 @@ The presence of the two methods clearly shows  ~HopscotchForHTML5Runtime~ packag
 
 In addition, we see that the inner class ~HopscotchForHTML5Runtime>>PlatformWithHopscotch~ is a convenience class which already pre-creates instance of ~HopscotchForHTML5~ in this ~PlatformWithHopscotch~ snippet:
 
+#+name: HopscotchForHTML5Runtime>>PlatformWithHopscotch#usingPlatform:platform
 #+begin_example
-(* primary factory method *)
 class PlatformWithHopscotch usingPlatform: platform = (
+  (* primary factory method *)
 	|
     public isKindOfPlatformWithElectron = platform isKindOfPlatformWithElectron.	
     public kernel = platform kernel.
@@ -4060,13 +4066,15 @@ From there we have the answer to our core question of this paragraph: *The slot 
 
 1. *Conclusion 1. The module HopscotchForHTML5Runtime is a packaging library for instances of HopscotchForHTML5. By packaging the runtime, everything we need to write UI code is available in the HopscotchForHTML5 instance. How do we get such instance? This is described in Conclusion 2.*
 
-2. *Conclusion 2. Any code that is able to create ~hopscotchForHTML5Runtime~, an instance of ~HopscotchForHTML5Runtime~ will have access to instance of ~HopscotchForHTML5~ using the second line below:*
+2. *Conclusion 2. Any code that is able to create ~hopscotch~, an instance of ~HopscotchForHTML5Runtime~ will have access to instance of ~HopscotchForHTML5~ using the second line below:*
 
-  ~hopscotchForHTML5Runtime using: platform.~ <== this is instance of PlatformWithHopscotch
-  ~(hopscotchForHTML5Runtime using: platform) hopscotch.~ <== hopscotch is the slot on PlatformWithHopscotch. It is instance of HopscotchForHTML5 as we have seen above.
+  ~hopscotch using: platform.~ <== this is instance of PlatformWithHopscotch
+  ~(hopscotch using: platform) hopscotch.~ <== hopscotch is the slot on PlatformWithHopscotch. ~hopscotch~ is instance of HopscotchForHTML5 as we have seen above.
+
+3. *Conclusion 3. The module HopscotchForHTML5Runtime can be asked for the ~platform~ object. The ~platform~ type is ~<HopscotchForHTML5Runtime>>PlatformWithHopscotch>~, and is passed to any module when running in context of the Web based Newspeak.*
 
 
-Summary: In this chapter, we deduced code we need to obtain ~hopscotch~, an instance of ~HopscotchForHTML5~. This instance is all we need to write any Newspeak UI!
+Summary: In this chapter, we deduced code we need to obtain ~hopscotch~, an instance of ~HopscotchForHTML5~. This instance is all we need to write any Newspeak UI.
 
 
 ** Using Hopscotch discovery a Model-Presenter-Subject Application, the *CheckedItemApp*
@@ -4701,6 +4709,313 @@ class HopscotchWebIDE usingPlatform: p = (
 #+end_src
 
 
+
+* Elements of GUI in *HopscotchForHTML5*
+
+** TL;DR: *The top level class ~HopscotchForHTML5~ is the Newspeak GUI library*.
+
+This module is distributed (and contained in) the module ~RuntimeForHopscotchForHTML~.
+- When writing code (that needs GUI) inside the Newspeak Web IDE https://newspeaklanguage.org/webIDE/, we obtain an instance of ~HopscotchForHTML5~ inside as follows:
+  - In the *workspace*, the workspace variables ~hopscotch~ and ~platform hopscotch~ both provide us with an instance of ~HopscotchForHTML5~ that we can use to experiment with GUI code in the workspace.
+  - In the IDE, when writing our own module (top level class) we *typically* need to add a primary factory method that passes ~platform~ to our module.  In our module's code, we can ask for ~platform hopscotch~ which will give us a ~HopscotchForHTML5~ instance. An example is  https://github.com/mzimmerm/newspeak-doc/tree/main/newspeak---a-few-notes-code/hello-world/6-as-general-module-with-GUI-using-platform (todo-00-last-last add this as the example from Newspeak on Squeak)
+- Structure of the class ~HopscotchForHTML5~:
+  - The most important nested class of ~HopscotchForHTML5~ is ~Fragment~. ~Fragment~'s instance is like a DOM element - an object that generates a section of GUI.
+  - A Hopscotch GUI is composed by composing Fragments
+  - Other important nested classes of ~HopscotchForHTML5~ are ~Presenter~ and ~Subject~
+  - A GUI application in Hopscotch is MVC-like *Model-Presenter-Subject*. It would typically contain at least 2 classes, one extending ~Subject~, another extending ~Presenter~.
+  - *The ~Subject~ class provides instance methods that return Fragments for 'standard' GUI elements. Some examples:*
+    - ~Presenter#text:~ creates a Fragment that (when converted to GUI) becomes a text field.
+    - ~Presenter#button:action~ creates a Fragment that becomes a button with action.
+    - ~Presenter#link:action~ creates a Fragment that becomes a link with action.
+    - ~Presenter#menuWithLabelsAndActions:~ creates a Fragment that becomes a multi-select menu
+    - etc.
+    - Typically, each of the above methods return instances of ~Fragment~ extensions.
+      - ~TextBlockFragment~ for text.
+      - ~ButtonFragment~ for button with action 
+      - ~HyperlinkFragment~ for link
+      
+  - ~HopscotchForHTML5#document~
+Sections below we provide a 'deep delve' into some of such presenter methods.
+
+** Hopscotch ~DropDownMenuFragment~: A drop down menu, created using ~Presenter#dropDownMenu:menu~
+
+*** TL;DR: To create a drop down menu we need two objects, a menu label/actions list, and a dropDownMenuFragment fragment
+
+Use the following code to create a ~dropDownMenuFragment~ instance in our ~ConcretePresenter~ class.
+
+1. ~menu~, (which is simply an instance of a list of menu label/menu action tuples). For future proof, call the method ~Presenter#menuWithLabelsAndActions:labelActionList~ to create the menu, for example
+   #+begin_example smalltalk
+     menu = menuWithLabelsAndActions: {
+         {'Save to File'. [respondToSave]}.
+         #separator.
+         {'Delete'. [respondToDelete]}.
+       }
+   #+end_example
+2. ~dropDownMenuFragment~, an instance of ~DropDownMenuFragment~, which is a wrapper for the ~menu~. This instance is created by calling the ~#Presenter#dropDownMenu:menu~. Using this line in our code will wrap the menu into a drop down menu shown in the GUI with two items: 'Save to File' and 'Download'.
+   #+begin_src smalltalk
+     dropDownMenuFragment:: dropDownMenu: menu. 
+   #+end_src
+
+   
+*** Hopscotch ~DropDownMenuFragment~: Story of adding it to a ~MyWidgetPresenter#definition~, and how it works at runtime.
+
+When we want to add to GUI a popup menu which shows after clicking on an image, and understand it's working internals, follow this section.
+
+**** Write the GUI in our application: Code in ~MyWidgetPresenter#definition~
+
+Follow these steps in our application GUI in ~MyWidgetPresenter~ to add a drop down menu.
+
+1. In ~MyWidgetPresenter#definition~ add call to ~#Presenter#dropDownMenu:[#Presenter#menuWithLabelsAndActions: {{'Save'.[respondToSave]}}]~, for example:
+   #+name: MyWidgetPresenter#definition
+   #+begin_src smalltalk
+     definition = (
+         ^ row {
+           someFragments.
+           dropDownMenu: [classActionsMenu].        
+         }
+         )
+   #+end_src
+2. Add a method ~MyWidgetPresenter#classActionsMenu~. This answers a label -> action list. It may look like this:
+  #+name: MyWidgetPresenter#classActionsMenu
+  #+begin_src smalltalk
+  classActionsMenu = (
+      ^ menuWithLabelsAndActions: {
+	       {'Save to File'. [respondToSave]}.
+	        #separator.
+	       {'Delete'. [respondToDelete]}.
+	       }
+  #+end_src   
+3. Add a method ~MyWidgetPresenter#respondToSave~, this may look like this:
+   #+name: MyWidgetPresenter#respondToSave
+   #+begin_src smalltalk
+     respondToSave = (
+	    ide webFiles downloadFileName: subject name, '.ns' fromString: subject compilationUnitSource. 
+     )
+   #+end_src
+4. Add a method for the delete action, similar to above.
+
+
+**** Processing during the call to ~MyWidgetPresenter#definition~ 
+
+This sections describes Processing during the call to ~MyWidgetPresenter#definition~
+
+1. The call to ~#definition~ (which calls ~dropDownMenu: [classActionsMenu]~) returns instance of ~DropDownMenuFragment~ which is added into the GUI tree
+   #+begin_src smalltalk
+     dropDownMenu: menu <[Menu]> ^ <DropDownMenuFragment> = (
+	     ^DropDownMenuFragment menu: menu
+     )
+   #+end_src
+2. The ~DropDownMenuFragment~ looks like this
+   #+begin_src smalltalk
+       class DropDownMenuFragment menu: ms image: img <Image> alignment: side <Symbol> = ImageButtonFragment  (
+        |
+        menuSupplier <[Tuple[Symbol | Tuple[String, []]]]> = ms.
+        alignment <String>  = side asString.
+           image = img.
+           action = [].
+           width = styleButtonSize.
+           height = styleButtonSize.
+           isActive ::= false.
+        |
+       )
+   #+end_src
+   it extends
+   #+begin_src smalltalk
+     class ImageButtonFragment = LeafFragment (
+       (* A button displayed as an image; or an image that acts as a button. *)
+       |
+       	public action <[]>
+       	public image <Image>
+       |)
+   #+end_src
+3. The above ties to the DropDownMenuFragment an ~image~ and empty ~action~; I do NOT know when they are set.
+
+
+**** ~Fragment#createVisual~: Processing during GUI DOM composition (when Newspeak code is converted to DOM document)
+
+*When the UI is composed as a Newspeak object graph of the ~Fragment~ s instances, AT SOME POINT (which point??) THE NEWSPEAK Fragment graph is converted to Javascript DOM document (Javascript objects graph). This process calls ~#createVisual~ on every ~Fragment~ instance in the GUI fragments tree (How and where in code does this composition and calling createVisual happens??)* During this process, each ~Fragment#createVisual~ does BOTH create a DOM elements from the Fragment AND adds listeners to them, as directed by the code in ~#createVisual~.
+
+Calling the ~DropDownMenuFragment#createVisual~ executes it's code:
+
+1. ~DropDownMenuFragment~ is converted to ~DOM element~ and ~DOM element Listeners are declared~ for 'click', 'mousedown', mouseup etc :
+
+   #+name: DropDownMenuFragment#createVisual
+   #+begin_src smalltalk
+     createVisual ^ <Alien[Element]> = (
+       | menu = super createVisual. | (* calls ImageButtonFragment createVisual which creates an div -> img element *)
+
+       (* If DropDownMenuFragment isActive, and received (another) click, close the menu, otherwise delay call to updateContent.
+          The updateContent shows the popup menu: 
+        ,*)                             
+       menu addEventListener: 'click' action: [:event | 
+           isActive 
+             ifTrue: [isActive: false. shell closeActiveMenu] 
+             ifFalse: [updateContent].  (* HERE, SELF=button=DropDownMenuFragment *)
+           nil
+         ].
+       (menu at: 'style')
+         at: 'cursor' put: 'pointer'.
+
+       (* image is slot on ImageButtonFragment *)
+         image
+             addEventListener: 'mousedown' action:
+             [:event | (image at: 'style') at: 'filter' put: 'brightness(130%)'. nil];
+             addEventListener: 'mouseover' action:
+             [:event | (image at: 'style') at: 'filter' put: 'brightness(50%)'. nil];
+             addEventListener: 'mouseout' action:
+           [:event | (image at: 'style') at: 'filter' put: ''. nil].
+
+       (* The created visual - the Alien DOM element - with children and listeners is returned. *)  
+       ^menu
+     )
+   #+end_src
+
+
+
+**** DOM is ready, code execution after user *click* on the menu IMG (the ~DropDownMenuFragment#image~ visual)
+
+*Now the DOM UI is ready, and waits for user interaction with the elements created from the ~DropDownMenuFragment~*. The following may happen:
+
+1. User clicks on the ~DropDownMenuFragment#image~
+2. The 'click' event listener on the image which was installed above in ~DropDownMenuFragment#createVisual~ is executed. This code is (again)
+   #+begin_src smalltalk
+      [:event | 
+           isActive 
+             ifTrue: [isActive: false. shell closeActiveMenu] 
+             ifFalse: [updateContent]. (* HERE, SELF=button=DropDownMenuFragment *)
+           nil
+         ].
+   #+end_src
+   We show and describe what happens in terms of the original Newspeak code. If the DropDownMenuFragment isActive, and received (another) click, close the menu, otherwise call to updateContent.
+3. The  ~DropDownMenuFragment#updateContent~ is executed (again described in Newspeak code, although this runs in JS DOM). *This is the core leaf process that happens after the image click.*
+     #+name: DropDownMenuFragment#updateContent
+     #+begin_src smalltalk
+       updateContent ^ <Alien[Element]> = (
+         | menu <Alien[Div]> = computeContentForMenu: menuSupplier. |
+         isActive: true.
+         showMenu: menu forShell: shell inVisual: visual.
+         (* HERE:
+             menu = the popup menu (div with menu lines) DOM element created by computeContentForMenu: menuSupplier. One line for each menu item, line has attached action code from menu definition.     
+             visual = self's visual = aDropDownMenuFragment's visualX = the result of DropDownMenuFragment#createVisual, which is div with IMG!!
+         *)
+         ^menu.
+       )
+     #+end_src
+   - The code execution summary is explained just below, in detail in items 4. and 5. 
+     - creates and returns ~menu~, the DOM element for the menu with child elements one for each menu item - this is in ~HopscotchForHTML5#computeContentForMenu: menuSupplier~
+     - attaches the ~menu~ to the ~DropDownMenuFragment~ ~visual~ which was previously created in the ~DropDownMenuFragment#createVisual~ - this attachement is done in  ~HopscotchForHTML5#showMenu:forShell:inVisual:visual~
+4. The code that *creates the menu DOM element with child item elements*
+   #+name: HopscotchForHTML5#computeContentForMenu:menuSupplier
+   #+begin_src smalltalk
+     computeContentForMenu: menuSupplier <[Menu]> ^ <Alien[Div]> = (
+         |  dropDownContent = document createElement: 'div'. |
+         (dropDownContent at: 'style')
+             at: 'backgroundColor' put: styleMenuBackgroundColor;
+             at: 'position' put: 'absolute';
+             at: 'z-index' put: 10;
+             at: 'padding-top' put: '8px';
+             at: 'padding-bottom' put: '8px';
+             at: 'border' put: styleMenuBorderColor, ' solid 1px';
+             at: 'border-radius' put: styleDefaultRadius;
+             at: 'box-shadow' put: '0px 0px 15px ', styleMenuShadowColor;
+             at: 'display' put: 'inline-block';
+             at: 'outline' put: 0;
+             at: 'cursor' put: 'default'.
+
+      menuSupplier value do: 
+        [:menuItem <MenuItem | Symbol> |
+         | itemContent <Alien[Element]> |
+         (* For each menuItem, create content, which is the text of the menu item. *)
+         (* This is another huge DOM creation, described just a bit below. *)    
+         itemContent:: contentFor: menuItem within: dropDownContent. 
+         dropDownContent appendChild: itemContent].
+
+      ^dropDownContent
+     )
+   #+end_src
+5. The code that *shows the menu (the visual=aDropDownMenuFragment) in shell and positions it in the shell*. 
+   #+name: HopscotchForHTML5#showMenu:forShell:inVisual:visual
+   #+begin_src smalltalk
+      showMenu: menu <Alien[Div]> 
+   		forShell: s <HopscotchShell> 
+   		inVisual: v <Visual> = (
+         v appendChild: menu.
+   	     positionMenu: menu at: (v at: 'offsetTop') forShell: s.
+   	     menu focus.
+         s activeMenu: menu.
+         s activeMenuParent: v.
+   )
+   #+end_src
+   - In detail:   
+   - ~visual~ is the visual DOM element created for the ~DropDownMenuFragment~ - it is a div with IMG.
+   - ~menu~ is the popup menu DOM element (div with menu lines) created by computeContentForMenu: menuSupplier.
+   - ~menu~ element is appended as child of the ~visual~ IMG
+   - ~menu~ element is positioned in the DOM (the ~shell~)
+   - ~menu~ element is set as activeMenu on ~shell~
+   - ~positionMenu: menu <Alien[Div]> at: y <Float> forShell: s~ : this positins the menu based on the ~visual~(IMG) position
+
+
+**** The menu ~DropDownMenuFragment~ DOM element is poped up, waiting for user click on one menu item. Actions after user *click on one menu item*
+
+*Now, the menu ~DropDownMenuFragment~ DOM element is poped up, and waiting for another user click, this time on one of the menu items*
+
+We recall in the code above, that the menu items are DOM elements created in method ~HopscotchForHTML5#contentFor:within:~
+
+#+name: HopscotchForHTML5#contentFor:menuItem_within:dropDownContent
+#+begin_src smalltalk
+contentFor: menuItem < MenuItem | Symbol> within: dropDownContent ^ <Alien[Element]> = (
+	| 
+	entry 
+	separator <Alien[Element]>
+	|
+	menuItem = #separator ifTrue: [
+		separator:: document createElement: 'hr'.		
+		(separator at: 'style')
+			at: 'height' put: '1px';
+			at: 'background-color' put: styleBorderColor;
+			at: 'border' put: 'none';
+			at: 'margin-left' put: styleMenuInset;
+			at: 'margin-right' put: styleMenuInset.
+		^separator
+	].
+	entry:: document createElement: 'div'.
+	entry at: 'textContent' put: menuItem first.
+	(entry at: 'style')
+		at: 'color' put: styleDefaultInterfaceTextColor;
+		at: 'font-family' put: styleFontFamilySansSerif;
+		at: 'font-size' put: styleFontSizeMenu;
+		at: 'padding-left' put: styleMenuInset;
+		at: 'padding-right' put: styleMenuInset;
+		at: 'height' put: styleMenuItemHeight;
+		at: 'line-height' put: styleMenuItemHeight;
+		at: 'white-space' put: 'nowrap'.
+   entry
+		addEventListener: 'mouseover' action:
+			[:event | (entry at: 'style') at: 'background-color' put: '#C8C8C8'. nil];
+	     addEventListener: 'mouseout' action:
+			[:event | (entry at: 'style') at: 'background-color' put: '#F6F6F6'. nil];
+		addEventListener: 'click' action:
+			[:event | menuItem last value. nil].
+	^entry
+)
+#+end_src
+
+This code have run already in ~#computeContentForMenu~ and have created the popup menu, menu items, and added listener on mouse 'click' with action from the ~Presenter#menuWithLabelsAndActions~, originally declared in
+
+   #+begin_example smalltalk
+     menu = menuWithLabelsAndActions: {
+         {'Save to File'. [respondToSave]}.
+         #separator.
+         {'Delete'. [respondToDelete]}.
+       }
+   #+end_example
+
+
+*So now, if user clicks on one of the menu items, say 'Save to file', the menu action [respondToSave] value is executed, poping a save to file dialog.*
+
+*THIS CONCLUDE THE WHOLE LIFECYCLE OF MENUS!!!!*
+
+
 * Todos todo-00
 
 - todo-00-last-last : PlatformWithHopscotch disappeared. The only lines remaining are isKindOfPlatformWithHopscotch which are probably all obsolete.  Go over the document, investigate and change.
@@ -4860,237 +5175,6 @@ todo-00-last IN-PROGRESS-NOW : add section on UI building:
 - ~Fragment~ -> ~Presenter~                                         : implements ~#definition <Fragment>~
 - todo : find where ~Composer#definitions~ and ~Presenter#definition~ are called in UI to create UI.
 - todo : describe what ~Presenter,HopscotchShell,etc~ ~#enterSubject:subject~ is doing: Looks like makes itself the presented Fragment on the new subject! Either way, the presenter or shell show themselves in the UI!
-
-
-
-todo-00-last IN-PROGRESS-NOW : add section on popup menus:
-
-When we want to add a popup menu attached to an image to UI:
-1. In ~#definition~ add call to ~#Presenter#dropDownMenu:[#Presenter#menuWithLabelsAndActions: {{'Save'.[respondToSave]}}]~, for example:
-   #+name: MyWidgetPresenter#definition
-   #+begin_src smalltalk
-     definition = (
-         ^ row {
-           someFragments.
-           dropDownMenu: [classActionsMenu].        
-         }
-         )
-   #+end_src
-   1. The passed menu item -> action may look like this
-     #+name: MyWidgetPresenter#classActionsMenu
-     #+begin_src smalltalk
-     classActionsMenu = (
-         ^ menuWithLabelsAndActions: {
-	         	{'Save to File'. [respondToSave]}.
-	        	 #separator.
-	        	{'Inspect Mirror'. [inspectObject: subject classMirror]}.
-	        	{'Inspect Presenter'. [respondToInspectPresenter]}.
-	        	#separator.
-	        	{'Delete'. [respondToDelete]}.
-	          }
-     #+end_src   
-2. Add the respond actions, for example:
-   #+name: MyWidgetPresenter#respondToSave
-   #+begin_src smalltalk
-     respondToSave = (
-	    ide webFiles downloadFileName: subject name, '.ns' fromString: subject compilationUnitSource. 
-     )
-   #+end_src
-
-
-What happens during the UI creation and composition?
-
-1. During UI composition, this is the Fragment that is created by the call to ~#definition~ which calls ~dropDownMenu: [classActionsMenu]~
-   #+begin_src smalltalk
-     dropDownMenu: menu <[Menu]> ^ <DropDownMenuFragment> = (
-	     ^DropDownMenuFragment menu: menu
-     )
-   #+end_src
-2. Which adds a ~DropDownMenuFragment~ into the UI
-   #+begin_src smalltalk
-       class DropDownMenuFragment menu: ms image: img <Image> alignment: side <Symbol> = ImageButtonFragment  (
-        |
-        menuSupplier <[Tuple[Symbol | Tuple[String, []]]]> = ms.
-        alignment <String>  = side asString.
-           image = img.
-           action = [].
-           width = styleButtonSize.
-           height = styleButtonSize.
-           isActive ::= false.
-        |
-       )
-   #+end_src
-   which extends
-   #+begin_src smalltalk
-     class ImageButtonFragment = LeafFragment (
-       (* A button displayed as an image; or an image that acts as a button. *)
-       |
-       	public action <[]>
-       	public image <Image>
-       |)
-   #+end_src
-3. The above ties to the Fragment an ~image~ and empty ~action~; I do NOT know when they are set.
-
-
-*When the UI is composed as a Newspeak object graph of the ~Fragment~ s instances, AT SOME POINT (which point??) THE NEWSPEAK Fragment graph is converted to Javascript DOM document (Javascript objects graph). This process calls ~#createVisual~ on every ~Fragment~ (How and where in code does this composition and calling createVisual happens??)* During this process, each ~Fragment#createVisual~ does BOTH create a DOM elements from the Fragment AND adds listeners to them, as directed by the code in ~#createVisual~.
-
-For the ~DropDownMenuFragment#createVisual~ this is executed:
-
-1. ~DropDownMenuFragment~ is converted to DOM element and DOM element Listeners are created on 'click', 'mousedown', mouseup etc :
-
-   #+name: DropDownMenuFragment#createVisual
-   #+begin_src smalltalk
-     createVisual ^ <Alien[Element]> = (
-       | menu = super createVisual. | (* calls ImageButtonFragment which creates an img element *)
-
-       (* If DropDownMenuFragment isActive, and received (another) click, close the menu, otherwise delay call to updateContent.
-          The updateContent shows the popup menu: 
-        *)                             
-       menu addEventListener: 'click' action: [:event | 
-           isActive 
-             ifTrue: [isActive: false. shell closeActiveMenu] 
-             ifFalse: [updateContent].  (* HERE, SELF=VISUAL=button=DropDownMenuFragment *)
-           nil
-         ].
-       (menu at: 'style')
-         at: 'cursor' put: 'pointer'.
-
-         image
-             addEventListener: 'mousedown' action:
-             [:event | (image at: 'style') at: 'filter' put: 'brightness(130%)'. nil];
-             addEventListener: 'mouseover' action:
-             [:event | (image at: 'style') at: 'filter' put: 'brightness(50%)'. nil];
-             addEventListener: 'mouseout' action:
-           [:event | (image at: 'style') at: 'filter' put: ''. nil].
-
-       ^menu
-     )
-   #+end_src
-
-
-*Now the DOM UI is ready, and waits for user interaction with the elements created from the ~DropDownMenuFragment~*. The following may happen:
-
-1. User clicks on the ~DropDownMenuFragment#image~
-2. The 'click' event listener installed above in ~DropDownMenuFragment#createVisual~ is executed. This code is (again)
-   #+begin_src smalltalk
-      [:event | 
-           isActive 
-             ifTrue: [isActive: false. shell closeActiveMenu] 
-             ifFalse: [updateContent]. (* HERE, SELF=VISUAL=button=DropDownMenuFragment *)
-           nil
-         ].
-   #+end_src
-   We show and describe what happens in terms of the original Newspeak code. If the DropDownMenuFragment isActive, and received (another) click, close the menu, otherwise call to updateContent.
-3. The  ~DropDownMenuFragment#updateContent~ is executed (again described in Newspeak code, although this runs in JS DOM). *This is the core leaf process that happens after the image click.*
-     #+name: DropDownMenuFragment#updateContent
-     #+begin_src smalltalk
-       updateContent ^ <Alien[Element]> = (
-         | menu <Alien[Div]> = computeContentForMenu: menuSupplier. |
-         isActive: true.
-         showMenu: menu forShell: shell inVisual: visual.
-         (* HERE:
-             menu = the popup menu DOM element created by computeContentForMenu: menuSupplier 
-             visual = the button = aDropDownMenuFragment visualX = the result of DropDownMenuFragment#createVisual
-         ,*)
-         ^menu.
-       )
-     #+end_src
-   - The code explained in summary below, in detail in items 4. and 5. 
-     - creates and returns ~menu~, the DOM element for the menu with child elements one for each menu item - this is in ~HopscotchForHTML5#computeContentForMenu: menuSupplier~
-     - attaches the ~menu~ to the ~DropDownMenuFragment~ ~visual~ which was previously created in the ~DropDownMenuFragment#createVisual~ - this attachement is done in  ~HopscotchForHTML5#showMenu:forShell:inVisual:visual~
-4. The code that *creates the menu DOM element with child item elements*
-   #+name: HopscotchForHTML5#computeContentForMenu:menuSupplier
-   #+begin_src smalltalk
-     computeContentForMenu: menuSupplier <[Menu]> ^ <Alien[Div]> = (
-         |  dropDownContent = document createElement: 'div'. |
-         (dropDownContent at: 'style')
-             at: 'backgroundColor' put: styleMenuBackgroundColor;
-             at: 'position' put: 'absolute';
-             at: 'z-index' put: 10;
-             at: 'padding-top' put: '8px';
-             at: 'padding-bottom' put: '8px';
-             at: 'border' put: styleMenuBorderColor, ' solid 1px';
-             at: 'border-radius' put: styleDefaultRadius;
-             at: 'box-shadow' put: '0px 0px 15px ', styleMenuShadowColor;
-     		     at: 'display' put: 'inline-block';
-             at: 'outline' put: 0;
-             at: 'cursor' put: 'default'.
-     
-     	menuSupplier value do: 
-     		[:menuItem <MenuItem | Symbol> |
-     		 | itemContent <Alien[Element]> |
-     		 itemContent:: contentFor: menuItem within: dropDownContent. (* This is another huge DOM creation, only described below *)
-     		 dropDownContent appendChild: itemContent].
-     
-     	^dropDownContent
-     )
-   #+end_src
-5. The code that *shows the menu (the visual=aDropDownMenuFragment) in shell and positions it in the shell*. 
-   #+name: HopscotchForHTML5#showMenu:forShell:inVisual:visual
-   #+begin_src smalltalk
-      showMenu: menu <Alien[Div]> 
-   		forShell: s <HopscotchShell> 
-   		inVisual: v <Visual> = (
-         v appendChild: menu.
-   	     positionMenu: menu at: (v at: 'offsetTop') forShell: s.
-   	     menu focus.
-         s activeMenu: menu.
-         s activeMenuParent: v.
-   )
-   #+end_src
-   - In detail:   
-   - ~menu~ element is appended as child of the ~visual~, which is instance of the ~DropDownMenuFragment~!!
-   - ~menu~ element is positioned in the DOM (the ~shell~)
-   - ~menu~ element is set as activeMenu on ~shell~
-   - ~visual~ is set as parent of the active menu in ~shell~  
-
-
-*Now, the menu ~DropDownMenuFragment~ DOM element is poped up, and waiting for another user click, this time on one of the menu items*
-
-We recall that the menu items are DOM elements created in  method ~HopscotchForHTML5#contentFor:within:~
-
-#+name: HopscotchForHTML5#contentFor:menuItem_within:dropDownContent
-#+begin_src smalltalk
-contentFor: menuItem < MenuItem | Symbol> within: dropDownContent ^ <Alien[Element]> = (
-	| 
-	entry 
-	separator <Alien[Element]>
-	|
-	menuItem = #separator ifTrue: [
-		separator:: document createElement: 'hr'.		
-		(separator at: 'style')
-			at: 'height' put: '1px';
-			at: 'background-color' put: styleBorderColor;
-			at: 'border' put: 'none';
-			at: 'margin-left' put: styleMenuInset;
-			at: 'margin-right' put: styleMenuInset.
-		^separator
-	].
-	entry:: document createElement: 'div'.
-	entry at: 'textContent' put: menuItem first.
-	(entry at: 'style')
-		at: 'color' put: styleDefaultInterfaceTextColor;
-		at: 'font-family' put: styleFontFamilySansSerif;
-		at: 'font-size' put: styleFontSizeMenu;
-		at: 'padding-left' put: styleMenuInset;
-		at: 'padding-right' put: styleMenuInset;
-		at: 'height' put: styleMenuItemHeight;
-		at: 'line-height' put: styleMenuItemHeight;
-		at: 'white-space' put: 'nowrap'.
-   entry
-		addEventListener: 'mouseover' action:
-			[:event | (entry at: 'style') at: 'background-color' put: '#C8C8C8'. nil];
-	     addEventListener: 'mouseout' action:
-			[:event | (entry at: 'style') at: 'background-color' put: '#F6F6F6'. nil];
-		addEventListener: 'click' action:
-			[:event | menuItem last value. nil].
-	^entry
-)
-#+end_src
-
-That code have run already in ~#computeContentForMenu~ and have created the popup menu, menu items, and added listener on mouse 'click' with action from the ~Presenter#menuWithLabelsAndActions~ 
-
-*So now, if user clicks on one of the menu items, the action from  ~Presenter#menuWithLabelsAndActions~ runs. THIS CONCLUDE THE WHOLE LIFECYCLE OF MENUS!!!!*
 
 
 
