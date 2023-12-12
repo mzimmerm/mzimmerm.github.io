@@ -2192,7 +2192,7 @@ This slide describes that Newspeak provides three levels of accessibility:
 
 This slide describes how Newspeak code in a class can access private and protected members (classes, slots, methods) above and below the class in the nesting hierarchy:
 
-  - Rule a) Private and protected members can be seen by nested classes
+  - Rule a) Private and protected members can be seen by nested classes (lexically up, everything is visible)
 
   - Rule b) Enclosing classes cannot see private or protected members of nested classes
 
@@ -2238,6 +2238,19 @@ Corollary 1: Public member on any class ClC is accessible from anywhere.  By "ac
 
 Corollary 2: Non public member on class ClN is only visible from class ClC, if class ClC is nested in ClN.
 
+
+*** Slides describing Newspeak virtual method call lookup: 'lexical chain first, inheritance chain second' 
+
+- Newspeak virtual call lookup does NOT use the 'comb rule'
+
+- Newspeak virtual call lookup uses the 'lexical chain first, inheritance chain second' method
+
+- The reason for the choice is described in and after the slides 'A Problem' and 'When code evolves'.
+
+- So virtual method call lookup in summary:
+  - Newspeak gives priority to lexically visible declarations
+  - But once a lexical level has been selected, inheritance chain is used. Inheritance can have an effect; lexical declaration can be overridden
+  
 *** Worked accessibility examples, using rules from slides 61, 62, 63
 
 **** Code used in accessibility examples
@@ -4481,7 +4494,7 @@ A) First, let's look for senders of ~Subject>>#presenter~, all the way up.  Ther
 3. ~#refresh~ in HopscotchShell in HopscotchForHTML5
 4. ~#refreshmentPresenter~ in Presenter in HopscotchForHTML5
 
-The first just calls the second
+Here, 1. just calls 2.
 
 ~class Subject~
 #+begin_example
@@ -4490,20 +4503,21 @@ The first just calls the second
 	  ^shell enterSubject: s
   )
 #+end_example
-We can ignore the third and forth, as they have to do with refresh. That leaves us with the second, ~HopscotchShell>>enterSubject:~. If we find who sends this message, (maybe following up a few of its senders) we should arrive at the method our application should invoke (which then would end up calling #createSubject, the method we are intrested in calling. 
+
+We can ignore 3. and 4., as they have to do with refresh. That leaves us with the second, ~HopscotchShell>>enterSubject:~. If we find who sends this message, (maybe following up a few of its senders) we should arrive at the method our application should invoke (which then would end up calling #createSubject, the method we are intrested in calling. 
 
 B) So next, let's look for senders of ~HopscotchShell>>#enterSubject: subject~ only in Hopscotch classes, we get
 
-1. enterSubject: in ToolbarPresenter in HopscotchWindow in HopscotchForHTML5
-2. enterSubject: in Presenter in HopscotchForHTML5
-3. enterSubject:fromSnippet: in EmbeddedHopscotchWindow in HopscotchForHTML5
-4. find: in ToolbarPresenter in IDEWindow in Browsing
-5. goHome in HopscotchShell in HopscotchForHTML5
-6. homeButton in Presenter in HopscotchForHTML5
+1. ~enterSubject:~ in ToolbarPresenter in HopscotchWindow in HopscotchForHTML5
+2. ~enterSubject:~ in Presenter in HopscotchForHTML5
+3. ~enterSubject:fromSnippet:~ in EmbeddedHopscotchWindow in HopscotchForHTML5
+4. ~find:~ in ToolbarPresenter in IDEWindow in Browsing
+5. ~goHome~ in HopscotchShell in HopscotchForHTML5
+6. ~homeButton~ in Presenter in HopscotchForHTML5
 7. ~into:openSubject: in HopscotchWindow in HopscotchForHTML5~
-8. openSubject: in Window in HopscotchProxy in AppPlatform in Browsing
+8. ~openSubject:~ in Window in HopscotchProxy in AppPlatform in Browsing
 
-Now a detective story becomes more of a guessing game. But anything that is creating a Window or invoked from Window is a good guess, as any application would have to place it's Presenter into a Window or Frame or some such.
+Now a detective story becomes more of a guessing game. But anything that is creating a Window or invoked from a Window is a good guess, as any application would have to place it's Presenter into a Window or Frame or some such.
 
 So let's look further at 7.
 
@@ -4514,12 +4528,12 @@ This seems to be doing something useful, it creates a toolbar, adds it to contai
 C) So let's look for senders of ~HopscotchWindow>>#into:openSubject:~ only in Hopscotch classes, we get
 
 
-1. into:openSubject: in EmbeddedHopscotchWindow in HopscotchForHTML5
-2. openSubject: in EmbeddedHopscotchWindow in HopscotchForHTML5
-3. openSubject: in HopscotchWindow in HopscotchForHTML5
+1. ~into:openSubject:~ in EmbeddedHopscotchWindow in HopscotchForHTML5
+2. ~openSubject:~ in EmbeddedHopscotchWindow in HopscotchForHTML5
+3. ~openSubject:~ in HopscotchWindow in HopscotchForHTML5
 
 
-~HopscotchWindow>>#openSubject: subject~
+The item 3. ~HopscotchWindow>>#openSubject: subject~
 
 public openSubject: s = (
 	^into: body openSubject: s
@@ -5200,11 +5214,82 @@ todo-00-last IN-PROGRESS-NOW : add section on Mirrors
     - ~methods~ <Collection[MethodMirror]> = <MirrorGroup[MethodMirror]> 
 - ~ClassDeclarationMirror reflecting: mixin <InstanceMixin>~
   - reflects mixin's code
-- There is NO ClassDeclaration or MixinDeclaration or SlotDeclaration, only ClassDeclarationMirror, SlotDeclarationMirror
+- There is *NO ClassDeclaration or MixinDeclaration or SlotDeclaration*, only ~ClassDeclarationMirror~, ~MixinMirror~, ~SlotDeclarationMirror~
+- ~aClassMirror            mixin    => MixinMirror~ 
 - *THERE IS A SORT-OF-CIRCULARITY BETWEEN  ~ClassMirror~ AND ~ClassDeclarationMirror~, WE CAN GET ONE FROM THE OTHER AS FOLLOWS*
   - ~aClassMirror            mixin declaration   => ClassDeclarationMirror~ 
-  - ~aClassDeclarationMirror instanceSide        => MixinMirror similar to ClassMirror~ *MixinMirror has similar API to ClassMirror, it provides slots <MirrorGroup>, nestedClasses <MirrorGroup>, methods <MirrorGroup>* .. *note there is also ~#definingMixin~ method which results in the enclosing instance.* 
+  - ~aClassDeclarationMirror instanceSide        => MixinMirror~ *is API equivalent to ClassMirror  MixinMirror, so both provides slots <MirrorGroup>, nestedClasses <MirrorGroup>, methods <MirrorGroup>* The ~instanceSide~ is implemented as follows:
+    #+name: ClassDeclarationMirror#instanceSide
+    #+begin_src smalltalk
+      public instanceSide ^<MixinMirror> = (
+        (* Note: The mixin is slot on ClassDeclarationMirror from which the ClassDeclarationMirror was created. *)                       
+        ^MixinMirror reflecting: mixin
+      )
+    #+end_src
+  - Note: there is also ~ClassDeclarationMirror#definingMixin~ method which *answers the MixinMirror (type) of the enclosing instance*.
 
+
+Example of mirrors investigation mirrors of ~A1_TestSubjects~ in workspace:
+
+#+name: A1_TestSubjects
+#+begin_example smalltalk
+Newspeak3
+'Root'
+class A1_TestSubjects = (
+(* Testing class for the benefit of A1_SimpleIDEBrowser. *)
+) (
+public class Nested1 = (
+	|nested1Slot1|
+) (
+instanceMethod1_on_Nested1 = (^'instanceMethod1_on_Nested1')
+) : (
+)
+public class Nested2 = (
+	|nested2Slot1|
+) (
+instanceMethod1_on_Nested2 = (^'instanceMethod1_on_Nested2')
+) : (
+)
+instanceMethod3_on_A1_TestSubjects= (^'instanceMethod3_on_A1_TestSubjects')
+instanceMethod2_on_A1_TestSubjects= (^'instanceMethod2_on_A1_TestSubjects')
+instanceMethod1_on_A1_TestSubjects= (^'instanceMethod1_on_A1_TestSubjects')
+) : (
+classMethod1_on_A1_TestSubjects= (^'classMethod1_on_A1_TestSubjects')
+)
+#+end_example
+
+#+begin_example smalltalk
+
+  |classMirror classMirrorMixin classDeclarationMirror classNestedClassesMirrorGroup classDefiningMixin mirrors|
+  mirrors:: platform mirrors.
+  classMirror::  mirrors ClassMirror reflecting: A1_TestSubjects.
+  classNestedClassesMirrorGroup:: classMirror nestedClasses. (* Similarly to nestedClasses, we can send methods, slots, obtaining MirrorGroup *)
+  classMirrorMixin:: classMirror mixin.
+  classDeclarationMirror:: classMirrorMixin declaration.
+  classDefiningMixin:: classDeclarationMirror definingMixin.
+
+  {
+    classMirror.                   (* ClassMirror. has methods to get groups: nestedClasses, methods, slots, lazySlots, allInstances *)
+    classNestedClassesMirrorGroup. (* MirrorGroup[ClassDeclarationMirror] = list of ClassDeclarationMirror, for each nested class. *)
+    classMirrorMixin.              (* MixinMirror. has methods to get groups: method names SAME as ClassMirror but NOT allInstances. BUT RESULTS ONLY CONTAIN nestedClasses, methods, slots, lazySlots added in this mixin - see results a few lines below *)
+    classDeclarationMirror.        (* ClassDeclarationMirror. has methods to get: code, accessor, primary factory name (nowhere else), classSide, classSide, instanceSide (instanceSide gets back InstanceMirror ~ ClassMirror API). Does NOT have messages methods, nestedClasses, slots, lazySlots *)
+    classDefiningMixin.            (* MixinMirror. nil - because enclosing instance mixin does not exist*)
+
+    classMirror methods size.                          (* 24 = 21 from Object + 3 from A1_TestSubjects=this mixin, expected *)
+    classMirrorMixin methods size.                     (* 3 from A1_TestSubjects=this mixin, expected; mixin shows only synthetic (mixin added) methods *)
+    classDeclarationMirror instanceSide methods size.  (* 3, as above *)                                
+
+    classMirror nestedClasses size.                          (* 2 from A1_TestSubjects=this mixin, expected *)
+    classMirrorMixin nestedClasses size.                     (* 2 from A1_TestSubjects=this mixin, expected *)
+    classDeclarationMirror instanceSide nestedClasses size.  (* 2 as above  *)                                
+  }.
+#+end_example
+
+I think the reason ~ClassMirror~ and ~MixinMirror~ despite almost the same API are different, is that the ~MixinMirror~ only shows increments.
+
+*So use ClassMirror to get methods, nestedClasses, slots, use ClassDeclarationMirror to get code???*
+
+*BUT WHAT CAUSES THE ASSYMETRY BETWEN methods and nestedClasses?*
     
 todo-00-last IN-PROGRESS-NOW : add TO section on namespacing
 - Namespacing>>Manifest class has only 1 method, ~doesNotUnderstand~, yet, we can do ~ide namespacing manifest MyClass~ and it shows ~MyClass~, how?
