@@ -13,4 +13,7 @@
 # cd $BLOG
 cd /home/mzimmermann/dev/my-projects-source/public-on-github/mzimmerm.github.io
 echo path is $(pwd)
-jekyll serve --baseurl=''
+echo HOME IS $HOME
+echo GEM_HOME IS $GEM_HOME
+echo PATH IS $PATH
+/home/mzimmermann/software/ruby/gems/bin/jekyll.ruby3.3 serve --baseurl=''
